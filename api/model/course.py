@@ -1,7 +1,6 @@
-
-from sqlalchemy import create_engine, String, Column, ForeignKey, Table, Text
+from sqlalchemy import String, Column, ForeignKey, Table, Text
 from sqlalchemy.orm import Mapped, mapped_column
-from model.base import Base
+from api.model.base import Base
 
 class Course(Base):
     __tablename__ = "course"
