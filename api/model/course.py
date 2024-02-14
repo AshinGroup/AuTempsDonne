@@ -1,6 +1,5 @@
 from sqlalchemy import String, Column, ForeignKey, Table, Text
 from sqlalchemy.orm import Mapped, mapped_column
-from api.model.base import Base
 
 class Course(Base):
     __tablename__ = "course"

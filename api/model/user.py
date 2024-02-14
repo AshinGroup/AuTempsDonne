@@ -1,11 +1,6 @@
-from app import db
-try:
-    from api.model.base import Base
-except:
-    from model.base import Base
+from database.db import db
 
-
-class User(Base):
+class User(db.Model):
     __tablename__ = "user"
     
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
