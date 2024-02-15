@@ -1,7 +1,15 @@
 from model.user import User
-from app import db
+from database.db import db
+from app import app
 
-def insert(new_user: User):
-    db.session.add(new_user)
+
+class UserRepo():
+    def insert(self, new_user: User):
+        with app.app_context():
+            db.session.add(new_user)
+            a = db.session.commit()
+            print(a)
+            
+        
     
     
