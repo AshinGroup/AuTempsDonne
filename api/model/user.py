@@ -6,8 +6,10 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(30))
     last_name = db.Column(db.String(30))
-    mail = db.Column(db.String(320), unique=True)
+    email = db.Column(db.String(320), unique=True)
     phone = db.Column(db.String(50))
     role = db.Column(db.String(15)) # volunteer / beneficiary / admin
     password = db.Column(db.String(64))
 
+    def json(self):
+        return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email}
