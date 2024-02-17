@@ -19,7 +19,7 @@ api = Api(app)
 
 # API Routes
 api.add_resource(UserListController, '/user')
-api.add_resource(UserController, '/user/<user_id>')
+api.add_resource(UserController, '/user/<int:user_id>')
 
 
 if __name__ == "__main__":

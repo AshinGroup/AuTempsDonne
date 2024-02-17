@@ -23,13 +23,13 @@ class UserAlreadyExistsException(Exception):
     
 
 class UserAccessDbException(Exception):
-    def __init__(self, email: str, method: str) -> None:
-        self.email = email
+    def __init__(self, user_id: int, method: str) -> None:
+        self.user_id = user_id
         self.method = method
 
     def __str__(self) -> str:
-        if self.email:
-            return f"Error {self.method} user {self.email}."
+        if self.user_id:
+            return f"Error {self.method} user '{self.user_id}'."
         else: 
             return f"Error {self.method} users."
 

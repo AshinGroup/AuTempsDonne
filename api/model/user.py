@@ -12,4 +12,4 @@ class User(db.Model):
     password = db.Column(db.String(64))
 
     def json(self):
-        return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email}
+        return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'password': self.password}

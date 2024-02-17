@@ -1,8 +1,7 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.user import UserService
-from exception.user import UserEmailNotFoundException, UserIdNotFoundException, UserAlreadyExistsException
+from exception.user import UserEmailNotFoundException, UserIdNotFoundException, UserAlreadyExistsException, UserAccessDbException
 from flask import jsonify
-
 
 
 class UserCheckArgs:
@@ -28,19 +27,44 @@ class UserCheckArgs:
     
 
 class UserController(Resource):
-   def __init__(self) -> None:
+
+    def __init__(self) -> None:
         self.check_args = UserCheckArgs()
         self.user_service = UserService()
 
-   def get(self, user_id: str):
-        return 'Hello, World!'
+
+    def get(self, user_id: int):
+        try:
+            user = self.user_service.select_one_by_id(user_id=user_id)
+            return jsonify(user.json())
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
    
-   def put(self, user_id: str):
-       args = self.check_args.get_user_args()
-       return 'Hello, World!'
+
+    def put(self, user_id: int):
+        try:
+            args = self.check_args.get_user_args()
+            self.user_service.update(user_id=user_id, args=args)
+            return f"User '{user_id}' successfully updated."
+        except UserEmailNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))        
    
-   def delete(self, user_id: str):
-       return 'Hello, World!'
+
+    def delete(self, user_id: int):
+        try:
+            self.user_service.delete(user_id=user_id)
+            return f"User '{user_id}' successfully deleted."
+        except UserEmailNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e)) 
+            
    
     
 class UserListController(Resource):
@@ -48,17 +72,25 @@ class UserListController(Resource):
         self.check_args = UserCheckArgs()
         self.user_service = UserService()
     
+
     def get(self):
-        users = self.user_service.select_all()
-        return jsonify([user.json() for user in users])
+        try:
+            users = self.user_service.select_all()
+            return jsonify([user.json() for user in users])
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
         
 
     def post(self):
         try:
             args = self.check_args.get_user_args()
-            self.user_service.insert(args)
+            self.user_service.insert(args=args)
+            return f"User '{args['email']}' successfully created."
         except UserAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        
         
        
       
