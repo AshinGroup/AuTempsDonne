@@ -1,6 +1,6 @@
 from model.course import Course
 from repository.course import CourseRepo
-#from exception.course import CourseIdNotFoundException, CourseAlreadyExistsException
+from exception.course import CourseTitleNotFoundException, CourseIdNotFoundException, CourseAlreadyExistsException
 
 class CourseService:
 
@@ -13,10 +13,15 @@ class CourseService:
         if course:
             return course
         else:
-            raise #CourseIdNotFoundException(course_id=course_id)
+            raise CourseIdNotFoundException(course_id=course_id)
 
 
-    # select_one_by_title ?
+    def select_one_by_title(self, title: str):
+        course = self.course_repo.select_one_by_title(title=title)
+        if course:
+            return course
+        else:
+            raise CourseTitleNotFoundException(title=title)
         
 
     def select_all(self):
@@ -26,10 +31,10 @@ class CourseService:
 
     def insert(self, args: dict):
         new_course = Course(title=args['title'], description=args['description']) 
-        #if self.user_repo.select_one_by_email(email=new_user.email):               # faire cette vérification avec 'select_one_by_title' ?
-            #raise UserAlreadyExistsException(new_user.email)
-        #else:
-        self.course_repo.insert(new_course=new_course)
+        if self.course_repo.select_one_by_title(title=new_course.title):
+            raise CourseAlreadyExistsException(new_course.title)
+        else:
+            self.course_repo.insert(new_course=new_course)
     
 
     def update(self, course_id: int, args: dict):
@@ -37,21 +42,17 @@ class CourseService:
         course = self.course_repo.select_one_by_id(course_id=course_id)
         
         if not course:
-            raise #CourseIdNotFoundException(course_id=course_id)
+            raise CourseIdNotFoundException(course_id=course_id)
         
-        #users_with_email = self.user_repo.select_by_email(email=update_user.email)
+        courses_with_title = self.course_repo.select_by_title(title=update_course.title)
        
-        #if len(users_with_email) == 2 or users_with_email[0].user_id != user_id:
-        #   raise UserAlreadyExistsException(email=update_user.email)
+        if len(courses_with_title) == 2 or courses_with_title[0].course_id != course_id:
+           raise CourseAlreadyExistsException(title=update_course.title)
         
         self.course_repo.update(course_id=course.course_id, update_course=update_course)
         
         
     def delete(self, course_id: str):
         if not self.course_repo.select_one_by_id(course_id=course_id):
-            raise #CourseIdNotFoundException(course_id=course_id)
+            raise CourseIdNotFoundException(course_id=course_id)
         self.course_repo.delete(course_id=course_id)
-        
-            
-        
-

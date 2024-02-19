@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.course import CourseService
-#from exception.course import CourseIdNotFoundException, CourseAlreadyExistsException, CourseAccessDbException
+from exception.course import CourseTitleNotFoundException, CourseIdNotFoundException, CourseAlreadyExistsException, CourseAccessDbException
 from flask import jsonify
 
 # Voir qu'elles sont les vérifications à faire pour le titre et la description ?
@@ -38,9 +38,9 @@ class CourseController(Resource):
         try:
             course = self.course_service.select_one_by_id(course_id=course_id)
             return jsonify(course.json())
-        except #CourseIdNotFoundException as e:
+        except CourseIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except #CourseAccessDbException as e:
+        except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
 
@@ -49,9 +49,11 @@ class CourseController(Resource):
             args = self.check_args.get_course_args()
             self.course_service.update(course_id=course_id, args=args)
             return f"Course '{course_id}' successfully updated."
-        except #CourseAlreadyExistsException as e:
+        except CourseIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except CourseAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
-        except #CourseAccessDbException as e:
+        except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
 
@@ -59,7 +61,9 @@ class CourseController(Resource):
         try:
             self.course_service.delete(course_id=course_id)
             return f"Course '{course_id}' successfully deleted."
-        except #CourseAccessDbException as e:
+        except CourseIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e)) 
             
    
@@ -74,7 +78,7 @@ class CourseListController(Resource):
         try:
             courses = self.course_service.select_all()
             return jsonify([course.json() for course in courses])
-        except #CourseAccessDbException as e:
+        except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
 
@@ -83,9 +87,9 @@ class CourseListController(Resource):
             args = self.check_args.get_course_args()
             self.course_service.insert(args=args)
             return f"Course '{args['title']}' successfully created."
-        except #CourseAlreadyExistsException as e:
+        except CourseAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
-        except #CourseAccessDbException as e:
+        except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
         
