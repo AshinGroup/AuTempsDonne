@@ -5,7 +5,7 @@ class Activity(Base):
     __tablename__ = "activity"
     
     activity_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    type: Mapped[str] = mapped_column(String(30))
+    type: Mapped[str] = mapped_column(String(30))  # Revoir si l'on passe le type en int ?
     date: Mapped[DateTime] = mapped_column(DateTime)
     activity_location: Mapped[str] = mapped_column(Text)
 
