@@ -1,6 +1,6 @@
 from model.activity import Activity
 from repository.activity import ActivityRepo
-#from exception.activity import ActivityIdNotFoundException, ActivityAlreadyExistsException
+#from exception.activity import ActivityIdNotFoundException
 
 class ActivityService:
 
