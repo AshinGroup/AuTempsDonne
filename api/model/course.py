@@ -5,7 +5,7 @@ class Course(Base):
     __tablename__ = "course"
     
     course_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    title: Mapped[str] = mapped_column(String(30))
+    title: Mapped[str] = mapped_column(String(30)) # Le titre doit être unique ou pas ?
     description: Mapped[str] = mapped_column(Text)
 
 
