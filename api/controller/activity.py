@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.activity import ActivityService
-#from exception.activity import ActivityIdNotFoundException, ActivityAccessDbException
+from exception.activity import ActivityIdNotFoundException, ActivityAccessDbException
 from flask import jsonify
 
 # Voir qu'elles sont les vérifications à faire pour le type, la date et le lieu ?
@@ -38,9 +38,9 @@ class ActivityController(Resource):
         try:
             activity = self.activity_service.select_one_by_id(activity_id=activity_id)
             return jsonify(activity.json())
-        except #ActivityIdNotFoundException as e:
+        except ActivityIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except #ActivityAccessDbException as e:
+        except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
 
@@ -49,9 +49,9 @@ class ActivityController(Resource):
             args = self.check_args.get_activity_args()
             self.activity_service.update(activity_id=activity_id, args=args)
             return f"Activity '{activity_id}' successfully updated."
-        except #ActivityIdNotFoundException as e:
+        except ActivityIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except #ActivityeAccessDbException as e:
+        except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
 
@@ -59,9 +59,9 @@ class ActivityController(Resource):
         try:
             self.activity_service.delete(activity_id=activity_id)
             return f"Activity '{activity_id}' successfully deleted."
-        except #ActivityIdNotFoundException as e:
+        except ActivityIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except #ActivityAccessDbException as e:
+        except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e)) 
             
    
@@ -76,7 +76,7 @@ class ActivityListController(Resource):
         try:
             activities = self.activity_service.select_all()
             return jsonify([activity.json() for activity in activities])
-        except #ActivityAccessDbException as e:
+        except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
 
@@ -85,10 +85,5 @@ class ActivityListController(Resource):
             args = self.check_args.get_activity_args()
             self.activity_service.insert(args=args)
             return f"Activity '{args['id']}' successfully created."
-        except #ActivityAccessDbException as e:
+        except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        
-        
-       
-      
-    

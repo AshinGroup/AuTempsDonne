@@ -1,6 +1,6 @@
 from model.activity import Activity
 from repository.activity import ActivityRepo
-#from exception.activity import ActivityIdNotFoundException
+from exception.activity import ActivityIdNotFoundException
 
 class ActivityService:
 
@@ -13,7 +13,7 @@ class ActivityService:
         if activity:
             return activity
         else:
-            raise #ActivityIdNotFoundException(activity_id=activity_id)
+            raise ActivityIdNotFoundException(activity_id=activity_id)
         
 
     def select_all(self):
@@ -31,12 +31,12 @@ class ActivityService:
         activity = self.activity_repo.select_one_by_id(activity_id=activity_id)
         
         if not activity:
-            raise #ActivityIdNotFoundException(activity_id=activity_id)
+            raise ActivityIdNotFoundException(activity_id=activity_id)
         
         self.activity_repo.update(activity_id=activity.activity_id, update_activity=update_activity)
         
         
     def delete(self, activity_id: str):
         if not self.activity_repo.select_one_by_id(activity_id=activity_id):
-            raise #ActivityIdNotFoundException(activity_id=activity_id)
+            raise ActivityIdNotFoundException(activity_id=activity_id)
         self.activity_repo.delete(activity_id=activity_id)
