@@ -1,10 +1,8 @@
+from database.db import db
 
-
-
-follow_table = Table(
-    "user_follows_course",
-    Base.metadata,
-    Column("user_id", ForeignKey("user.user_id"), primary_key=True),
-    Column("course_id", ForeignKey("course.course_id"),  primary_key=True)
-
-)
+class User_follows_course(db.Model):
+    __tablename__ = "user_follows_course"
+    
+    user_follows_course_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
+    course_id = db.Column(db.Integer)
