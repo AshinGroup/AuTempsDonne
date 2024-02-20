@@ -1,9 +1,8 @@
+from database.db import db
 
-
-participate_table = Table(
-    "user_participates_activity",
-    Base.metadata,
-    Column("user_id", ForeignKey("user.user_id"), primary_key=True),
-    Column("activity_id", ForeignKey("activity.activity_id"),  primary_key=True)
-
-)
+class User_participates_activity(db.Model):
+    __tablename__ = "user_participates_activity"
+    
+    user_participates_activity_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
+    activity_id = db.Column(db.Integer)
