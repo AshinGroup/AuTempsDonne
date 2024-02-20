@@ -9,7 +9,7 @@ class ActivityCheckArgs:
 
     pattern = {'date': r'\b\d{4}-\d{2}-\d{2}\b',  # format : YYYY-MM-DD.
                 'location': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,100}\b' # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 100 caractères.
-                }
+            }
     
     def get_user_args(self) -> dict:
         parser = reqparse.RequestParser()

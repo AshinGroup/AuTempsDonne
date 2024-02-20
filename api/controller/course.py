@@ -3,29 +3,20 @@ from service.course import CourseService
 from exception.course import CourseTitleNotFoundException, CourseIdNotFoundException, CourseAlreadyExistsException, CourseAccessDbException
 from flask import jsonify
 
-# Voir qu'elles sont les vérifications à faire pour le titre et la description ?
-"""
 class CourseCheckArgs:
-    pattern = {'name' : r'\b[A-Za-zÀ-ÖØ-öø-ÿ\-]{1,30}\b', # Validates names with letters and hyphens, 1 to 30 characters.
-                'phone' : r'\b(?:\+?\d{1,3}[-.●]?)?(?:\(\d{1,4}\)[-.\●]?)?\d{6,}\b', #Validates phone numbers with optional international and regional codes, at least six digits.
-                'email' : '([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+', # Validates standard email addresses.
-                'password': r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:,<.>/?]).{8,}$'}
+    pattern = {'title': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,50}\b',  # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 100 caractères.
+                'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b'  # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 100 caractères.
+            }
     
     roles = ['volunteer', 'beneficiary', 'admin']
     
     def get_user_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('first_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter first name")
-        parser.add_argument('last_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter last name")
-        parser.add_argument('email', type=inputs.regex(self.pattern['email']), required=True, help="Invalid or missing parameter email")
-        parser.add_argument('phone', type=inputs.regex(self.pattern['phone']), required=True, help="Invalid or missing parameter phone")
-        parser.add_argument('role', type=str, required=True, help="Invalid or missing parameter role")
-        parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=True, help="Invalid or missing parameter password")
+        parser.add_argument('title', type=inputs.regex(self.pattern['title']), required=True, help="Invalid or missing parameter title")
+        parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter description")
         args = parser.parse_args(strict=True)
-        if not args['role'] in self.roles:
-            abort(400, message=f"Invalide parameter role : \'{args['role']}\' doesn\'t exist.")
         return args
-"""
+
 
 class CourseController(Resource):
 
