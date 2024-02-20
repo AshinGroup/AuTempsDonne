@@ -25,7 +25,7 @@ class CourseController(Resource):
         self.course_service = CourseService()
 
 
-    def get(self, course_id: int):
+    def get(self, course_id: i):
         try:
             course = self.course_service.select_one_by_id(course_id=course_id)
             return jsonify(course.json())
@@ -33,7 +33,7 @@ class CourseController(Resource):
             abort(http_status_code=404, message=str(e))
         except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-   
+   nt
 
     def put(self, course_id: int):
         try:
