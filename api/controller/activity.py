@@ -13,12 +13,12 @@ class ActivityCheckArgs:
     
     def get_user_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('type', type=str, required=True, help="Invalid or missing parameter type")
-        parser.add_argument('date', type=inputs.regex(self.pattern['date']), required=True, help="Invalid or missing parameter date")
-        parser.add_argument('activity_location', type=inputs.regex(self.pattern['activity_location']), required=True, help="Invalid or missing parameter activity location")
+        parser.add_argument('type', type=str, required=True, help="Invalid or missing parameter 'type'")
+        parser.add_argument('date', type=inputs.regex(self.pattern['date']), required=True, help="Invalid or missing parameter 'date'")
+        parser.add_argument('activity_location', type=inputs.regex(self.pattern['activity_location']), required=True, help="Invalid or missing parameter 'activity_location'")
         args = parser.parse_args(strict=True)
-        if not args['type'] in self.types:
-            abort(400, message=f"Invalide parameter type : \'{args['type']}\' doesn\'t exist.")
+        # if not args['type'] in self.types:
+        #     abort(400, message=f"Invalide parameter type : '{args['type']}' doesn't exist.")
         return args
 
 
@@ -70,7 +70,10 @@ class ActivityListController(Resource):
     def get(self):
         try:
             activities = self.activity_service.select_all()
-            return jsonify([activity.json() for activity in activities])
+            if activities:
+                return jsonify([activity.json() for activity in activities])
+            else:
+                return "None activities."
         except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         

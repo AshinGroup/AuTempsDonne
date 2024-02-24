@@ -7,6 +7,8 @@ from database.db import db, create_database
 
 # Import Controllers
 from controller.user import UserController, UserListController
+from controller.activity import ActivityController, ActivityListController
+from controller.course import CourseController, CourseListController
 
 # Import Models
 from model.user import User
@@ -22,6 +24,10 @@ from app import app
 api = Api(app)
 api.add_resource(UserListController, '/user')
 api.add_resource(UserController, '/user/<int:user_id>')
+api.add_resource(ActivityListController, '/activity')
+api.add_resource(ActivityController, '/activity/<int:activity_id>')
+api.add_resource(CourseListController, '/course')
+api.add_resource(CourseController, '/course/<int:course_id>')
 
 
 

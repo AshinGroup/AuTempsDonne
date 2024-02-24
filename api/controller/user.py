@@ -76,7 +76,10 @@ class UserListController(Resource):
     def get(self):
         try:
             users = self.user_service.select_all()
-            return jsonify([user.json() for user in users])
+            if users:
+                return jsonify([user.json() for user in users])
+            else:
+                return "None users."
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         

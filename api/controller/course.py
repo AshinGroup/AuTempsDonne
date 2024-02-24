@@ -4,11 +4,9 @@ from exception.course import CourseTitleNotFoundException, CourseIdNotFoundExcep
 from flask import jsonify
 
 class CourseCheckArgs:
-    pattern = {'title': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,50}\b',  # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 100 caractères.
-                'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b'  # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 100 caractères.
+    pattern = {'title': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,50}\b',  # lettres, chiffres, espaces et caractères spéciaux courants, de 1 à 50 caractères.
+                'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b'  # lettres, chiffres, espaces et caractères spéciaux courants, 1 à 500 caractères.
             }
-    
-    roles = ['volunteer', 'beneficiary', 'admin']
     
     def get_user_args(self) -> dict:
         parser = reqparse.RequestParser()
@@ -25,7 +23,7 @@ class CourseController(Resource):
         self.course_service = CourseService()
 
 
-    def get(self, course_id: i):
+    def get(self, course_id: int):
         try:
             course = self.course_service.select_one_by_id(course_id=course_id)
             return jsonify(course.json())
@@ -33,7 +31,7 @@ class CourseController(Resource):
             abort(http_status_code=404, message=str(e))
         except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-   nt
+
 
     def put(self, course_id: int):
         try:
@@ -68,7 +66,10 @@ class CourseListController(Resource):
     def get(self):
         try:
             courses = self.course_service.select_all()
-            return jsonify([course.json() for course in courses])
+            if courses:
+                return jsonify([course.json() for course in courses])
+            else:
+                return "None courses."
         except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
