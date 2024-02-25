@@ -1,4 +1,5 @@
 from database.db import db
+import os
 
 class User(db.Model):
     __tablename__ = "user"
@@ -15,14 +16,19 @@ class User(db.Model):
     course = db.relationship('Course', secondary='user_follows_course', back_populates='user')
 
     def json(self):
-        roles = [role.json() for role in self.role]
+        roles = [role.json_rest() for role in self.role]
+
+        activities = []
         if self.activity:
-            activities = [activity.json() for activity in self.activity]
-        else: 
-            activities = []
+            activities = [activity.json_rest() for activity in self.activity]
         
+        courses = []
         if self.course:
-            courses = [course.json() for course in self.course]
-        else: 
-            courses = []
+            courses = [course.json_rest() for course in self.course]
+         
+            
         return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'role': roles, 'activity': activities, 'course': courses} 
+    
+
+    def json_rest(self):
+        return {'url': f"{os.getenv('API_PATH')}/user/{self.user_id}", 'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email} 

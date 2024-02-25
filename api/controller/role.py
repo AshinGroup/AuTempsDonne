@@ -35,7 +35,7 @@ class RoleController(Resource):
         try:
             args = self.check_args.get_role_args()
             self.role_service.update(role_id=role_id, args=args)
-            return jsonify(f"Role '{role_id}' successfully updated.")
+            return jsonify({'message': f"Role '{role_id}' successfully updated."})
         except RoleIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except RoleAccessDbException as e:
@@ -65,7 +65,7 @@ class RoleListController(Resource):
             if roles:
                 return jsonify([role.json() for role in roles])
             else:
-                return jsonify("None roles.")
+                return jsonify({'message': "None roles."})
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
@@ -74,6 +74,6 @@ class RoleListController(Resource):
         try:
             args = self.check_args.get_role_args()
             self.role_service.insert(args=args)
-            return jsonify(f"Role '{args['role_name']}' successfully created.")
+            return jsonify({'message': f"Role '{args['role_name']}' successfully created."})
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))

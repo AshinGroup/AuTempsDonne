@@ -1,4 +1,5 @@
 from database.db import db
+import os
 
 class Role(db.Model):
     __tablename__ = "role"
@@ -9,7 +10,14 @@ class Role(db.Model):
     user = db.relationship('User', secondary='user_is_role', back_populates='role')
 
     def json(self):
-        return {'role_id': self.role_id, 'role_name': self.role_name} 
+        users = []
+        if self.user:
+            users = [user.json_rest() for user in self.user]
+        return {'role_id': self.role_id, 'role_name': self.role_name, 'users': users}
+
+
+    def json_rest(self):
+        return {'url': f"{os.getenv('API_PATH')}/role/{self.role_id}", 'role_id': self.role_id, 'role_name': self.role_name}  
     
 
 user_is_role = db.Table('user_is_role', db.metadata,

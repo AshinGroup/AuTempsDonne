@@ -47,6 +47,12 @@ class UserIsRoleAlreadyExistsException(Exception):
     def __str__(self) -> str:
         return f"User id '{self.user_id}' is role id '{self.role_id}' already exists."
     
+class UserRoleNotEmptyException(Exception):
+    def __init__(self, user_id: int) -> None:
+        self.user_id = user_id
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' must have role."
+
 
 class UserFollowsCourseNotFoundException(Exception):
     def __init__(self, user_id: int, course_id: int) -> None:

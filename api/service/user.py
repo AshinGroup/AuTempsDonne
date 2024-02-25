@@ -1,7 +1,7 @@
 from model.user import User
 from repository.user import UserRepo
 from exception.user import UserFollowsCourseAlreadyExistsException, UserParticipatesActivityAlreadyExistsException, UserIsRoleAlreadyExistsException
-from exception.user import UserEmailNotFoundException, UserIdNotFoundException, UserAlreadyExistsException
+from exception.user import UserEmailNotFoundException, UserIdNotFoundException, UserAlreadyExistsException, UserRoleNotEmptyException
 from exception.user import UserFollowsCourseNotFoundException, UserParticipatesActivityNotFoundException, UserIsRoleNotFoundException
 from exception.activity import ActivityIdNotFoundException
 from exception.course import CourseIdNotFoundException
@@ -146,6 +146,8 @@ class UserService:
             for role in user.role:
                 if role.role_id == role_id:
                     role_exist = True
+        if len(user.role) == 1:
+            raise UserRoleNotEmptyException(user_id=user_id)
         if not role_exist:
             raise UserIsRoleNotFoundException(user_id=user_id, role_id=role_id)
         self.user_repo.delete_role(user_id=user_id, role_id=role_id)
