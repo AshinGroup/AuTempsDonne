@@ -41,7 +41,7 @@ class UserService:
 
 
     def insert(self, args: dict) -> None:
-        new_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], password=args['password']) 
+        new_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], password=args['password'], status=args['status']) 
         if self.user_repo.select_one_by_email(email=new_user.email):
             raise UserAlreadyExistsException(new_user.email)
         if not self.role_service.select_one_by_id(args['role_id']):
@@ -89,7 +89,7 @@ class UserService:
              
             
     def update(self, user_id: int, args: dict) -> None:
-        update_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], password=args['password']) 
+        update_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], password=args['password'], status=args['status']) 
         user = self.user_repo.select_one_by_id(user_id=user_id)
         
         if not user:

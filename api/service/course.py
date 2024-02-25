@@ -44,9 +44,9 @@ class CourseService:
         if not course:
             raise CourseIdNotFoundException(course_id=course_id)
         
-        courses_with_title = self.course_repo.select_by_title(title=update_course.title)
+        course_with_title = self.course_repo.select_by_title(title=update_course.title)
        
-        if len(courses_with_title) == 2 or courses_with_title[0].course_id != course_id:
+        if course_with_title:
            raise CourseAlreadyExistsException(title=update_course.title)
         
         self.course_repo.update(course_id=course.course_id, update_course=update_course)

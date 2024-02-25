@@ -22,12 +22,12 @@ class ActivityService:
 
 
     def insert(self, args: dict):
-        new_activity = Activity(type=args['type'], date=args['date'], activity_location=args['activity_location'])
+        new_activity = Activity(type=args['type'], date=args['date'], activity_location=args['activity_location'], activity_name=args['activity_name'])
         self.activity_repo.insert(new_activity=new_activity)
     
 
     def update(self, activity_id: int, args: dict):
-        update_activity = Activity(type=args['type'], date=args['date'], activity_location=args['activity_location'])
+        update_activity = Activity(type=args['type'], date=args['date'], activity_location=args['activity_location'], activity_name=args['activity_name'])
         activity = self.activity_repo.select_one_by_id(activity_id=activity_id)
         
         if not activity:

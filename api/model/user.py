@@ -10,6 +10,7 @@ class User(db.Model):
     email = db.Column(db.String(320), unique=True)
     phone = db.Column(db.String(50))
     password = db.Column(db.String(64))
+    status = db.Column(db.Integer) # 0 = waiting, 1 = valided
 
     role = db.relationship('Role', secondary='user_is_role', back_populates='user')
     activity = db.relationship('Activity', secondary='user_participates_activity', back_populates='user')
@@ -27,7 +28,7 @@ class User(db.Model):
             courses = [course.json_rest() for course in self.course]
          
             
-        return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'role': roles, 'activity': activities, 'course': courses} 
+        return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'status': self.status, 'role': roles, 'activity': activities, 'course': courses} 
     
 
     def json_rest(self):

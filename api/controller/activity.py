@@ -9,11 +9,12 @@ class ActivityCheckArgs:
                 'location': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,100}\b' # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 100 caractères.
             }
     
-    def get_user_args(self) -> dict:
+    def get_activity_args(self) -> dict:
         parser = reqparse.RequestParser()
         parser.add_argument('type', type=str, required=True, help="Invalid or missing parameter 'type'")
+        parser.add_argument('activity_name', type=str, required=True, help="Invalid or missing parameter 'activity_name'")
         parser.add_argument('date', type=inputs.regex(self.pattern['date']), required=True, help="Invalid or missing parameter 'date'")
-        parser.add_argument('activity_location', type=inputs.regex(self.pattern['activity_location']), required=True, help="Invalid or missing parameter 'activity_location'")
+        parser.add_argument('activity_location', type=inputs.regex(self.pattern['location']), required=True, help="Invalid or missing parameter 'activity_location'")
         args = parser.parse_args(strict=True)
         return args
 
@@ -78,6 +79,6 @@ class ActivityListController(Resource):
         try:
             args = self.check_args.get_activity_args()
             self.activity_service.insert(args=args)
-            return jsonify({'message': f"Activity '{args['id']}' successfully created."})
+            return jsonify({'message': f"Activity '{args['activity_name']}' successfully created."})
         except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e))

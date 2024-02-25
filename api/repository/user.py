@@ -122,8 +122,8 @@ class UserRepo():
                 user.last_name = update_user.last_name
                 user.email = update_user.email
                 user.phone = update_user.phone
-                user.role = update_user.role
                 user.password = hash_password(update_user.password)
+                user.status = update_user.status
                 db.session.commit()
                 db.session.close()
         except Exception:

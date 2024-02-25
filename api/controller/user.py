@@ -24,8 +24,9 @@ class UserCheckArgs:
         parser.add_argument('last_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter 'last name'")
         parser.add_argument('email', type=inputs.regex(self.pattern['email']), required=True, help="Invalid or missing parameter 'email'")
         parser.add_argument('phone', type=inputs.regex(self.pattern['phone']), required=True, help="Invalid or missing parameter 'phone'")
-        parser.add_argument('role_id', type=int, required=True, help="Invalid or missing parameter 'role'")
+        parser.add_argument('role_id', type=int, help="Invalid or missing parameter 'role'") # Required = True for post
         parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=True, help="Invalid or missing parameter 'password'")
+        parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'")
         args = parser.parse_args(strict=True)
         return args
     

@@ -7,7 +7,7 @@ class CourseRepo:
 
     def select_one_by_title(self, title: str) -> Course:
         try:
-            course = Course.query.filter_by(course=course).first()
+            course = Course.query.filter_by(title=title).first()
             return course
         except Exception:
             raise CourseAccessDbException(course_id=None, method="getting")
