@@ -22,6 +22,25 @@ class UserAlreadyExistsException(Exception):
         return f"User with email '{self.email}' already exists."
     
 
+class UserFollowsCourseAlreadyExistsException(Exception):
+    def __init__(self, user_id: int, course_id: int) -> None:
+        self.user_id = user_id
+        self.course_id = course_id
+
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' already follows course id '{self.activity_id}'."
+
+
+
+class UserParticipatesActivityAlreadyExistsException(Exception):
+    def __init__(self, user_id: int, activity_id: int) -> None:
+        self.user_id = user_id
+        self.activity_id = activity_id
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' participates activity id '{self.activity_id}' already exists."
+    
+
+
 class UserAccessDbException(Exception):
     def __init__(self, user_id: int, method: str) -> None:
         self.user_id = user_id

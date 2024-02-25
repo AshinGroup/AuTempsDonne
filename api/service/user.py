@@ -1,11 +1,14 @@
 from model.user import User
 from repository.user import UserRepo
 from exception.user import UserEmailNotFoundException, UserIdNotFoundException, UserAlreadyExistsException
+from exception.role import RoleIdNotFoundException
+from service.role import RoleService
 
 class UserService:
 
     def __init__(self) -> None:
         self.user_repo = UserRepo()
+        self.role_service = RoleService()
 
 
     def select_one_by_id(self, user_id: int):
@@ -30,15 +33,17 @@ class UserService:
 
 
     def insert(self, args: dict):
-        new_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], role=args['role'], password=args['password']) 
+        new_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], password=args['password']) 
         if self.user_repo.select_one_by_email(email=new_user.email):
             raise UserAlreadyExistsException(new_user.email)
-        else:
-            self.user_repo.insert(new_user=new_user)
+        if not self.role_service.select_one_by_id(args['role_id']):
+            raise RoleIdNotFoundException
+
+        self.user_repo.insert(new_user=new_user, role_id=args['role_id'])
     
 
     def update(self, user_id: int, args: dict):
-        update_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], role=args['role'], password=args['password']) 
+        update_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], password=args['password']) 
         user = self.user_repo.select_one_by_id(user_id=user_id)
         
         if not user:

@@ -1,11 +1,14 @@
 from model.user import User
+from model.course import Course
+from model.activity import Activity
+from model.role import Role
 from database.db import db
 from app import app
 from exception.user import UserAccessDbException
 from function.hash import hash_password
 
-class UserRepo():
 
+class UserRepo():
     def select_one_by_email(self, email: str) -> User:
         try:
             user = User.query.filter_by(email=email).first()
@@ -40,15 +43,38 @@ class UserRepo():
             raise UserAccessDbException(user_id=None, method="getting")
 
 
-    def insert(self, new_user: User) -> None:
+    def select_all_activities(self, user: User) -> list[Activity]:
+        try:
+            user_activities = user.activity
+            if not user_activities:
+                return None
+            return user_activities
+        except Exception:
+            raise UserAccessDbException(user_id=user.user_id, method="getting")
+        
+    
+    def select_all_courses(self, user: User) -> list[Course]:
+        try:
+            user_courses = user.course
+            if not user_courses:
+                return None
+            return user_courses
+        except Exception:
+            raise UserAccessDbException(user_id=user.user_id, method="getting")
+
+
+    def insert(self, new_user: User, role_id: int) -> None:
         try:
             with app.app_context():
                 new_user.password = hash_password(new_user.password)
                 db.session.add(new_user)
+                user_role = Role.query.filter_by(role_id=role_id).first()
+                new_user.role.append(user_role)
                 db.session.commit()
                 db.session.close()
         except Exception:
             raise UserAccessDbException(user_id=None, method="creating")
+        
     
 
     def update(self, user_id: int, update_user: User) -> None:

@@ -3,7 +3,7 @@ from database.db import db
 from app import app
 from exception.course import CourseAccessDbException
 
-class CourseRepo():
+class CourseRepo:
 
     def select_one_by_title(self, title: str) -> Course:
         try:

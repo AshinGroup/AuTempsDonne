@@ -43,7 +43,7 @@ class ActivityController(Resource):
         try:
             args = self.check_args.get_activity_args()
             self.activity_service.update(activity_id=activity_id, args=args)
-            return f"Activity '{activity_id}' successfully updated."
+            return jsonify(f"Activity '{activity_id}' successfully updated.")
         except ActivityIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except ActivityAccessDbException as e:
@@ -53,7 +53,7 @@ class ActivityController(Resource):
     def delete(self, activity_id: int):
         try:
             self.activity_service.delete(activity_id=activity_id)
-            return f"Activity '{activity_id}' successfully deleted."
+            return jsonify(f"Activity '{activity_id}' successfully deleted.")
         except ActivityIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except ActivityAccessDbException as e:
@@ -73,7 +73,7 @@ class ActivityListController(Resource):
             if activities:
                 return jsonify([activity.json() for activity in activities])
             else:
-                return "None activities."
+                return jsonify("None activities.")
         except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
@@ -82,6 +82,6 @@ class ActivityListController(Resource):
         try:
             args = self.check_args.get_activity_args()
             self.activity_service.insert(args=args)
-            return f"Activity '{args['id']}' successfully created."
+            return jsonify(f"Activity '{args['id']}' successfully created.")
         except ActivityAccessDbException as e:
             abort(http_status_code=500, message=str(e))

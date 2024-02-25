@@ -10,8 +10,8 @@ class CourseCheckArgs:
     
     def get_user_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('title', type=inputs.regex(self.pattern['title']), required=True, help="Invalid or missing parameter title")
-        parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter description")
+        parser.add_argument('title', type=inputs.regex(self.pattern['title']), required=True, help="Invalid or missing parameter 'title'")
+        parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'")
         args = parser.parse_args(strict=True)
         return args
 
@@ -37,7 +37,7 @@ class CourseController(Resource):
         try:
             args = self.check_args.get_course_args()
             self.course_service.update(course_id=course_id, args=args)
-            return f"Course '{course_id}' successfully updated."
+            return jsonify(f"Course '{course_id}' successfully updated.")
         except CourseIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except CourseAlreadyExistsException as e:
@@ -49,7 +49,7 @@ class CourseController(Resource):
     def delete(self, course_id: int):
         try:
             self.course_service.delete(course_id=course_id)
-            return f"Course '{course_id}' successfully deleted."
+            return jsonify(f"Course '{course_id}' successfully deleted.")
         except CourseIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except CourseAccessDbException as e:
@@ -69,7 +69,7 @@ class CourseListController(Resource):
             if courses:
                 return jsonify([course.json() for course in courses])
             else:
-                return "None courses."
+                return jsonify("None courses.")
         except CourseAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
@@ -78,7 +78,7 @@ class CourseListController(Resource):
         try:
             args = self.check_args.get_course_args()
             self.course_service.insert(args=args)
-            return f"Course '{args['title']}' successfully created."
+            return jsonify(f"Course '{args['title']}' successfully created.")
         except CourseAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
         except CourseAccessDbException as e:

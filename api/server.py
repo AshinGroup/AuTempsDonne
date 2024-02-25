@@ -9,13 +9,13 @@ from database.db import db, create_database
 from controller.user import UserController, UserListController
 from controller.activity import ActivityController, ActivityListController
 from controller.course import CourseController, CourseListController
+from controller.role import RoleController, RoleListController
 
 # Import Models
 from model.user import User
 from model.activity import Activity
 from model.course import Course
-from model.user_follows_course import user_follows_course
-from model.user_participates_activity import user_participates_activity
+from model.role import Role
 
 from app import app
 
@@ -28,6 +28,8 @@ api.add_resource(ActivityListController, '/activity')
 api.add_resource(ActivityController, '/activity/<int:activity_id>')
 api.add_resource(CourseListController, '/course')
 api.add_resource(CourseController, '/course/<int:course_id>')
+api.add_resource(RoleListController, '/role')
+api.add_resource(RoleController, '/role/<int:role_id>')
 
 
 
@@ -36,5 +38,6 @@ if __name__ == "__main__":
     create_database()
     db.init_app(app)
     with app.app_context():
+        # db.drop_all()
         db.create_all()
     app.run(debug=True)

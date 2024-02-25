@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.user import UserService
 from exception.user import UserEmailNotFoundException, UserIdNotFoundException, UserAlreadyExistsException, UserAccessDbException
+from exception.role import RoleIdNotFoundException
 from flask import jsonify
 
 
@@ -10,19 +11,17 @@ class UserCheckArgs:
                 'email' : '([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+', # Validates standard email addresses.
                 'password': r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:,<.>/?]).{8,}$'}
     
-    roles = ['volunteer', 'beneficiary', 'admin']
+    
     
     def get_user_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('first_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter first name")
-        parser.add_argument('last_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter last name")
-        parser.add_argument('email', type=inputs.regex(self.pattern['email']), required=True, help="Invalid or missing parameter email")
-        parser.add_argument('phone', type=inputs.regex(self.pattern['phone']), required=True, help="Invalid or missing parameter phone")
-        parser.add_argument('role', type=str, required=True, help="Invalid or missing parameter role")
-        parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=True, help="Invalid or missing parameter password")
+        parser.add_argument('first_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter 'first name'")
+        parser.add_argument('last_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter 'last name'")
+        parser.add_argument('email', type=inputs.regex(self.pattern['email']), required=True, help="Invalid or missing parameter 'email'")
+        parser.add_argument('phone', type=inputs.regex(self.pattern['phone']), required=True, help="Invalid or missing parameter 'phone'")
+        parser.add_argument('role_id', type=int, required=True, help="Invalid or missing parameter 'role'")
+        parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=True, help="Invalid or missing parameter 'password'")
         args = parser.parse_args(strict=True)
-        if not args['role'] in self.roles:
-            abort(400, message=f"Invalide parameter role : \'{args['role']}\' doesn\'t exist.")
         return args
     
 
@@ -47,11 +46,13 @@ class UserController(Resource):
         try:
             args = self.check_args.get_user_args()
             self.user_service.update(user_id=user_id, args=args)
-            return f"User '{user_id}' successfully updated."
-        except UserEmailNotFoundException as e:
+            return jsonify(f"User '{user_id}' successfully updated.")
+        except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
+        except RoleIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
@@ -59,8 +60,8 @@ class UserController(Resource):
     def delete(self, user_id: int):
         try:
             self.user_service.delete(user_id=user_id)
-            return f"User '{user_id}' successfully deleted."
-        except UserEmailNotFoundException as e:
+            return jsonify(f"User '{user_id}' successfully deleted.")
+        except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e)) 
@@ -79,7 +80,7 @@ class UserListController(Resource):
             if users:
                 return jsonify([user.json() for user in users])
             else:
-                return "None users."
+                return jsonify("None users.")
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
@@ -88,9 +89,11 @@ class UserListController(Resource):
         try:
             args = self.check_args.get_user_args()
             self.user_service.insert(args=args)
-            return f"User '{args['email']}' successfully created."
+            return jsonify(f"User '{args['email']}' successfully created.")
         except UserAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
+        except RoleIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         

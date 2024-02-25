@@ -8,5 +8,13 @@ class Activity(db.Model):
     date = db.Column(db.DateTime)
     activity_location = db.Column(db.Text)
 
+    user = db.relationship('User', secondary='user_participates_activity', back_populates='activity')
+
     def json(self):
-        return {'activity_id': self.activity_id, 'type': self.type, 'date': date, 'activity_location' : self.activity_location}
+        return {'activity_id': self.activity_id, 'type': self.type, 'date': self.date, 'activity_location' : self.activity_location}
+
+
+user_participates_activity = db.Table('user_participates_activity', db.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), primary_key=True),                                  
+    db.Column('activity_id', db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
+)
