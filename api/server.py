@@ -7,6 +7,9 @@ from database.db import db, create_database
 
 # Import Controllers
 from controller.user import UserController, UserListController
+from controller.user import UserParticipatesActivityController
+from controller.user import UserFollowsCourseController
+from controller.user import UserIsRoleController
 from controller.activity import ActivityController, ActivityListController
 from controller.course import CourseController, CourseListController
 from controller.role import RoleController, RoleListController
@@ -24,12 +27,16 @@ from app import app
 api = Api(app)
 api.add_resource(UserListController, '/user')
 api.add_resource(UserController, '/user/<int:user_id>')
+api.add_resource(UserIsRoleController, '/user/<int:user_id>/role/<int:role_id>')
+api.add_resource(UserParticipatesActivityController, '/user/<int:user_id>/activity/<int:activity_id>')
+api.add_resource(UserFollowsCourseController, '/user/<int:user_id>/course/<int:course_id>')
 api.add_resource(ActivityListController, '/activity')
 api.add_resource(ActivityController, '/activity/<int:activity_id>')
 api.add_resource(CourseListController, '/course')
 api.add_resource(CourseController, '/course/<int:course_id>')
 api.add_resource(RoleListController, '/role')
 api.add_resource(RoleController, '/role/<int:role_id>')
+
 
 
 

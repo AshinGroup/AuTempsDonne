@@ -1,7 +1,12 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.user import UserService
-from exception.user import UserEmailNotFoundException, UserIdNotFoundException, UserAlreadyExistsException, UserAccessDbException
-from exception.role import RoleIdNotFoundException
+from exception.user import UserAccessDbException
+from exception.user import UserFollowsCourseAlreadyExistsException, UserParticipatesActivityAlreadyExistsException, UserIsRoleAlreadyExistsException
+from exception.user import UserEmailNotFoundException, UserIdNotFoundException, UserAlreadyExistsException
+from exception.user import UserFollowsCourseNotFoundException, UserParticipatesActivityNotFoundException, UserIsRoleNotFoundException
+from exception.activity import ActivityIdNotFoundException, ActivityAccessDbException
+from exception.course import CourseIdNotFoundException, CourseAccessDbException
+from exception.role import RoleIdNotFoundException, RoleAccessDbException
 from flask import jsonify
 
 
@@ -98,6 +103,104 @@ class UserListController(Resource):
             abort(http_status_code=500, message=str(e))
         
         
-       
-      
-    
+
+        
+class UserParticipatesActivityController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
+
+    def post(self, user_id: int, activity_id: int) -> None:
+        try:
+            self.user_service.insert_activity(user_id=user_id, activity_id=activity_id)
+            return jsonify(f"User id '{user_id}' successfully participates activity id '{activity_id}'.")
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except ActivityIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserParticipatesActivityAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except ActivityAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        
+
+    def delete(self, user_id: int, activity_id: int) -> None:
+        try: 
+            self.user_service.delete_activity(user_id=user_id, activity_id=activity_id)
+            return jsonify(f"User id '{user_id}' successfully leave activity id '{activity_id}'.")
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserParticipatesActivityNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+class UserIsRoleController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService() 
+
+
+    def post(self, user_id: int, role_id: int) -> None:
+        try:
+            self.user_service.insert_role(user_id=user_id, role_id=role_id)
+            return jsonify(f"User id '{user_id}' successfully added role id '{role_id}'.")
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except RoleIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserParticipatesActivityAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except RoleAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+    def delete(self, user_id: int, role_id: int) -> None:
+        try: 
+            self.user_service.delete_role(user_id=user_id, role_id=role_id)
+            return jsonify(f"User id '{user_id}' successfully remove role id '{role_id}'.")
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserIsRoleNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+
+class UserFollowsCourseController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
+
+    def post(self, user_id: int, course_id: int) -> None:
+        try:
+            self.user_service.insert_course(user_id=user_id, course_id=course_id)
+            return jsonify(f"User id '{user_id}' successfully follows course id '{course_id}'.")
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except CourseIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserParticipatesActivityAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except CourseAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+    def delete(self, user_id: int, course_id: int) -> None:
+        try: 
+            self.user_service.delete_course(user_id=user_id, course_id=course_id)
+            return jsonify(f"User id '{user_id}' successfully unfollow course id '{course_id}'.")
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserFollowsCourseNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+

@@ -1,4 +1,4 @@
-class RoleTitleNotFoundException(Exception):
+class RoleNameNotFoundException(Exception):
     def __init__(self, role_name: str) -> None:
         self.role_name = role_name
 

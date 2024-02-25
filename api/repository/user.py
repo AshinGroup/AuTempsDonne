@@ -24,13 +24,14 @@ class UserRepo():
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="getting")
         
-    
+ 
     def select_by_email(self, email: str) -> User:
         try:
             users = User.query.filter_by(email=email).all()
             return users
         except Exception:
             raise UserAccessDbException(user_id=None, method="getting")
+    
 
     
     def select_all(self) -> list[User]:
@@ -76,6 +77,42 @@ class UserRepo():
             raise UserAccessDbException(user_id=None, method="creating")
         
     
+    def insert_activity(self, user_id: int, activity_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(user_id=user_id).first()
+                activity = Activity.query.filter_by(activity_id=activity_id).first()
+                user.activity.append(activity)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="inserting")
+        
+
+    def insert_role(self, user_id: int, role_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(user_id=user_id).first()
+                role = Role.query.filter_by(role_id=role_id).first()
+                user.role.append(role)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="inserting")     
+        
+    
+    def insert_course(self, user_id: int, course_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(user_id=user_id).first()
+                course = Course.query.filter_by(course_id=course_id).first()
+                user.course.append(course)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="inserting")
+
+
 
     def update(self, user_id: int, update_user: User) -> None:
         try:
@@ -95,16 +132,50 @@ class UserRepo():
 
     def delete(self, user_id: int) -> None:
         try:
-            user = User.query.filter_by(user_id=user_id).first()
             with app.app_context():
+                user = User.query.filter_by(user_id=user_id).first()
                 db.session.delete(user)
                 db.session.commit()
                 db.session.close()
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="deleting")
 
-                    
-                   
+
+    def delete_activity(self, user_id: int, activity_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(user_id=user_id).first()
+                activity = Activity.query.filter_by(activity_id=activity_id).first()
+                user.activity.remove(activity)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="deleting") 
+            
+
+    def delete_course(self, user_id: int, course_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(user_id=user_id).first()
+                course = Course.query.filter_by(course_id=course_id).first()
+                user.course.remove(course)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="deleting") 
+
+
+    def delete_role(self, user_id: int, role_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(user_id=user_id).first()
+                role = Role.query.filter_by(role_id=role_id).first()
+                user.role.remove(role)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="deleting") 
+            
          
             
         

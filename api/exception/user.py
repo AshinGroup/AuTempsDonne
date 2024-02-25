@@ -40,6 +40,42 @@ class UserParticipatesActivityAlreadyExistsException(Exception):
         return f"User id '{self.user_id}' participates activity id '{self.activity_id}' already exists."
     
 
+class UserIsRoleAlreadyExistsException(Exception):
+    def __init__(self, user_id: int, role_id: int) -> None:
+        self.user_id = user_id
+        self.role_id = role_id
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' is role id '{self.role_id}' already exists."
+    
+
+class UserFollowsCourseNotFoundException(Exception):
+    def __init__(self, user_id: int, course_id: int) -> None:
+        self.user_id = user_id
+        self.course_id = course_id
+
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' follows course id '{self.course_id}' not found."
+
+
+
+class UserParticipatesActivityNotFoundException(Exception):
+    def __init__(self, user_id: int, activity_id: int) -> None:
+        self.user_id = user_id
+        self.activity_id = activity_id
+
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' participates activity id '{self.activity_id}' not found."
+
+
+class UserIsRoleNotFoundException(Exception):
+    def __init__(self, user_id: int, role_id: int) -> None:
+        self.user_id = user_id
+        self.role_id = role_id
+
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' is role id '{self.role_id}' not found."
+
+
 
 class UserAccessDbException(Exception):
     def __init__(self, user_id: int, method: str) -> None:
