@@ -35,6 +35,11 @@ class UserService:
             raise UserEmailNotFoundException(email=email)
         
 
+    def select_per_page(self, page: int) -> list[User]:
+        users = self.user_repo.select_per_page(page=page)
+        return users
+        
+
     def select_all(self) -> list[User]:
         users = self.user_repo.select_all()
         return users
@@ -45,9 +50,9 @@ class UserService:
         if self.user_repo.select_one_by_email(email=new_user.email):
             raise UserAlreadyExistsException(new_user.email)
         if not self.role_service.select_one_by_id(args['role_id']):
-            raise RoleIdNotFoundException
-        self.user_repo.insert(new_user=new_user, role_id=args['role_id'])
-
+            raise RoleIdNotFoundException(args['role_id'])
+        new_user_id = self.user_repo.insert(new_user=new_user, role_id=args['role_id'])
+        return new_user_id
     
     def insert_activity(self, user_id: int, activity_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)
@@ -56,7 +61,7 @@ class UserService:
         if user.activity:
             for activity in user.activity:
                 if activity.activity_id == activity_id:
-                    raise UserParticipatesActivityAlreadyExistsException
+                    raise UserParticipatesActivityAlreadyExistsException(user_id=user_id)
         if not self.activity_service.select_one_by_id(activity_id=activity_id):
             raise ActivityIdNotFoundException
         self.user_repo.insert_activity(user_id=user_id, activity_id=activity_id)
@@ -71,7 +76,7 @@ class UserService:
                 if course.course_id == course_id:
                     raise UserFollowsCourseAlreadyExistsException
         if not self.course_service.select_one_by_id(course_id=course_id):
-            raise CourseIdNotFoundException
+            raise CourseIdNotFoundException(course_id=course_id)
         self.user_repo.insert_course(user_id=user_id, course_id=course_id)
 
 
@@ -82,7 +87,7 @@ class UserService:
         if user.role:
             for role in user.role:
                 if role.role_id == role_id:
-                    raise UserIsRoleAlreadyExistsException
+                    raise UserIsRoleAlreadyExistsException(user_id=user_id, role_id=role_id)
         if not self.role_service.select_one_by_id(role_id=role_id):
             raise RoleIdNotFoundException
         self.user_repo.insert_role(user_id=user_id, role_id=role_id)

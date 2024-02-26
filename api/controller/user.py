@@ -94,12 +94,28 @@ class UserListController(Resource):
     def post(self):
         try:
             args = self.check_args.get_user_args()
-            self.user_service.insert(args=args)
-            return jsonify({'message': f"User '{args['email']}' successfully created."})
+            new_user_id = self.user_service.insert(args=args)
+            return jsonify({'message': f"User {args['email']} successfully created.", 'user_id': new_user_id})
         except UserAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
         except RoleIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+class UserPageController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+    
+
+    def get(self, page: int):
+        try:
+            users = self.user_service.select_per_page(page)
+            if users:
+                return jsonify({'max_pages': users['max_pages'], 'users': [user.json() for user in users['users']]})
+            else:
+                return jsonify({'message': "None users."})
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         

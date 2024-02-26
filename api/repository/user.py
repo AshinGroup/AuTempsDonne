@@ -33,7 +33,17 @@ class UserRepo():
             raise UserAccessDbException(user_id=None, method="getting")
     
 
+    def select_per_page(self, page: int) -> list[User]:
+        try:
+            users = User.query.paginate(page=page, per_page=10)
+            if not users:
+                return None
+            
+            return {'max_pages' : users.pages, 'users': users}
+        except Exception:
+            raise UserAccessDbException(user_id=None, method="getting")
     
+
     def select_all(self) -> list[User]:
         try:
             users = User.query.all()
@@ -64,15 +74,18 @@ class UserRepo():
             raise UserAccessDbException(user_id=user.user_id, method="getting")
 
 
-    def insert(self, new_user: User, role_id: int) -> None:
+    def insert(self, new_user: User, role_id: int) -> int:
         try:
             with app.app_context():
                 new_user.password = hash_password(new_user.password)
                 db.session.add(new_user)
                 user_role = Role.query.filter_by(role_id=role_id).first()
                 new_user.role.append(user_role)
+                db.session.flush()
+                new_user_id = new_user.user_id
                 db.session.commit()
                 db.session.close()
+                return new_user_id
         except Exception:
             raise UserAccessDbException(user_id=None, method="creating")
         
