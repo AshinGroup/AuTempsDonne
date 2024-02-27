@@ -362,7 +362,7 @@ export function UpdateUserModal({
       email: user.email,
       first_name: user.first_name,
       last_name: user.last_name,
-      tel: user.tel,
+      phone: user.phone,
     },
   });
 
@@ -418,15 +418,13 @@ export function UpdateUserModal({
   };
 
   const onPutSubmit = async (data) => {
-    const firstRoleId = selectedRoles[0];
-
     try {
       let response = await fetch(`http://localhost:5000/user/${user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...data, role_id: firstRoleId, status: status }),
+        body: JSON.stringify({ ...data, status: status }),
       });
 
       const req = await response.json();
@@ -438,7 +436,41 @@ export function UpdateUserModal({
         setResponseMessage(req.message);
         setIsErrorMessage(true);
       }
-      console.log("User updated successfully");
+      const userInitialRoles = user.role
+        .map((userRole) => userRole.role_id)
+
+        {selectedRoles.map((selectedRolesItem) => {
+            if(!userInitialRoles.includes(selectedRolesItem)){
+                // Add Roles
+                console.log("Add THIS ROLE : ", selectedRolesItem)
+                response = fetch(
+                  `http://localhost:5000/user/${user.id}/role/${selectedRolesItem}`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  }
+                );
+            }
+          })}
+
+          {userInitialRoles.map((userInitialRolesItem) => {
+            if(!selectedRoles.includes(userInitialRolesItem)){
+                // Remove Roles
+                console.log("Remove THIS ROLE : ", userInitialRolesItem)
+                response = fetch(
+                  `http://localhost:5000/user/${user.id}/role/${userInitialRolesItem}`,
+                  {
+                    method: "DELETE",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  }
+                );
+            }
+          })}
+
       fetchUsers();
     } catch (error) {
       console.error("An error occurred:", error);
