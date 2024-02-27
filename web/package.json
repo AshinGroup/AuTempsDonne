@@ -2,7 +2,7 @@
   "name": "web",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.jsx",
   "scripts": {
     "start": "webpack serve --open",
     "build": "webpack --mode production"
@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "lucide-react": "^0.338.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.50.1",
     "react-router-dom": "^6.22.1"
   },
   "devDependencies": {

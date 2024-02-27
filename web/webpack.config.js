@@ -3,20 +3,19 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development", // 'production'
-  entry: "./src/index.js",
+  entry: "./src/index.jsx",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
     publicPath: "/",
   },
-  devServer: {
-    historyApiFallback: true,
-    static: "./dist",
+  resolve: {
+    extensions: [".js", ".jsx", ".json"],
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js|\.jsx$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
