@@ -1,19 +1,29 @@
-from sqlalchemy import String, Column, ForeignKey, Table, Text
-from sqlalchemy.orm import Mapped, mapped_column
-from api.model.base import Base
+from database.db import db
+import os
 
-class Course(Base):
+class Course(db.Model):
     __tablename__ = "course"
     
-    course_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    title: Mapped[str] = mapped_column(String(30))
-    description: Mapped[str] = mapped_column(Text)
+    course_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(30), unique=True)
+    description = db.Column(db.Text)
 
+    user = db.relationship('User', secondary='user_follows_course', back_populates='course')
 
-follow_table = Table(
-    "user_follows_course",
-    Base.metadata,
-    Column("user_id", ForeignKey("user.user_id"), primary_key=True),
-    Column("course_id", ForeignKey("course.course_id"),  primary_key=True)
+    def json(self):
+        users = []
+        if self.user:
+            users = [user.json_rest() for user in self.user]
 
+        return {'course_id': self.course_id, 'title': self.title, 'description': self.description, 'users' : users}
+    
+
+    def json_rest(self):
+        return {'url': f"{os.getenv('API_PATH')}/course/{self.course_id}", 'course_id': self.course_id, 'title': self.title, 'description': self.description}
+    
+
+user_follows_course = db.Table('user_follows_course', db.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), primary_key=True),
+    db.Column('course_id', db.Integer, db.ForeignKey('course.course_id'), primary_key=True)
 )
+    

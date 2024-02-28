@@ -1,4 +1,5 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   ChevronsUpDown,
   Users2,
@@ -7,18 +8,22 @@ import {
   LogOut,
   User2,
 } from "lucide-react";
-import logo from "../resources/logo.png";
+import atd_logo_ from "../resources/atd_logo_.png";
+import atd_logo_typo from "../resources/atd_logo_typo.png";
 
 const SidebarContext = createContext();
 
 export default function Sidebar({ activeItem, setActiveItem }) {
-  const [expanded, setExpanded] = useState(() => window.innerWidth > 740);
+  const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Function to handle window resize
   useEffect(() => {
     const handleResize = () => {
-      setExpanded(window.innerWidth > 740);
+      setExpanded(window.innerWidth > 980);
+      if (window.innerWidth < 980) {
+        setDropdownOpen(true);
+      }
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -37,14 +42,20 @@ export default function Sidebar({ activeItem, setActiveItem }) {
   return (
     <aside className="h-screen">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
-        <div className="p-4 pb-2 flex justify-between items-center">
-          <img
-            src="https://img.logoipsum.com/285.svg"
-            className={`overflow-hidden transition-all mx-3 ${
-              expanded ? "w-36" : "w-0"
-            }`}
-            alt="Logo"
-          />
+        <div className="p-4 pb-2 relative flex justify-between items-center">
+          {
+            <Link to="/">
+              {!expanded ? (
+                <img src={atd_logo_} alt="ATD Logo" className="w-10" />
+              ) : (
+                <img
+                  src={atd_logo_typo}
+                  alt="ATD Logo Typo"
+                  className="max-w-64"
+                />
+              )}
+            </Link>
+          }
         </div>
 
         <SidebarContext.Provider value={{ expanded }}>

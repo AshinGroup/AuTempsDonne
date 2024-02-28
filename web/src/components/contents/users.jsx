@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Settings, Trash2, UserCheck2, UserRoundX } from "lucide-react";
-import { DeleteModal, AddUserModal, UpdateUserModal } from "../modals";
+import {
+  Settings,
+  Trash2,
+  UserCheck2,
+  UserRoundX,
+  CalendarDays,
+} from "lucide-react";
+import {
+  DeleteModal,
+  AddUserModal,
+  UpdateUserModal,
+  PlanningUserModal,
+} from "../modals";
 
 const Users = () => {
   // Display the users and Pagination
@@ -9,10 +20,13 @@ const Users = () => {
   const [maxPages, setMaxPages] = useState(0);
   const pageNumbers = [];
   const pagesToShow = 2;
+  const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   // Handle all the modals
   const [slectedUserIdForDelete, setSelectedUserIdForDelete] = useState(null);
   const [AddModalOpen, AddModalSetOpen] = useState(false);
   const [selectedUserIdForUpdate, setSelectedUserIdForUpdate] = useState(null);
+  const [selectedUserIdForPlanning, setSelectedUserIdForPlanning] =
+    useState(null);
 
   // Fetch the users from the API
   const fetchUsers = () => {
@@ -64,10 +78,24 @@ const Users = () => {
     setSelectedUserIdForUpdate(userId);
   };
 
+  // Set the user id to update
+  const handlePlanningClick = (userId) => {
+    setSelectedUserIdForPlanning(userId);
+  };
+
   // Fetch the users when we change Page
   useEffect(() => {
     fetchUsers();
   }, [currentPage]);
+
+  // Function to handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setExpanded(window.innerWidth > 740);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  });
 
   // Array of pagination [1,2,3,...,maxPages]
   let startPage = Math.max(currentPage - pagesToShow, 1);
@@ -85,11 +113,19 @@ const Users = () => {
   }
 
   return (
-    <div className="h-screen p-8 pt-8 mx-8">
+    <div className={`h-screen p-8 pt-8 ${expanded ? "mx-6" : "mx-1"}`}>
       <div className="flex mb-6 items-center">
-        <h1 className="text-3xl font-bold flex-grow">Users Management</h1>
+        <h1
+          className={`${
+            expanded ? "text-3xl" : "text-2xl"
+          } font-bold flex-grow`}
+        >
+          Users Management
+        </h1>
         <button
-          className="text-base bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 py-3 rounded transition hover:opacity-90 text-sm"
+          className={`text-base bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 ${
+            expanded ? "py-3" : "py-2"
+          } rounded transition hover:opacity-90 text-sm`}
           onClick={() => {
             AddModalSetOpen(true);
           }}
@@ -119,7 +155,9 @@ const Users = () => {
         <table className="w-full text-left">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-4 w-1/4 max-w-xs">Email</th> <th>Name</th>
+              {expanded && <th className="p-4 w-2/6 max-w-xs">Email</th>}{" "}
+              {expanded && <th>Name</th>}
+              {!expanded && <th className="p-4 w-2/5 max-w-xs">User</th>}
               <th>Roles</th>
               <th>Status</th>
               <th>Actions</th>
@@ -129,15 +167,30 @@ const Users = () => {
             {/* For each user ... */}
             {users.map((user) => (
               <tr key={user.id} className="border-b">
-                <td className="p-4 w-1/3 max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
-                  {user.email}
-                </td>{" "}
-                <td className="w-1/5">
-                  {user.first_name} {user.last_name}
-                </td>
-                <td className="w-1/6">
+                {/* email & name */}
+                {expanded && (
+                  <td className="p-4 w-1/3 max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
+                    {user.email}
+                  </td>
+                )}{" "}
+                {expanded && (
+                  <td className="w-1/5">
+                    {user.first_name} {user.last_name}
+                  </td>
+                )}
+                {!expanded && (
+                  <td className="flex flex-col py-4">
+                    <span className="text-sm font-normal">{user.email}</span>
+                    <span className="text-sm font-light text-gray-400">
+                      {user.first_name} {user.last_name}
+                    </span>
+                  </td>
+                )}
+                {/* roles */}
+                <td className={`w-1/6 ${!expanded ? "text-sm" : ""}`}>
                   {user.role.map((role) => role.role_name).join(", ")}
                 </td>
+                {/* status */}
                 <td className="py-4">
                   {user.status === 0 ? (
                     <UserRoundX
@@ -155,11 +208,30 @@ const Users = () => {
                     </>
                   )}
                 </td>
+                {/* actions */}
                 <td>
                   {user.status != null && (
                     <>
                       <button
-                        className="text-blue-600 hover:text-blue-800 mr-4"
+                        className="text-blue-600 hover:text-blue-800 mr-2"
+                        onClick={() => handlePlanningClick(user.id)}
+                      >
+                        {<CalendarDays size={20} />}
+                      </button>
+                      {selectedUserIdForPlanning === user.id && (
+                        <PlanningUserModal
+                          PlanningModalOpen={
+                            selectedUserIdForPlanning === user.id
+                          }
+                          PlanningModalSetOpen={() =>
+                            setSelectedUserIdForPlanning(null)
+                          }
+                          user={user}
+                          expanded={expanded}
+                        />
+                      )}
+                      <button
+                        className="text-blue-600 hover:text-blue-800 mr-2"
                         onClick={() => handleUpdateClick(user.id)}
                       >
                         {<Settings size={20} />}
@@ -175,7 +247,7 @@ const Users = () => {
                         />
                       )}
                       <button
-                        className="text-red-600 hover:text-red-800"
+                        className="text-red-600 hover:text-red-800 mr-2"
                         onClick={() => handleDeleteClick(user.id)}
                       >
                         {<Trash2 size={20} />}
