@@ -18,14 +18,15 @@ class UserCheckArgs:
     
     
     
-    def get_user_args(self) -> dict:
+    def get_user_args(self, method: str) -> dict:
         parser = reqparse.RequestParser()
         parser.add_argument('first_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter 'first name'")
         parser.add_argument('last_name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter 'last name'")
         parser.add_argument('email', type=inputs.regex(self.pattern['email']), required=True, help="Invalid or missing parameter 'email'")
         parser.add_argument('phone', type=inputs.regex(self.pattern['phone']), required=True, help="Invalid or missing parameter 'phone'")
-        parser.add_argument('role_id', type=int, help="Invalid or missing parameter 'role'") # Required = True for post
-        parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=True, help="Invalid or missing parameter 'password'")
+        if method == "post":    
+            parser.add_argument('role_id', type=int, required=True, help="Invalid or missing parameter 'role'") # Required = True for post
+        parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=(True if method == "post" else False), help="Invalid or missing parameter 'password'")
         parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'")
         args = parser.parse_args(strict=True)
         return args
@@ -50,7 +51,7 @@ class UserController(Resource):
 
     def put(self, user_id: int):
         try:
-            args = self.check_args.get_user_args()
+            args = self.check_args.get_user_args(method="put")
             self.user_service.update(user_id=user_id, args=args)
             return jsonify({'message': f"User '{user_id}' successfully updated."})
         except UserIdNotFoundException as e:
@@ -93,7 +94,7 @@ class UserListController(Resource):
 
     def post(self):
         try:
-            args = self.check_args.get_user_args()
+            args = self.check_args.get_user_args(method="post")
             new_user_id = self.user_service.insert(args=args)
             return jsonify({'message': f"User {args['email']} successfully created.", 'user_id': new_user_id})
         except UserAlreadyExistsException as e:

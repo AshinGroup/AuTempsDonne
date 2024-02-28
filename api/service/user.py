@@ -94,9 +94,8 @@ class UserService:
              
             
     def update(self, user_id: int, args: dict) -> None:
-        update_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], password=args['password'], status=args['status']) 
+        update_user = User(first_name=args['first_name'], last_name=args['last_name'], email=args['email'], phone=args['phone'], password= args['password'] if args['password'] else None, status=args['status']) 
         user = self.user_repo.select_one_by_id(user_id=user_id)
-        
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
         
