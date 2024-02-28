@@ -10,7 +10,7 @@ from controller.user import UserController, UserListController
 from controller.user import UserParticipatesActivityController
 from controller.user import UserFollowsCourseController
 from controller.user import UserIsRoleController
-from controller.user import UserPageController
+from controller.user import UserPageController, UserSearchController
 from controller.activity import ActivityController, ActivityListController
 from controller.course import CourseController, CourseListController
 from controller.role import RoleController, RoleListController
@@ -29,6 +29,7 @@ from app import app
 api = Api(app)
 api.add_resource(UserListController, '/user')
 api.add_resource(UserPageController, '/user/page/<int:page>')
+api.add_resource(UserSearchController, '/user/page/<int:page>/search/<string:search>')
 api.add_resource(UserController, '/user/<int:user_id>')
 api.add_resource(UserIsRoleController, '/user/<int:user_id>/role/<int:role_id>')
 api.add_resource(UserParticipatesActivityController, '/user/<int:user_id>/activity/<int:activity_id>')

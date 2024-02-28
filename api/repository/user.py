@@ -42,6 +42,17 @@ class UserRepo():
             return {'max_pages' : users.pages, 'users': users}
         except Exception:
             raise UserAccessDbException(user_id=None, method="getting")
+
+    def select_by_search(self, page: int, search: str) -> list[User]:
+        try:
+            users = User.query.filter(User.first_name.like(f'%{search}%') | User.last_name.like(f'%{search}%') |  User.email.like(f'%{search}%')).paginate(page=page, per_page=10)
+            if not users:
+                return None
+            
+            return {'max_pages' : users.pages, 'users': users}
+        except Exception:
+            raise UserAccessDbException(user_id=None, method="getting")
+    
     
 
     def select_all(self) -> list[User]:

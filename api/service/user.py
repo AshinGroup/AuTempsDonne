@@ -38,6 +38,11 @@ class UserService:
     def select_per_page(self, page: int) -> list[User]:
         users = self.user_repo.select_per_page(page=page)
         return users
+
+    def select_by_search(self, page: int, search: str) -> list[User]:
+        users = self.user_repo.select_by_search(page=page, search=search)
+        return users
+        
         
 
     def select_all(self) -> list[User]:

@@ -112,7 +112,7 @@ class UserPageController(Resource):
 
     def get(self, page: int):
         try:
-            users = self.user_service.select_per_page(page)
+            users = self.user_service.select_per_page(page=page)
             if users:
                 return jsonify({'max_pages': users['max_pages'], 'users': [user.json() for user in users['users']]})
             else:
@@ -120,6 +120,20 @@ class UserPageController(Resource):
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
+        
+class UserSearchController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
+    def get(self, page: int, search: str):
+        try:
+            users = self.user_service.select_by_search(page=page, search=search)
+            if users:
+                return jsonify({'max_pages': users['max_pages'], 'users': [user.json() for user in users['users']]})
+            else:
+                return jsonify({'message': "None users."})
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
         
 
         
