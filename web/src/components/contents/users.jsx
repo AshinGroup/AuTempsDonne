@@ -21,6 +21,8 @@ const Users = () => {
   const pageNumbers = [];
   const pagesToShow = 2;
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
+  const [searchInput, setSearchInput] = useState("");
+
   // Handle all the modals
   const [slectedUserIdForDelete, setSelectedUserIdForDelete] = useState(null);
   const [AddModalOpen, AddModalSetOpen] = useState(false);
@@ -30,7 +32,8 @@ const Users = () => {
 
   // Fetch the users from the API
   const fetchUsers = () => {
-    fetch(`http://127.0.0.1:5000/user/page/${currentPage}`)
+    let url = searchInput!="" ? `http://127.0.0.1:5000/user/page/${currentPage}/search/${searchInput}` : `http://127.0.0.1:5000/user/page/${currentPage}`
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setUsers(data.users);
@@ -82,6 +85,19 @@ const Users = () => {
   const handlePlanningClick = (userId) => {
     setSelectedUserIdForPlanning(userId);
   };
+
+const handleSearch = (e) => {
+  e.preventDefault();
+  setSearchInput(e.target.value);
+  if(e.keyCode == 13){
+    fetchUsers
+  }
+};
+
+const handleClickSearch  = (e) => {
+  if(e.type == "click" || e.keyCode == 13)
+  fetchUsers();
+};
 
   // Fetch the users when we change Page
   useEffect(() => {
@@ -144,8 +160,12 @@ const Users = () => {
           type="text"
           placeholder="Search by email or name..."
           className="p-2 border border-gray-300 rounded flex-grow focus:outline-none focus:border-AshinBlue transition"
+          onChange={handleSearch}
+          onKeyDown={handleClickSearch}
+          value={searchInput}
         />
-        <button className="bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 py-2 rounded hover:opacity-90 transition self-end">
+        <button className="bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 py-2 rounded hover:opacity-90 transition self-end"
+        onClick={handleClickSearch}>
           Search
         </button>
       </div>

@@ -427,6 +427,12 @@ export function UpdateUserModal({
 
   const onPutSubmit = async (data) => {
     try {
+      if (data.password === ""){
+        delete data["password"];
+      } 
+
+      data["status"] = status
+
       let response = await fetch(`http://localhost:5000/user/${user.id}`, {
         method: "PUT",
         headers: {
@@ -434,8 +440,6 @@ export function UpdateUserModal({
         },
         body: JSON.stringify({
           ...data,
-          status: status,
-          password: data.password === "" ? "AZEaze123@" : data.password, // REMOVE THIS LINE WHEN PASSWORD IS HANDLED
         }),
       });
 
@@ -556,7 +560,7 @@ export function UpdateUserModal({
             {...register("phone", {
               required: "Phone is required.",
               pattern: {
-                value: /^\d{6,}$/,
+                value: /^\+?\d{6,}$/,
                 message:
                   "Phone should be in international format and contain at least 6 numbers.",
               },
