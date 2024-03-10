@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import {
   Settings,
   Trash2,
@@ -32,7 +33,10 @@ const Users = () => {
 
   // Fetch the users from the API
   const fetchUsers = () => {
-    let url = searchInput!="" ? `http://127.0.0.1:5000/user/page/${currentPage}/search/${searchInput}` : `http://127.0.0.1:5000/user/page/${currentPage}`
+    let url =
+      searchInput != ""
+        ? `http://127.0.0.1:5000/user/page/${currentPage}/search/${searchInput}`
+        : `http://127.0.0.1:5000/user/page/${currentPage}`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -86,18 +90,17 @@ const Users = () => {
     setSelectedUserIdForPlanning(userId);
   };
 
-const handleSearch = (e) => {
-  e.preventDefault();
-  setSearchInput(e.target.value);
-  if(e.keyCode == 13){
-    fetchUsers
-  }
-};
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchInput(e.target.value);
+    if (e.keyCode == 13) {
+      fetchUsers;
+    }
+  };
 
-const handleClickSearch  = (e) => {
-  if(e.type == "click" || e.keyCode == 13)
-  fetchUsers();
-};
+  const handleClickSearch = (e) => {
+    if (e.type == "click" || e.keyCode == 13) fetchUsers();
+  };
 
   // Fetch the users when we change Page
   useEffect(() => {
@@ -136,7 +139,10 @@ const handleClickSearch  = (e) => {
             expanded ? "text-3xl" : "text-2xl"
           } font-bold flex-grow`}
         >
-          Users Management
+          <FormattedMessage
+            id="users.usersManagement"
+            defaultMessage="Users Management"
+          />
         </h1>
         <button
           className={`text-base bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 ${
@@ -146,7 +152,10 @@ const handleClickSearch  = (e) => {
             AddModalSetOpen(true);
           }}
         >
-          + Add a new user
+          <FormattedMessage
+            id="users.addANewUser"
+            defaultMessage="+ Add a new user"
+          />
         </button>
         <AddUserModal
           AddModalOpen={AddModalOpen}
@@ -164,9 +173,11 @@ const handleClickSearch  = (e) => {
           onKeyDown={handleClickSearch}
           value={searchInput}
         />
-        <button className="bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 py-2 rounded hover:opacity-90 transition self-end"
-        onClick={handleClickSearch}>
-          Search
+        <button
+          className="bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 py-2 rounded hover:opacity-90 transition self-end"
+          onClick={handleClickSearch}
+        >
+          <FormattedMessage id="users.search" defaultMessage="Search" />
         </button>
       </div>
       {/* List of Users */}
@@ -175,12 +186,36 @@ const handleClickSearch  = (e) => {
         <table className="w-full text-left">
           <thead className="bg-gray-100">
             <tr>
-              {expanded && <th className="p-4 w-2/6 max-w-xs">Email</th>}{" "}
-              {expanded && <th>Name</th>}
-              {!expanded && <th className="p-4 w-2/5 max-w-xs">User</th>}
-              <th>Roles</th>
-              <th>Status</th>
-              <th>Actions</th>
+              {expanded && (
+                <th className="p-4 w-2/6 max-w-xs">
+                  {" "}
+                  <FormattedMessage id="users.email" defaultMessage="email" />
+                </th>
+              )}{" "}
+              {expanded && (
+                <th>
+                  {" "}
+                  <FormattedMessage id="users.name" defaultMessage="name" />
+                </th>
+              )}
+              {!expanded && (
+                <th className="p-4 w-2/5 max-w-xs">
+                  {" "}
+                  <FormattedMessage id="users.user" defaultMessage="user" />
+                </th>
+              )}
+              <th>
+                {" "}
+                <FormattedMessage id="users.roles" defaultMessage="roles" />
+              </th>
+              <th>
+                {" "}
+                <FormattedMessage id="users.status" defaultMessage="status" />
+              </th>
+              <th>
+                {" "}
+                <FormattedMessage id="users.actions" defaultMessage="actions" />
+              </th>
             </tr>
           </thead>
           <tbody>

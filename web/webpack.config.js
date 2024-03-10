@@ -10,16 +10,14 @@ module.exports = {
     publicPath: "/",
   },
   resolve: {
-    extensions: [".js", ".jsx", ".json"],
+    extensions: [".js", ".jsx"],
   },
   module: {
     rules: [
       {
-        test: /\.js|\.jsx$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
+        loader: "babel-loader",
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,

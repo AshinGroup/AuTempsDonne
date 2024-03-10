@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import {
   X,
   Trash2,
@@ -42,9 +43,17 @@ export function DeleteModal({ open, onClose, fetchUsers }) {
       <div className="text-center w-64">
         <Trash2 size={40} className="mx-auto text-red-500" />
         <div className="mx-auto my-4 w-48">
-          <h3 className="text-lg font-back text-gray-800">Confirm Delete</h3>
+          <h3 className="text-lg font-back text-gray-800">
+            <FormattedMessage
+              id="deleteModal.confirmDelete"
+              defaultMessage="Confirm Delete"
+            />
+          </h3>
           <p className="text-sm text-gray-500">
-            Are you sure you want to delete this user?
+            <FormattedMessage
+              id="deleteModal.confirmDeleteMessage"
+              defaultMessage="Are you sure you want to delete this user ?"
+            />
           </p>
         </div>
         <div className="flex gap-4">
@@ -52,13 +61,13 @@ export function DeleteModal({ open, onClose, fetchUsers }) {
             onClick={fetchUsers}
             className="w-full py-2 border border-red-400 rounded transition-all hover:text-red-600"
           >
-            Delete
+            <FormattedMessage id="deleteModal.delete" defaultMessage="Delete" />
           </button>
           <button
             onClick={onClose}
             className="w-full py-2 border border-AshinBlue rounded transition-all hover:text-AshinBlue"
           >
-            Cancel
+            <FormattedMessage id="deleteModal.cancel" defaultMessage="Cancel" />
           </button>
         </div>
       </div>
@@ -80,6 +89,93 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
+
+  const intl = useIntl();
+
+  const emailPlaceholder = intl.formatMessage({
+    id: "addUserModal.email",
+    defaultMessage: "Email",
+  });
+
+  const emailRequired = intl.formatMessage({
+    id: "addUserModal.emailRequired",
+    defaultMessage: "Email is required.",
+  });
+  const emailValid = intl.formatMessage({
+    id: "addUserModal.emailValid",
+    defaultMessage: "Please enter a valid email address.",
+  });
+
+  const firstNamePlaceholder = intl.formatMessage({
+    id: "addUserModal.firstName",
+    defaultMessage: "First Name",
+  });
+  const firstNameRequired = intl.formatMessage({
+    id: "addUserModal.firstNameRequired",
+    defaultMessage: "First Name is required.",
+  });
+  const firstNameValidPattern = intl.formatMessage({
+    id: "addUserModal.firstNameValidPattern",
+    defaultMessage: "First Name should contain characters only.",
+  });
+  const firstNameValidLength = intl.formatMessage({
+    id: "addUserModal.firstNameValidPattern",
+    defaultMessage: "First Name must be less than 30 characters.",
+  });
+
+  const lastNamePlaceholder = intl.formatMessage({
+    id: "addUserModal.lastName",
+    defaultMessage: "Last Name",
+  });
+  const lastNameRequired = intl.formatMessage({
+    id: "addUserModal.lastNameRequired",
+    defaultMessage: "Last Name is required.",
+  });
+  const lastNameValidPattern = intl.formatMessage({
+    id: "addUserModal.lastNameValidPattern",
+    defaultMessage: "Last Name should contain characters only.",
+  });
+  const lastNameValidLength = intl.formatMessage({
+    id: "addUserModal.lastNameValidPattern",
+    defaultMessage: "Last Name must be less than 30 characters.",
+  });
+
+  const phonePlaceholder = intl.formatMessage({
+    id: "addUserModal.phone",
+    defaultMessage: "+123456789",
+  });
+  const phoneRequired = intl.formatMessage({
+    id: "addUserModal.phoneRequired",
+    defaultMessage: "Phone is required.",
+  });
+  const phoneValidPattern = intl.formatMessage({
+    id: "addUserModal.phoneValidPattern",
+    defaultMessage:
+      "Phone should be in international format and contain at least 6 numbers.",
+  });
+
+  const passwordPlaceholder = intl.formatMessage({
+    id: "addUserModal.password",
+    defaultMessage: "Password",
+  });
+  const passwordRequired = intl.formatMessage({
+    id: "addUserModal.passwordRequired",
+    defaultMessage: "Password is required.",
+  });
+  const passwordValidPattern = intl.formatMessage({
+    id: "addUserModal.passwordValidPattern",
+    defaultMessage:
+      "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+  });
+  const passwordValidLength = intl.formatMessage({
+    id: "addUserModal.passwordValidLength",
+    defaultMessage: "Password must be at least 8 characters.",
+  });
+
+  const addUser = intl.formatMessage({
+    id: "addUserModal.addUser",
+    defaultMessage: "Add User",
+  });
 
   // Get the roles for the pills and set default role
   useEffect(() => {
@@ -170,7 +266,6 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
             throw new Error(`Problem assigning role ${roleId} to user`);
         }
 
-        console.log("User created and roles assigned successfully");
         fetchUsers();
         reset();
       }
@@ -198,12 +293,12 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
           {/* Email Selection  */}
           <input
             type="email"
-            placeholder="Email"
+            placeholder={emailPlaceholder}
             {...register("email", {
-              required: "Email is required.",
+              required: emailRequired,
               pattern: {
                 value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                message: "Please enter a valid email address.",
+                message: emailValid,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -214,16 +309,16 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
           {/*First Name and Last Name  */}
           <input
             type="text"
-            placeholder="First Name"
+            placeholder={firstNamePlaceholder}
             {...register("first_name", {
-              required: "First Name is required.",
+              required: firstNameRequired,
               pattern: {
                 value: /^[A-Za-z]+$/,
-                message: "First Name should contain characters only.",
+                message: firstNameValidPattern,
               },
               maxLength: {
                 value: 30,
-                message: "First Name must be less than 30 characters.",
+                message: firstNameValidLength,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -233,16 +328,16 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
           )}
           <input
             type="text"
-            placeholder="Last Name"
+            placeholder={lastNamePlaceholder}
             {...register("last_name", {
-              required: "Last Name is required.",
+              required: lastNameRequired,
               pattern: {
                 value: /^[A-Za-z]+$/,
-                message: "Last Name should contain characters only.",
+                message: lastNameValidPattern,
               },
               maxLength: {
                 value: 30,
-                message: "Last Name must be less than 30 characters.",
+                message: lastNameValidLength,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -253,13 +348,12 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
           {/* Tel Selection */}
           <input
             type="tel"
-            placeholder="+1234567890"
+            placeholder={phonePlaceholder}
             {...register("phone", {
-              required: "Phone is required.",
+              required: phoneRequired,
               pattern: {
                 value: /^\d{6,}$/,
-                message:
-                  "Phone should be in international format and contain at least 6 numbers.",
+                message: phoneValidPattern,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -270,18 +364,17 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
           {/* Password Selection */}
           <input
             type="password"
-            placeholder="Password"
+            placeholder={passwordPlaceholder}
             {...register("password", {
-              required: "Password is required.",
+              required: passwordRequired,
               minLength: {
                 value: 8,
-                message: "Password must be at least 8 characters.",
+                message: passwordValidLength,
               },
               pattern: {
                 value:
                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                message:
-                  "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+                message: passwordValidPattern,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -291,7 +384,14 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
           )}
           {/* Status selection */}
           <div>
-            <label className="font-bold text-gray-500">Status:</label>
+            <label className="font-bold text-gray-500">
+              {" "}
+              <FormattedMessage
+                id="addUserModal.status"
+                defaultMessage="Status"
+              />
+              :
+            </label>
             <div className="flex flex-wrap gap-2 my-3 justify-center">
               <button
                 type="button"
@@ -302,7 +402,10 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
                     : "border-gray-300 bg-gray-200 text-gray-400"
                 } rounded-full transition focus:outline-none`}
               >
-                Active
+                <FormattedMessage
+                  id="addUserModal.active"
+                  defaultMessage="Active"
+                />
               </button>
               <button
                 type="button"
@@ -313,14 +416,23 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
                     : "border-gray-300 bg-gray-200 text-gray-400"
                 } rounded-full transition focus:outline-none`}
               >
-                Unactive
+                <FormattedMessage
+                  id="addUserModal.inactive"
+                  defaultMessage="Inactive"
+                />
               </button>
             </div>
           </div>
 
           {/* Roles Pills */}
           <div>
-            <label className="font-bold text-gray-500">Roles:</label>
+            <label className="font-bold text-gray-500">
+              <FormattedMessage
+                id="addUserModal.roles"
+                defaultMessage="Roles"
+              />
+              :
+            </label>
             <div className="flex flex-wrap gap-2 my-3 justify-center">
               {roles.map((role) => (
                 <button
@@ -345,7 +457,7 @@ export function AddUserModal({ AddModalOpen, AddModalSetOpen, fetchUsers }) {
           {/* Submit Selection */}
           <input
             type="submit"
-            value="Add User"
+            value={addUser}
             className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
           />
         </form>
@@ -379,6 +491,71 @@ export function UpdateUserModal({
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
+
+  const intl = useIntl();
+
+  const firstNamePlaceholder = intl.formatMessage({
+    id: "addUserModal.firstName",
+    defaultMessage: "First Name",
+  });
+  const firstNameRequired = intl.formatMessage({
+    id: "addUserModal.firstNameRequired",
+    defaultMessage: "First Name is required.",
+  });
+  const firstNameValidPattern = intl.formatMessage({
+    id: "addUserModal.firstNameValidPattern",
+    defaultMessage: "First Name should contain characters only.",
+  });
+  const firstNameValidLength = intl.formatMessage({
+    id: "addUserModal.firstNameValidPattern",
+    defaultMessage: "First Name must be less than 30 characters.",
+  });
+
+  const lastNamePlaceholder = intl.formatMessage({
+    id: "addUserModal.lastName",
+    defaultMessage: "Last Name",
+  });
+  const lastNameRequired = intl.formatMessage({
+    id: "addUserModal.lastNameRequired",
+    defaultMessage: "Last Name is required.",
+  });
+  const lastNameValidPattern = intl.formatMessage({
+    id: "addUserModal.lastNameValidPattern",
+    defaultMessage: "Last Name should contain characters only.",
+  });
+  const lastNameValidLength = intl.formatMessage({
+    id: "addUserModal.lastNameValidPattern",
+    defaultMessage: "Last Name must be less than 30 characters.",
+  });
+
+  const phonePlaceholder = intl.formatMessage({
+    id: "addUserModal.phone",
+    defaultMessage: "+123456789",
+  });
+  const phoneRequired = intl.formatMessage({
+    id: "addUserModal.phoneRequired",
+    defaultMessage: "Phone is required.",
+  });
+  const phoneValidPattern = intl.formatMessage({
+    id: "addUserModal.phoneValidPattern",
+    defaultMessage:
+      "Phone should be in international format and contain at least 6 numbers.",
+  });
+
+  const passwordPlaceholder = intl.formatMessage({
+    id: "modifyUserModal.password",
+    defaultMessage: "Password (leave empty to keep the same)",
+  });
+  const passwordValidPattern = intl.formatMessage({
+    id: "addUserModal.passwordValidPattern",
+    defaultMessage:
+      "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+  });
+
+  const modifyUser = intl.formatMessage({
+    id: "modifyUserModal.modifyUser",
+    defaultMessage: "Modify User",
+  });
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/role")
@@ -427,11 +604,11 @@ export function UpdateUserModal({
 
   const onPutSubmit = async (data) => {
     try {
-      if (data.password === ""){
+      if (data.password === "") {
         delete data["password"];
-      } 
+      }
 
-      data["status"] = status
+      data["status"] = status;
 
       let response = await fetch(`http://localhost:5000/user/${user.id}`, {
         method: "PUT",
@@ -517,16 +694,16 @@ export function UpdateUserModal({
           {/*First Name and Last Name  */}
           <input
             type="text"
-            placeholder="First Name"
+            placeholder={firstNamePlaceholder}
             {...register("first_name", {
-              required: "First Name is required.",
+              required: firstNameRequired,
               pattern: {
                 value: /^[A-Za-z]+$/,
-                message: "First Name should contain characters only.",
+                message: firstNameValidPattern,
               },
               maxLength: {
                 value: 30,
-                message: "First Name must be less than 30 characters.",
+                message: firstNameValidLength,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -536,16 +713,16 @@ export function UpdateUserModal({
           )}
           <input
             type="text"
-            placeholder="Last Name"
+            placeholder={lastNamePlaceholder}
             {...register("last_name", {
-              required: "Last Name is required.",
+              required: lastNameRequired,
               pattern: {
                 value: /^[A-Za-z]+$/,
-                message: "Last Name should contain characters only.",
+                message: lastNameValidPattern,
               },
               maxLength: {
                 value: 30,
-                message: "Last Name must be less than 30 characters.",
+                message: lastNameValidLength,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -556,13 +733,12 @@ export function UpdateUserModal({
           {/* Tel Selection */}
           <input
             type="tel"
-            placeholder="+1234567890"
+            placeholder={phonePlaceholder}
             {...register("phone", {
-              required: "Phone is required.",
+              required: phoneRequired,
               pattern: {
                 value: /^\+?\d{6,}$/,
-                message:
-                  "Phone should be in international format and contain at least 6 numbers.",
+                message: phoneValidPattern,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -573,7 +749,7 @@ export function UpdateUserModal({
           {/* Password Selection */}
           <input
             type="password"
-            placeholder="Password (Leave empty to keep the same)"
+            placeholder={passwordPlaceholder}
             {...register("password", {
               validate: {
                 custom: (value) =>
@@ -581,7 +757,7 @@ export function UpdateUserModal({
                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
                     value
                   ) ||
-                  "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+                  passwordValidPattern,
               },
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
@@ -591,7 +767,13 @@ export function UpdateUserModal({
           )}
           {/* Status selection */}
           <div>
-            <label className="font-bold text-gray-500">Status:</label>
+            <label className="font-bold text-gray-500">
+              <FormattedMessage
+                id="addUserModal.status"
+                defaultMessage="Status"
+              />
+              :
+            </label>
             <div className="flex flex-wrap gap-2 my-3 justify-center">
               <button
                 type="button"
@@ -602,7 +784,10 @@ export function UpdateUserModal({
                     : "border-gray-300 bg-gray-200 text-gray-400"
                 } rounded-full transition focus:outline-none`}
               >
-                Active
+                <FormattedMessage
+                  id="addUserModal.active"
+                  defaultMessage="Active"
+                />
               </button>
               <button
                 type="button"
@@ -613,14 +798,23 @@ export function UpdateUserModal({
                     : "border-gray-300 bg-gray-200 text-gray-400"
                 } rounded-full transition focus:outline-none`}
               >
-                Unactive
+                <FormattedMessage
+                  id="addUserModal.inactive"
+                  defaultMessage="Inactive"
+                />
               </button>
             </div>
           </div>
 
           {/* Roles Pills */}
           <div>
-            <label className="font-bold text-gray-500">Roles:</label>
+            <label className="font-bold text-gray-500">
+              <FormattedMessage
+                id="addUserModal.roles"
+                defaultMessage="Roles"
+              />
+              :
+            </label>
             <div className="flex flex-wrap gap-2 my-3 justify-center">
               {roles.map((role) => (
                 <button
@@ -645,7 +839,7 @@ export function UpdateUserModal({
           {/* Submit Selection */}
           <input
             type="submit"
-            value="Modify User"
+            value={modifyUser}
             className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
           />
         </form>

@@ -1,5 +1,7 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../translations/languageContext";
+import { FormattedMessage } from "react-intl";
 import {
   ChevronsUpDown,
   Users2,
@@ -7,6 +9,7 @@ import {
   BookMarked,
   LogOut,
   User2,
+  Languages,
 } from "lucide-react";
 import atd_logo_ from "../resources/atd_logo_.png";
 import atd_logo_typo from "../resources/atd_logo_typo.png";
@@ -16,6 +19,7 @@ const SidebarContext = createContext();
 export default function Sidebar({ activeItem, setActiveItem }) {
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { changeLocale } = useLanguage();
 
   // Function to handle window resize
   useEffect(() => {
@@ -63,23 +67,56 @@ export default function Sidebar({ activeItem, setActiveItem }) {
             <SidebarItem
               key={"Users"}
               icon={<Users2 size={20} />}
-              text={"Users"}
+              text={
+                <FormattedMessage id="sidebar.users" defaultMessage="Users" />
+              }
               active={activeItem === "Users"}
               onClick={() => handleItemClick("Users")}
             />
             <SidebarItem
               key={"Activities"}
               icon={<HeartHandshake size={20} />}
-              text={"Activities"}
+              text={
+                <FormattedMessage
+                  id="sidebar.activities"
+                  defaultMessage="Activities"
+                />
+              }
               active={activeItem === "Activities"}
               onClick={() => handleItemClick("Activities")}
             />
             <SidebarItem
               key={"Courses"}
               icon={<BookMarked size={20} />}
-              text={"Courses"}
+              text={
+                <FormattedMessage
+                  id="sidebar.courses"
+                  defaultMessage="Courses"
+                />
+              }
               active={activeItem === "Courses"}
               onClick={() => handleItemClick("Courses")}
+            />
+            <SidebarItem
+              key={"English"}
+              icon={<Languages size={20} />}
+              text={"English"}
+              active={activeItem === "English"}
+              onClick={() => changeLocale("en")}
+            />
+            <SidebarItem
+              key={"Français"}
+              icon={<Languages size={20} />}
+              text={"Français"}
+              active={activeItem === "Français"}
+              onClick={() => changeLocale("fr")}
+            />
+            <SidebarItem
+              key={"Chinois"}
+              icon={<Languages size={20} />}
+              text={"Chinois"}
+              active={activeItem === "Chinois"}
+              onClick={() => changeLocale("cn")}
             />
           </ul>
         </SidebarContext.Provider>
@@ -121,14 +158,24 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               <SidebarItem
                 key={"Profile"}
                 icon={<User2 size={20} />}
-                text="Profile"
+                text={
+                  <FormattedMessage
+                    id="sidebar.profile"
+                    defaultMessage="Profile"
+                  />
+                }
                 active={activeItem === "Profile"}
                 onClick={() => handleItemClick("Profile")}
               />
               <SidebarItem
                 key={"Logout"}
                 icon={<LogOut size={20} />}
-                text="Logout"
+                text={
+                  <FormattedMessage
+                    id="sidebar.logout"
+                    defaultMessage="Logout"
+                  />
+                }
                 active={activeItem === "Logout"}
                 onClick={() => handleItemClick("Logout")}
               />
