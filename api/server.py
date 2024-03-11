@@ -14,6 +14,8 @@ from controller.user import UserPageController, UserSearchController
 from controller.activity import ActivityController, ActivityListController
 from controller.course import CourseController, CourseListController
 from controller.role import RoleController, RoleListController
+from controller.auth import RegisterController, ProtectedController, LoginController
+
 
 
 # Import Models
@@ -40,6 +42,9 @@ api.add_resource(CourseListController, '/course')
 api.add_resource(CourseController, '/course/<int:course_id>')
 api.add_resource(RoleListController, '/role')
 api.add_resource(RoleController, '/role/<int:role_id>')
+api.add_resource(RegisterController, '/register')
+api.add_resource(LoginController, '/login')
+api.add_resource(ProtectedController, '/protected')
 
 
 
