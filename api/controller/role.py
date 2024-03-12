@@ -45,7 +45,7 @@ class RoleController(Resource):
     def delete(self, role_id: int):
         try:
             self.role_service.delete(role_id=role_id)
-            return f"Role '{role_id}' successfully deleted."
+            return jsonify({'message': f"Role '{role_id}' successfully deleted."})
         except RoleIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except RoleAccessDbException as e:
