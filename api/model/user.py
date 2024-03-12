@@ -28,7 +28,7 @@ class User(db.Model):
             courses = [course.json_rest() for course in self.course]
          
             
-        return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'status': self.status, 'role': roles, 'activity': activities, 'course': courses} 
+        return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'status': self.status, 'phone':self.phone, 'role': roles, 'activity': activities, 'course': courses} 
     
 
     def json_rest(self):
