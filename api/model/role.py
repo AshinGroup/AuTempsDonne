@@ -7,12 +7,12 @@ class Role(db.Model):
     role_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     role_name = db.Column(db.String(15))
 
-    user = db.relationship('User', secondary='user_is_role', back_populates='role')
+    users = db.relationship('User', secondary='user_is_role', back_populates='roles')
 
     def json(self):
         users = []
-        if self.user:
-            users = [user.json_rest() for user in self.user]
+        if self.users:
+            users = [user.json_rest() for user in self.users]
         return {'role_id': self.role_id, 'role_name': self.role_name, 'users': users}
 
 

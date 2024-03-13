@@ -91,7 +91,7 @@ class UserRepo():
                 new_user.password = hash_password(new_user.password)
                 db.session.add(new_user)
                 user_role = Role.query.filter_by(role_id=role_id).first()
-                new_user.role.append(user_role)
+                new_user.roles.append(user_role)
                 db.session.flush()
                 new_user_id = new_user.user_id
                 db.session.commit()
@@ -106,7 +106,7 @@ class UserRepo():
             with app.app_context():
                 user = User.query.filter_by(user_id=user_id).first()
                 activity = Activity.query.filter_by(activity_id=activity_id).first()
-                user.activity.append(activity)
+                user.activities.append(activity)
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -118,7 +118,7 @@ class UserRepo():
             with app.app_context():
                 user = User.query.filter_by(user_id=user_id).first()
                 role = Role.query.filter_by(role_id=role_id).first()
-                user.role.append(role)
+                user.roles.append(role)
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -130,7 +130,7 @@ class UserRepo():
             with app.app_context():
                 user = User.query.filter_by(user_id=user_id).first()
                 course = Course.query.filter_by(course_id=course_id).first()
-                user.course.append(course)
+                user.courses.append(course)
                 db.session.commit()
                 db.session.close()
         except Exception:

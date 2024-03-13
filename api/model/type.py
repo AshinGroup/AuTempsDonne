@@ -1,21 +1,19 @@
 from database.db import db
 import os
 
-class Activity(db.Model):
-    __tablename__ = "activity"
+class Type(db.Model):
+    __tablename__ = "type"
     
-    activity_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    activity_name = db.Column(db.String(30))
-    date = db.Column(db.DateTime)
-    type_id = db.relationship(db.Integer, db.ForeignKey('post.id'))
+    type_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    type_name = db.Column(db.String(30))
 
-    users = db.relationship('User', secondary='user_participates_activity', back_populates='activities')
+    activities = db.relationship('Activity', back_populates='activity')
 
 
     def json(self):
         users = []
-        if self.users:
-            users = [user.json_rest() for user in self.users]
+        if self.user:
+            users = [user.json_rest() for user in self.user]
             
         return {'activity_id': self.activity_id, 'type': self.type, 'date': self.date, 'activity_location' : self.activity_location, 'users': users}
     

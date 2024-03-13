@@ -8,12 +8,12 @@ class Course(db.Model):
     title = db.Column(db.String(30), unique=True)
     description = db.Column(db.Text)
 
-    user = db.relationship('User', secondary='user_follows_course', back_populates='course')
+    users = db.relationship('User', secondary='user_follows_course', back_populates='courses')
 
     def json(self):
         users = []
-        if self.user:
-            users = [user.json_rest() for user in self.user]
+        if self.users:
+            users = [user.json_rest() for user in self.users]
 
         return {'course_id': self.course_id, 'title': self.title, 'description': self.description, 'users' : users}
     
