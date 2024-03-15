@@ -8,6 +8,7 @@
   "users.usersManagement": "Users Management",
   "users.addANewUser": "+ Add a new user",
   "users.search": "Search",
+  "users.searchPlaceholder": "Search by email or name ...",
   "users.email": "Email",
   "users.name": "Name",
   "users.user": "User",
@@ -16,7 +17,7 @@
   "users.actions": "Actions",
 
   "deleteModal.confirmDelete": "Confirm Delete",
-  "deleteModal.confirmDeleteMessage": "Are you sure you want to delete this user ?",
+  "deleteModal.confirmDeleteMessage": "Are you sure you want to delete this ?",
   "deleteModal.delete": "Delete",
   "deleteModal.cancel": "Cancel",
 
@@ -45,5 +46,30 @@
   "addUserModal.addUser": "Add User",
 
   "modifyUserModal.modifyUser": "Modify User",
-  "modifyUserModal.password": "Password (leave empty to keep the same)"
+  "modifyUserModal.password": "Password (leave empty to keep the same)",
+
+  "courses.coursesManagement": "Courses Management",
+  "courses.addANewCourse": "+ Add a new course",
+  "courses.searchPlaceholder": "Search by title ...",
+  "courses.title": "Title",
+  "courses.description": "Description",
+  "courses.dateTime": "Date & Time",
+  "courses.maxSlots": "Slots",
+  "courses.location": "Location",
+
+  "addCourseModal.titlePlaceholder": "Title of the course",
+  "addCourseModal.titleRequired": "Title is required.",
+  "addCourseModal.descriptionPlaceholder": "Description of my course",
+  "addCourseModal.descriptionRequired": "Description is required.",
+  "addCourseModal.descriptionMax": "Description must be less than 200 characters.",
+  "addCourseModal.dateTime": "Date & Time",
+  "addCourseModal.dateTimeRequired": "Date & Time is required.",
+  "addCourseModal.slotPlaceholder": "Number of slots",
+  "addCourseModal.slotRequired": "Number of slots is required (1 to 100).",
+  "addCourseModal.locationPlaceholder": "Location",
+  "addCourseModal.locationRequired": "Location is required.",
+  "addCourseModal.locationPattern": "Exemple : 10 rue des petits écuries",
+  "addCourseModal.addCourse": "Add Course",
+
+  "updateCourseModal.updateCourse": "Update Course"
 }
