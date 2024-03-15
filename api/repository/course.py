@@ -15,7 +15,7 @@ class CourseRepo:
 
     def select_one_by_id(self, course_id: int) -> Course:
         try:
-            course = Course.query.filter_by(course_id=course_id).first()
+            course = Course.query.filter_by(id=course_id).first()
             return course
         except Exception:
             raise CourseAccessDbException(course_id=course_id, method="getting")
@@ -52,7 +52,7 @@ class CourseRepo:
     def update(self, course_id: int, update_course: Course) -> None:
         try:
             with app.app_context():
-                course = Course.query.filter_by(course_id=course_id).first()
+                course = Course.query.filter_by(id=course_id).first()
                 course.title = update_course.title
                 course.description = update_course.description
                 db.session.commit()
@@ -63,7 +63,7 @@ class CourseRepo:
 
     def delete(self, course_id: int) -> None:
         try:
-            course = Course.query.filter_by(course_id=course_id).first()
+            course = Course.query.filter_by(id=course_id).first()
             with app.app_context():
                 db.session.delete(course)
                 db.session.commit()

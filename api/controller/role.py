@@ -4,12 +4,12 @@ from exception.role import RoleIdNotFoundException, RoleAccessDbException
 from flask import jsonify
 
 class RoleCheckArgs:
-    pattern = {'role_name': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,15}\b'} # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 15 caractères.
+    pattern = {'name': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,15}\b'} # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 15 caractères.
             
     
     def get_role_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('role_name', type=inputs.regex(self.pattern['role_name']), required=True, help="Invalid or missing parameter 'role_name'")
+        parser.add_argument('name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter 'role_name'")
         args = parser.parse_args(strict=True)
         return args
 
@@ -74,6 +74,6 @@ class RoleListController(Resource):
         try:
             args = self.check_args.get_role_args()
             self.role_service.insert(args=args)
-            return jsonify({'message': f"Role '{args['role_name']}' successfully created."})
+            return jsonify({'message': f"Role '{args['name']}' successfully created."})
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))

@@ -19,7 +19,7 @@ class UserRepo():
     
     def select_one_by_id(self, user_id: int) -> User:
         try:
-            user = User.query.filter_by(user_id=user_id).first()
+            user = User.query.filter_by(id=user_id).first()
             return user
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="getting")
@@ -72,7 +72,7 @@ class UserRepo():
                 return None
             return user_activities
         except Exception:
-            raise UserAccessDbException(user_id=user.user_id, method="getting")
+            raise UserAccessDbException(user_id=user.id, method="getting")
         
     
     def select_all_courses(self, user: User) -> list[Course]:
@@ -82,7 +82,7 @@ class UserRepo():
                 return None
             return user_courses
         except Exception:
-            raise UserAccessDbException(user_id=user.user_id, method="getting")
+            raise UserAccessDbException(user_id=user.id, method="getting")
 
 
     def insert(self, new_user: User, role_id: int) -> int:
@@ -90,10 +90,10 @@ class UserRepo():
             with app.app_context():
                 new_user.password = hash_password(new_user.password)
                 db.session.add(new_user)
-                user_role = Role.query.filter_by(role_id=role_id).first()
-                new_user.role.append(user_role)
+                user_role = Role.query.filter_by(id=role_id).first()
+                new_user.roles.append(user_role)
                 db.session.flush()
-                new_user_id = new_user.user_id
+                new_user_id = new_user.id
                 db.session.commit()
                 db.session.close()
                 return new_user_id
@@ -104,9 +104,9 @@ class UserRepo():
     def insert_activity(self, user_id: int, activity_id: int) -> None:
         try:
             with app.app_context():
-                user = User.query.filter_by(user_id=user_id).first()
-                activity = Activity.query.filter_by(activity_id=activity_id).first()
-                user.activity.append(activity)
+                user = User.query.filter_by(id=user_id).first()
+                activity = Activity.query.filter_by(id=activity_id).first()
+                user.activities.append(activity)
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -116,9 +116,9 @@ class UserRepo():
     def insert_role(self, user_id: int, role_id: int) -> None:
         try:
             with app.app_context():
-                user = User.query.filter_by(user_id=user_id).first()
-                role = Role.query.filter_by(role_id=role_id).first()
-                user.role.append(role)
+                user = User.query.filter_by(id=user_id).first()
+                role = Role.query.filter_by(id=role_id).first()
+                user.roles.append(role)
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -128,9 +128,9 @@ class UserRepo():
     def insert_course(self, user_id: int, course_id: int) -> None:
         try:
             with app.app_context():
-                user = User.query.filter_by(user_id=user_id).first()
-                course = Course.query.filter_by(course_id=course_id).first()
-                user.course.append(course)
+                user = User.query.filter_by(id=user_id).first()
+                course = Course.query.filter_by(id=course_id).first()
+                user.courses.append(course)
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -141,7 +141,7 @@ class UserRepo():
     def update(self, user_id: int, update_user: User) -> None:
         try:
             with app.app_context():
-                user = User.query.filter_by(user_id=user_id).first()
+                user = User.query.filter_by(id=user_id).first()
                 user.first_name = update_user.first_name
                 user.last_name = update_user.last_name
                 user.email = update_user.email
@@ -158,7 +158,7 @@ class UserRepo():
     def delete(self, user_id: int) -> None:
         try:
             with app.app_context():
-                user = User.query.filter_by(user_id=user_id).first()
+                user = User.query.filter_by(id=user_id).first()
                 db.session.delete(user)
                 db.session.commit()
                 db.session.close()
@@ -169,8 +169,8 @@ class UserRepo():
     def delete_activity(self, user_id: int, activity_id: int) -> None:
         try:
             with app.app_context():
-                user = User.query.filter_by(user_id=user_id).first()
-                activity = Activity.query.filter_by(activity_id=activity_id).first()
+                user = User.query.filter_by(id=user_id).first()
+                activity = Activity.query.filter_by(id=activity_id).first()
                 user.activity.remove(activity)
                 db.session.commit()
                 db.session.close()
@@ -181,8 +181,8 @@ class UserRepo():
     def delete_course(self, user_id: int, course_id: int) -> None:
         try:
             with app.app_context():
-                user = User.query.filter_by(user_id=user_id).first()
-                course = Course.query.filter_by(course_id=course_id).first()
+                user = User.query.filter_by(id=user_id).first()
+                course = Course.query.filter_by(id=course_id).first()
                 user.course.remove(course)
                 db.session.commit()
                 db.session.close()
@@ -193,8 +193,8 @@ class UserRepo():
     def delete_role(self, user_id: int, role_id: int) -> None:
         try:
             with app.app_context():
-                user = User.query.filter_by(user_id=user_id).first()
-                role = Role.query.filter_by(role_id=role_id).first()
+                user = User.query.filter_by(id=user_id).first()
+                role = Role.query.filter_by(id=role_id).first()
                 user.role.remove(role)
                 db.session.commit()
                 db.session.close()
