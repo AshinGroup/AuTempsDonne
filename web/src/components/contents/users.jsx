@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import {
   Settings,
   Trash2,
@@ -7,12 +7,11 @@ import {
   UserRoundX,
   CalendarDays,
 } from "lucide-react";
-import {
-  DeleteModal,
-  AddUserModal,
-  UpdateUserModal,
-  PlanningUserModal,
-} from "../modals";
+
+import DeleteModal from "../modals/deleteModal";
+import AddUserModal from "../modals/addUserModal";
+import UpdateUserModal from "../modals/updateUserModal";
+import PlanningUserModal from "../modals/planningUserModal";
 
 const Users = () => {
   // Display the users and Pagination
@@ -30,6 +29,13 @@ const Users = () => {
   const [selectedUserIdForUpdate, setSelectedUserIdForUpdate] = useState(null);
   const [selectedUserIdForPlanning, setSelectedUserIdForPlanning] =
     useState(null);
+
+  const intl = useIntl();
+
+  const searchPlaceholder = intl.formatMessage({
+    id: "users.searchPlaceholder",
+    defaultMessage: "Search by email or name ...",
+  });
 
   // Fetch the users from the API
   const fetchUsers = () => {
@@ -167,7 +173,7 @@ const Users = () => {
       <div className="flex gap-4 mb-6 items-stretch">
         <input
           type="text"
-          placeholder="Search by email or name..."
+          placeholder={searchPlaceholder}
           className="p-2 border border-gray-300 rounded flex-grow focus:outline-none focus:border-AshinBlue transition"
           onChange={handleSearch}
           onKeyDown={handleClickSearch}

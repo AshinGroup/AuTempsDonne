@@ -105,18 +105,32 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               onClick={() => changeLocale("en")}
             />
             <SidebarItem
-              key={"Français"}
+              key={"French"}
               icon={<Languages size={20} />}
               text={"Français"}
-              active={activeItem === "Français"}
+              active={activeItem === "French"}
               onClick={() => changeLocale("fr")}
             />
             <SidebarItem
-              key={"Chinois"}
+              key={"Chinese"}
               icon={<Languages size={20} />}
-              text={"Chinois"}
-              active={activeItem === "Chinois"}
+              text={"普通话"}
+              active={activeItem === "Chinese"}
               onClick={() => changeLocale("cn")}
+            />
+            <SidebarItem
+              key={"Russian"}
+              icon={<Languages size={20} />}
+              text={"русский"}
+              active={activeItem === "Russian"}
+              onClick={() => changeLocale("ru")}
+            />
+            <SidebarItem
+              key={"Hindi"}
+              icon={<Languages size={20} />}
+              text={"हिंदी"}
+              active={activeItem === "Hindi"}
+              onClick={() => changeLocale("hi")}
             />
           </ul>
         </SidebarContext.Provider>

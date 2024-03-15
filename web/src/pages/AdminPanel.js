@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import Users from "../components/contents/users";
+import Courses from "../components/contents/courses";
 
 const AdminPanel = () => {
-  const [activeItem, setActiveItem] = useState("Users");
+  const [activeItem, setActiveItem] = useState("Courses");
   const navigate = useNavigate();
 
   const getContent = () => {
@@ -14,7 +15,7 @@ const AdminPanel = () => {
       case "Activities":
         return <div>Activities content here</div>;
       case "Courses":
-        return <div>Courses content here</div>;
+        return <Courses />;
       case "Profile":
         navigate("/profile");
       case "Logout":
