@@ -4,7 +4,7 @@ import os
 class User(db.Model):
     __tablename__ = "user"
     
-    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(30))
     last_name = db.Column(db.String(30))
     email = db.Column(db.String(320), unique=True)

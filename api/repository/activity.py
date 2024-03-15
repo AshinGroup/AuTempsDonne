@@ -7,7 +7,7 @@ class ActivityRepo():
 
     def select_one_by_id(self, activity_id: int) -> Activity:
         try:
-            activity = Activity.query.filter_by(activity_id=activity_id).first()
+            activity = Activity.query.filter_by(id=activity_id).first()
             return activity
         except Exception:
             raise ActivityAccessDbException(activity_id=activity_id, method="getting")
@@ -36,10 +36,11 @@ class ActivityRepo():
     def update(self, activity_id: int, update_activity: Activity) -> None:
         try:
             with app.app_context():
-                activity = Activity.query.filter_by(activity_id=activity_id).first()
-                activity.type = update_activity.type
-                activity.date = update_activity.date
-                activity.activity_location = update_activity.activity_location
+                activity = Activity.query.filter_by(id=activity_id).first()
+                activity.name = update_activity.name
+                activity.datetime = update_activity.datetime
+                activity.description = update_activity.description
+                activity.capacity = update_activity.capacity
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -48,7 +49,7 @@ class ActivityRepo():
 
     def delete(self, activity_id: int) -> None:
         try:
-            activity = Activity.query.filter_by(activity_id=activity_id).first()
+            activity = Activity.query.filter_by(id=activity_id).first()
             with app.app_context():
                 db.session.delete(activity)
                 db.session.commit()

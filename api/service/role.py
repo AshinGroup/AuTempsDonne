@@ -22,12 +22,12 @@ class RoleService:
 
 
     def insert(self, args: dict):
-        new_role = Role(role_name=args['role_name'])
+        new_role = Role(name=args['name'])
         self.role_repo.insert(new_role=new_role)
     
 
     def update(self, role_id: int, args: dict):
-        update_role = Role(role_name=args['role_name'])
+        update_role = Role(name=args['name'])
         role = self.role_repo.select_one_by_id(role_id=role_id)
         
         if not role:

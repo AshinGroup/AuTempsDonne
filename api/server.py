@@ -12,6 +12,7 @@ from controller.user import UserFollowsCourseController
 from controller.user import UserIsRoleController
 from controller.user import UserPageController, UserSearchController
 from controller.activity import ActivityController, ActivityListController
+from controller.type import TypeController, TypeListController
 from controller.course import CourseController, CourseListController
 from controller.role import RoleController, RoleListController
 from controller.auth import RegisterController, ProtectedController, LoginController, RefreshTokenController
@@ -24,6 +25,7 @@ from model.user import User
 from model.activity import Activity
 from model.course import Course
 from model.role import Role
+from model.type import Type
 
 from app import app
 
@@ -39,8 +41,12 @@ api.add_resource(UserController, f'{prefix}/user/<int:user_id>')
 api.add_resource(UserIsRoleController, f'{prefix}/user/<int:user_id>/role/<int:role_id>')
 api.add_resource(UserParticipatesActivityController, f'{prefix}/user/<int:user_id>/activity/<int:activity_id>')
 api.add_resource(UserFollowsCourseController, f'{prefix}/user/<int:user_id>/course/<int:course_id>')
+
 api.add_resource(ActivityListController, f'{prefix}/activity')
 api.add_resource(ActivityController, f'{prefix}/activity/<int:activity_id>')
+api.add_resource(TypeListController, f'{prefix}/type')
+api.add_resource(TypeController, f'{prefix}/type/<int:type_id>')
+
 api.add_resource(CourseListController, f'{prefix}/course')
 api.add_resource(CourseController, f'{prefix}/course/<int:course_id>')
 api.add_resource(RoleListController, f'{prefix}/role')
