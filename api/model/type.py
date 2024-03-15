@@ -5,24 +5,20 @@ class Type(db.Model):
     __tablename__ = "type"
     
     type_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    type_name = db.Column(db.String(30))
+    type_name = db.Column(db.String(50))
 
-    activities = db.relationship('Activity', back_populates='activity')
+    activities = db.relationship('Activity', back_ref='type')
 
 
     def json(self):
-        users = []
-        if self.user:
-            users = [user.json_rest() for user in self.user]
+        activites = []
+        if self.activities:
+            activites = [activity.json_rest() for activity in self.activities]
             
-        return {'activity_id': self.activity_id, 'type': self.type, 'date': self.date, 'activity_location' : self.activity_location, 'users': users}
+        return {'type_id': self.type_id, 'type_name': self.type_name, 'activities': activities}
     
 
     def json_rest(self):
-        return {'url': f"{os.getenv('API_PATH')}/activity/{self.activity_id}", 'activity_id': self.activity_id, 'type': self.type, 'date': self.date, 'activity_location' : self.activity_location}
+        return {'url': f"{os.getenv('API_PATH')}/activity/type/{self.type_id}", 'type_id': self.type_id, 'type_name': self.type_name}
 
 
-user_participates_activity = db.Table('user_participates_activity', db.metadata,
-    db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), primary_key=True),                                  
-    db.Column('activity_id', db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
-)

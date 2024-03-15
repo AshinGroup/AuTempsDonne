@@ -7,7 +7,7 @@ class Activity(db.Model):
     activity_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     activity_name = db.Column(db.String(30))
     date = db.Column(db.DateTime)
-    type_id = db.relationship(db.Integer, db.ForeignKey('post.id'))
+    type_id = db.relationship(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
     users = db.relationship('User', secondary='user_participates_activity', back_populates='activities')
 
