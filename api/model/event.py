@@ -5,7 +5,7 @@ class Event(db.Model):
     __tablename__ = "event"
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(30))
+    name = db.Column(db.String(50))
     datetime = db.Column(db.DateTime)
     description = db.Column(db.Text)
     capacity = db.Column(db.Integer)
@@ -13,6 +13,7 @@ class Event(db.Model):
 
     type_id = db.Column(db.Integer, db.ForeignKey('type.id'), nullable=False)
     users = db.relationship('User', secondary='user_participates_event', back_populates='events')
+
 
     def event_group_name(self, event: int):
         if event == 1:
@@ -22,7 +23,7 @@ class Event(db.Model):
         elif event == 3:
             return 'Service'
         else:
-            return 'No name'
+            return 'Nameless'
 
 
     def json(self):
@@ -51,6 +52,7 @@ class Event(db.Model):
         return {'url': f"{os.getenv('API_PATH')}/event/{self.id}", 
                 'id': self.id,
                 'name' : self.name,
+                'group' : event_name
                 }
 
 
