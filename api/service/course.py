@@ -30,7 +30,7 @@ class CourseService:
 
 
     def insert(self, args: dict):
-        new_course = Course(title=args['title'], description=args['description']) 
+        new_course = Course(title=args['title'], description=args['description'], datetime=args['datetime'], capacity=args['capacity']) 
         if self.course_repo.select_one_by_title(title=new_course.title):
             raise CourseAlreadyExistsException(new_course.title)
         else:
@@ -38,7 +38,7 @@ class CourseService:
     
 
     def update(self, course_id: int, args: dict):
-        update_course = Course(title=args['title'], description=args['description']) 
+        update_course = Course(title=args['title'], description=args['description'], datetime=args['datetime'], capacity=args['capacity']) 
         course = self.course_repo.select_one_by_id(course_id=course_id)
         
         if not course:

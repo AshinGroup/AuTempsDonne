@@ -55,6 +55,8 @@ class CourseRepo:
                 course = Course.query.filter_by(id=course_id).first()
                 course.title = update_course.title
                 course.description = update_course.description
+                course.datetime = update_course.datetime
+                course.capacity = update_course.capacity
                 db.session.commit()
                 db.session.close()
         except Exception:

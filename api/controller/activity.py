@@ -6,16 +6,17 @@ from flask import jsonify
 
 class ActivityCheckArgs:
 
-    pattern = {'date': r'\b\d{4}-\d{2}-\d{2}\b'}  # format : YYYY-MM-DD.
+    pattern = {'datetime': r'\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b',
+               'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b'}  # format : YYYY-MM-DD.
         
     
     def get_activity_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('name', type=str, required=True, help="Invalid or missing parameter 'name'")
-        parser.add_argument('datetime', type=inputs.regex(self.pattern['date']), required=True, help="Invalid or missing parameter 'datetime'")
-        parser.add_argument('description', type=str, required=True, help="Invalid or missing parameter 'description'")
-        parser.add_argument('capacity', type=int, required=True, help="Invalid or missing parameter 'name'")
-        parser.add_argument('type_id', type=int, required=True, help="Invalid or missing parameter 'type_id'")
+        parser.add_argument('name', type=str, required=True, help="Invalid or missing parameter 'name'.")
+        parser.add_argument('datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'datetime'.")
+        parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'.")
+        parser.add_argument('capacity', type=int, required=True, help="Invalid or missing parameter 'capactity'.")
+        parser.add_argument('type_id', type=int, required=True, help="Invalid or missing parameter 'type_id'.")
         
         args = parser.parse_args(strict=True)
         return args

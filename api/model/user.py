@@ -28,8 +28,20 @@ class User(db.Model):
             courses = [course.json_rest() for course in self.courses]
          
             
-        return {'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'status': self.status, 'phone':self.phone, 'roles': roles, 'activities': activities, 'courses': courses} 
+        return {'id' : self.id, 
+                'first_name': self.first_name, 
+                'last_name': self.last_name, 
+                'email': self.email, 
+                'status': self.status, 
+                'phone': self.phone, 
+                'roles': roles,  
+                'activities': activities, 
+                'courses': courses} 
     
 
     def json_rest(self):
-        return {'url': f"{os.getenv('API_PATH')}/user/{self.user_id}", 'id' : self.user_id, 'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email} 
+        return {'url': f"{os.getenv('API_PATH')}/user/{self.id}", 
+                'id' : self.id, 
+                'first_name': self.first_name, 
+                'last_name': self.last_name, 
+                'email': self.email} 

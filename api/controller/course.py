@@ -1,17 +1,20 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.course import CourseService
-from exception.course import CourseTitleNotFoundException, CourseIdNotFoundException, CourseAlreadyExistsException, CourseAccessDbException
+from exception.course import *
 from flask import jsonify
 
 class CourseCheckArgs:
     pattern = {'title': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,50}\b',  # lettres, chiffres, espaces et caractères spéciaux courants, de 1 à 50 caractères.
-                'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b'  # lettres, chiffres, espaces et caractères spéciaux courants, 1 à 500 caractères.
-            }
+               'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b',
+               'datetime': r'\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b'}
     
     def get_course_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('title', type=inputs.regex(self.pattern['title']), required=True, help="Invalid or missing parameter 'title'")
-        parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'")
+        parser.add_argument('title', type=inputs.regex(self.pattern['title']), required=True, help="Invalid or missing parameter 'title'.")
+        parser.add_argument('datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'datetime'.")
+        parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'.")
+        parser.add_argument('capacity', type=int, required=True, help="Invalid or missing parameter 'capactity'.")
+        
         args = parser.parse_args(strict=True)
         return args
 

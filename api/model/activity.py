@@ -10,6 +10,7 @@ class Activity(db.Model):
     datetime = db.Column(db.DateTime)
     description = db.Column(db.Text)
     capacity = db.Column(db.Integer)
+    group = db.Column(db.Integer) # 0 = Activity / 1 = Course / 2 = Service
 
     type_id = db.Column(db.Integer, db.ForeignKey('type.id'), nullable=False)
     users = db.relationship('User', secondary='user_participates_activity', back_populates='activities')
@@ -26,7 +27,7 @@ class Activity(db.Model):
                 'description': self.description,
                 'capacity': self.capacity,
                 'type': {
-                    'url':f"{os.getenv('API_PATH')}/activity/{self.type_id}",
+                    'url':f"{os.getenv('API_PATH')}/event/{self.type_id}",
                     'name': self.type.name
                 },
                 'users': users}

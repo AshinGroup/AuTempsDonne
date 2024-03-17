@@ -6,7 +6,9 @@ class Course(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(30), unique=True)
+    datetime = db.Column(db.DateTime)
     description = db.Column(db.Text)
+    capacity = db.Column(db.Integer)
 
     users = db.relationship('User', secondary='user_follows_course', back_populates='courses')
 
@@ -17,7 +19,9 @@ class Course(db.Model):
 
         return {'id': self.id, 
                 'title': self.title, 
+                'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"), 
                 'description': self.description, 
+                'capacity': self.capacity,
                 'users' : users}
     
 
@@ -25,7 +29,9 @@ class Course(db.Model):
         return {'url': f"{os.getenv('API_PATH')}/course/{self.id}", 
                 'id': self.id, 
                 'title': self.title, 
-                'description': self.description}
+                'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'description': self.description,
+                'capacity': self.capacity}
     
 
 user_follows_course = db.Table('user_follows_course', db.metadata,
