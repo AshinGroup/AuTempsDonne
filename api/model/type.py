@@ -21,7 +21,7 @@ class Type(db.Model):
     
 
     def json_rest(self):
-        return {'url': f"{os.getenv('API_PATH')}/event/type/{self.id}", 
+        return {'url': f"{os.getenv('API_PATH')}/type/{self.id}", 
                 'id': self.id, 
                 'name': self.name}
 

@@ -39,7 +39,8 @@ class Event(db.Model):
                 'capacity': self.capacity,
                 'group' : event_name,
                 'type': {
-                    'url':f"{os.getenv('API_PATH')}/event/{self.type_id}",
+                    'url':f"{os.getenv('API_PATH')}/type/{self.type_id}",
+                    'id': self.type.id,
                     'name': self.type.name
                 },
                 'users': users}
@@ -50,14 +51,7 @@ class Event(db.Model):
         return {'url': f"{os.getenv('API_PATH')}/event/{self.id}", 
                 'id': self.id,
                 'name' : self.name,
-                'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
-                'description': self.description,
-                'capacity': self.capacity,
-                'group' : event_name,
-                'type': {
-                    'url':f"{os.getenv('API_PATH')}/event/{self.type_id}",
-                    'name': self.type.name
-                }}
+                }
 
 
 user_participates_event = db.Table('user_participates_event', db.metadata,

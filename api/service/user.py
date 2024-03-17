@@ -58,8 +58,8 @@ class UserService:
         user = self.select_one_by_id(user_id=user_id)
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
-        if user.event:
-            for event in user.event:
+        if user.events:
+            for event in user.events:
                 if event.event_id == event_id:
                     raise UserParticipatesEventAlreadyExistsException(user_id=user_id)
         if not self.event_service.select_one_by_id(event_id=event_id):
@@ -105,8 +105,8 @@ class UserService:
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
         event_exist = False
-        if user.event:
-            for event in user.event:
+        if user.events:
+            for event in user.events:
                 if event.event_id == event_id:
                     event_exist = True
         if not event_exist:
