@@ -13,15 +13,15 @@ class Role(db.Model):
         users = []
         if self.users:
             users = [user.json_rest() for user in self.users]
-        return {'id': self.role_id, 
-                'name': self.role_name, 
+        return {'id': self.id, 
+                'name': self.name, 
                 'users': users}
 
 
     def json_rest(self):
         return {'url': f"{os.getenv('API_PATH')}/role/{self.id}", 
-                'role_id': self.id, 
-                'role_name': self.name}  
+                'id': self.id, 
+                'name': self.name}  
     
 
 user_is_role = db.Table('user_is_role', db.metadata,

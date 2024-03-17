@@ -78,7 +78,7 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               icon={<HeartHandshake size={20} />}
               text={
                 <FormattedMessage
-                  id="sidebar.activities"
+                  id="sidebar.events"
                   defaultMessage="Activities"
                 />
               }
@@ -144,9 +144,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
             />{" "}
           </button>
           <div
-            className={`flex justify-between items-center overflow-hidden transition-all ${
-              expanded ? "w-52 ml-3" : "w-0"
-            }`}
+            className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"
+              }`}
           >
             <div className="leading-4">
               <h4 className="font-semibold">Huang Frédéric</h4>
@@ -163,9 +162,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
           </div>
         </div>
         <div
-          className={`transition-all ease-in-out overflow-hidden ${
-            dropdownOpen ? "max-h-96" : "max-h-0"
-          }`}
+          className={`transition-all ease-in-out overflow-hidden ${dropdownOpen ? "max-h-96" : "max-h-0"
+            }`}
         >
           <SidebarContext.Provider value={{ expanded }}>
             <ul className="flex flex-col px-3 pb-2">
@@ -211,19 +209,17 @@ function SidebarItem({ icon, text, active, onClick }) {
         relative flex items-center py-3 px-3 my-1
         font-medium rounded-md cursor-pointer
         transition-colors ease-in-out ${expanded ? "group" : ""}
-        ${
-          active
-            ? "bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white"
-            : "text-gray-500"
+        ${active
+          ? "bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white"
+          : "text-gray-500"
         }
         hover:bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark hover:text-white
       `}
     >
       {icon}
       <span
-        className={`ml-3 overflow-hidden ease-in-out ${
-          expanded ? "inline" : "hidden"
-        }`}
+        className={`ml-3 overflow-hidden ease-in-out ${expanded ? "inline" : "hidden"
+          }`}
       >
         {text}
       </span>

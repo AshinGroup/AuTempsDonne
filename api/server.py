@@ -7,13 +7,11 @@ from database.db import db, create_database
 
 # Import Controllers
 from controller.user import UserController, UserListController
-from controller.user import UserParticipatesActivityController
-from controller.user import UserFollowsCourseController
+from controller.user import UserParticipatesEventController
 from controller.user import UserIsRoleController
 from controller.user import UserPageController, UserSearchController
-from controller.activity import ActivityController, ActivityListController
+from controller.event import EventController, EventListController
 from controller.type import TypeController, TypeListController
-from controller.course import CourseController, CourseListController
 from controller.role import RoleController, RoleListController
 from controller.auth import RegisterController, ProtectedController, LoginController, RefreshTokenController
 
@@ -22,8 +20,7 @@ from controller.auth import RegisterController, ProtectedController, LoginContro
 
 # Import Models
 from model.user import User
-from model.activity import Activity
-from model.course import Course
+from model.event import Event
 from model.role import Role
 from model.type import Type
 
@@ -39,16 +36,13 @@ api.add_resource(UserPageController, f'{prefix}/user/page/<int:page>')
 api.add_resource(UserSearchController, f'{prefix}/user/page/<int:page>/search/<string:search>')
 api.add_resource(UserController, f'{prefix}/user/<int:user_id>')
 api.add_resource(UserIsRoleController, f'{prefix}/user/<int:user_id>/role/<int:role_id>')
-api.add_resource(UserParticipatesActivityController, f'{prefix}/user/<int:user_id>/activity/<int:activity_id>')
-api.add_resource(UserFollowsCourseController, f'{prefix}/user/<int:user_id>/course/<int:course_id>')
+api.add_resource(UserParticipatesEventController, f'{prefix}/user/<int:user_id>/event/<int:event_id>')
 
-api.add_resource(ActivityListController, f'{prefix}/activity')
-api.add_resource(ActivityController, f'{prefix}/activity/<int:activity_id>')
+api.add_resource(EventListController, f'{prefix}/event')
+api.add_resource(EventController, f'{prefix}/event/<int:event_id>')
 api.add_resource(TypeListController, f'{prefix}/type')
 api.add_resource(TypeController, f'{prefix}/type/<int:type_id>')
 
-api.add_resource(CourseListController, f'{prefix}/course')
-api.add_resource(CourseController, f'{prefix}/course/<int:course_id>')
 api.add_resource(RoleListController, f'{prefix}/role')
 api.add_resource(RoleController, f'{prefix}/role/<int:role_id>')
 api.add_resource(RegisterController, f'{prefix}/register')

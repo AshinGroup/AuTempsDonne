@@ -89,9 +89,8 @@ export default function PlanningUserModal({
               (_, day) => (
                 <div
                   key={`${day}`}
-                  className={`py-1 flex flex-row justify-center ${
-                    day === currentDay - 1 ? "bg-AshinBlue text-white" : ""
-                  } hover:bg-blue-200 hover:text-white cursor-pointer rounded`}
+                  className={`py-1 flex flex-row justify-center ${day === currentDay - 1 ? "bg-AshinBlue text-white" : ""
+                    } hover:bg-blue-200 hover:text-white cursor-pointer rounded`}
                   onClick={() => handleDayClick(day + 1)}
                 >
                   {day + 1}
@@ -110,11 +109,11 @@ export default function PlanningUserModal({
         <div className={`bg-gray-200 ${expanded ? "h-[60vh] w-[70vh]" : ""}`}>
           {/* GET Activities by ID,  */}
           <p className="font-bold">
-            This section will display the activities with a dropdown with all
+            This section will display the events with a dropdown with all
             the extras
           </p>
           <p>No fetch for now, but needed for :</p>
-          <p> - activities section </p>
+          <p> - events section </p>
           <p> - pings dates</p>
         </div>
       </div>

@@ -1,10 +1,9 @@
 {
   "sidebar.users": "用户",
-  "sidebar.activities": "活动",
+  "sidebar.events": "活动",
   "sidebar.courses": "课程",
   "sidebar.profile": "个人资料",
   "sidebar.logout": "登出",
-
   "users.usersManagement": "用户管理",
   "users.addANewUser": "+ 添加新用户",
   "users.search": "搜索",
@@ -15,12 +14,10 @@
   "users.roles": "角色",
   "users.status": "状态",
   "users.actions": "操作",
-
   "deleteModal.confirmDelete": "确认删除",
   "deleteModal.confirmDeleteMessage": "您确定要删除这个吗？",
   "deleteModal.delete": "删除",
   "deleteModal.cancel": "取消",
-
   "addUserModal.status": "状态",
   "addUserModal.active": "活跃",
   "addUserModal.inactive": "不活跃",
@@ -44,10 +41,8 @@
   "addUserModal.passwordValidPattern": "密码必须包含至少一个大写字母，一个小写字母，一个数字和一个特殊字符。",
   "addUserModal.passwordValidLength": "密码必须至少有8个字符。",
   "addUserModal.addUser": "添加用户",
-
   "modifyUserModal.modifyUser": "修改用户",
   "modifyUserModal.password": "密码（留空则不更改）",
-
   "courses.coursesManagement": "课程管理",
   "courses.addANewCourse": "+ 添加新课程",
   "courses.searchPlaceholder": "按标题搜索...",
@@ -56,7 +51,6 @@
   "courses.dateTime": "日期与时间",
   "courses.maxSlots": "名额",
   "courses.location": "地点",
-
   "addCourseModal.titlePlaceholder": "课程标题",
   "addCourseModal.titleRequired": "需要标题。",
   "addCourseModal.descriptionPlaceholder": "我的课程描述",
@@ -70,6 +64,5 @@
   "addCourseModal.locationRequired": "需要地点。",
   "addCourseModal.locationPattern": "例子：小马路10号",
   "addCourseModal.addCourse": "添加课程",
-
   "updateCourseModal.updateCourse": "更新课程"
 }

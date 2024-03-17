@@ -1,10 +1,9 @@
 {
   "sidebar.users": "Users",
-  "sidebar.activities": "Activities",
+  "sidebar.events": "Activities",
   "sidebar.courses": "Courses",
   "sidebar.profile": "Profile",
   "sidebar.logout": "Logout",
-
   "users.usersManagement": "Users Management",
   "users.addANewUser": "+ Add a new user",
   "users.search": "Search",
@@ -15,12 +14,10 @@
   "users.roles": "Roles",
   "users.status": "Status",
   "users.actions": "Actions",
-
   "deleteModal.confirmDelete": "Confirm Delete",
   "deleteModal.confirmDeleteMessage": "Are you sure you want to delete this ?",
   "deleteModal.delete": "Delete",
   "deleteModal.cancel": "Cancel",
-
   "addUserModal.status": "Status",
   "addUserModal.active": "Active",
   "addUserModal.inactive": "Inactive",
@@ -44,10 +41,8 @@
   "addUserModal.passwordValidPattern": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
   "addUserModal.passwordValidLength": "Password must be at least 8 characters.",
   "addUserModal.addUser": "Add User",
-
   "modifyUserModal.modifyUser": "Modify User",
   "modifyUserModal.password": "Password (leave empty to keep the same)",
-
   "courses.coursesManagement": "Courses Management",
   "courses.addANewCourse": "+ Add a new course",
   "courses.searchPlaceholder": "Search by title ...",
@@ -56,7 +51,6 @@
   "courses.dateTime": "Date & Time",
   "courses.maxSlots": "Slots",
   "courses.location": "Location",
-
   "addCourseModal.titlePlaceholder": "Title of the course",
   "addCourseModal.titleRequired": "Title is required.",
   "addCourseModal.descriptionPlaceholder": "Description of my course",
@@ -70,6 +64,5 @@
   "addCourseModal.locationRequired": "Location is required.",
   "addCourseModal.locationPattern": "Exemple : 10 rue des petits écuries",
   "addCourseModal.addCourse": "Add Course",
-
   "updateCourseModal.updateCourse": "Update Course"
 }
