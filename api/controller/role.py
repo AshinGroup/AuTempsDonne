@@ -65,7 +65,7 @@ class RoleListController(Resource):
             if roles:
                 return jsonify([role.json() for role in roles])
             else:
-                return jsonify({'message': "None roles."})
+                return jsonify({'message': "No roles found."})
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         

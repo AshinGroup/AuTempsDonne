@@ -17,8 +17,8 @@ class TypeService:
         
 
     def select_all(self):
-        activities = self.type_repo.select_all()
-        return activities
+        events = self.type_repo.select_all()
+        return events
 
 
     def insert(self, args: dict):

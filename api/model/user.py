@@ -13,19 +13,14 @@ class User(db.Model):
     status = db.Column(db.Integer) # 0 = waiting, 1 = valided
 
     roles = db.relationship('Role', secondary='user_is_role', back_populates='users')
-    activities = db.relationship('Activity', secondary='user_participates_activity', back_populates='users')
-    courses = db.relationship('Course', secondary='user_follows_course', back_populates='users')
+    events = db.relationship('Event', secondary='user_participates_event', back_populates='users')
 
     def json(self):
         roles = [role.json_rest() for role in self.roles]
 
-        activities = []
-        if self.activities:
-            activities = [activity.json_rest() for activity in self.activities]
-        
-        courses = []
-        if self.courses:
-            courses = [course.json_rest() for course in self.courses]
+        events = []
+        if self.events:
+            events = [event.json_rest() for event in self.events]
          
             
         return {'id' : self.id, 
@@ -35,8 +30,7 @@ class User(db.Model):
                 'status': self.status, 
                 'phone': self.phone, 
                 'roles': roles,  
-                'activities': activities, 
-                'courses': courses} 
+                'events': events} 
     
 
     def json_rest(self):

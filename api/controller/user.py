@@ -1,11 +1,7 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.user import UserService
-from exception.user import UserAccessDbException
-from exception.user import UserFollowsCourseAlreadyExistsException, UserParticipatesActivityAlreadyExistsException, UserIsRoleAlreadyExistsException
-from exception.user import UserIdNotFoundException, UserAlreadyExistsException
-from exception.user import UserFollowsCourseNotFoundException, UserParticipatesActivityNotFoundException, UserIsRoleNotFoundException, UserRoleNotEmptyException
-from exception.activity import ActivityIdNotFoundException, ActivityAccessDbException
-from exception.course import CourseIdNotFoundException, CourseAccessDbException
+from exception.user import *
+from exception.event import EventIdNotFoundException, EventAccessDbException
 from exception.role import RoleIdNotFoundException, RoleAccessDbException
 from flask import jsonify
 
@@ -88,7 +84,7 @@ class UserListController(Resource):
             if users:
                 return jsonify([user.json() for user in users])
             else:
-                return jsonify({'message': "None users."})
+                return jsonify({'message': "No users found."})
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
@@ -117,7 +113,7 @@ class UserPageController(Resource):
             if users:
                 return jsonify({'max_pages': users['max_pages'], 'users': [user.json() for user in users['users']]})
             else:
-                return jsonify({'message': "None users."})
+                return jsonify({'message': "No users found."})
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
@@ -132,40 +128,40 @@ class UserSearchController(Resource):
             if users:
                 return jsonify({'max_pages': users['max_pages'], 'users': [user.json() for user in users['users']]})
             else:
-                return jsonify({'message': "None users."})
+                return jsonify({'message': "No users found."})
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
 
         
-class UserParticipatesActivityController(Resource):
+class UserParticipatesEventController(Resource):
     def __init__(self) -> None:
         self.user_service = UserService()
 
 
-    def post(self, user_id: int, activity_id: int) -> None:
+    def post(self, user_id: int, event_id: int) -> None:
         try:
-            self.user_service.insert_activity(user_id=user_id, activity_id=activity_id)
-            return jsonify({'message': f"User id '{user_id}' successfully participates activity id '{activity_id}'."})
+            self.user_service.insert_event(user_id=user_id, event_id=event_id)
+            return jsonify({'message': f"User id '{user_id}' successfully participates event id '{event_id}'."})
         except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except ActivityIdNotFoundException as e:
+        except EventIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except UserParticipatesActivityAlreadyExistsException as e:
+        except UserParticipatesEventAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except ActivityAccessDbException as e:
+        except EventAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
 
-    def delete(self, user_id: int, activity_id: int) -> None:
+    def delete(self, user_id: int, event_id: int) -> None:
         try: 
-            self.user_service.delete_activity(user_id=user_id, activity_id=activity_id)
-            return jsonify({'message':f"User id '{user_id}' successfully leave activity id '{activity_id}'."})
+            self.user_service.delete_event(user_id=user_id, event_id=event_id)
+            return jsonify({'message':f"User id '{user_id}' successfully leave event id '{event_id}'."})
         except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except UserParticipatesActivityNotFoundException as e:
+        except UserParticipatesEventNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
@@ -207,36 +203,5 @@ class UserIsRoleController(Resource):
 
 
 
-class UserFollowsCourseController(Resource):
-    def __init__(self) -> None:
-        self.user_service = UserService()
-
-
-    def post(self, user_id: int, course_id: int) -> None:
-        try:
-            self.user_service.insert_course(user_id=user_id, course_id=course_id)
-            return jsonify({'message': f"User id '{user_id}' successfully follows course id '{course_id}'."})
-        except UserIdNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except CourseIdNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except UserFollowsCourseAlreadyExistsException as e:
-            abort(http_status_code=400, message=str(e))
-        except UserAccessDbException as e:
-            abort(http_status_code=500, message=str(e))
-        except CourseAccessDbException as e:
-            abort(http_status_code=500, message=str(e))
-
-
-    def delete(self, user_id: int, course_id: int) -> None:
-        try: 
-            self.user_service.delete_course(user_id=user_id, course_id=course_id)
-            return jsonify({'message': f"User id '{user_id}' successfully unfollow course id '{course_id}'."})
-        except UserIdNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except UserFollowsCourseNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except UserAccessDbException as e:
-            abort(http_status_code=500, message=str(e))
 
 
