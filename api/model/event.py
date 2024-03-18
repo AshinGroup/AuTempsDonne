@@ -12,6 +12,7 @@ class Event(db.Model):
     group = db.Column(db.Integer) # 0 = All / 1 = Activity / 2 = Course / 3 = Service
 
     type_id = db.Column(db.Integer, db.ForeignKey('type.id'), nullable=False)
+    location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
     users = db.relationship('User', secondary='user_participates_event', back_populates='events')
 
 
