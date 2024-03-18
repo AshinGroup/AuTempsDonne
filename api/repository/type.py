@@ -38,7 +38,6 @@ class TypeRepo():
             with app.app_context():
                 type = Type.query.filter_by(id=type_id).first()
                 type.name = update_type.name
-                type.datetime = update_type.atetime
                 db.session.commit()
                 db.session.close()
         except Exception:

@@ -6,14 +6,12 @@ import os
 from database.db import db, create_database
 
 # Import Controllers
-from controller.user import UserController, UserListController
-from controller.user import UserParticipatesEventController
-from controller.user import UserIsRoleController
-from controller.user import UserPageController, UserSearchController
-from controller.event import EventController, EventListController
-from controller.type import TypeController, TypeListController
-from controller.role import RoleController, RoleListController
-from controller.auth import RegisterController, ProtectedController, LoginController, RefreshTokenController
+from controller.user import * 
+from controller.event import *
+from controller.type import *
+from controller.role import *
+from controller.auth import *
+from controller.location import *
 
 
 
@@ -23,6 +21,7 @@ from model.user import User
 from model.event import Event
 from model.role import Role
 from model.type import Type
+from model.location import Location
 
 from app import app
 
@@ -40,11 +39,16 @@ api.add_resource(UserParticipatesEventController, f'{prefix}/user/<int:user_id>/
 
 api.add_resource(EventListController, f'{prefix}/event')
 api.add_resource(EventController, f'{prefix}/event/<int:event_id>')
+
 api.add_resource(TypeListController, f'{prefix}/type')
 api.add_resource(TypeController, f'{prefix}/type/<int:type_id>')
 
 api.add_resource(RoleListController, f'{prefix}/role')
 api.add_resource(RoleController, f'{prefix}/role/<int:role_id>')
+
+api.add_resource(LocationListController, f'{prefix}/location')
+api.add_resource(LocationController, f'{prefix}/location/<int:location_id>')
+
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')
 api.add_resource(ProtectedController, f'{prefix}/protected')
