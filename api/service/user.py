@@ -73,7 +73,7 @@ class UserService:
             raise UserIdNotFoundException(user_id=user_id)
         if user.roles:
             for role in user.roles:
-                if role.role_id == role_id:
+                if role.id == role_id:
                     raise UserIsRoleAlreadyExistsException(user_id=user_id, role_id=role_id)
         if not self.role_service.select_one_by_id(role_id=role_id):
             raise RoleIdNotFoundException
@@ -107,7 +107,7 @@ class UserService:
         event_exist = False
         if user.events:
             for event in user.events:
-                if event.event_id == event_id:
+                if event.id == event_id:
                     event_exist = True
         if not event_exist:
             raise UserParticipatesEventNotFoundException(user_id=user_id, event_id=event_id)
@@ -121,7 +121,7 @@ class UserService:
         role_exist = False
         if user.roles:
             for role in user.roles:
-                if role.role_id == role_id:
+                if role.id == role_id:
                     role_exist = True
         if len(user.roles) == 1:
             raise UserRoleNotEmptyException(user_id=user_id)
