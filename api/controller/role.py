@@ -3,13 +3,15 @@ from service.role import RoleService
 from exception.role import RoleIdNotFoundException, RoleAccessDbException
 from flask import jsonify
 
+
 class RoleCheckArgs:
-    pattern = {'name': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,15}\b'} # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 15 caractères.
-            
-    
+    # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 15 caractères.
+    pattern = {'name': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,15}\b'}
+
     def get_role_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('name', type=inputs.regex(self.pattern['name']), required=True, help="Invalid or missing parameter 'role_name'")
+        parser.add_argument('name', type=inputs.regex(
+            self.pattern['name']), required=True, help="Invalid or missing parameter 'rolename'")
         args = parser.parse_args(strict=True)
         return args
 
@@ -20,7 +22,6 @@ class RoleController(Resource):
         self.check_args = RoleCheckArgs()
         self.role_service = RoleService()
 
-
     def get(self, role_id: int):
         try:
             role = self.role_service.select_one_by_id(role_id=role_id)
@@ -29,7 +30,6 @@ class RoleController(Resource):
             abort(http_status_code=404, message=str(e))
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-   
 
     def put(self, role_id: int):
         try:
@@ -39,8 +39,7 @@ class RoleController(Resource):
         except RoleIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except RoleAccessDbException as e:
-            abort(http_status_code=500, message=str(e))        
-   
+            abort(http_status_code=500, message=str(e))
 
     def delete(self, role_id: int):
         try:
@@ -49,15 +48,13 @@ class RoleController(Resource):
         except RoleIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except RoleAccessDbException as e:
-            abort(http_status_code=500, message=str(e)) 
-            
-   
-    
+            abort(http_status_code=500, message=str(e))
+
+
 class RoleListController(Resource):
     def __init__(self) -> None:
         self.check_args = RoleCheckArgs()
         self.role_service = RoleService()
-    
 
     def get(self):
         try:
@@ -68,7 +65,6 @@ class RoleListController(Resource):
                 return jsonify({'message': "No roles found."})
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        
 
     def post(self):
         try:

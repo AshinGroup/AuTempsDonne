@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { FormattedMessage } from "react-intl";
-import { Trash2, GraduationCap } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { Modal } from "../modals/modal";
-import DeleteModal from "../modals/deleteModal";
+import { Trash2 } from "lucide-react";
+import { Modal } from "./modal";
 
-export default function SlotsCourseModal({
+export default function SlotsEventModal({
   SlotsModalOpen,
   SlotsModalSetOpen,
-  course,
+  event,
   fetchUsers,
 }) {
   // Remove a user from the Course
-  const deleteUserCourse = (courseId) => {
+  const deleteUserCourse = (eventId) => {
     // fetch(`http://127.0.0.1:5000/user/${courseId}`, {
     //   method: "DELETE",
     //   headers: {
@@ -31,7 +29,7 @@ export default function SlotsCourseModal({
     <Modal open={SlotsModalOpen} onClose={SlotsModalSetOpen}>
       <div className="text-center">
         <p className="font-bold text-lg py-2 px-5 mt-3 mb-8 mx-24 border border-[4px] border-AshinBlue rounded">
-          {course.title}
+          {event.title}
         </p>
         <div className="overflow-auto max-h-[400px]">
           <table className="w-full">
@@ -49,13 +47,13 @@ export default function SlotsCourseModal({
               </tr>
             </thead>
             <tbody>
-              {course.users.map((user, index) => (
+              {event.users.map((user, index) => (
                 <tr key={index} className="border-b-2">
                   <td className="px-4 py-3">{user.email}</td>
                   <td className="px-4 py-3">
                     <button
                       className="text-red-600 hover:text-red-800 mr-2"
-                      onClick={() => deleteUserCourse(course.id)}
+                      onClick={() => deleteUserCourse(event.id)}
                     >
                       {<Trash2 size={20} />}
                     </button>

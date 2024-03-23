@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { useIntl } from "react-intl";
-import { GraduationCap } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
+import { SquarePen } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Modal } from "../modals/modal";
+import { Modal } from "./modal";
 
-export default function AddCourseModal({
-  AddModalOpen,
-  AddModalSetOpen,
+export default function UpdateCourseModal({
+  UpdateModalOpen,
+  UpdateModalSetOpen,
+  event,
   fetchUsers,
 }) {
   const {
@@ -15,77 +16,137 @@ export default function AddCourseModal({
     setValue,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      title: event.title,
+      description: event.description,
+      datetime: event.dateTime,
+      slot: event.maxSlot,
+      location: event.location,
+    },
+  });
 
+  const [types, setTypes] = useState([]);
+  const [group, setGroup] = useState(1);
+  const [selectedTypes, setSelectedTypes] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
 
   const intl = useIntl();
 
   const titlePlaceholder = intl.formatMessage({
-    id: "addCourseModal.titlePlaceholder",
-    defaultMessage: "Title of the course",
+    id: "EventModal.titlePlaceholder",
+    defaultMessage: "Title of the Event",
   });
 
   const titleRequired = intl.formatMessage({
-    id: "addCourseModal.titleRequired",
+    id: "EventModal.titleRequired",
     defaultMessage: "Title is required.",
   });
 
   const descriptionPlaceholder = intl.formatMessage({
-    id: "addCourseModal.descriptionPlaceholder",
-    defaultMessage: "Description of my course",
+    id: "EventModal.descriptionPlaceholder",
+    defaultMessage: "Description of my Event",
   });
 
   const descriptionRequired = intl.formatMessage({
-    id: "addCourseModal.descriptionRequired",
+    id: "EventModal.descriptionRequired",
     defaultMessage: "Description is required.",
   });
 
   const descriptionMax = intl.formatMessage({
-    id: "addCourseModal.descriptionMax",
+    id: "EventModal.descriptionMax",
     defaultMessage: "Description must be less than 200 characters.",
   });
 
   const dateTimeRequired = intl.formatMessage({
-    id: "addCourseModal.dateTimeRequired",
+    id: "EventModal.dateTimeRequired",
     defaultMessage: "Date & Time is required.",
   });
 
   const slotPlaceholder = intl.formatMessage({
-    id: "addCourseModal.slotPlaceholder",
+    id: "EventModal.slotPlaceholder",
     defaultMessage: "Number of slots",
   });
 
   const slotRequired = intl.formatMessage({
-    id: "addCourseModal.slotRequired",
+    id: "EventModal.slotRequired",
     defaultMessage: "Number of slots is required (1 to 100).",
   });
 
   const locationPlaceholder = intl.formatMessage({
-    id: "addCourseModal.locationPlaceholder",
+    id: "EventModal.locationPlaceholder",
     defaultMessage: "Location",
   });
 
   const locationRequired = intl.formatMessage({
-    id: "addCourseModal.locationRequired",
+    id: "EventModal.locationRequired",
     defaultMessage: "Location is required.",
   });
 
   const locationPattern = intl.formatMessage({
-    id: "addCourseModal.locationPattern",
+    id: "EventModal.locationPattern",
     defaultMessage: "Example: 10 rue des petits écuries",
   });
 
-  const addCourse = intl.formatMessage({
-    id: "addCourseModal.addCourse",
-    defaultMessage: "Add Course",
+  const updateEvent = intl.formatMessage({
+    id: "EventModal.updateEvent",
+    defaultMessage: "Update Event",
   });
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/api/type")
+      .then((response) => response.json())
+      .then((fetchedTypes) => {
+        setTypes(fetchedTypes);
+        const defaultSelectedTypes = event.type
+          .map((eventType) => eventType.id)
+          .filter((typeId) =>
+            fetchedTypes.some((fetchedType) => fetchedType.id === typeId)
+          );
+        setSelectedTypes(defaultSelectedTypes);
+      })
+      .catch((error) => console.error("Error fetching types:", error));
+  }, [event.type]);
+
+  // Register in the Hook
+  useEffect(() => {
+    register("types");
+  }, [register]);
+
+  useEffect(() => {
+    register("group");
+  }, [register]);
+
+  // Change the status and set the value in the form
+  const toggleGroup = (newGroup) => {
+    setGroup(newGroup);
+    setValue("group", newGroup);
+  };
+
+  // Change the type and set the value in the form
+  const toggleTypesSelection = (roleId) => {
+    // Minimum 1 role
+    if (selectedTypes.length === 1 && selectedTypes.includes(roleId)) {
+      return;
+    }
+
+    const currentIndex = selectedTypes.indexOf(roleId);
+    const newSelectedTypes = [...selectedTypes];
+
+    if (currentIndex === -1) {
+      newSelectedTypes.push(roleId);
+    } else {
+      newSelectedTypes.splice(currentIndex, 1);
+    }
+
+    setSelectedTypes(newSelectedTypes);
+  };
 
   // POST
   const onPostSubmit = async (data) => {
     try {
-      //   let response = await fetch("http://localhost:5000/user", {
+      //   let response = await fetch("http://localhost:5000/event", {
       //     method: "POST",
       //     headers: {
       //       "Content-Type": "application/json",
@@ -111,9 +172,9 @@ export default function AddCourseModal({
   };
 
   return (
-    <Modal open={AddModalOpen} onClose={AddModalSetOpen}>
-      <div className="text-center w-full ">
-        <GraduationCap size={40} className="mx-auto text-AshinBlue" />
+    <Modal open={UpdateModalOpen} onClose={UpdateModalSetOpen}>
+      <div className="text-center mt-5 w-full ">
+        <SquarePen size={40} className="mx-auto text-AshinBlue" />
         <p
           className={` my-2 font-medium ${
             isErrorMessage ? "text-green-500" : "text-red-500"
@@ -151,6 +212,10 @@ export default function AddCourseModal({
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
             rows="4"
           ></textarea>
+          {errors.description && (
+            <p className="text-red-500">{errors.description.message}</p>
+          )}
+
           {errors.description && (
             <p className="text-red-500">{errors.description.message}</p>
           )}
@@ -214,11 +279,81 @@ export default function AddCourseModal({
           {errors.location && (
             <p className="text-red-500">{errors.location.message}</p>
           )}
+          {/* Group selection */}
+          <div>
+            <label className="font-bold text-gray-500">
+              {" "}
+              <FormattedMessage id="event.group" defaultMessage="Group" />:
+            </label>
+            <div className="flex flex-wrap gap-2 my-3 justify-center">
+              <button
+                type="button"
+                onClick={() => toggleGroup(1)}
+                className={`px-4 mx-1 py-1 border ${
+                  group === 1
+                    ? "bg-gradient-to-tr from-blue-300 to-blue-600 border-blue-700 bg-blue-500 text-white"
+                    : "border-gray-300 bg-gray-200 text-gray-400"
+                } rounded-full transition focus:outline-none`}
+              >
+                <FormattedMessage
+                  id="event.activity"
+                  defaultMessage="Activity"
+                />
+              </button>
+              <button
+                type="button"
+                onClick={() => toggleGroup(2)}
+                className={`px-4 mx-1 py-1 border ${
+                  group === 2
+                    ? "bg-gradient-to-tr from-yellow-300 to-yellow-600 border-yellow-700 bg-yellow-500 text-white"
+                    : "border-gray-300 bg-gray-200 text-gray-400"
+                } rounded-full transition focus:outline-none`}
+              >
+                <FormattedMessage id="event.course" defaultMessage="Course" />
+              </button>
+              <button
+                type="button"
+                onClick={() => toggleGroup(3)}
+                className={`px-4 mx-1 border ${
+                  group === 3
+                    ? "bg-gradient-to-tr from-orange-300 to-orange-600 border-orange-700 bg-orange-500 text-white"
+                    : "border-gray-300 bg-gray-200 text-gray-400"
+                } rounded-full transition focus:outline-none`}
+              >
+                <FormattedMessage id="event.service" defaultMessage="Service" />
+              </button>
+            </div>
+          </div>
+          {/* Roles Pills */}
+          <div>
+            <label className="font-bold text-gray-500">
+              <FormattedMessage id="Event.type" defaultMessage="Type" />:
+            </label>
+            <div className="flex flex-wrap gap-2 my-3 justify-center">
+              {types.map((type) => (
+                <button
+                  key={type.id}
+                  type="button"
+                  onClick={() => toggleTypesSelection(type.id)}
+                  className={`px-4 py-1 border transition-all ${
+                    selectedTypes.includes(type.id)
+                      ? "border-white bg-AshinBlue text-white"
+                      : "border-gray-300 bg-gray-200 text-gray-400"
+                  } rounded-full focus:outline-none`}
+                >
+                  {type.name}
+                </button>
+              ))}
+            </div>
+          </div>
+          {errors.types && (
+            <p className="text-red-500">{errors.types.message}</p>
+          )}
 
           {/* Submit Selection */}
           <input
             type="submit"
-            value={addCourse}
+            value={updateEvent}
             className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
           />
         </form>

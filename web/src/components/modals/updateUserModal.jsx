@@ -104,14 +104,14 @@ export default function UpdateUserModal({
   });
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/role")
+    fetch("http://127.0.0.1:5000/api/role")
       .then((response) => response.json())
       .then((fetchedRoles) => {
         setRoles(fetchedRoles);
         const defaultSelectedRoles = user.role
-          .map((userRole) => userRole.role_id)
+          .map((userRole) => userRole.id)
           .filter((roleId) =>
-            fetchedRoles.some((fetchedRole) => fetchedRole.role_id === roleId)
+            fetchedRoles.some((fetchedRole) => fetchedRole.id === roleId)
           );
         setSelectedRoles(defaultSelectedRoles);
       })
@@ -156,7 +156,7 @@ export default function UpdateUserModal({
 
       data["status"] = status;
 
-      let response = await fetch(`http://localhost:5000/user/${user.id}`, {
+      let response = await fetch(`http://localhost:5000/api/user/${user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -175,12 +175,12 @@ export default function UpdateUserModal({
         setResponseMessage(req.message);
         setIsErrorMessage(true);
       }
-      const userInitialRoles = user.role.map((userRole) => userRole.role_id);
+      const userInitialRoles = user.role.map((userRole) => userRole.id);
 
       for (const selectedRole of selectedRoles) {
         if (!userInitialRoles.includes(selectedRole)) {
           await fetch(
-            `http://localhost:5000/user/${user.id}/role/${selectedRole}`,
+            `http://localhost:5000/user/${user.id}/api/role/${selectedRole}`,
             {
               method: "POST",
               headers: {
@@ -194,7 +194,7 @@ export default function UpdateUserModal({
       for (const userInitialRole of userInitialRoles) {
         if (!selectedRoles.includes(userInitialRole)) {
           await fetch(
-            `http://localhost:5000/user/${user.id}/role/${userInitialRole}`,
+            `http://localhost:5000/user/${user.id}/api/role/${userInitialRole}`,
             {
               method: "DELETE",
               headers: {
@@ -364,16 +364,16 @@ export default function UpdateUserModal({
             <div className="flex flex-wrap gap-2 my-3 justify-center">
               {roles.map((role) => (
                 <button
-                  key={role.role_id}
+                  key={role.id}
                   type="button"
-                  onClick={() => toggleRoleSelection(role.role_id)}
+                  onClick={() => toggleRoleSelection(role.id)}
                   className={`px-4 py-1 border transition-all ${
-                    selectedRoles.includes(role.role_id)
+                    selectedRoles.includes(role.id)
                       ? "border-white bg-AshinBlue text-white"
                       : "border-gray-300 bg-gray-200 text-gray-400"
                   } rounded-full focus:outline-none`}
                 >
-                  {role.role_name}
+                  {role.name}
                 </button>
               ))}
             </div>

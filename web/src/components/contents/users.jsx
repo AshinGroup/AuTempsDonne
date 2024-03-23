@@ -41,8 +41,8 @@ const Users = () => {
   const fetchUsers = () => {
     let url =
       searchInput != ""
-        ? `http://127.0.0.1:5000/user/page/${currentPage}/search/${searchInput}`
-        : `http://127.0.0.1:5000/user/page/${currentPage}`;
+        ? `http://127.0.0.1:5000/api/user/page/${currentPage}/search/${searchInput}`
+        : `http://127.0.0.1:5000/api/user/page/${currentPage}`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -67,7 +67,7 @@ const Users = () => {
 
   // Remove a user from the API
   const deleteUser = (userId) => {
-    fetch(`http://127.0.0.1:5000/user/${userId}`, {
+    fetch(`http://127.0.0.1:5000/api/user/${userId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -226,6 +226,7 @@ const Users = () => {
           </thead>
           <tbody>
             {/* For each user ... */}
+            {console.log(users)}
             {users.map((user) => (
               <tr key={user.id} className="border-b">
                 {/* email & name */}
@@ -249,7 +250,7 @@ const Users = () => {
                 )}
                 {/* roles */}
                 <td className={`w-1/6 ${!expanded ? "text-sm" : ""}`}>
-                  {user.role.map((role) => role.role_name).join(", ")}
+                  {user.roles?.map((role) => role.name).join(", ") ?? ""}
                 </td>
                 {/* status */}
                 <td className="py-4">

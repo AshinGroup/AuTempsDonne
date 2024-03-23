@@ -3,13 +3,13 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { format } from "date-fns";
 import { Settings, Trash2 } from "lucide-react";
 import DeleteModal from "../modals/deleteModal";
-import AddCourseModal from "../modals/addCourseModal";
-import UpdateCourseModal from "../modals/updateCourseModal";
-import SlotsCourseModal from "../modals/slotsCourseModal";
+import AddEventModal from "../modals/addEventModal";
+import UpdateEventModal from "../modals/updateEventModal";
+import SlotsEventModal from "../modals/slotsEventModal";
 
-const Courses = () => {
-  // Display the courses and Pagination
-  const [courses, setCourses] = useState([]);
+const Events = () => {
+  // Display the events and Pagination
+  const [events, setEvents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
   const pageNumbers = [];
@@ -18,22 +18,20 @@ const Courses = () => {
   const [searchInput, setSearchInput] = useState("");
 
   // Handle all the modals
-  const [slectedCourseIdForDelete, setSelectedCourseIdForDelete] =
-    useState(null);
+  const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
   const [AddModalOpen, AddModalSetOpen] = useState(false);
-  const [SelectedCourseIdForUpdate, setSelectedCourseIdForUpdate] =
+  const [SelectedEventIdForUpdate, setSelectedEventIdForUpdate] =
     useState(null);
-  const [SelectedCourseIdForSlots, setSelectedCourseIdForSlots] =
-    useState(null);
+  const [SelectedEventIdForSlots, setSelectedEventIdForSlots] = useState(null);
   const intl = useIntl();
 
   const searchPlaceholder = intl.formatMessage({
-    id: "courses.searchPlaceholder",
-    defaultMessage: "Search by title ...",
+    id: "events.searchPlaceholder",
+    defaultMessage: "Search by name ...",
   });
 
   // Fetch the users from the API
-  const fetchCourses = () => {
+  const fetchEvents = () => {
     // let url =
     //   searchInput != ""
     //     ? `http://127.0.0.1:5000/user/page/${currentPage}/search/${searchInput}`
@@ -59,7 +57,7 @@ const Courses = () => {
     //     console.error("Error fetching users:", error);
     //   });
 
-    let courses_json = [
+    let events_json = [
       {
         id: 1,
         title: "Introduction to Programming",
@@ -67,6 +65,11 @@ const Courses = () => {
           "Learn the basics of programming with Python, covering variables, loops, and functions.",
         dateTime: "2024-03-20T10:00:00",
         maxSlot: 30,
+        group: 0,
+        type: {
+          id: 2,
+          name: "Dog Development",
+        },
         location: "Room 101, Tech Building",
         users: [
           {
@@ -133,6 +136,11 @@ const Courses = () => {
         description:
           "Dive deep into web technologies with this course on React, Node.js, and MongoDB.",
         dateTime: "2024-03-22T14:00:00",
+        group: 1,
+        type: {
+          id: 1,
+          name: "Web Development",
+        },
         maxSlot: 25,
         location: "Room 202, Tech Building",
         users: [
@@ -153,6 +161,11 @@ const Courses = () => {
           "Create your own games with Unity, covering 2D and 3D game development.",
         dateTime: "2024-01-25T17:20:00",
         maxSlot: 3,
+        group: 2,
+        type: {
+          id: 3,
+          name: "Cloud Development",
+        },
         location: "Room 201, ARK Building",
         users: [
           {
@@ -171,14 +184,19 @@ const Courses = () => {
       },
     ];
 
-    setCourses(courses_json);
-    const coursesLength = courses.length;
-    for (let i = 0; i < 10 - coursesLength; i++) {
-      courses.push({
-        id: coursesLength + i, // Assuming numerical IDs for simplicity
+    setEvents(events_json);
+    const eventsLength = events.length;
+    for (let i = 0; i < 10 - eventsLength; i++) {
+      events.push({
+        id: eventsLength + i, // Assuming numerical IDs for simplicity
         title: `Placeholder Course ${i}`,
         description: "",
         dateTime: "",
+        group: 0,
+        type: {
+          id: 2,
+          name: "Dog Development",
+        },
         maxSlot: 0,
         location: "",
         users: [], // Keeping users array to match structure
@@ -186,12 +204,12 @@ const Courses = () => {
     }
     setMaxPages(1);
 
-    console.log(courses);
+    console.log(events);
   };
 
   // Remove a user from the API
-  const deleteUser = (courseId) => {
-    // fetch(`http://127.0.0.1:5000/user/${courseId}`, {
+  const deleteEvent = (EventId) => {
+    // fetch(`http://127.0.0.1:5000/user/${EventId}`, {
     //   method: "DELETE",
     //   headers: {
     //     "Content-Type": "application/json",
@@ -201,47 +219,47 @@ const Courses = () => {
     //     throw new Error("Network response was not ok");
     //   }
     // Refresh the users list and quit the modal
-    fetchCourses();
-    setSelectedCourseIdForDelete(null);
+    fetchEvents();
+    setSelectedEventIdForDelete(null);
     // });
   };
 
   // Set the user id to delete
-  const handleDeleteClick = (courseId) => {
-    setSelectedCourseIdForDelete(courseId);
+  const handleDeleteClick = (EventId) => {
+    setSelectedEventIdForDelete(EventId);
   };
 
   // Set the user id to update
-  const handleUpdateClick = (courseId) => {
-    setSelectedCourseIdForUpdate(courseId);
+  const handleUpdateClick = (EventId) => {
+    setSelectedEventIdForUpdate(EventId);
   };
 
   // Set the user id to update
-  const handleSlotsClick = (courseId) => {
-    setSelectedCourseIdForSlots(courseId);
+  const handleSlotsClick = (EventId) => {
+    setSelectedEventIdForSlots(EventId);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchInput(e.target.value);
     if (e.keyCode == 13) {
-      fetchCourses;
+      fetchEvents();
     }
   };
 
   const handleClickSearch = (e) => {
-    if (e.type == "click" || e.keyCode == 13) fetchCourses();
+    if (e.type == "click" || e.keyCode == 13) fetchEvents();
   };
 
   // Fetch the users when we change Page
   useEffect(() => {
-    fetchCourses();
+    fetchEvents();
   }, [currentPage]);
 
   // Function to handle window resize
   useEffect(() => {
     const handleResize = () => {
-      setExpanded(window.innerWidth > 740);
+      setExpanded(window.innerWidth > 980);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -271,8 +289,8 @@ const Courses = () => {
           } font-bold flex-grow`}
         >
           <FormattedMessage
-            id="courses.coursesManagement"
-            defaultMessage="Courses Management"
+            id="event.eventsManagement"
+            defaultMessage="events Management"
           />
         </h1>
         <button
@@ -284,14 +302,14 @@ const Courses = () => {
           }}
         >
           <FormattedMessage
-            id="courses.addANewCourse"
-            defaultMessage="+ Add a new course"
+            id="event.addANewEvent"
+            defaultMessage="+ Add a new event"
           />
         </button>
-        <AddCourseModal
+        <AddEventModal
           AddModalOpen={AddModalOpen}
           AddModalSetOpen={() => AddModalSetOpen(false)}
-          fetchUsers={fetchCourses}
+          fetchUsers={fetchEvents}
         />
       </div>
       {/* Searchbar */}
@@ -319,28 +337,35 @@ const Courses = () => {
             <tr>
               <th className={` p-4 w-1/4  max-w-xs`}>
                 {" "}
-                <FormattedMessage id="courses.title" defaultMessage="Title" />
+                <FormattedMessage id="event.title" defaultMessage="Title" />
+              </th>
+              <th className={` p-4 w-1/12 text-center max-w-xs`}>
+                {" "}
+                <FormattedMessage id="event.group" defaultMessage="Group" />
               </th>
               {expanded && (
-                <th className="p-4 w-1/4 max-w-xs text-center">
+                <th className="p-4 w-1/6 max-w-xs text-center">
+                  {" "}
+                  <FormattedMessage id="event.type" defaultMessage="Type" />
+                </th>
+              )}{" "}
+              {expanded && (
+                <th className="p-4 w-1/6 max-w-xs text-center">
                   {" "}
                   <FormattedMessage
-                    id="courses.dateTime"
+                    id="event.dateTime"
                     defaultMessage="Date & Time"
                   />
                 </th>
               )}{" "}
               <th className="p-4 w-1/12 max-w-xs text-center">
                 {" "}
-                <FormattedMessage
-                  id="courses.maxSlots"
-                  defaultMessage="Slots"
-                />
+                <FormattedMessage id="event.maxSlots" defaultMessage="Slots" />
               </th>
               <th className="p-4 w-1/4 max-w-xs text-center">
                 {" "}
                 <FormattedMessage
-                  id="courses.location"
+                  id="event.location"
                   defaultMessage="Location"
                 />
               </th>
@@ -352,28 +377,56 @@ const Courses = () => {
           </thead>
           <tbody>
             {/* For each user ... */}
-            {courses.map((course) => (
-              <tr key={course.id} className="border-b">
+            {events.map((event) => (
+              <tr key={event.id} className="border-b">
                 {/* title & dataTime */}
+                {!expanded && (
+                  <td className="text-sm">
+                    {event.title}
+                    <br></br>
+                    <span className="text-slate-500">
+                      {" "}
+                      {format(new Date(event.dateTime), "yy/MM/dd HH'H'mm ")}
+                    </span>
+                  </td>
+                )}{" "}
                 {expanded && (
                   <td className="p-4 w-1/6 max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
-                    {course.title}
+                    {event.title}
+                  </td>
+                )}{" "}
+                {/* Group */}
+                <td
+                  className={`py-4 text-center ${!expanded ? "text-sm" : ""}`}
+                >
+                  <span
+                    className={`bg-gradient-to-tr px-3 py-1 rounded-full text-white ${
+                      event.group === 1
+                        ? "from-blue-300 to-blue-600"
+                        : event.group === 2
+                        ? "from-yellow-300 to-yellow-600"
+                        : "from-orange-300 to-orange-600"
+                    }`}
+                  >
+                    {event.group === 1
+                      ? "Activity"
+                      : event.group === 2
+                      ? "event"
+                      : "Service"}
+                  </span>
+                </td>
+                {/* Type */}
+                {expanded && (
+                  <td
+                    className={`py-4 text-center ${!expanded ? "text-sm" : ""}`}
+                  >
+                    {event.type.name}
                   </td>
                 )}{" "}
                 {expanded && (
                   <td className={`text-center`}>
                     {" "}
-                    {format(new Date(course.dateTime), "yy/MM/dd HH'H'mm ")}
-                  </td>
-                )}{" "}
-                {!expanded && (
-                  <td className="text-sm">
-                    {course.title}
-                    <br></br>
-                    <span className="text-slate-500">
-                      {" "}
-                      {format(new Date(course.dateTime), "yy/MM/dd HH'H'mm ")}
-                    </span>
+                    {format(new Date(event.dateTime), "yy/MM/dd HH'H'mm ")}
                   </td>
                 )}{" "}
                 {/* max_slot */}
@@ -382,22 +435,20 @@ const Courses = () => {
                 >
                   <button
                     className={`bg-gradient-to-tr text-white px-2 py-1 rounded hover:opacity-90 transition self-end  ${
-                      course.users.length != course.maxSlot
+                      event.users.length != event.maxSlot
                         ? "from-green-300 to-green-600"
                         : "from-red-300 to-red-600"
                     } `}
-                    onClick={() => handleSlotsClick(course.id)}
+                    onClick={() => handleSlotsClick(event.id)}
                   >
-                    {course.users.length}/{course.maxSlot}
+                    {event.users.length}/{event.maxSlot}
                   </button>
-                  {SelectedCourseIdForSlots === course.id && (
-                    <SlotsCourseModal
-                      SlotsModalOpen={SelectedCourseIdForSlots === course.id}
-                      SlotsModalSetOpen={() =>
-                        setSelectedCourseIdForSlots(null)
-                      }
-                      course={course}
-                      fetchUsers={fetchCourses}
+                  {SelectedEventIdForSlots === event.id && (
+                    <SlotsEventModal
+                      SlotsModalOpen={SelectedEventIdForSlots === event.id}
+                      SlotsModalSetOpen={() => setSelectedEventIdForSlots(null)}
+                      event={event}
+                      fetchUsers={fetchEvents}
                     />
                   )}
                 </td>
@@ -405,40 +456,40 @@ const Courses = () => {
                 <td
                   className={`py-4 text-center ${!expanded ? "text-sm" : ""}`}
                 >
-                  {course.location}
+                  {event.location}
                 </td>
                 {/* actions */}
                 <td>
-                  {course.title != null && (
+                  {event.title != null && (
                     <>
                       <button
                         className="text-blue-600 hover:text-blue-800 mr-2"
-                        onClick={() => handleUpdateClick(course.id)}
+                        onClick={() => handleUpdateClick(event.id)}
                       >
                         {<Settings size={20} />}
                       </button>
-                      {SelectedCourseIdForUpdate === course.id && (
-                        <UpdateCourseModal
+                      {SelectedEventIdForUpdate === event.id && (
+                        <UpdateEventModal
                           UpdateModalOpen={
-                            SelectedCourseIdForUpdate === course.id
+                            SelectedEventIdForUpdate === event.id
                           }
                           UpdateModalSetOpen={() =>
-                            setSelectedCourseIdForUpdate(null)
+                            setSelectedEventIdForUpdate(null)
                           }
-                          course={course}
-                          fetchUsers={fetchCourses}
+                          event={event}
+                          fetchUsers={fetchEvents}
                         />
                       )}
                       <button
                         className="text-red-600 hover:text-red-800 mr-2"
-                        onClick={() => handleDeleteClick(course.id)}
+                        onClick={() => handleDeleteClick(event.id)}
                       >
                         {<Trash2 size={20} />}
                       </button>
                       <DeleteModal
-                        open={slectedCourseIdForDelete === course.id}
-                        onClose={() => setSelectedCourseIdForDelete(null)}
-                        fetchUsers={() => deleteUser(course.id)}
+                        open={slectedEventIdForDelete === event.id}
+                        onClose={() => setSelectedEventIdForDelete(null)}
+                        fetchUsers={() => deleteEvent(event.id)}
                       />{" "}
                     </>
                   )}
@@ -474,4 +525,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default Events;

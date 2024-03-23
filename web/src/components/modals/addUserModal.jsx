@@ -112,12 +112,12 @@ export default function AddUserModal({
 
   // Get the roles for the pills and set default role
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/role")
+    fetch("http://127.0.0.1:5000/api/role")
       .then((response) => response.json())
       .then((data) => {
         setRoles(data);
         if (data && data.length > 0) {
-          setSelectedRoles([data[0].role_id]);
+          setSelectedRoles([data[0].id]);
         }
       })
       .catch((error) => console.error("Error fetching roles:", error));
@@ -164,7 +164,7 @@ export default function AddUserModal({
 
     // First Request
     try {
-      let response = await fetch("http://localhost:5000/user", {
+      let response = await fetch("http://localhost:5000/api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -186,7 +186,7 @@ export default function AddUserModal({
       if (newUser.user_id) {
         for (const roleId of additionalRoleIds) {
           response = await fetch(
-            `http://localhost:5000/user/${newUser.user_id}/role/${roleId}`,
+            `http://localhost:5000/api/user/${newUser.user_id}/role/${roleId}`,
             {
               method: "POST",
               headers: {
@@ -369,16 +369,16 @@ export default function AddUserModal({
             <div className="flex flex-wrap gap-2 my-3 justify-center">
               {roles.map((role) => (
                 <button
-                  key={role.role_id}
+                  key={role.id}
                   type="button"
-                  onClick={() => toggleRoleSelection(role.role_id)}
+                  onClick={() => toggleRoleSelection(role.id)}
                   className={`px-4 py-1 border transition-all ${
-                    selectedRoles.includes(role.role_id)
+                    selectedRoles.includes(role.id)
                       ? "border-white bg-AshinBlue text-white"
                       : "border-gray-300 bg-gray-200 text-gray-400"
                   } rounded-full focus:outline-none`}
                 >
-                  {role.role_name}
+                  {role.name}
                 </button>
               ))}
             </div>
