@@ -71,8 +71,8 @@ class UserService:
         user = self.select_one_by_id(user_id=user_id)
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
-        if user.role:
-            for role in user.role:
+        if user.roles:
+            for role in user.roles:
                 if role.role_id == role_id:
                     raise UserIsRoleAlreadyExistsException(user_id=user_id, role_id=role_id)
         if not self.role_service.select_one_by_id(role_id=role_id):
@@ -119,8 +119,8 @@ class UserService:
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
         role_exist = False
-        if user.role:
-            for role in user.role:
+        if user.roles:
+            for role in user.roles:
                 if role.role_id == role_id:
                     role_exist = True
         if len(user.role) == 1:
