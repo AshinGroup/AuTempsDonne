@@ -12,6 +12,7 @@ from controller.type import *
 from controller.role import *
 from controller.auth import *
 from controller.location import *
+from controller.category import *
 
 
 # Import Models
@@ -30,14 +31,11 @@ api = Api(app)
 prefix = "/api"
 api.add_resource(UserListController, f'{prefix}/user')
 api.add_resource(UserPageController, f'{prefix}/user/page/<int:page>')
-api.add_resource(UserSearchController,
-                 f'{prefix}/user/page/<int:page>/search/<string:search>')
+api.add_resource(UserSearchController, f'{prefix}/user/page/<int:page>/search/<string:search>')
 api.add_resource(UserController, f'{prefix}/user/<int:user_id>')
 
-api.add_resource(UserIsRoleController,
-                 f'{prefix}/user/<int:user_id>/role/<int:role_id>')
-api.add_resource(UserParticipatesEventController,
-                 f'{prefix}/user/<int:user_id>/event/<int:event_id>')
+api.add_resource(UserIsRoleController, f'{prefix}/user/<int:user_id>/role/<int:role_id>')
+api.add_resource(UserParticipatesEventController, f'{prefix}/user/<int:user_id>/event/<int:event_id>')
 
 api.add_resource(EventListController, f'{prefix}/event')
 
@@ -49,6 +47,9 @@ api.add_resource(RoleController, f'{prefix}/role/<int:role_id>')
 
 api.add_resource(LocationListController, f'{prefix}/location')
 api.add_resource(LocationController, f'{prefix}/location/<int:location_id>')
+
+api.add_resource(CategoryListController, f'{prefix}/category')
+api.add_resource(CategoryController, f'{prefix}/category/<int:category_id>')
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')
