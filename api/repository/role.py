@@ -47,7 +47,7 @@ class RoleRepo():
         try:
             with app.app_context():
                 role = Role.query.filter_by(id=role_id).first()
-                role.role_name = update_role.role_name
+                role.name = update_role.name
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -56,13 +56,13 @@ class RoleRepo():
 
     def delete(self, role_id: int) -> None:
         try:
-            role = Role.query.filter_by(id=role_id).first()
             with app.app_context():
+                role = Role.query.filter_by(id=role_id).first()
                 db.session.delete(role)
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise RoleAccessDbException(id=role_id, method="deleting")
+            raise RoleAccessDbException(role_id=role_id, method="deleting")
 
                     
                    

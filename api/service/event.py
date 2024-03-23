@@ -24,7 +24,7 @@ class EventService:
 
     def insert(self, args: dict):
         new_event = Event(name=args['name'], datetime=args['datetime'], description=args['description'],
-                          capacity=args['capacity'], group=args['group'], type_id=args['type_id'])
+                          capacity=args['capacity'], group=args['group'], type_id=args['type_id'], place=args['place'])
         if new_event.group < 1 or new_event.group > 3:
             raise EventIdGroupNotFoundException
         if not self.type_service.select_one_by_id(new_event.type_id):
@@ -34,7 +34,7 @@ class EventService:
 
     def update(self, event_id: int, args: dict):
         update_event = Event(name=args['name'], datetime=args['datetime'], description=args['description'],
-                             capacity=args['capacity'], group=args['group'], type_id=args['type_id'])
+                             capacity=args['capacity'], group=args['group'], type_id=args['type_id'], place=args['place'])
         event = self.event_repo.select_one_by_id(event_id=event_id)
 
         if update_event.group < 1 or update_event.group > 3:

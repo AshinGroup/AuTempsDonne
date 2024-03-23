@@ -10,9 +10,10 @@ class Event(db.Model):
     description = db.Column(db.Text)
     capacity = db.Column(db.Integer)
     group = db.Column(db.Integer) # 0 = All / 1 = Activity / 2 = Course / 3 = Service
-
+    place = db.Column(db.String(200))
+    
     type_id = db.Column(db.Integer, db.ForeignKey('type.id'), nullable=False)
-    location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
+    # location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
     users = db.relationship('User', secondary='user_participates_event', back_populates='events')
 
 
@@ -40,6 +41,7 @@ class Event(db.Model):
                 'description': self.description,
                 'capacity': self.capacity,
                 'group' : event_name,
+                'place' : self.place,
                 'type': {
                     'url':f"{os.getenv('API_PATH')}/type/{self.type_id}",
                     'id': self.type.id,
@@ -53,6 +55,7 @@ class Event(db.Model):
         return {'url': f"{os.getenv('API_PATH')}/event/{self.id}", 
                 'id': self.id,
                 'name' : self.name,
+                'place' : self.place,
                 'group' : event_name
                 }
 

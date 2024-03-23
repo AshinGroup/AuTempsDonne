@@ -42,6 +42,7 @@ class EventRepo():
                 event.description = update_event.description
                 event.capacity = update_event.capacity
                 event.group = update_event.group
+                event.place = event.place
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -50,8 +51,8 @@ class EventRepo():
 
     def delete(self, event_id: int) -> None:
         try:
-            event = Event.query.filter_by(id=event_id).first()
             with app.app_context():
+                event = Event.query.filter_by(id=event_id).first()
                 db.session.delete(event)
                 db.session.commit()
                 db.session.close()
