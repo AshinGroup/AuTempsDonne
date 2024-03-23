@@ -98,3 +98,20 @@ class EventListController(Resource):
             abort(http_status_code=404, message=str(e))
         except TypeAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+
+
+class EventPageController(Resource):
+    def __init__(self) -> None:
+        self.event_service = EventService()
+    
+
+    def get(self, page: int):
+        try:
+            events = self.event_service.select_per_page(page=page)
+            if events:
+                return jsonify({'max_pages': events['max_pages'], 'events': [event.json() for event in events['events']]})
+            else:
+                return jsonify({'message': "No events found."})
+        except EventAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        

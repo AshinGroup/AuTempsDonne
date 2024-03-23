@@ -11,6 +11,17 @@ class EventRepo():
             return event
         except Exception:
             raise EventAccessDbException(event_id=event_id, method="getting")
+        
+
+    def select_per_page(self, page: int) -> list[Event]:
+        try:
+            events = Event.query.paginate(page=page, per_page=10)
+            if not events:
+                return None
+            
+            return {'max_pages' : events.pages, 'events': events}
+        except Exception:
+            raise EventAccessDbException(event_id=None, method="getting")
 
     
     def select_all(self) -> list[Event]:

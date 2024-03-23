@@ -17,6 +17,12 @@ class EventService:
             return event
         else:
             raise EventIdNotFoundException(event_id=event_id)
+        
+    def select_per_page(self, page: int) -> list[Event]:
+        events = self.event_repo.select_per_page(page=page)
+        return events
+
+
 
     def select_all(self):
         events = self.event_repo.select_all()
