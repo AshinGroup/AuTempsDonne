@@ -203,8 +203,6 @@ const Events = () => {
       });
     }
     setMaxPages(1);
-
-    console.log(events);
   };
 
   // Remove a user from the API

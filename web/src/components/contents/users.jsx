@@ -226,7 +226,6 @@ const Users = () => {
           </thead>
           <tbody>
             {/* For each user ... */}
-            {console.log(users)}
             {users.map((user) => (
               <tr key={user.id} className="border-b">
                 {/* email & name */}
