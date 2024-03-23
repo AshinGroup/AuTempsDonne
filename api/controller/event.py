@@ -18,6 +18,7 @@ class EventCheckArgs:
         parser.add_argument('capacity', type=int, required=True, help="Invalid or missing parameter 'capactity'.")
         parser.add_argument('type_id', type=int, required=True, help="Invalid or missing parameter 'type_id'.")
         parser.add_argument('group', type=int, required=True, help="Invalid or missing parameter 'group'.")
+        parser.add_argument('place', type=str, required=True, help="Invalid or missing parameter 'place'.")
         args = parser.parse_args(strict=True)
         return args
 

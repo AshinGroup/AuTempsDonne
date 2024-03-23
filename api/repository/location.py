@@ -49,8 +49,8 @@ class LocationRepo():
 
     def delete(self, location_id: int) -> None:
         try:
-            location = Location.query.filter_by(id=location_id).first()
             with app.app_context():
+                location = Location.query.filter_by(id=location_id).first()
                 db.session.delete(location)
                 db.session.commit()
                 db.session.close()

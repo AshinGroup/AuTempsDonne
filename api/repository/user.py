@@ -147,7 +147,7 @@ class UserRepo():
             with app.app_context():
                 user = User.query.filter_by(id=user_id).first()
                 event = Event.query.filter_by(id=event_id).first()
-                user.event.remove(event)
+                user.events.remove(event)
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -158,7 +158,7 @@ class UserRepo():
             with app.app_context():
                 user = User.query.filter_by(id=user_id).first()
                 role = Role.query.filter_by(id=role_id).first()
-                user.role.remove(role)
+                user.roles.remove(role)
                 db.session.commit()
                 db.session.close()
         except Exception:
