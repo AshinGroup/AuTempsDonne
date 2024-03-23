@@ -123,7 +123,7 @@ class UserService:
             for role in user.roles:
                 if role.role_id == role_id:
                     role_exist = True
-        if len(user.role) == 1:
+        if len(user.roles) == 1:
             raise UserRoleNotEmptyException(user_id=user_id)
         if not role_exist:
             raise UserIsRoleNotFoundException(user_id=user_id, role_id=role_id)
