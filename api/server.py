@@ -12,7 +12,8 @@ from controller.type import *
 from controller.role import *
 from controller.auth import *
 from controller.location import *
-from controller.category import *
+# from controller.category import *
+# from controller.food import *
 
 
 # Import Models
@@ -21,6 +22,8 @@ from model.event import Event
 from model.role import Role
 from model.type import Type
 from model.location import Location
+# from model.category import Category
+# from model.food import Food
 
 from app import app
 
@@ -50,8 +53,8 @@ api.add_resource(RoleController, f'{prefix}/role/<int:role_id>')
 api.add_resource(LocationListController, f'{prefix}/location')
 api.add_resource(LocationController, f'{prefix}/location/<int:location_id>')
 
-api.add_resource(CategoryListController, f'{prefix}/category')
-api.add_resource(CategoryController, f'{prefix}/category/<int:category_id>')
+# api.add_resource(CategoryListController, f'{prefix}/category')
+# api.add_resource(CategoryController, f'{prefix}/category/<int:category_id>')
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')
