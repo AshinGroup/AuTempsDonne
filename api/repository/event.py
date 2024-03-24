@@ -3,7 +3,8 @@ from database.db import db
 from app import app
 from exception.event import EventAccessDbException
 
-class EventRepo():    
+
+class EventRepo():
 
     def select_one_by_id(self, event_id: int) -> Event:
         try:
@@ -11,19 +12,17 @@ class EventRepo():
             return event
         except Exception:
             raise EventAccessDbException(event_id=event_id, method="getting")
-        
 
     def select_per_page(self, page: int) -> list[Event]:
         try:
-            events = Event.query.paginate(page=page, per_page=10)
+            events = Event.query.paginate(page=page, per_page=9)
             if not events:
                 return None
-            
-            return {'max_pages' : events.pages, 'events': events}
+
+            return {'max_pages': events.pages, 'events': events}
         except Exception:
             raise EventAccessDbException(event_id=None, method="getting")
 
-    
     def select_all(self) -> list[Event]:
         try:
             events = Event.query.all()
@@ -33,7 +32,6 @@ class EventRepo():
         except Exception:
             raise EventAccessDbException(event_id=None, method="getting")
 
-
     def insert(self, new_event: Event) -> None:
         try:
             with app.app_context():
@@ -42,7 +40,6 @@ class EventRepo():
                 db.session.close()
         except Exception:
             raise EventAccessDbException(event_id=None, method="creating")
-    
 
     def update(self, event_id: int, update_event: Event) -> None:
         try:
@@ -53,12 +50,12 @@ class EventRepo():
                 event.description = update_event.description
                 event.capacity = update_event.capacity
                 event.group = update_event.group
-                event.place = event.place
+                event.place = update_event.place
+                event.type_id = update_event.type_id
                 db.session.commit()
                 db.session.close()
         except Exception:
             raise EventAccessDbException(event_id=event_id, method="updating")
-
 
     def delete(self, event_id: int) -> None:
         try:

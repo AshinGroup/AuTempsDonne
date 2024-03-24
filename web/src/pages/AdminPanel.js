@@ -5,7 +5,7 @@ import Users from "../components/contents/users";
 import Events from "../components/contents/events";
 
 const AdminPanel = () => {
-  const [activeItem, setActiveItem] = useState("Users");
+  const [activeItem, setActiveItem] = useState("Events");
   const navigate = useNavigate();
 
   const getContent = () => {
