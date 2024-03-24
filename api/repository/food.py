@@ -1,71 +1,71 @@
-from model.event import Event
+from model.food import Food
 from database.db import db
 from app import app
-from exception.event import EventAccessDbException
+from exception.food import FoodAccessDbException
 
-class EventRepo():    
+class FoodRepo():    
 
-    def select_one_by_id(self, event_id: int) -> Event:
+    def select_one_by_id(self, food_id: int) -> Food:
         try:
-            event = Event.query.filter_by(id=event_id).first()
-            return event
+            food = Food.query.filter_by(id=food_id).first()
+            return food
         except Exception:
-            raise EventAccessDbException(event_id=event_id, method="getting")
+            raise FoodAccessDbException(food_id=food_id, method="getting")
         
 
-    def select_per_page(self, page: int) -> list[Event]:
+    def select_per_page(self, page: int) -> list[Food]:
         try:
-            events = Event.query.paginate(page=page, per_page=10)
-            if not events:
+            food = Food.query.paginate(page=page, per_page=10)
+            if not food:
                 return None
             
-            return {'max_pages' : events.pages, 'events': events}
+            return {'max_pages' : food.pages, 'food': food}
         except Exception:
-            raise EventAccessDbException(event_id=None, method="getting")
+            raise FoodAccessDbException(food_id=None, method="getting")
 
     
-    def select_all(self) -> list[Event]:
+    def select_all(self) -> list[Food]:
         try:
-            events = Event.query.all()
-            if not events:
+            foods = Food.query.all()
+            if not foods:
                 return None
-            return events
+            return foods
         except Exception:
-            raise EventAccessDbException(event_id=None, method="getting")
+            raise FoodAccessDbException(food_id=None, method="getting")
 
 
-    def insert(self, new_event: Event) -> None:
+    def insert(self, new_food: Food) -> None:
         try:
             with app.app_context():
-                db.session.add(new_event)
+                db.session.add(new_food)
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise EventAccessDbException(event_id=None, method="creating")
+            raise FoodAccessDbException(food_id=None, method="creating")
     
 
-    def update(self, event_id: int, update_event: Event) -> None:
+    def update(self, food_id: int, update_food: Food) -> None:
         try:
             with app.app_context():
-                event = Event.query.filter_by(id=event_id).first()
-                event.name = update_event.name
-                event.datetime = update_event.datetime
-                event.description = update_event.description
-                event.capacity = update_event.capacity
-                event.group = update_event.group
-                event.place = event.place
+                food = Food.query.filter_by(id=food_id).first()
+                food.name = update_food.name
+                food.datetime = update_food.datetime
+                food.description = update_food.description
+                food.capacity = update_food.capacity
+                food.group = update_food.group
+                food.place = food.place
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise EventAccessDbException(event_id=event_id, method="updating")
+            raise FoodAccessDbException(food_id=food_id, method="updating")
 
 
-    def delete(self, event_id: int) -> None:
+    def delete(self, food_id: int) -> None:
         try:
             with app.app_context():
-                event = Event.query.filter_by(id=event_id).first()
-                db.session.delete(event)
+                food = Food.query.filter_by(id=food_id).first()
+                db.session.delete(food)
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise EventAccessDbException(event_id=event_id, method="deleting")
+            raise FoodAccessDbException(food_id=food_id, method="deleting")
