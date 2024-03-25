@@ -58,6 +58,7 @@
   "event.course": "Cours",
   "event.service": "Service",
   "event.type": "Type",
+  "event.event": "Événement",
 
   "EventModal.titlePlaceholder": "Titre de l'événement",
   "EventModal.titleRequired": "Le titre est requis.",

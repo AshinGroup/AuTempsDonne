@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { SquarePen } from "lucide-react";
+import { format } from "date-fns";
+
 import { useForm } from "react-hook-form";
 import { Modal } from "./modal";
 
@@ -18,16 +20,16 @@ export default function UpdateCourseModal({
     reset,
   } = useForm({
     defaultValues: {
-      title: event.title,
+      name: event.name,
       description: event.description,
-      datetime: event.dateTime,
-      slot: event.maxSlot,
-      location: event.location,
+      datetime: event.datetime,
+      capacity: event.capacity,
+      place: event.place,
     },
   });
 
   const [types, setTypes] = useState([]);
-  const [group, setGroup] = useState(1);
+  const [group, setGroup] = useState(event.group);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
@@ -95,23 +97,19 @@ export default function UpdateCourseModal({
   });
 
   useEffect(() => {
+    console.log(event.type.id);
     fetch("http://127.0.0.1:5000/api/type")
       .then((response) => response.json())
       .then((fetchedTypes) => {
         setTypes(fetchedTypes);
-        const defaultSelectedTypes = event.type
-          .map((eventType) => eventType.id)
-          .filter((typeId) =>
-            fetchedTypes.some((fetchedType) => fetchedType.id === typeId)
-          );
-        setSelectedTypes(defaultSelectedTypes);
+        setSelectedTypes([event.type.id]);
       })
       .catch((error) => console.error("Error fetching types:", error));
   }, [event.type]);
 
   // Register in the Hook
   useEffect(() => {
-    register("types");
+    register("type_id");
   }, [register]);
 
   useEffect(() => {
@@ -126,46 +124,50 @@ export default function UpdateCourseModal({
 
   // Change the type and set the value in the form
   const toggleTypesSelection = (roleId) => {
+    setSelectedTypes([roleId]);
     // Minimum 1 role
-    if (selectedTypes.length === 1 && selectedTypes.includes(roleId)) {
-      return;
-    }
-
-    const currentIndex = selectedTypes.indexOf(roleId);
-    const newSelectedTypes = [...selectedTypes];
-
-    if (currentIndex === -1) {
-      newSelectedTypes.push(roleId);
-    } else {
-      newSelectedTypes.splice(currentIndex, 1);
-    }
-
-    setSelectedTypes(newSelectedTypes);
+    // if (selectedTypes.length === 1 && selectedTypes.includes(roleId)) {
+    //   return;
+    // }
+    // const currentIndex = selectedTypes.indexOf(roleId);
+    // const newSelectedTypes = [...selectedTypes];
+    // if (currentIndex === -1) {
+    //   newSelectedTypes.push(roleId);
+    // } else {
+    //   newSelectedTypes.splice(currentIndex, 1);
+    // }
+    // setSelectedTypes(newSelectedTypes);
   };
 
   // POST
   const onPostSubmit = async (data) => {
     try {
-      //   let response = await fetch("http://localhost:5000/event", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({ ...data, role_id: firstRoleId, status: status }),
-      //   });
+      console.log(data);
+      data.datetime = format(new Date(data.datetime), "yyyy-MM-dd HH:mm:ss");
+      data.type_id = selectedTypes[0];
+      data.group = group;
+      let response = await fetch(
+        `http://localhost:5000/api/event/${event.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...data }),
+        }
+      );
 
-      //   const newUser = await response.json();
+      const newEvent = await response.json();
 
-      //   if (!response.ok) {
-      //     setResponseMessage(newUser.message);
-      //     setIsErrorMessage(false);
-      //   } else {
-      //     setResponseMessage(newUser.message);
-      //     setIsErrorMessage(true);
-      //   }
+      if (!response.ok) {
+        setResponseMessage(newEvent.message);
+        setIsErrorMessage(false);
+      } else {
+        setResponseMessage(newEvent.message);
+        setIsErrorMessage(true);
+      }
 
       fetchUsers();
-      reset();
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -191,14 +193,12 @@ export default function UpdateCourseModal({
           <input
             type="text"
             placeholder={titlePlaceholder}
-            {...register("title", {
+            {...register("name", {
               required: titleRequired,
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
           />
-          {errors.title && (
-            <p className="text-red-500">{errors.title.message}</p>
-          )}
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
           {/* Description */}
           <textarea
             placeholder={descriptionPlaceholder}
@@ -249,7 +249,7 @@ export default function UpdateCourseModal({
           <input
             type="number"
             placeholder={slotPlaceholder}
-            {...register("slot", {
+            {...register("capacity", {
               required: slotRequired,
               min: {
                 value: 1,
@@ -262,12 +262,14 @@ export default function UpdateCourseModal({
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
           />
-          {errors.slot && <p className="text-red-500">{errors.slot.message}</p>}
+          {errors.capacity && (
+            <p className="text-red-500">{errors.capacity.message}</p>
+          )}
           {/* Location selection */}
           <input
             type="text"
             placeholder={locationPlaceholder}
-            {...register("location", {
+            {...register("place", {
               required: locationRequired,
               pattern: {
                 value: /^[A-Za-z0-9\s]+$/,
@@ -276,8 +278,8 @@ export default function UpdateCourseModal({
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
           />
-          {errors.location && (
-            <p className="text-red-500">{errors.location.message}</p>
+          {errors.place && (
+            <p className="text-red-500">{errors.place.message}</p>
           )}
           {/* Group selection */}
           <div>

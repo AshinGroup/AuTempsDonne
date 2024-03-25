@@ -36,11 +36,14 @@ api = Api(app)
 prefix = "/api"
 api.add_resource(UserListController, f'{prefix}/user')
 api.add_resource(UserPageController, f'{prefix}/user/page/<int:page>')
-api.add_resource(UserSearchController, f'{prefix}/user/page/<int:page>/search/<string:search>')
+api.add_resource(UserSearchController,
+                 f'{prefix}/user/page/<int:page>/search/<string:search>')
 api.add_resource(UserController, f'{prefix}/user/<int:user_id>')
 
-api.add_resource(UserIsRoleController, f'{prefix}/user/<int:user_id>/role/<int:role_id>')
-api.add_resource(UserParticipatesEventController, f'{prefix}/user/<int:user_id>/event/<int:event_id>')
+api.add_resource(UserIsRoleController,
+                 f'{prefix}/user/<int:user_id>/role/<int:role_id>')
+api.add_resource(UserParticipatesEventController,
+                 f'{prefix}/user/<int:user_id>/event/<int:event_id>')
 
 api.add_resource(EventController, f'{prefix}/event/<int:event_id>')
 api.add_resource(EventListController, f'{prefix}/event')

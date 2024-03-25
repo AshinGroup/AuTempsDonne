@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
+import { format } from "date-fns";
 import { SquarePen } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "./modal";
@@ -100,7 +101,7 @@ export default function AddEventModal({
 
   // Register in the Hook
   useEffect(() => {
-    register("types");
+    register("type_id");
   }, [register]);
 
   useEffect(() => {
@@ -115,43 +116,47 @@ export default function AddEventModal({
 
   // Change the type and set the value in the form
   const toggleTypesSelection = (roleId) => {
+    setSelectedTypes([roleId]);
     // Minimum 1 role
-    if (selectedTypes.length === 1 && selectedTypes.includes(roleId)) {
-      return;
-    }
+    // if (selectedTypes.length === 1 && selectedTypes.includes(roleId)) {
+    //   return;
+    // }
 
-    const currentIndex = selectedTypes.indexOf(roleId);
-    const newSelectedTypes = [...selectedTypes];
+    // const currentIndex = selectedTypes.indexOf(roleId);
+    // const newSelectedTypes = [...selectedTypes];
 
-    if (currentIndex === -1) {
-      newSelectedTypes.push(roleId);
-    } else {
-      newSelectedTypes.splice(currentIndex, 1);
-    }
+    // if (currentIndex === -1) {
+    //   newSelectedTypes.push(roleId);
+    // } else {
+    //   newSelectedTypes.splice(currentIndex, 1);
+    // }
 
-    setSelectedTypes(newSelectedTypes);
+    // setSelectedTypes(newSelectedTypes);
   };
 
   // POST
   const onPostSubmit = async (data) => {
     try {
-      //   let response = await fetch("http://localhost:5000/user", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({ ...data, role_id: firstRoleId, status: status }),
-      //   });
+      data.datetime = format(new Date(data.datetime), "yyyy-MM-dd HH:mm:ss");
+      data.type_id = selectedTypes[0];
+      data.group = group;
+      let response = await fetch("http://localhost:5000/api/event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
+      });
 
-      //   const newUser = await response.json();
+      const newEvent = await response.json();
 
-      //   if (!response.ok) {
-      //     setResponseMessage(newUser.message);
-      //     setIsErrorMessage(false);
-      //   } else {
-      //     setResponseMessage(newUser.message);
-      //     setIsErrorMessage(true);
-      //   }
+      if (!response.ok) {
+        setResponseMessage(newEvent.message);
+        setIsErrorMessage(false);
+      } else {
+        setResponseMessage(newEvent.message);
+        setIsErrorMessage(true);
+      }
 
       fetchUsers();
       reset();
@@ -180,14 +185,12 @@ export default function AddEventModal({
           <input
             type="text"
             placeholder={titlePlaceholder}
-            {...register("title", {
+            {...register("name", {
               required: titleRequired,
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
           />
-          {errors.title && (
-            <p className="text-red-500">{errors.title.message}</p>
-          )}
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
           {/* Description */}
           <textarea
             placeholder={descriptionPlaceholder}
@@ -234,7 +237,7 @@ export default function AddEventModal({
           <input
             type="number"
             placeholder={slotPlaceholder}
-            {...register("slot", {
+            {...register("capacity", {
               required: slotRequired,
               min: {
                 value: 1,
@@ -247,12 +250,14 @@ export default function AddEventModal({
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
           />
-          {errors.slot && <p className="text-red-500">{errors.slot.message}</p>}
+          {errors.capacity && (
+            <p className="text-red-500">{errors.capacity.message}</p>
+          )}
           {/* Location selection */}
           <input
             type="text"
             placeholder={locationPlaceholder}
-            {...register("location", {
+            {...register("place", {
               required: locationRequired,
               pattern: {
                 value: /^[A-Za-z0-9\s]+$/,
@@ -261,8 +266,8 @@ export default function AddEventModal({
             })}
             className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
           />
-          {errors.location && (
-            <p className="text-red-500">{errors.location.message}</p>
+          {errors.place && (
+            <p className="text-red-500">{errors.place.message}</p>
           )}
           {/* Group selection */}
           <div>
