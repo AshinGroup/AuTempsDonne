@@ -49,11 +49,8 @@ class FoodRepo():
             with app.app_context():
                 food = Food.query.filter_by(id=food_id).first()
                 food.name = update_food.name
-                food.datetime = update_food.datetime
                 food.description = update_food.description
-                food.capacity = update_food.capacity
-                food.group = update_food.group
-                food.place = food.place
+                food.category_id = update_food.category_id
                 db.session.commit()
                 db.session.close()
         except Exception:

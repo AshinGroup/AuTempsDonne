@@ -12,14 +12,14 @@ class Category(db.Model):
 
 
     def json(self):
-        food = []
+        food_list = []
         if self.food:
-            food = [event.json_rest() for event in self.food]
+            food_list= [food.json_rest_category() for food in self.food]
             
         return {'id': self.id, 
                 'name': self.name, 
                 'description': self.description,
-                'food': self.food}
+                'food': food_list}
     
 
     def json_rest(self):

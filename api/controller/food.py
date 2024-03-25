@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.food import FoodService
 from exception.food import *
-from exception.type import *
+from exception.category import *
 from flask import jsonify
 
 class FoodCheckArgs:
@@ -33,7 +33,7 @@ class FoodController(Resource):
             abort(http_status_code=404, message=str(e))
         except FoodAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except TypeAccessDbException as e:
+        except CategoryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
 
@@ -46,7 +46,7 @@ class FoodController(Resource):
             abort(http_status_code=404, message=str(e))
         except FoodIdGroupNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeIdNotFoundException as e:
+        except CategoryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except FoodAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
@@ -89,9 +89,9 @@ class FoodListController(Resource):
             abort(http_status_code=500, message=str(e))
         except FoodIdGroupNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeIdNotFoundException as e:
+        except CategoryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeAccessDbException as e:
+        except CategoryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
 

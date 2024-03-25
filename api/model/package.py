@@ -5,7 +5,7 @@ class Package(db.Model):
     __tablename__ = "package"
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    weight = db.Column(db.Integer)
+    weight = db.Column(db.Float)
     description = db.Column(db.Text)
     expiration_date = db.Column(db.DateTime)
     food_id = db.Column(db.Integer, db.ForeignKey('food.id'), nullable=False)
