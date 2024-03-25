@@ -6,12 +6,14 @@ from flask import jsonify
 
 class PackageCheckArgs:
 
-    pattern = {'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b'}
+    pattern = {'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b',
+               'datetime': r'\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b'}
         
     
     def get_package_args(self) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('name', type=str, required=True, help="Invalid or missing parameter 'name'.")
+        parser.add_argument('weight', type=int, required=True, help="Invalid or missing parameter 'weight'.")
+        parser.add_argument('expiration_date', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'expiration_date'.")
         parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'.")
         parser.add_argument('food_id', type=int, required=True, help="Invalid or missing parameter 'food_id'.")
         args = parser.parse_args(strict=True)
@@ -84,7 +86,7 @@ class PackageListController(Resource):
         try:
             args = self.check_args.get_package_args()
             self.package_service.insert(args=args)
-            return jsonify({'message': f"Package '{args['name']}' successfully created."})
+            return jsonify({'message': f"Package successfully created."})
         except PackageAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         except PackageIdGroupNotFoundException as e:

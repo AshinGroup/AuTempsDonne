@@ -9,10 +9,11 @@ class Food(db.Model):
     description = db.Column(db.Text)
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
-    packages = db.relationship('Package', backref='package')
+    packages = db.relationship('Package', backref='food')
 
 
     def json(self):
+        packages = []
         if self.packages:
             packages = [package.json_rest() for package in self.packages]
 
@@ -24,10 +25,16 @@ class Food(db.Model):
     
 
     def json_rest_category(self):
+        packages = []
+        if self.packages:
+            packages = [package.json_rest() for package in self.packages]
+
         return {'url': f"{os.getenv('API_PATH')}/food/{self.id}", 
                 'id': self.id,
-                'name' : self.name}
+                'name' : self.name,
+                'packages': packages}
     
+
     def json_rest_package(self):
         return {'url': f"{os.getenv('API_PATH')}/food/{self.id}", 
                 'id': self.id,

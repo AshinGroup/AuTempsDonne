@@ -13,17 +13,16 @@ class Package(db.Model):
     
 
     def json(self):
+
         return {'id': self.id, 
                 'weight': self.weight,
-                'name' : self.food.name,
                 'description' : self.description,
-                'expiration_date' : self.expiration_date}
+                'expiration_date' : self.expiration_date.strftime("%Y-%m-%d %H:%M:%S"),
+                'food': self.food.json_rest_package()}
     
 
     def json_rest(self):
         return {'url': f"{os.getenv('API_PATH')}/package/{self.id}", 
                 'id': self.id,
-                'name' : self.food.name,
-                'description' : self.description,
-                'expiration_date' : self.expiration_date}
+                'expiration_date' : self.expiration_date.strftime("%Y-%m-%d %H:%M:%S")}
 

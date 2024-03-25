@@ -25,7 +25,6 @@ class Category(db.Model):
     def json_rest(self):
         return {'url': f"{os.getenv('API_PATH')}/category/{self.id}", 
                 'id': self.id, 
-                'name': self.name,
-                'description': self.description}
+                'name': self.name}
 
 

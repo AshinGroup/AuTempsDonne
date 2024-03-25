@@ -1,15 +1,15 @@
 from model.package import Package
 from repository.package import PackageRepo
 from exception.package import PackageIdNotFoundException, PackageIdGroupNotFoundException
-from exception.food import CategoryIdNotFoundException
-from service.food import CategoryService
+from exception.food import FoodIdNotFoundException
+from service.food import FoodService
 
 
 class PackageService:
 
     def __init__(self) -> None:
         self.package_repo = PackageRepo()
-        self.food_service = CategoryService()
+        self.food_service = FoodService()
 
     def select_one_by_id(self, package_id: int):
         package = self.package_repo.select_one_by_id(package_id=package_id)
@@ -31,8 +31,8 @@ class PackageService:
         new_package = Package(weight=args['weight'], description=args['description'], expiration_date=args['expiration_date'], food_id=args['food_id'])
 
         if not self.food_service.select_one_by_id(new_package.food_id):
-            raise CategoryIdNotFoundException
-        self.food_service.select_one_by_id(food_id=new_package.food_id)
+            raise FoodIdNotFoundException
+      
         self.package_repo.insert(new_package=new_package)
 
     def update(self, package_id: int, args: dict):
@@ -43,9 +43,7 @@ class PackageService:
             raise PackageIdNotFoundException(package_id=package_id)
 
         if not self.food_service.select_one_by_id(update_package.food_id):
-            raise CategoryIdNotFoundException
-
-        self.food_service.select_one_by_id(food_id=update_package.food_id)
+            raise FoodIdNotFoundException
 
         self.package_repo.update(package_id=package_id, update_package=update_package)
 
