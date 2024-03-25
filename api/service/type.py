@@ -33,7 +33,7 @@ class TypeService:
         if not type:
             raise TypeIdNotFoundException(type_id=type_id)
         
-        self.type_repo.update(type_id=type.type_id, update_type=update_type)
+        self.type_repo.update(type_id=type_id, update_type=update_type)
         
         
     def delete(self, type_id: str):

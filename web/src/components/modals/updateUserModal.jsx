@@ -104,11 +104,12 @@ export default function UpdateUserModal({
   });
 
   useEffect(() => {
+    console.log("first map");
     fetch("http://127.0.0.1:5000/api/role")
       .then((response) => response.json())
       .then((fetchedRoles) => {
         setRoles(fetchedRoles);
-        const defaultSelectedRoles = user.role
+        const defaultSelectedRoles = user.roles
           .map((userRole) => userRole.id)
           .filter((roleId) =>
             fetchedRoles.some((fetchedRole) => fetchedRole.id === roleId)
@@ -175,12 +176,12 @@ export default function UpdateUserModal({
         setResponseMessage(req.message);
         setIsErrorMessage(true);
       }
-      const userInitialRoles = user.role.map((userRole) => userRole.id);
+      const userInitialRoles = user.roles.map((userRole) => userRole.id);
 
       for (const selectedRole of selectedRoles) {
         if (!userInitialRoles.includes(selectedRole)) {
           await fetch(
-            `http://localhost:5000/user/${user.id}/api/role/${selectedRole}`,
+            `http://localhost:5000/api/user/${user.id}/role/${selectedRole}`,
             {
               method: "POST",
               headers: {
@@ -194,7 +195,7 @@ export default function UpdateUserModal({
       for (const userInitialRole of userInitialRoles) {
         if (!selectedRoles.includes(userInitialRole)) {
           await fetch(
-            `http://localhost:5000/user/${user.id}/api/role/${userInitialRole}`,
+            `http://localhost:5000/api/user/${user.id}/role/${userInitialRole}`,
             {
               method: "DELETE",
               headers: {

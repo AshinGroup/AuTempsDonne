@@ -33,7 +33,7 @@ class RoleService:
         if not role:
             raise RoleIdNotFoundException(role_id=role_id)
         
-        self.role_repo.update(role_id=role.role_id, update_role=update_role)
+        self.role_repo.update(role_id=role_id, update_role=update_role)
         
         
     def delete(self, role_id: str):

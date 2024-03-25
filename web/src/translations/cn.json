@@ -58,6 +58,7 @@
   "event.course": "课程",
   "event.service": "服务",
   "event.type": "类型",
+  "event.event": "事件",
 
   "EventModal.titlePlaceholder": "事件标题",
   "EventModal.titleRequired": "标题是必需的。",
