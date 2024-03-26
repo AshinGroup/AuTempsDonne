@@ -15,6 +15,8 @@ from controller.location import *
 from controller.category import *
 from controller.food import *
 from controller.package import *
+from controller.storage import *
+from controller.warehouse import *
 
 
 # Import Models
@@ -26,6 +28,8 @@ from model.location import Location
 from model.category import Category
 from model.food import Food
 from model.package import Package
+from model.storage import Storage
+from model.warehouse import Warehouse
 
 from app import app
 
@@ -68,6 +72,14 @@ api.add_resource(FoodPageController, f'{prefix}/food/page/<int:page>')
 api.add_resource(PackageController, f'{prefix}/package/<int:package_id>')
 api.add_resource(PackageListController, f'{prefix}/package')
 api.add_resource(PackagePageController, f'{prefix}/package/page/<int:page>')
+
+api.add_resource(StorageController, f'{prefix}/storage/<int:storage_id>')
+api.add_resource(StorageListController, f'{prefix}/storage')
+api.add_resource(StoragePageController, f'{prefix}/storage/page/<int:page>')
+
+api.add_resource(WarehouseController, f'{prefix}/warehouse/<int:package_id>')
+api.add_resource(WarehouseListController, f'{prefix}/warehouse')
+api.add_resource(WarehousePageController, f'{prefix}/warehouse/page/<int:page>')
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')

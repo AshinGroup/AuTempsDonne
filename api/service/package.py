@@ -1,6 +1,6 @@
 from model.package import Package
 from repository.package import PackageRepo
-from exception.package import PackageIdNotFoundException, PackageIdGroupNotFoundException
+from exception.package import PackageIdNotFoundException
 from exception.food import FoodIdNotFoundException
 from service.food import FoodService
 

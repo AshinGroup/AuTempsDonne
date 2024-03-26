@@ -1,6 +1,6 @@
 from model.food import Food
 from repository.food import FoodRepo
-from exception.food import FoodIdNotFoundException, FoodIdGroupNotFoundException
+from exception.food import FoodIdNotFoundException
 from exception.category import CategoryIdNotFoundException
 from service.category import CategoryService
 
