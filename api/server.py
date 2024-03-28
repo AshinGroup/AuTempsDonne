@@ -18,6 +18,7 @@ from controller.package import *
 from controller.storage import *
 from controller.warehouse import *
 from controller.company import *
+from controller.shop import *
 
 
 # Import Models
@@ -31,7 +32,8 @@ from model.food import Food
 from model.package import Package
 from model.storage import Storage
 from model.warehouse import Warehouse
-from mode.company import Company
+from model.company import Company
+from model.shop import Shop
 
 from app import app
 
@@ -85,7 +87,10 @@ api.add_resource(WarehousePageController, f'{prefix}/warehouse/page/<int:page>')
 
 api.add_resource(CompanyController, f'{prefix}/compapny/<int:package_id>')
 api.add_resource(CompanyListController, f'{prefix}/compapny')
-api.add_resource(CompanyPageController, f'{prefix}/compapny/page/<int:page>')
+
+api.add_resource(ShopController, f'{prefix}/shop/<int:package_id>')
+api.add_resource(ShopListController, f'{prefix}/shop')
+
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')

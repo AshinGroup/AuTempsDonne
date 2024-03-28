@@ -9,7 +9,7 @@ class Location(db.Model):
     zip_code = db.Column(db.String(10))
     city = db.Column(db.String(30))
     country = db.Column(db.String(30))
-    shops = db.relationshiop("Shop", backref="location")
+    shops = db.relationship("Shop", backref="location")
     # events = db.relationship('Event', backref='location')
 
 
