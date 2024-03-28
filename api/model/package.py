@@ -9,6 +9,7 @@ class Package(db.Model):
     description = db.Column(db.Text)
     expiration_date = db.Column(db.DateTime)
     food_id = db.Column(db.Integer, db.ForeignKey('food.id'), nullable=False)
+    storage_id = db.Column(db.Integer, db.ForeignKey('storage.id'), nullable=False)
     # delivery_id = db.Column(db.Integer, db.ForeignKey('delivery.id'), nullable=True)
     
 
@@ -18,11 +19,20 @@ class Package(db.Model):
                 'weight': self.weight,
                 'description' : self.description,
                 'expiration_date' : self.expiration_date.strftime("%Y-%m-%d %H:%M:%S"),
-                'food': self.food.json_rest_package()}
+                'food': self.food.json_rest_package(),
+                'storage': self.storage.json_rest()}
     
 
-    def json_rest(self):
+    def json_rest_food(self):
         return {'url': f"{os.getenv('API_PATH')}/package/{self.id}", 
                 'id': self.id,
-                'expiration_date' : self.expiration_date.strftime("%Y-%m-%d %H:%M:%S")}
+                'expiration_date' : self.expiration_date.strftime("%Y-%m-%d %H:%M:%S"),
+                'storage': self.storage.json_rest()}
+
+
+    def json_rest_storage(self):
+        return {'url': f"{os.getenv('API_PATH')}/package/{self.id}", 
+                'id': self.id,
+                'expiration_date' : self.expiration_date.strftime("%Y-%m-%d %H:%M:%S"),
+                'food': self.food.json_rest_package()}
 

@@ -15,7 +15,7 @@ class Food(db.Model):
     def json(self):
         packages = []
         if self.packages:
-            packages = [package.json_rest() for package in self.packages]
+            packages = [package.json_rest_food() for package in self.packages]
 
         return {'id': self.id, 
                 'name' : self.name,

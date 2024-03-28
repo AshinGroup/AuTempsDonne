@@ -62,9 +62,9 @@ class CategoryListController(Resource):
 
     def get(self):
         try:
-            events = self.category_service.select_all()
-            if events:
-                return jsonify([category.json() for category in events])
+            categories = self.category_service.select_all()
+            if categories:
+                return jsonify([category.json() for category in categories])
             else:
                 return jsonify({'message': "No category found."})
         except CategoryAccessDbException as e:

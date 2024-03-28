@@ -52,6 +52,7 @@ class PackageRepo():
                 package.expiration_date = update_package.expiration_date
                 package.description = update_package.description
                 package.food_id = update_package.food_id
+                package.storage_id = update_package.storage_id
                 db.session.commit()
                 db.session.close()
         except Exception:
