@@ -1,7 +1,8 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.package import PackageService
 from exception.package import *
-from exception.type import *
+from exception.food import *
+from exception.storage import *
 from flask import jsonify
 
 class PackageCheckArgs:
@@ -16,6 +17,7 @@ class PackageCheckArgs:
         parser.add_argument('expiration_date', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'expiration_date'.")
         parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'.")
         parser.add_argument('food_id', type=int, required=True, help="Invalid or missing parameter 'food_id'.")
+        parser.add_argument('storage_id', type=int, required=True, help="Invalid or missing parameter 'storage_id'.")
         args = parser.parse_args(strict=True)
         return args
 
@@ -48,10 +50,14 @@ class PackageController(Resource):
             abort(http_status_code=404, message=str(e))
         except PackageIdGroupNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeIdNotFoundException as e:
+        except FoodIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except PackageAccessDbException as e:
-            abort(http_status_code=500, message=str(e))        
+            abort(http_status_code=500, message=str(e))  
+        except StorageIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))     
+        except StorageAccessDbException as e:
+            abort(http_status_code=500, message=str(e)) 
    
 
     def delete(self, package_id: int):
@@ -91,9 +97,13 @@ class PackageListController(Resource):
             abort(http_status_code=500, message=str(e))
         except PackageIdGroupNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeIdNotFoundException as e:
+        except FoodIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeAccessDbException as e:
+        except FoodAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except StorageIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except StorageAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
 

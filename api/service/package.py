@@ -2,7 +2,9 @@ from model.package import Package
 from repository.package import PackageRepo
 from exception.package import PackageIdNotFoundException
 from exception.food import FoodIdNotFoundException
+from exception.storage import StorageIdNotFoundException
 from service.food import FoodService
+from service.storage import StorageService
 
 
 class PackageService:
@@ -10,6 +12,7 @@ class PackageService:
     def __init__(self) -> None:
         self.package_repo = PackageRepo()
         self.food_service = FoodService()
+        self.storage_service = StorageService()
 
     def select_one_by_id(self, package_id: int):
         package = self.package_repo.select_one_by_id(package_id=package_id)
@@ -23,15 +26,21 @@ class PackageService:
         return packages
 
 
+
+
     def select_all(self):
         packages = self.package_repo.select_all()
         return packages
 
     def insert(self, args: dict):
-        new_package = Package(weight=args['weight'], description=args['description'], expiration_date=args['expiration_date'], food_id=args['food_id'])
+        new_package = Package(weight=args['weight'], description=args['description'], expiration_date=args['expiration_date'], food_id=args['food_id'], storage_id=args['storage_id'])
 
         if not self.food_service.select_one_by_id(new_package.food_id):
             raise FoodIdNotFoundException
+
+        if not self.storage_service.select_one_by_id(new_package.storage_id):
+            raise StorageIdNotFoundException
+        
       
         self.package_repo.insert(new_package=new_package)
 
@@ -44,6 +53,10 @@ class PackageService:
 
         if not self.food_service.select_one_by_id(update_package.food_id):
             raise FoodIdNotFoundException
+
+        if not self.storage_service.select_one_by_id(update_package.storage_id):
+            raise StorageIdNotFoundException
+        
 
         self.package_repo.update(package_id=package_id, update_package=update_package)
 
