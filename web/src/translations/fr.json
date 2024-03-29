@@ -4,6 +4,10 @@
   "sidebar.courses": "Cours",
   "sidebar.profile": "Profil",
   "sidebar.logout": "Déconnexion",
+  "sidebar.ToCollect": "À Collecter",
+  "sidebar.Stock": "Stock",
+  "sidebar.Shops": "Magasins",
+  
   "users.usersManagement": "Gestion des utilisateurs",
   "users.addANewUser": "+ Ajouter un nouvel utilisateur",
   "users.search": "Rechercher",

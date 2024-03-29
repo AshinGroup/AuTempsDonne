@@ -246,7 +246,7 @@ export default function AddUserModal({
             {...register("first_name", {
               required: firstNameRequired,
               pattern: {
-                value: /^[A-Za-z]+$/,
+                value: /^(?=[a-zA-ZÀ-ÿ\u4e00-\u9fa5]{1,50}$)[a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+(?: [a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+)*$/,
                 message: firstNameValidPattern,
               },
               maxLength: {
@@ -265,7 +265,7 @@ export default function AddUserModal({
             {...register("last_name", {
               required: lastNameRequired,
               pattern: {
-                value: /^[A-Za-z]+$/,
+                value: /^(?=[a-zA-ZÀ-ÿ\u4e00-\u9fa5]{1,50}$)[a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+(?: [a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+)*$/,
                 message: lastNameValidPattern,
               },
               maxLength: {
