@@ -6,6 +6,9 @@ import Flag from "react-flagkit";
 import {
   ChevronsUpDown,
   Users2,
+  Store,
+  Apple,
+  Truck, 
   HeartHandshake,
   BookMarked,
   LogOut,
@@ -78,10 +81,37 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               key={"Events"}
               icon={<BookMarked size={20} />}
               text={
-                <FormattedMessage id="sidebar.Events" defaultMessage="Events" />
+                <FormattedMessage id="sidebar.events" defaultMessage="Events" />
               }
               active={activeItem === "Events"}
               onClick={() => handleItemClick("Events")}
+            />
+            <SidebarItem
+              key={"Shops"}
+              icon={<Store size={20} />}
+              text={
+                <FormattedMessage id="sidebar.Shops" defaultMessage="Shops" />
+              }
+              active={activeItem === "Shops"}
+              onClick={() => handleItemClick("Shops")}
+            />
+            <SidebarItem
+              key={"Stock"}
+              icon={<Apple size={20} />}
+              text={
+                <FormattedMessage id="sidebar.Stock" defaultMessage="Stock" />
+              }
+              active={activeItem === "Stock"}
+              onClick={() => handleItemClick("Stock")}
+            />
+            <SidebarItem
+              key={"ToCollect"}
+              icon={<Truck size={20} />}
+              text={
+                <FormattedMessage id="sidebar.ToCollect" defaultMessage="ToCollect" />
+              }
+              active={activeItem === "ToCollect"}
+              onClick={() => handleItemClick("ToCollect")}
             />
           </ul>
         </SidebarContext.Provider>

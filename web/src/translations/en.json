@@ -4,6 +4,10 @@
   "sidebar.courses": "Courses",
   "sidebar.profile": "Profile",
   "sidebar.logout": "Logout",
+  "sidebar.ToCollect": "To Collect",
+  "sidebar.Stock": "Stock",
+  "sidebar.Shops": "Shops",
+
   "users.usersManagement": "Users Management",
   "users.addANewUser": "+ Add a new user",
   "users.search": "Search",
@@ -74,4 +78,5 @@
   "EventModal.locationPattern": "Exemple : 10 rue des petits écuries",
   "EventModal.addEvent": "Add Event",
   "EventModal.updateEvent": "Update Event"
+  
 }

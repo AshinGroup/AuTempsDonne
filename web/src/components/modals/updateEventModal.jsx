@@ -216,9 +216,6 @@ export default function UpdateCourseModal({
             <p className="text-red-500">{errors.description.message}</p>
           )}
 
-          {errors.description && (
-            <p className="text-red-500">{errors.description.message}</p>
-          )}
           {/* Date & Time Selection */}
           <input
             type="datetime-local"

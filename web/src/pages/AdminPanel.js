@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import Users from "../components/contents/users";
 import Events from "../components/contents/events";
+import Stock from "../components/contents/stock";
+import ToCollect from "../components/contents/toCollect";
+import Shops from "../components/contents/shops";
+
 
 const AdminPanel = () => {
-  const [activeItem, setActiveItem] = useState("Events");
+  const [activeItem, setActiveItem] = useState("Users");
   const navigate = useNavigate();
 
   const getContent = () => {
@@ -14,6 +18,12 @@ const AdminPanel = () => {
         return <Users />;
       case "Events":
         return <Events />;
+      case "Stock":
+        return <Stock />;
+      case "Shops":
+        return <Shops />;
+      case "ToCollect":
+        return <ToCollect />;
       case "Profile":
         navigate("/profile");
       case "Logout":
