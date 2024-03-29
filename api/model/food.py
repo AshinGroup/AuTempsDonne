@@ -27,7 +27,7 @@ class Food(db.Model):
     def json_rest_category(self):
         packages = []
         if self.packages:
-            packages = [package.json_rest() for package in self.packages]
+            packages = [package.json_rest_food() for package in self.packages]
 
         return {'url': f"{os.getenv('API_PATH')}/food/{self.id}", 
                 'id': self.id,

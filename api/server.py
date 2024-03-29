@@ -85,10 +85,10 @@ api.add_resource(WarehouseController, f'{prefix}/warehouse/<int:warehouse_id>')
 api.add_resource(WarehouseListController, f'{prefix}/warehouse')
 api.add_resource(WarehousePageController, f'{prefix}/warehouse/page/<int:page>')
 
-api.add_resource(CompanyController, f'{prefix}/compapny/<int:package_id>')
-api.add_resource(CompanyListController, f'{prefix}/compapny')
+api.add_resource(CompanyController, f'{prefix}/company/<int:company_id>')
+api.add_resource(CompanyListController, f'{prefix}/company')
 
-api.add_resource(ShopController, f'{prefix}/shop/<int:package_id>')
+api.add_resource(ShopController, f'{prefix}/shop/<int:shop_id>')
 api.add_resource(ShopListController, f'{prefix}/shop')
 
 

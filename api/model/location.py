@@ -10,20 +10,27 @@ class Location(db.Model):
     city = db.Column(db.String(30))
     country = db.Column(db.String(30))
     shops = db.relationship("Shop", backref="location")
-    # events = db.relationship('Event', backref='location')
+    warehouses = db.relationship("Warehouse", backref="location")
 
 
     def json(self):
-        # events = []
-        # if self.events:
-        #     events = [event.json_rest() for event in self.events]
+        warehouses = []
+        if self.warehouses:
+            warehouses = [warehouse.json_rest_location() for warehouse in self.warehouses]
+        
+        shops = []
+        if self.shops:
+            shops = [shop.json_rest_location() for shop in self.shops]
             
         return {'id': self.id, 
                 'address': self.address, 
                 'zip_code': self.zip_code,
                 'city': self.city,
-                'country': self.country}
-                # 'events': events
+                'country': self.country,
+                'warehouses' : warehouses,
+                'shops': shops
+                }
+                
     
 
     def json_rest(self):
@@ -33,14 +40,6 @@ class Location(db.Model):
                 'zip_code': self.zip_code}
 
 
-    def json_rest_shop(self):
-        shops = []
-        if self.shops:
-            shops = [shop.json_rest_location() for shop in self.shops]
-        return {'url': f"{os.getenv('API_PATH')}/location/{self.id}", 
-                'id': self.id, 
-                'address': self.address,
-                'zip_code': self.zip_code,
-                'shops': shops}
+
 
 

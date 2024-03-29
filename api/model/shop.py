@@ -15,13 +15,13 @@ class Shop(db.Model):
         return {'id': self.id, 
                 'name': self.name,
                 'company': self.company.json_rest(),
-                'location': self.location.json_rest_shop()}
+                'location': self.location.json_rest()}
     
 
     def json_rest_company(self):
         return {'url': f"{os.getenv('API_PATH')}/shop/{self.id}", 
                 'id': self.id,
-                'location': self.location.json_rest_shop()}
+                'location': self.location.json_rest()}
 
 
     def json_rest_location(self):

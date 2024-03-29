@@ -31,7 +31,7 @@ class ShopController(Resource):
             abort(http_status_code=404, message=str(e))
         except ShopAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except TypeAccessDbException as e:
+        except CompanyAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
 
@@ -41,8 +41,6 @@ class ShopController(Resource):
             self.shop_service.update(shop_id=shop_id, args=args)
             return jsonify({'message': f"Shop '{shop_id}' successfully updated."})
         except ShopIdNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except ShopIdGroupNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except CompanyIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
@@ -89,8 +87,6 @@ class ShopListController(Resource):
             return jsonify({'message': f"Shop successfully created."})
         except ShopAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except ShopIdGroupNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
         except CompanyIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except CompanyAccessDbException as e:

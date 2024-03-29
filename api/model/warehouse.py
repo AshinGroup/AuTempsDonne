@@ -14,7 +14,7 @@ class Warehouse(db.Model):
     def json(self):
         storages = []
         if self.storages:
-            storages = [storage.json_rest() for storage in self.storages]
+            storages = [storage.json_rest_warehouse() for storage in self.storages]
         return {'id': self.id, 
                 'name' : self.name,
                 'location' : self.location.json_rest(),
@@ -24,7 +24,7 @@ class Warehouse(db.Model):
     def json_rest_location(self):
         storages = []
         if self.storages:
-            storages = [storage.json_rest() for storage in self.storages]
+            storages = [storage.json_rest_warehouse() for storage in self.storages]
         return {'url': f"{os.getenv('API_PATH')}/warehouse/{self.id}", 
                 'id': self.id,
                 'name': self.name,

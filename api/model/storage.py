@@ -14,21 +14,23 @@ class Storage(db.Model):
     def json(self):
         packages = []
         if self.packages:
-            packages = [package.json_rest() for package in self.packages]
+            packages = [package.json_rest_storage() for package in self.packages]
         return {'id': self.id, 
                 'name' : self.name,
-                'packages': packages}
+                'packages': packages,
+                'warehouse': self.warehouse.json_rest_storage()}
     
 
     def json_rest_package(self):
         return {'url': f"{os.getenv('API_PATH')}/storage/{self.id}", 
                 'id': self.id,
-                'name': self.name}
+                'name': self.name,
+                'warehouse': self.warehouse.json_rest_storage()}
     
 
     def json_rest_warehouse(self):
         if self.packages:
-            packages = [package.json_rest() for package in self.packages]
+            packages = [package.json_rest_storage() for package in self.packages]
         return {'url': f"{os.getenv('API_PATH')}/storage/{self.id}", 
                 'id': self.id,
                 'name': self.name,
