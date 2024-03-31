@@ -7,7 +7,7 @@
   "sidebar.ToCollect": "待收集",
   "sidebar.Stock": "库存",
   "sidebar.Shops": "商店",
-  
+
   "users.usersManagement": "用户管理",
   "users.addANewUser": "+ 添加新用户",
   "users.search": "搜索",
@@ -77,5 +77,18 @@
   "EventModal.locationRequired": "地点是必需的。",
   "EventModal.locationPattern": "例如：小马厩街10号",
   "EventModal.addEvent": "添加事件",
-  "EventModal.updateEvent": "更新事件"
+  "EventModal.updateEvent": "更新事件",
+
+  "navbar.homepage": "主页",
+  "navbar.tocollect": "收集",
+  "navbar.support": "支持",
+  "navbar.donate": "捐赠",
+  "navbar.services": "服务",
+  "navbar.planning": "规划",
+  "navbar.activities": "活动",
+  "navbar.courses": "课程",
+  "navbar.login": "登录",
+  "navbar.logout": "登出",
+  "navbar.profile": "个人资料",
+  "navbar.signin": "注册"
 }

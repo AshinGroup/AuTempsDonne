@@ -7,7 +7,7 @@
   "sidebar.ToCollect": "Para Recoger",
   "sidebar.Stock": "Existencias",
   "sidebar.Shops": "Tiendas",
-  
+
   "users.usersManagement": "Gestión de usuarios",
   "users.addANewUser": "+ Agregar un nuevo usuario",
   "users.search": "Buscar",
@@ -74,5 +74,18 @@
   "EventModal.locationRequired": "La ubicación es obligatoria.",
   "EventModal.locationPattern": "Ejemplo: 10 rue des petits écuries",
   "EventModal.addEvent": "Agregar evento",
-  "EventModal.updateEvent": "Actualizar evento"
+  "EventModal.updateEvent": "Actualizar evento",
+
+  "navbar.homepage": "Página Principal",
+  "navbar.tocollect": "Recoger",
+  "navbar.support": "Apoyo",
+  "navbar.donate": "Donar",
+  "navbar.services": "Servicios",
+  "navbar.planning": "Planificación",
+  "navbar.activities": "Actividades",
+  "navbar.courses": "Cursos",
+  "navbar.login": "Iniciar Sesión",
+  "navbar.logout": "Cerrar Sesión",
+  "navbar.profile": "Perfil",
+  "navbar.signin": "Registrarse"
 }

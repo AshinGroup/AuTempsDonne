@@ -77,6 +77,18 @@
   "EventModal.locationRequired": "Location is required.",
   "EventModal.locationPattern": "Exemple : 10 rue des petits écuries",
   "EventModal.addEvent": "Add Event",
-  "EventModal.updateEvent": "Update Event"
-  
+  "EventModal.updateEvent": "Update Event",
+
+  "navbar.homepage": "HomePage",
+  "navbar.tocollect": "To Collect",
+  "navbar.support": "Support",
+  "navbar.donate": "Donate",
+  "navbar.services": "Services",
+  "navbar.planning": "Planning",
+  "navbar.activities": "Activities",
+  "navbar.courses": "Courses",
+  "navbar.login": "Log In",
+  "navbar.logout": "Log Out",
+  "navbar.profile": "Profile",
+  "navbar.signin": "Sign In"
 }

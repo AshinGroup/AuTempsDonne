@@ -4,7 +4,7 @@ import { IntlProvider } from "react-intl";
 import { useLanguage } from "./translations/languageContext";
 import translations from "./translations/translations";
 
-import WelcomePage from "./pages/WelcomePage";
+import HomePage from "./pages/HomePage";
 import AdminPanel from "./pages/AdminPanel";
 import Profile from "./pages/Profile";
 import LogOut from "./pages/LogOut";
@@ -16,7 +16,7 @@ const App = () => {
   return (
     <IntlProvider locale={locale} messages={messages}>
       <Routes>
-        <Route path="/" element={<AdminPanel />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/admin-panel" element={<AdminPanel />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/logout" element={<LogOut />} />
