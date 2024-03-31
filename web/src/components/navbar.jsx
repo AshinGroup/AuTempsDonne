@@ -268,7 +268,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
     // If the screen is expanded
     <>
       <nav
-        className={`flex flex-col bg-white border-b-2 border-AshinBlue-light shadow-sm`}
+        className={`flex flex-col bg-white sticky border-b-2 border-AshinBlue-light shadow-sm`}
       >
         <div
           className={`flex w-screen bg-white border-0 shadow-sm ${

@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import HomePage from "../components/contents/home";
 import Donation from "../components/contents/donation";
+import Support from "../components/contents/support";
 
 const WelcomePage = () => {
-  const [activeItem, setActiveItem] = useState("donate");
+  const [activeItem, setActiveItem] = useState("support");
   const navigate = useNavigate();
   const rule = "bénévole";
 
@@ -25,7 +26,7 @@ const WelcomePage = () => {
       case "planning":
         return <div>Planning</div>;
       case "support":
-        return <div>Support</div>;
+        return <Support />;
       case "donate":
         return <Donation />;
       case "login":

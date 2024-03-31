@@ -90,5 +90,26 @@
   "navbar.login": "登录",
   "navbar.logout": "登出",
   "navbar.profile": "个人资料",
-  "navbar.signin": "注册"
+  "navbar.signin": "注册",
+
+  "donation.DonAutantDonne": "捐赠：尽力而为！",
+  "donation.text1": "Au Temps Donné 是一个依赖于各种捐赠的人道主义协会。",
+  "donation.text2": "我们需要您的帮助，以继续帮助那些需要帮助的人。",
+
+  "support.supportAuTempsDonne": "Au Temps Donné 支持",
+  "support.serverstatus": "API 服务器状态：",
+  "support.online": "在线",
+  "support.offline": "离线",
+  "support.maintenance": "等待服务器状态...",
+  "support.mytickets": "我的工单",
+  "support.typeRequest": "选择请求类型：",
+  "support.selectRequest": "选择请求类型：",
+  "support.accountRecovery": "账户恢复",
+  "support.techIssues": "技术问题（崩溃，错误消息）",
+  "support.accountManagement": "账户管理（删除请求）",
+  "support.subject": "主题：",
+  "support.asksubject": "主题不能为空：",
+  "support.description": "描述：",
+  "support.askdescription": "描述不能为空：",
+  "support.submitRequest": "提交请求"
 }

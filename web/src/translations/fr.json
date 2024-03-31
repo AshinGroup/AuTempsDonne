@@ -90,5 +90,26 @@
   "navbar.login": "Se Connecter",
   "navbar.logout": "Se Déconnecter",
   "navbar.profile": "Profil",
-  "navbar.signin": "S'inscrire"
+  "navbar.signin": "S'inscrire",
+
+  "donation.DonAutantDonne": "Don : Autant Donner !!!",
+  "donation.text1": "Au Temps Donné est une association humanitaire qui repose sur divers dons.",
+  "donation.text2": "Nous avons besoin de votre aide pour continuer à aider les personnes dans le besoin.",
+
+  "support.supportAuTempsDonne": "Support de Au Temps Donné",
+  "support.serverstatus": "État du serveur API :",
+  "support.online": "en ligne",
+  "support.offline": "hors ligne",
+  "support.maintenance": "En attente de l'état du serveur...",
+  "support.mytickets": "Mes tickets",
+  "support.typeRequest": "Choisissez un type de requête :",
+  "support.selectRequest": "Sélectionnez un type de requête :",
+  "support.accountRecovery": "Récupération de compte",
+  "support.techIssues": "Problèmes techniques (plantage, message d'erreur)",
+  "support.accountManagement": "Gestion de compte (demande de suppression)",
+  "support.subject": "Sujet :",
+  "support.asksubject": "Le sujet ne peut pas être vide :",
+  "support.description": "Description :",
+  "support.askdescription": "La description ne peut pas être vide :",
+  "support.submitRequest": "Soumettre la demande"
 }
