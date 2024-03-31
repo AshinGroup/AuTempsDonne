@@ -1,5 +1,6 @@
 import React from "react";
 import atd_logo_typo from "../../resources/atd_logo_typo.png";
+import { FormattedMessage } from "react-intl";
 
 const Donation = () => {
   return (
@@ -12,16 +13,23 @@ const Donation = () => {
             className="max-w-xl mb-5 mt-10"
           />
           <h1 className="text-4xl mb-6 font-bold text-AshinBlue underline decoration-4">
-            Don : Autant Donner !
+            <FormattedMessage
+              id="donation.DonAutantDonne"
+              defaultMessage="Donation: Give as much as you can!"
+            />
           </h1>
 
           <p className="text-xl text-gray-400 text-center mx-1">
-            Au Temps Donné est une association humanitaire qui repose sur divers
-            dons
+            <FormattedMessage
+              id="donation.text1"
+              defaultMessage="Au Temps Donné is a humanitarian association that relies on various donations."
+            />
           </p>
           <p className="text-xl text-gray-400 text-center mx-1">
-            Les participations financières contribuent à l'achat de matériel,
-            nourriture et autres besoins pour les bénéficiaires
+            <FormattedMessage
+              id="donation.text2"
+              defaultMessage="We need your help to continue assisting those in need."
+            />
           </p>
           {/* PayPal Donate button form */}
           <form

@@ -90,5 +90,26 @@
   "navbar.login": "Log In",
   "navbar.logout": "Log Out",
   "navbar.profile": "Profile",
-  "navbar.signin": "Sign In"
+  "navbar.signin": "Sign In",
+
+  "donation.DonAutantDonne": "Donation: Give as much as you can!",
+  "donation.text1": "Au Temps Donné is a humanitarian association that relies on various donations.",
+  "donation.text2": "We need your help to continue assisting those in need.",
+
+  "support.supportAuTempsDonne": "Support for Au Temps Donné",
+  "support.serverstatus": "API Server Status:",
+  "support.online": "online",
+  "support.offline": "offline",
+  "support.maintenance": "Waiting for server status...",
+  "support.mytickets": "My Tickets",
+  "support.typeRequest": "Choose a request type:",
+  "support.selectRequest": "Select a request type:",
+  "support.accountRecovery": "Account Recovery",
+  "support.techIssues": "Technical Issues (crash, error message)",
+  "support.accountManagement": "Account Management (deletion request)",
+  "support.subject": "Subject:",
+  "support.asksubject": "Subject cannot be empty:",
+  "support.description": "Description:",
+  "support.askdescription": "Description cannot be empty:",
+  "support.submitRequest": "Submit Request"
 }
