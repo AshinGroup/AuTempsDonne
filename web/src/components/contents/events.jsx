@@ -99,7 +99,6 @@ const Events = () => {
 
   // Function to handle window resize
   useEffect(() => {
-    console.log(events);
     const handleResize = () => {
       setExpanded(window.innerWidth > 980);
     };

@@ -1,6 +1,12 @@
-import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, MessageCircleWarning } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  MessageCircleWarning,
+  Trash2,
+} from "lucide-react";
 import { Modal } from "../modals/modal";
+import DeleteModal from "../modals/deleteModal";
 
 export default function PlanningUserModal({
   PlanningModalOpen,
@@ -11,6 +17,8 @@ export default function PlanningUserModal({
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
+  const [Events, setEvents] = useState([]);
+  const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
 
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -30,16 +38,76 @@ export default function PlanningUserModal({
     }
   };
   const monthToString = (month) => {
-    const date = new Date();
-    date.setMonth(month);
+    const date = new Date(currentYear, month, 1);
+
+    // Get the month name using toLocaleString()
     let monthName = date.toLocaleString("en-US", { month: "long" });
+
+    // Capitalize the first letter of the month name
     monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+
     return monthName;
   };
   const handleDayClick = (day) => {
     setCurrentDay(day);
   };
 
+  // Fetch the events from the API
+  const fetchUserEvents = () => {
+    // Fetch each event individually
+    user.events.forEach((event) => {
+      let url = `http://127.0.0.1:5000/api/event/${event.id}`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((eventData) => {
+          console.log("Event:", eventData);
+          setEvents((prevEvents) => [...prevEvents, eventData]);
+        })
+        .catch((error) => {
+          console.error("Error fetching event:", error);
+        });
+    });
+  };
+  // Fetch the users when we change Page
+  useEffect(() => {
+    fetchUserEvents();
+  }, []);
+
+  // Check if there are events for the day
+  const eventsForDay = (day) => {
+    return Events.filter((event) => {
+      const eventDate = new Date(event.datetime);
+      return (
+        eventDate.getDate() === day &&
+        eventDate.getMonth() === currentMonth &&
+        eventDate.getFullYear() === currentYear
+      );
+    });
+  };
+
+  // Remove an event for an user
+  const deleteUserEvent = (eventId) => {
+    fetch(`http://127.0.0.1:5000/api/user/${user.id}/event/${eventId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      setSelectedEventIdForDelete(null);
+      // Refresh the users list and quit the modal
+      setEvents((prevEvents) =>
+        prevEvents.filter((event) => event.id !== eventId)
+      );
+    });
+  };
+
+  // Set the user id to delete
+  const handleDeleteClick = (eventId) => {
+    setSelectedEventIdForDelete(eventId);
+  };
   return (
     <Modal open={PlanningModalOpen} onClose={PlanningModalSetOpen}>
       {/* Main Div */}
@@ -89,12 +157,13 @@ export default function PlanningUserModal({
               (_, day) => (
                 <div
                   key={`${day}`}
-                  className={`py-1 flex flex-row justify-center ${day === currentDay - 1 ? "bg-AshinBlue text-white" : ""
-                    } hover:bg-blue-200 hover:text-white cursor-pointer rounded`}
+                  className={`py-1 flex flex-row justify-center ${
+                    day === currentDay - 1 ? "bg-AshinBlue text-white" : ""
+                  } hover:bg-blue-200 hover:text-white cursor-pointer rounded`}
                   onClick={() => handleDayClick(day + 1)}
                 >
                   {day + 1}
-                  {[1, 2, 16, 20, 11].includes(day) && (
+                  {eventsForDay(day + 1).length > 0 && (
                     <MessageCircleWarning
                       className="text-yellow-600"
                       size={15}
@@ -106,15 +175,50 @@ export default function PlanningUserModal({
           </div>
         </div>
         {/* Day Information of the User */}
-        <div className={`bg-gray-200 ${expanded ? "h-[60vh] w-[70vh]" : ""}`}>
-          {/* GET Activities by ID,  */}
-          <p className="font-bold">
-            This section will display the events with a dropdown with all
-            the extras
-          </p>
-          <p>No fetch for now, but needed for :</p>
-          <p> - events section </p>
-          <p> - pings dates</p>
+        <div
+          className={`bg-gray-200  border-2 rounded border-AshinBlue-light ${
+            expanded ? "h-[60vh] w-[60vh]" : ""
+          }`}
+        >
+          <div className="p-4">
+            <h2 className="text-lg font-bold text-center mb-5 py-2 border-b-2 border-AshinBlue">
+              {`${currentDay} ${monthToString(currentMonth)} ${currentYear}`}
+            </h2>
+            {/* Display a list of events for the selected day */}
+            <ul>
+              {eventsForDay(currentDay).map((event, index) => (
+                <li
+                  key={index}
+                  className="mb-2 flex bg-white border-2 p-2 border-AshinBlue rounded shadow-md"
+                >
+                  <div className=" flex flex-col w-5/6">
+                    <span className="font-bold">{event.name}</span>
+                    <span>
+                      {event.place} -{" "}
+                      {event.datetime
+                        .split(" ")[1]
+                        .split(":")
+                        .splice(0, 2)
+                        .join(":")}{" "}
+                    </span>
+                  </div>
+                  <div className=" flex justify-center align-center w-1/6">
+                    <button
+                      className="text-red-600 hover:text-red-800"
+                      onClick={() => handleDeleteClick(event.id)}
+                    >
+                      {<Trash2 size={22} />}
+                    </button>
+                    <DeleteModal
+                      open={slectedEventIdForDelete === event.id}
+                      onClose={() => setSelectedEventIdForDelete(null)}
+                      fetchUsers={() => deleteUserEvent(event.id)}
+                    />{" "}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </Modal>
