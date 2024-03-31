@@ -178,22 +178,26 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                 onClick={() => handleItemClick("Logout")}
               />
               {/* International */}
-              <div className="flex justify-around my-4">
+              <div
+                className={`flex justify-around my-4 ${
+                  !expanded ? "flex-col" : ""
+                }`}
+              >
                 <button
-                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-3 focus:outline-none transition ease-in-out duration-300 ${
+                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
                     locale === "en"
                       ? "from-AshinBlue-light to-AshinBlue-dark"
-                      : " from-gray-300 to-gray-400"
+                      : ""
                   }`}
                   onClick={() => changeLocale("en")}
                 >
                   <Flag country="GB" />
                 </button>
                 <button
-                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-3 focus:outline-none transition ease-in-out duration-300 ${
+                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
                     locale === "fr"
                       ? "from-AshinBlue-light to-AshinBlue-dark"
-                      : " from-gray-300 to-gray-400"
+                      : ""
                   }`}
                   onClick={() => changeLocale("fr")}
                 >
@@ -201,10 +205,10 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                   <Flag country="FR" />
                 </button>
                 <button
-                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-3 focus:outline-none transition ease-in-out duration-300 ${
+                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
                     locale === "es"
                       ? "from-AshinBlue-light to-AshinBlue-dark"
-                      : " from-gray-300 to-gray-400"
+                      : ""
                   }`}
                   onClick={() => changeLocale("es")}
                 >
@@ -212,10 +216,10 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                   <Flag country="ES" />
                 </button>
                 <button
-                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-3 focus:outline-none transition ease-in-out duration-300 ${
+                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
                     locale === "cn"
                       ? "from-AshinBlue-light to-AshinBlue-dark"
-                      : " from-gray-300 to-gray-400"
+                      : ""
                   }`}
                   onClick={() => changeLocale("cn")}
                 >

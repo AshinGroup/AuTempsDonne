@@ -7,9 +7,8 @@ import Stock from "../components/contents/stock";
 import ToCollect from "../components/contents/toCollect";
 import Shops from "../components/contents/shops";
 
-
 const AdminPanel = () => {
-  const [activeItem, setActiveItem] = useState("Users");
+  const [activeItem, setActiveItem] = useState("Events");
   const navigate = useNavigate();
 
   const getContent = () => {

@@ -176,7 +176,7 @@ const Events = () => {
         <table className="w-full text-left">
           <thead className="bg-gray-100">
             <tr>
-              <th className={` p-4 w-1/4  max-w-xs`}>
+              <th className={` p-4 w-1/12  max-w-xs`}>
                 {" "}
                 <FormattedMessage id="event.title" defaultMessage="Title" />
               </th>
@@ -185,13 +185,13 @@ const Events = () => {
                 <FormattedMessage id="event.group" defaultMessage="Group" />
               </th>
               {expanded && (
-                <th className="p-4 w-1/6 max-w-xs text-center">
+                <th className="p-4 w-1/12 max-w-xs text-center">
                   {" "}
                   <FormattedMessage id="event.type" defaultMessage="Type" />
                 </th>
               )}{" "}
               {expanded && (
-                <th className="p-4 w-1/6 max-w-xs text-center">
+                <th className="p-4 w-1/12 max-w-xs text-center">
                   {" "}
                   <FormattedMessage
                     id="event.dateTime"
@@ -203,7 +203,7 @@ const Events = () => {
                 {" "}
                 <FormattedMessage id="event.capacitys" defaultMessage="Slots" />
               </th>
-              <th className="p-4 w-1/4 max-w-xs text-center">
+              <th className="p-4 w-1/6 max-w-xs text-center">
                 {" "}
                 <FormattedMessage
                   id="event.location"
