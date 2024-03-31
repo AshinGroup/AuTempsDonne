@@ -2,21 +2,44 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/navbar";
-import Home from "../components/contents/home";
+import HomePage from "../components/contents/home";
+import Donation from "../components/contents/donation";
 
 const WelcomePage = () => {
-  const [activeItem, setActiveItem] = useState("Home");
+  const [activeItem, setActiveItem] = useState("donate");
   const navigate = useNavigate();
   const rule = "bénévole";
 
   const getContent = () => {
     switch (activeItem) {
-      case "Home":
-        return <Home />;
-      case "Profile":
+      case "homepage":
+        return <HomePage />;
+      case "services":
+        return <div>Services</div>;
+      case "activities":
+        return <div>Activities</div>;
+      case "courses":
+        return <div>Courses</div>;
+      case "tocollect":
+        return <div>To Collect</div>;
+      case "planning":
+        return <div>Planning</div>;
+      case "support":
+        return <div>Support</div>;
+      case "donate":
+        return <Donation />;
+      case "login":
+        navigate("/login");
+        return;
+      case "signin":
+        navigate("/signin");
+        return;
+      case "profile":
         navigate("/profile");
-      case "Logout":
+        return;
+      case "logout":
         navigate("/logout");
+        return;
       default:
         return <div>Select an item</div>;
     }

@@ -48,6 +48,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="HomePage"
                 />
               }
+              isActive={activeItem === "homepage"}
+              onClick={() => setActiveItem("homepage")}
             />
             <NavbarItem
               path="/"
@@ -57,6 +59,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="tocollect"
                 />
               }
+              isActive={activeItem === "tocollect"}
+              onClick={() => setActiveItem("tocollect")}
             />
             <NavbarItem
               path="/"
@@ -66,14 +70,22 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="support"
                 />
               }
+              isActive={activeItem === "support"}
+              onClick={() => setActiveItem("support")}
             />
             <NavbarItem
               path="/"
               text={
                 <FormattedMessage id="navbar.donate" defaultMessage="donate" />
               }
+              isActive={activeItem === "donate"}
+              onClick={() => setActiveItem("donate")}
             />
-            <NavbarButton rule={Rule} expanded={expanded} />
+            <NavbarButton
+              activeItem={activeItem}
+              expanded={expanded}
+              setActiveItem={setActiveItem}
+            />
           </>
         );
       case "bénéficiaire":
@@ -87,6 +99,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="services"
                 />
               }
+              isActive={activeItem === "services"}
+              onClick={() => setActiveItem("services")}
             />
             <NavbarItem
               path="/"
@@ -96,6 +110,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="activities"
                 />
               }
+              isActive={activeItem === "activities"}
+              onClick={() => setActiveItem("activities")}
             />
             <NavbarItem
               path="/"
@@ -105,6 +121,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="planning"
                 />
               }
+              isActive={activeItem === "planning"}
+              onClick={() => setActiveItem("planning")}
             />
             <NavbarItem
               path="/"
@@ -114,14 +132,22 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="support"
                 />
               }
+              isActive={activeItem === "support"}
+              onClick={() => setActiveItem("support")}
             />
             <NavbarItem
               path="/"
               text={
                 <FormattedMessage id="navbar.donate" defaultMessage="donate" />
               }
+              isActive={activeItem === "donate"}
+              onClick={() => setActiveItem("donate")}
             />
-            <NavbarButton rule={Rule} expanded={expanded} />
+            <NavbarButton
+              activeItem={activeItem}
+              expanded={expanded}
+              setActiveItem={setActiveItem}
+            />
           </>
         );
       case "bénévole":
@@ -135,6 +161,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="activities"
                 />
               }
+              isActive={activeItem === "activities"}
+              onClick={() => setActiveItem("activities")}
             />
             <NavbarItem
               path="/"
@@ -144,6 +172,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="services"
                 />
               }
+              isActive={activeItem === "services"}
+              onClick={() => setActiveItem("services")}
             />
             <NavbarItem
               path="/"
@@ -153,6 +183,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="courses"
                 />
               }
+              isActive={activeItem === "courses"}
+              onClick={() => setActiveItem("courses")}
             />
             <NavbarItem
               path="/"
@@ -162,6 +194,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="planning"
                 />
               }
+              isActive={activeItem === "planning"}
+              onClick={() => setActiveItem("planning")}
             />
             <NavbarItem
               path="/"
@@ -171,14 +205,22 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="support"
                 />
               }
+              isActive={activeItem === "support"}
+              onClick={() => setActiveItem("support")}
             />
             <NavbarItem
               path="/"
               text={
                 <FormattedMessage id="navbar.donate" defaultMessage="donate" />
               }
+              isActive={activeItem === "donate"}
+              onClick={() => setActiveItem("donate")}
             />
-            <NavbarButton rule={Rule} expanded={expanded} />
+            <NavbarButton
+              activeItem={activeItem}
+              expanded={expanded}
+              setActiveItem={setActiveItem}
+            />
           </>
         );
       default:
@@ -192,6 +234,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="HomePage"
                 />
               }
+              isActive={activeItem === "homepage"}
+              onClick={() => setActiveItem("homepage")}
             />
             <NavbarItem
               path="/"
@@ -207,8 +251,14 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               text={
                 <FormattedMessage id="navbar.donate" defaultMessage="donate" />
               }
+              isActive={activeItem === "donate"}
+              onClick={() => setActiveItem("donate")}
             />
-            <NavbarButton rule={Rule} expanded={expanded} />
+            <NavbarButton
+              activeItem={activeItem}
+              expanded={expanded}
+              setActiveItem={setActiveItem}
+            />
           </>
         );
     }
@@ -217,9 +267,11 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
   return (
     // If the screen is expanded
     <>
-      <nav className={`flex flex-col bg-white border-r shadow-sm`}>
+      <nav
+        className={`flex flex-col bg-white border-b-2 border-AshinBlue-light shadow-sm`}
+      >
         <div
-          className={`flex w-screen bg-white border-r shadow-sm ${
+          className={`flex w-screen bg-white border-0 shadow-sm ${
             !expanded ? "justify-between" : ""
           }`}
         >
@@ -247,51 +299,53 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
           )}
         </div>
         {!expanded && isBurgerOpen && (
-          <ul className="w-full">{renderLinks()}</ul>
+          <ul className="w-full absolute mt-14 bg-white">{renderLinks()}</ul>
         )}
       </nav>
     </>
   );
 }
 
-function NavbarItem({ path, text }) {
+function NavbarItem({ text, isActive, onClick }) {
   return (
-    <li className=" px-2 py-4 m-2 text-center border-b-2 border-gray-200 hover:border-AshinBlue-light ">
+    <li
+      className={`px-2 py-4 m-2 text-center border-b-2 ${
+        isActive ? "border-AshinBlue-light" : "border-gray-200"
+      } hover:border-AshinBlue-light`}
+    >
       <Link
-        to={path}
         className="items-center font-semibold border-0 rounded py-2 px-3"
+        onClick={onClick}
       >
         {text}
       </Link>
     </li>
   );
 }
-
-function NavbarButton(rule, expanded) {
+function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
   const [LanOpen, setLanOpen] = useState(false);
   const [UserOpen, setUserOpen] = useState(false);
-  const [navExpanded, setNavExpanded] = useState(window.innerWidth > 980);
+  const [navExpanded, setNavExpanded] = useState(window.innerWidth > 1100);
   const { locale, changeLocale } = useLanguage();
+  const intl = useIntl();
 
   useEffect(() => {
     const handleResize = () => {
-      setNavExpanded(window.innerWidth > 980);
+      setNavExpanded(window.innerWidth > 1100);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
-  });
+  }, []);
 
-  console.log(navExpanded == true);
   const toggleLanOpen = () => {
     setLanOpen(!LanOpen);
     setUserOpen(false);
   };
+
   const toggleUserOpen = () => {
     setUserOpen(!UserOpen);
     setLanOpen(false);
   };
-
-  const intl = useIntl();
 
   const login = intl.formatMessage({
     id: "navbar.login",
@@ -310,27 +364,43 @@ function NavbarButton(rule, expanded) {
     defaultMessage: "signin",
   });
 
-  const links = [
-    {
-      to: rule ? "/connexion" : "/profile",
-      label: rule ? login : profile,
-      icon: rule ? (
-        <Fish size={20} className="me-1" />
-      ) : (
-        <UserRoundSearch size={20} className="me-1" />
-      ),
-    },
-    {
-      to: rule ? "/inscription" : "/deconnexion",
-      label: rule ? signin : logout,
-      icon: rule ? (
-        <UserRoundPlus size={20} className="me-1" />
-      ) : (
-        <LogOut size={20} className="me-1" />
-      ),
-    },
-  ];
+  useEffect(() => {
+    const handleResize = () => {
+      setNavExpanded(window.innerWidth > 1100);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  }, []);
 
+  let links = [];
+  if (Rule === "commerce" || Rule === "bénéficiaire" || Rule === "bénévole") {
+    links = [
+      {
+        label: profile,
+        activeItem: "profile",
+        icon: <UserRoundSearch size={20} className="me-1" />,
+      },
+      {
+        label: logout,
+        activeItem: "logout",
+        icon: <LogOut size={20} className="me-1" />,
+      },
+    ];
+  } else {
+    links = [
+      {
+        label: login,
+        activeItem: "login",
+        icon: <Fish size={20} className="me-1" />,
+      },
+      {
+        label: signin,
+        activeItem: "signin",
+        icon: <UserRoundPlus size={20} className="me-1" />,
+      },
+    ];
+  }
+  console.log(links);
   if (navExpanded) {
     return (
       <li className={`flex justify-around ${expanded ? "me-10" : ""}`}>
@@ -341,11 +411,12 @@ function NavbarButton(rule, expanded) {
           </button>
           {UserOpen && (
             <ul className="absolute flex flex-col bg-white px-2 shadow-lg pb-2 pt-4 border-0 rounded font-semibold">
-              {links.map((link, index) => (
+              {links.map((link, _) => (
                 <Link
-                  key={index}
-                  to={link.to}
+                  key={link.activeItem}
+                  to="#"
                   className="flex px-2 my-1 py-1 border-b-2 border-white hover:border-AshinBlue"
+                  onClick={() => setActiveItem(link.activeItem)}
                 >
                   {link.icon}
                   {link.label}
@@ -393,7 +464,13 @@ function NavbarButton(rule, expanded) {
     return (
       <>
         {links.map((link, _) => (
-          <NavbarItem path={link.to} text={link.label} />
+          <NavbarItem
+            key={link.activeItem}
+            path={"#"}
+            text={link.label}
+            isActive={activeItem === link.activeItem}
+            onClick={() => setActiveItem(link.activeItem)}
+          />
         ))}
       </>
     );
