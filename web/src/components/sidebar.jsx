@@ -8,7 +8,7 @@ import {
   Users2,
   Store,
   Apple,
-  Truck, 
+  Truck,
   HeartHandshake,
   BookMarked,
   LogOut,
@@ -108,7 +108,10 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               key={"ToCollect"}
               icon={<Truck size={20} />}
               text={
-                <FormattedMessage id="sidebar.ToCollect" defaultMessage="ToCollect" />
+                <FormattedMessage
+                  id="sidebar.ToCollect"
+                  defaultMessage="ToCollect"
+                />
               }
               active={activeItem === "ToCollect"}
               onClick={() => handleItemClick("ToCollect")}

@@ -11,25 +11,25 @@ export default function SlotsEventModal({
 }) {
   // Remove a user from the Course
   const deleteUserCourse = (eventId) => {
-    // fetch(`http://127.0.0.1:5000/user/${courseId}`, {
-    //   method: "DELETE",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // }).then((response) => {
-    //   if (!response.ok) {
-    //     throw new Error("Network response was not ok");
-    //   }
-    // Refresh the users list and quit the modal
-    fetchUsers();
-    // });
+    fetch(`http://127.0.0.1:5000/api/user/${eventId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      // Refresh the users list
+      fetchUsers();
+    });
   };
 
   return (
     <Modal open={SlotsModalOpen} onClose={SlotsModalSetOpen}>
       <div className="text-center">
         <p className="font-bold text-lg py-2 px-5 mt-3 mb-8 mx-24 border border-[4px] border-AshinBlue rounded">
-          {event.title}
+          {event.name}
         </p>
         <div className="overflow-auto max-h-[400px]">
           <table className="w-full">
