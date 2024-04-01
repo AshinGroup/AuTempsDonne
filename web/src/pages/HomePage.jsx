@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Navbar from "../components/navbar";
 import HomePage from "../components/contents/home";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
+import Profile from "../components/contents/profile";
 
 const WelcomePage = () => {
-  const [activeItem, setActiveItem] = useState("support");
+  // Profile Management from Dashboard (ugly code, to be refactored)
+  const location = useLocation();
+  const [activeItem, setActiveItem] = useState(
+    location.state?.id || "homepage"
+  );
+
   const navigate = useNavigate();
-  const rule = "bénévole";
+  // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
+  const rule = "admin";
 
   const getContent = () => {
     switch (activeItem) {
@@ -29,6 +36,9 @@ const WelcomePage = () => {
         return <Support />;
       case "donate":
         return <Donation />;
+      case "adminpanel":
+        navigate("/admin-panel");
+        return;
       case "login":
         navigate("/login");
         return;
@@ -36,8 +46,7 @@ const WelcomePage = () => {
         navigate("/signin");
         return;
       case "profile":
-        navigate("/profile");
-        return;
+        return <Profile />;
       case "logout":
         navigate("/logout");
         return;

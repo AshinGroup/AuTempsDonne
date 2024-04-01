@@ -49,7 +49,6 @@ const Events = () => {
 
   // Remove a user from the API
   const deleteEvent = (EventId) => {
-    console.log(events);
     fetch(`http://127.0.0.1:5000/api/event/${EventId}`, {
       method: "DELETE",
       headers: {

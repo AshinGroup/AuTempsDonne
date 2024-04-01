@@ -91,6 +91,7 @@
   "navbar.logout": "Log Out",
   "navbar.profile": "Profile",
   "navbar.signin": "Sign In",
+  "navbar.adminpanel": "Admin Panel",
 
   "donation.DonAutantDonne": "Donation: Give as much as you can!",
   "donation.text1": "Au Temps Donné is a humanitarian association that relies on various donations.",
@@ -111,5 +112,21 @@
   "support.asksubject": "Subject cannot be empty:",
   "support.description": "Description:",
   "support.askdescription": "Description cannot be empty:",
-  "support.submitRequest": "Submit Request"
+  "support.submitRequest": "Submit Request",
+
+  "updateProfileModal.updateProfile": "Update Profile",
+  "updateProfileModal.disclaimer": "If you want to change your roles or email, please contact the support.",
+  "updateProfileModal.returnHome": "Return to HomePage",
+  "updateProfileModal.userInfo": "User Informations",
+  "updateProfileModal.fn": "First Name :",
+  "updateProfileModal.ln": "Last Name :",
+  "updateProfileModal.email": "Email :",
+  "updateProfileModal.phone": "phone :",
+  "updateProfileModal.roles": "role(s) :",
+  "updateProfileModal.events": "Event(s) :",
+  "updateProfileModal.place": "Place :",
+  "updateProfileModal.datetime": "DateTime :",
+  "updateProfileModal.description": "Description :",
+  "updateProfileModal.group": "group :",
+  "updateProfileModal.type": "type :"
 }

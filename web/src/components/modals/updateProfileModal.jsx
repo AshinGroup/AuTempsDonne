@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import {
-  X,
-  Trash2,
-  UserPlusIcon,
-  UserRoundCog,
-  ChevronLeft,
-  ChevronRight,
-  MessageCircleWarning,
-} from "lucide-react";
+import { UserRoundCog } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "../modals/modal";
 
-export default function UpdateProfileModal({
+export default function UpdateUserModal({
   UpdateModalOpen,
   UpdateModalSetOpen,
   user,
@@ -29,12 +21,12 @@ export default function UpdateProfileModal({
       first_name: user.first_name,
       last_name: user.last_name,
       phone: user.phone,
+      password: "",
+      role_id: user.role_id,
+      status: user.status,
     },
   });
 
-  const [roles, setRoles] = useState([]);
-  const [status, setStatus] = useState(user.status);
-  const [selectedRoles, setSelectedRoles] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
 
@@ -88,73 +80,16 @@ export default function UpdateProfileModal({
       "Phone should be in international format and contain at least 6 numbers.",
   });
 
-  const passwordPlaceholder = intl.formatMessage({
-    id: "modifyUserModal.password",
-    defaultMessage: "Password (leave empty to keep the same)",
-  });
-  const passwordValidPattern = intl.formatMessage({
-    id: "addUserModal.passwordValidPattern",
-    defaultMessage:
-      "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
-  });
-
   const modifyUser = intl.formatMessage({
     id: "modifyUserModal.modifyUser",
     defaultMessage: "Modify User",
   });
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/role")
-      .then((response) => response.json())
-      .then((fetchedRoles) => {
-        setRoles(fetchedRoles);
-        const defaultSelectedRoles = user.roles
-          .map((userRole) => userRole.id)
-          .filter((roleId) =>
-            fetchedRoles.some((fetchedRole) => fetchedRole.id === roleId)
-          );
-        setSelectedRoles(defaultSelectedRoles);
-      })
-      .catch((error) => console.error("Error fetching roles:", error));
-  }, [user.role]);
-
-  useEffect(() => {
-    register("status");
-  }, [register]);
-
-  useEffect(() => {
-    register("roles");
-  }, [register]);
-
-  const toggleStatus = (newStatus) => {
-    setStatus(newStatus);
-    setValue("status", newStatus); // Update form value
-  };
-
-  const toggleRoleSelection = (roleId) => {
-    if (selectedRoles.length === 1 && selectedRoles.includes(roleId)) {
-      return;
-    }
-
-    const currentIndex = selectedRoles.indexOf(roleId);
-    const newSelectedRoles = [...selectedRoles];
-
-    if (currentIndex === -1) {
-      newSelectedRoles.push(roleId);
-    } else {
-      newSelectedRoles.splice(currentIndex, 1);
-    }
-
-    setSelectedRoles(newSelectedRoles);
-  };
 
   const onPutSubmit = async (data) => {
     try {
       if (data.password === "") {
         delete data["password"];
       }
-
-      data["status"] = status;
 
       let response = await fetch(`http://localhost:5000/api/user/${user.id}`, {
         method: "PUT",
@@ -174,38 +109,8 @@ export default function UpdateProfileModal({
       } else {
         setResponseMessage(req.message);
         setIsErrorMessage(true);
+        fetchUsers();
       }
-      const userInitialRoles = user.roles.map((userRole) => userRole.id);
-
-      for (const selectedRole of selectedRoles) {
-        if (!userInitialRoles.includes(selectedRole)) {
-          await fetch(
-            `http://localhost:5000/api/user/${user.id}/role/${selectedRole}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-        }
-      }
-
-      for (const userInitialRole of userInitialRoles) {
-        if (!selectedRoles.includes(userInitialRole)) {
-          await fetch(
-            `http://localhost:5000/api/user/${user.id}/role/${userInitialRole}`,
-            {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-        }
-      }
-
-      fetchUsers();
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -215,6 +120,13 @@ export default function UpdateProfileModal({
     <Modal open={UpdateModalOpen} onClose={UpdateModalSetOpen}>
       <div className="text-center w-full ">
         <UserRoundCog size={40} className="mx-auto text-AshinBlue" />
+        <p className="text-center text-AshinBlue my-2">
+          {" "}
+          <FormattedMessage
+            id="updateProfileModal.disclaimer"
+            defaultMessage="If you want to change your roles, please contact the support."
+          />
+        </p>
         <p
           className={` my-2 font-medium ${
             isErrorMessage ? "text-green-500" : "text-red-500"
@@ -231,7 +143,7 @@ export default function UpdateProfileModal({
           <input
             type="email"
             {...register("email", {})}
-            className="p-2 border border-AshinBlue text-gray-800 focus:outline-none rounded"
+            className="p-2 border border-AshinBlue text-gray-400 focus:outline-none rounded"
             readOnly
           />
           {errors.email && (
@@ -293,95 +205,6 @@ export default function UpdateProfileModal({
           />
           {errors.phone && (
             <p className="text-red-500">{errors.phone.message}</p>
-          )}
-          {/* Password Selection */}
-          <input
-            type="password"
-            placeholder={passwordPlaceholder}
-            {...register("password", {
-              validate: {
-                custom: (value) =>
-                  value === "" ||
-                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-                    value
-                  ) ||
-                  passwordValidPattern,
-              },
-            })}
-            className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
-          />
-          {errors.password && (
-            <p className="text-red-500">{errors.password.message}</p>
-          )}
-          {/* Status selection */}
-          <div>
-            <label className="font-bold text-gray-500">
-              <FormattedMessage
-                id="addUserModal.status"
-                defaultMessage="Status"
-              />
-              :
-            </label>
-            <div className="flex flex-wrap gap-2 my-3 justify-center">
-              <button
-                type="button"
-                onClick={() => toggleStatus(1)}
-                className={`px-4 mx-1 py-1 border ${
-                  status === 1
-                    ? "border-green-600 bg-green-500 text-white"
-                    : "border-gray-300 bg-gray-200 text-gray-400"
-                } rounded-full transition focus:outline-none`}
-              >
-                <FormattedMessage
-                  id="addUserModal.active"
-                  defaultMessage="Active"
-                />
-              </button>
-              <button
-                type="button"
-                onClick={() => toggleStatus(0)}
-                className={`px-4 mx-1 py-1 border ${
-                  status === 0
-                    ? "border-red-700 bg-red-500 text-white"
-                    : "border-gray-300 bg-gray-200 text-gray-400"
-                } rounded-full transition focus:outline-none`}
-              >
-                <FormattedMessage
-                  id="addUserModal.inactive"
-                  defaultMessage="Inactive"
-                />
-              </button>
-            </div>
-          </div>
-
-          {/* Roles Pills */}
-          <div>
-            <label className="font-bold text-gray-500">
-              <FormattedMessage
-                id="addUserModal.roles"
-                defaultMessage="Roles"
-              />
-              :
-            </label>
-            <div className="flex flex-wrap gap-2 my-3 justify-center">
-              {roles.map((role) => (
-                <button
-                  key={role.id}
-                  type="button"
-                  onClick={() => toggleRoleSelection(role.id)}
-                  className={`px-4 py-1 border transition-all ${
-                    selectedRoles.includes(role.id)
-                      ? "border-white bg-AshinBlue text-white"
-                      : "border-gray-300 bg-gray-200 text-gray-400"
-                  } rounded-full focus:outline-none`}
-                >
-                  {role.name}
-                </button>
-              ))}
-            </div>
-          </div>
-          {errors.roles && (
-            <p className="text-red-500">{errors.roles.message}</p>
           )}
 
           {/* Submit Selection */}

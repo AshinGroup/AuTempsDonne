@@ -91,6 +91,7 @@
   "navbar.logout": "登出",
   "navbar.profile": "个人资料",
   "navbar.signin": "注册",
+  "navbar.adminpanel": "管理",
 
   "donation.DonAutantDonne": "捐赠：尽力而为！",
   "donation.text1": "Au Temps Donné 是一个依赖于各种捐赠的人道主义协会。",
@@ -111,5 +112,21 @@
   "support.asksubject": "主题不能为空：",
   "support.description": "描述：",
   "support.askdescription": "描述不能为空：",
-  "support.submitRequest": "提交请求"
+  "support.submitRequest": "提交请求",
+
+  "updateProfileModal.updateProfile": "更新个人资料",
+  "updateProfileModal.disclaimer": "如果您想更改您的角色或电子邮件，请联系支持。",
+  "updateProfileModal.returnHome": "返回首页",
+  "updateProfileModal.userInfo": "用户信息",
+  "updateProfileModal.fn": "名字：",
+  "updateProfileModal.ln": "姓氏：",
+  "updateProfileModal.email": "电子邮件：",
+  "updateProfileModal.phone": "电话：",
+  "updateProfileModal.roles": "角色：",
+  "updateProfileModal.events": "活动：",
+  "updateProfileModal.place": "地点：",
+  "updateProfileModal.datetime": "日期时间：",
+  "updateProfileModal.description": "描述：",
+  "updateProfileModal.group": "团体：",
+  "updateProfileModal.type": "类型："
 }

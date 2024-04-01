@@ -6,7 +6,6 @@ import translations from "./translations/translations";
 
 import HomePage from "./pages/HomePage";
 import AdminPanel from "./pages/AdminPanel";
-import Profile from "./pages/Profile";
 import LogOut from "./pages/LogOut";
 import LogIn from "./pages/LogIn";
 import SignIn from "./pages/SignIn";
@@ -19,8 +18,8 @@ const App = () => {
     <IntlProvider locale={locale} messages={messages}>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        {/* <Route path="/" element={<HomePage />} /> */}
         <Route path="/admin-panel" element={<AdminPanel />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/logout" element={<LogOut />} />
