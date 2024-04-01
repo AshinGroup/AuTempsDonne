@@ -17,3 +17,7 @@ class LocationAccessDbException(Exception):
         else: 
             return f"Error {self.method} locations."
 
+
+class LocationDetailsException(Exception):
+    def __str__(self) -> str:
+        return f"Error getting locations details."
