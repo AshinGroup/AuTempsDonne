@@ -24,9 +24,11 @@ const AdminPanel = () => {
       case "ToCollect":
         return <ToCollect />;
       case "Profile":
-        navigate("/profile");
+        navigate("/", { state: { id: "profile" } });
+        return;
       case "Logout":
         navigate("/logout");
+        return;
       default:
         return <div>Select an item</div>;
     }

@@ -88,6 +88,7 @@
   "navbar.logout": "Cerrar Sesión",
   "navbar.profile": "Perfil",
   "navbar.signin": "Registrarse",
+  "navbar.adminpanel": "Administración",
 
   "donation.DonAutantDonne": "Donación: ¡Da todo lo que puedas!",
   "donation.text1": "Au Temps Donné es una asociación humanitaria que depende de diversas donaciones.",
@@ -108,5 +109,21 @@
   "support.asksubject": "El asunto no puede estar vacío:",
   "support.description": "Descripción:",
   "support.askdescription": "La descripción no puede estar vacía:",
-  "support.submitRequest": "Enviar solicitud"
+  "support.submitRequest": "Enviar solicitud",
+
+  "updateProfileModal.updateProfile": "Actualizar perfil",
+  "updateProfileModal.disclaimer": "Si desea cambiar sus roles o correo electrónico, comuníquese con el soporte.",
+  "updateProfileModal.returnHome": "Volver a la página de inicio",
+  "updateProfileModal.userInfo": "Información del usuario",
+  "updateProfileModal.fn": "Nombre :",
+  "updateProfileModal.ln": "Apellido :",
+  "updateProfileModal.email": "Correo electrónico :",
+  "updateProfileModal.phone": "Teléfono :",
+  "updateProfileModal.roles": "rol(es) :",
+  "updateProfileModal.events": "Evento(s) :",
+  "updateProfileModal.place": "Lugar :",
+  "updateProfileModal.datetime": "Fecha y hora :",
+  "updateProfileModal.description": "Descripción :",
+  "updateProfileModal.group": "grupo :",
+  "updateProfileModal.type": "tipo :"
 }

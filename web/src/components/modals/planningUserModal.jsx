@@ -60,7 +60,6 @@ export default function PlanningUserModal({
       fetch(url)
         .then((response) => response.json())
         .then((eventData) => {
-          console.log("Event:", eventData);
           setEvents((prevEvents) => [...prevEvents, eventData]);
         })
         .catch((error) => {

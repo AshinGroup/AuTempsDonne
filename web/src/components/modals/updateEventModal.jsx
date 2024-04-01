@@ -97,7 +97,6 @@ export default function UpdateCourseModal({
   });
 
   useEffect(() => {
-    console.log(event.type.id);
     fetch("http://127.0.0.1:5000/api/type")
       .then((response) => response.json())
       .then((fetchedTypes) => {
@@ -142,7 +141,6 @@ export default function UpdateCourseModal({
   // POST
   const onPostSubmit = async (data) => {
     try {
-      console.log(data);
       data.datetime = format(new Date(data.datetime), "yyyy-MM-dd HH:mm:ss");
       data.type_id = selectedTypes[0];
       data.group = group;

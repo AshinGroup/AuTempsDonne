@@ -82,6 +82,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               onClick={() => setActiveItem("donate")}
             />
             <NavbarButton
+              Rule={Rule}
               activeItem={activeItem}
               expanded={expanded}
               setActiveItem={setActiveItem}
@@ -144,6 +145,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               onClick={() => setActiveItem("donate")}
             />
             <NavbarButton
+              Rule={Rule}
               activeItem={activeItem}
               expanded={expanded}
               setActiveItem={setActiveItem}
@@ -217,6 +219,58 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               onClick={() => setActiveItem("donate")}
             />
             <NavbarButton
+              Rule={Rule}
+              activeItem={activeItem}
+              expanded={expanded}
+              setActiveItem={setActiveItem}
+            />
+          </>
+        );
+      case "admin":
+        return (
+          <>
+            <NavbarItem
+              path="/"
+              text={
+                <FormattedMessage
+                  id="navbar.homepage"
+                  defaultMessage="HomePage"
+                />
+              }
+              isActive={activeItem === "homepage"}
+              onClick={() => setActiveItem("homepage")}
+            />
+            <NavbarItem
+              path="/AdminPanel"
+              text={
+                <FormattedMessage
+                  id="navbar.adminpanel"
+                  defaultMessage="AdminPanel"
+                />
+              }
+              isActive={activeItem === "adminpanel"}
+              onClick={() => setActiveItem("adminpanel")}
+            />
+            <NavbarItem
+              text={
+                <FormattedMessage
+                  id="navbar.support"
+                  defaultMessage="support"
+                />
+              }
+              isActive={activeItem === "support"}
+              onClick={() => setActiveItem("support")}
+            />
+            <NavbarItem
+              path="/"
+              text={
+                <FormattedMessage id="navbar.donate" defaultMessage="donate" />
+              }
+              isActive={activeItem === "donate"}
+              onClick={() => setActiveItem("donate")}
+            />
+            <NavbarButton
+              Rule={Rule}
               activeItem={activeItem}
               expanded={expanded}
               setActiveItem={setActiveItem}
@@ -245,6 +299,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="support"
                 />
               }
+              isActive={activeItem === "support"}
+              onClick={() => setActiveItem("support")}
             />
             <NavbarItem
               path="/"
@@ -255,6 +311,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               onClick={() => setActiveItem("donate")}
             />
             <NavbarButton
+              Rule={Rule}
               activeItem={activeItem}
               expanded={expanded}
               setActiveItem={setActiveItem}
@@ -276,7 +333,14 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
           }`}
         >
           <div className="p-4 pb-3 relative flex justify-between items-center">
-            <Link to="/">
+            <Link
+              to={{
+                pathname: "/",
+                // search: "?sort=name",
+                // hash: "#the-hash",
+                state: { id: "homepage" },
+              }}
+            >
               <img
                 src={atd_logo_typo}
                 alt="ATD Logo Typo"
@@ -373,7 +437,12 @@ function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
   }, []);
 
   let links = [];
-  if (Rule === "commerce" || Rule === "bénéficiaire" || Rule === "bénévole") {
+  if (
+    Rule == "commerce" ||
+    Rule == "bénéficiaire" ||
+    Rule == "bénévole" ||
+    Rule == "admin"
+  ) {
     links = [
       {
         label: profile,
@@ -400,7 +469,6 @@ function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
       },
     ];
   }
-  console.log(links);
   if (navExpanded) {
     return (
       <li className={`flex justify-around ${expanded ? "me-10" : ""}`}>
