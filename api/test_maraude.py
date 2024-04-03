@@ -52,7 +52,7 @@ def dessine_tour(villes, perm):
     ax.plot([villes[perm[0], 0], villes[perm[-1], 0]],
             [villes[perm[0], 1], villes[perm[-1], 1]], 'b-o')
     ax.set_title("dist=%f" % distance_tour(villes, perm))
-    plt.show()
+    # plt.show()
     print("dist = ",distance_tour(villes, perm))
     return ax
 
@@ -104,10 +104,14 @@ villes = np.array([
 # print("Nombre de permutations effectuées :", nb_perm)
 # print("Permutation optimale :", perm)
 
-perm = build_permutation(villes)
-dessine_tour(villes, perm);
+
 # perm = list(range(villes.shape[0]))
 # print(dessine_tour(villes, perm));
-dist, nb_perm, perm = ameliore_tour_renversement(villes, perm)
-print("nb perm", nb_perm)
-dessine_tour(villes, perm);
+for i in range(10):
+    print(f"Test {i} :")
+    perm = build_permutation(villes)
+    dessine_tour(villes, perm);
+    dist, nb_perm, perm = ameliore_tour_renversement(villes, perm)
+    print("nb perm", nb_perm)
+    dessine_tour(villes, perm);
+    print(" ")
