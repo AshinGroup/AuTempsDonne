@@ -22,7 +22,7 @@ export default function UpdateUserModal({
       last_name: user.last_name,
       phone: user.phone,
       password: "",
-      role_id: user.role_id,
+      role_id: user.roles[0].id,
       status: user.status,
     },
   });
@@ -90,6 +90,7 @@ export default function UpdateUserModal({
       if (data.password === "") {
         delete data["password"];
       }
+      delete data["role_id"];
 
       let response = await fetch(`http://localhost:5000/api/user/${user.id}`, {
         method: "PUT",

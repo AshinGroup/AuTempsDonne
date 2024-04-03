@@ -55,7 +55,14 @@ class Event(db.Model):
                 'id': self.id,
                 'name': self.name,
                 'place': self.place,
-                'group': self.group
+                'group': self.group,
+                'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'description': self.description,
+                'type': {
+                    'url': f"{os.getenv('API_PATH')}/type/{self.type_id}",
+                    'id': self.type.id,
+                    'name': self.type.name
+                },
                 }
 
 
