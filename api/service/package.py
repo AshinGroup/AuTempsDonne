@@ -26,6 +26,9 @@ class PackageService:
         return packages
 
 
+    def select_by_search(self, page: int, search: str) -> list[Package]:
+        packages = self.package_repo.select_by_search(page=page, search=search)
+        return packages
 
 
     def select_all(self):
