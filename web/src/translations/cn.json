@@ -128,5 +128,11 @@
   "updateProfileModal.datetime": "日期时间：",
   "updateProfileModal.description": "描述：",
   "updateProfileModal.group": "团体：",
-  "updateProfileModal.type": "类型："
+  "updateProfileModal.type": "类型：",
+
+  "shops.shopsManagement": "商店管理",
+    "shops.addANewShop": "+ 添加新店铺",
+    "shops.shopName": "店铺",
+    "shops.companyName": "公司",
+    "shops.address": "地址"
 }

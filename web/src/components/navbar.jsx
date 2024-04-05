@@ -553,7 +553,7 @@ function LanguageButton({ locale, changeLocale, country }) {
       className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
         isActive(country) ? "from-AshinBlue-light to-AshinBlue-dark" : ""
       }`}
-      onClick={() => changeLocale(country === "gb" ? "en" : country)}
+      onClick={() => changeLocale(country == "gb" ? "en" : country)}
     >
       <Flag country={country.toUpperCase()} />
     </button>
