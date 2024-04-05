@@ -1,6 +1,6 @@
 {
   "sidebar.users": "Utilisateurs",
-  "sidebar.events": "Activités",
+  "sidebar.events": "Evenements",
   "sidebar.courses": "Cours",
   "sidebar.profile": "Profil",
   "sidebar.logout": "Déconnexion",
@@ -99,8 +99,8 @@
 
   "support.supportAuTempsDonne": "Support de Au Temps Donné",
   "support.serverstatus": "État du serveur API :",
-  "support.online": "en ligne",
-  "support.offline": "hors ligne",
+  "support.online": "En ligne",
+  "support.offline": "Hors ligne",
   "support.maintenance": "En attente de l'état du serveur...",
   "support.mytickets": "Mes tickets",
   "support.typeRequest": "Choisissez un type de requête :",
@@ -127,6 +127,12 @@
   "updateProfileModal.place": "Lieu :",
   "updateProfileModal.datetime": "Date et heure :",
   "updateProfileModal.description": "Description :",
-  "updateProfileModal.group": "groupe :",
-  "updateProfileModal.type": "type :"
+  "updateProfileModal.group": "Catégorie :",
+  "updateProfileModal.type": "Type :",
+
+  "shops.shopsManagement": "Gestion des Magasins",
+    "shops.addANewShop": "+ Ajouter un nouveau Magasin",
+    "shops.shopName": "Magasin",
+    "shops.companyName": "Société",
+    "shops.address": "Adresse"
 }

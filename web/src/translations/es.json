@@ -96,8 +96,8 @@
 
   "support.supportAuTempsDonne": "Soporte de Au Temps Donné",
   "support.serverstatus": "Estado del servidor API:",
-  "support.online": "en línea",
-  "support.offline": "fuera de línea",
+  "support.online": "En línea",
+  "support.offline": "Fuera de línea",
   "support.maintenance": "Esperando estado del servidor...",
   "support.mytickets": "Mis Tickets",
   "support.typeRequest": "Seleccione un tipo de solicitud:",
@@ -124,6 +124,12 @@
   "updateProfileModal.place": "Lugar :",
   "updateProfileModal.datetime": "Fecha y hora :",
   "updateProfileModal.description": "Descripción :",
-  "updateProfileModal.group": "grupo :",
-  "updateProfileModal.type": "tipo :"
+  "updateProfileModal.group": "Grupo :",
+  "updateProfileModal.type": "Tipo :",
+
+  "shops.shopsManagement": "Gestión de Tiendas",
+    "shops.addANewShop": "+ Agregar una nueva Tienda",
+    "shops.shopName": "Tienda",
+    "shops.companyName": "Empresa",
+    "shops.address": "Dirección"
 }
