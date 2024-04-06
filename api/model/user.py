@@ -17,6 +17,8 @@ class User(db.Model):
         'Role', secondary='user_is_role', back_populates='users')
     events = db.relationship(
         'Event', secondary='user_participates_event', back_populates='users')
+    tickets = db.relationship(
+        'Ticket', secondary='user_writes_ticket', back_populates='users')
 
     def json(self):
         roles = [role.json_rest() for role in self.roles]
