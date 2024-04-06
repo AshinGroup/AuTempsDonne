@@ -11,7 +11,7 @@ class ShopCheckArgs:
     def get_shop_args(self) -> dict:
         parser = reqparse.RequestParser()
         parser.add_argument(
-            "name", type=int, required=True, help="Invalid or missing parameter 'name'."
+            "name", type=str, required=True, help="Invalid or missing parameter 'name'."
         )
         parser.add_argument(
             "company_id",

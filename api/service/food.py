@@ -31,9 +31,10 @@ class FoodService:
         new_food = Food(name=args['name'], description=args['description'], category_id=args['category_id'])
 
         if not self.category_service.select_one_by_id(category_id=new_food.category_id):
-            raise CategoryIdNotFoundException(category_id=category_id)
+            raise CategoryIdNotFoundException(category_id=new_food.category_id)
        
-        self.food_repo.insert(new_food=new_food)
+        new_food_id = self.food_repo.insert(new_food=new_food)
+        return new_food_id
 
     def update(self, food_id: int, args: dict):
         update_food = Food(name=args['name'], description=args['description'], category_id=args['category_id'])

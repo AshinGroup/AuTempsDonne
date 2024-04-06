@@ -74,7 +74,7 @@ class CompanyListController(Resource):
     def post(self):
         try:
             args = self.check_args.get_company_args()
-            self.company_service.insert(args=args)
-            return jsonify({'message': f"Company '{args['name']}' successfully created."})
+            new_company_id = self.company_service.insert(args=args)
+            return jsonify({'message': f"Company '{args['name']}' successfully created.", 'company_id': new_company_id})
         except CompanyAccessDbException as e:
             abort(http_status_code=500, message=str(e))

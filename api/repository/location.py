@@ -23,7 +23,7 @@ class LocationRepo():
             raise LocationAccessDbException(location_id=None, method="getting")
 
 
-    def insert(self, new_location: Location) -> None:
+    def insert(self, new_location: Location) -> int:
         try:
             with app.app_context():
                 db.session.add(new_location)
