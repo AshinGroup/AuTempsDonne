@@ -128,8 +128,29 @@
   "updateProfileModal.type": "Tipo :",
 
   "shops.shopsManagement": "Gestión de Tiendas",
-    "shops.addANewShop": "+ Agregar una nueva Tienda",
-    "shops.shopName": "Tienda",
-    "shops.companyName": "Empresa",
-    "shops.address": "Dirección"
+  "shops.addANewShop": "+ Agregar una nueva Tienda",
+  "shops.shopName": "Tienda",
+  "shops.companyName": "Empresa",
+  "shops.address": "Dirección",
+
+  "addShopModal.shopNamePlaceholder": "Nombre de la tienda",
+  "addShopModal.shopNameRequired": "Nombre de la tienda requerido",
+  "addShopModal.selectCompany": "Seleccionar una empresa",
+  "addShopModal.createCompany": "Crear una empresa",
+  "addShopModal.selectLocation": "Seleccionar un lugar",
+  "addShopModal.createLocation": "Crear un lugar",
+  "addShopModal.submit": "Agregar una tienda",
+  "addShopModal.CompanyNamePlaceholder": "Nombre de la empresa",
+  "addShopModal.CompanyNameRequired": "Nombre de la empresa requerido",
+  "addShopModal.CompanyDescriptionPlaceholder": "Descripción de la empresa (máximo 100 caracteres)",
+  "addShopModal.CompanyDescriptionRequired": "Descripción de la empresa requerida",
+  "addShopModal.CompanyDescriptionLength": "La descripción debe contener menos de 100 caracteres",
+  "addShopModal.LocationNamePlaceholder": "Dirección de la tienda",
+  "addShopModal.LocationNameRequired": "La dirección de la tienda es requerida",
+  "addShopModal.LocationZipPlaceholder": "Código postal",
+  "addShopModal.LocationZipRequired": "Código postal requerido",
+  "addShopModal.LocationCityPlaceholder": "Nombre de la ciudad",
+  "addShopModal.LocationCityRequired": "Nombre de la ciudad requerido",
+  "addShopModal.LocationCountryPlaceholder": "Nombre del país",
+  "addShopModal.LocationCountryRequired": "Nombre del país requerido"
 }

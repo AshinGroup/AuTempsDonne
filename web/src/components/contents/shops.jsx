@@ -5,42 +5,40 @@ import { Settings, Trash2, CalendarDays } from "lucide-react";
 
 import DeleteModal from "../modals/deleteModal";
 import AddShopModal from "../modals/addShopModal";
-import UpdateUserModal from "../modals/updateUserModal";
-import PlanningUserModal from "../modals/planningUserModal";
+import UpdateShopModal from "../modals/updateShopModal";
 
 const Shops = () => {
-    const [shops, setShops] = useState([])
-    const [currentPage, setCurrentPage] = useState(1);
-    const [maxPages, setMaxPages] = useState(0);
-    const pageNumbers = [];
-    const pagesToShow = 2;
-    const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
-    const [searchInput, setSearchInput] = useState("");    
+  const [shops, setShops] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPages, setMaxPages] = useState(0);
+  const pageNumbers = [];
+  const pagesToShow = 2;
+  const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
+  const [searchInput, setSearchInput] = useState("");
 
+  const [selectedShopIdForDelete, setSelectedShopIdForDelete] = useState(null);
+  const [AddModalOpen, AddModalSetOpen] = useState(false);
+  const [selectedShopIdForUpdate, setSelectedShopIdForUpdate] = useState(null);
 
-    const [selectedShopIdForDelete, setSelectedShopIdForDelete] = useState(null);
-    const [AddModalOpen, AddModalSetOpen] = useState(false);
+  // Fetch the users from the API
+  const fetchShops = () => {
+    let url =
+      searchInput != ""
+        ? `http://127.0.0.1:5000/api/shop/page/${currentPage}/search/${searchInput}`
+        : `http://127.0.0.1:5000/api/shop/page/${currentPage}`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setShops(data.shops);
+        setMaxPages(data.max_pages);
+      })
+      .catch((error) => {
+        console.error("Error fetching shops:", error);
+      });
+  };
 
-
-    // Fetch the users from the API
-    const fetchShops = () => {
-        let url =
-        searchInput != ""
-            ? `http://127.0.0.1:5000/api/shop/page/${currentPage}/search/${searchInput}`
-            : `http://127.0.0.1:5000/api/shop/page/${currentPage}`;
-        fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-            setShops(data.shops);
-            setMaxPages(data.max_pages);
-        })
-        .catch((error) => {
-            console.error("Error fetching shops:", error);
-        });
-    };
-
-      // Remove a user from the API
-  const deleteUser = (shopId) => {
+  // Remove a user from the API
+  const deleteShop = (shopId) => {
     fetch(`http://127.0.0.1:5000/api/shop/${shopId}`, {
       method: "DELETE",
       headers: {
@@ -61,26 +59,29 @@ const Shops = () => {
     setSelectedShopIdForDelete(shopId);
   };
 
-    const handleSearch = (e) => {
-      e.preventDefault();
-      setSearchInput(e.target.value);
-      if (e.keyCode == 13) {
-        fetchUsers;
-      }
-    };
-  
-    const handleClickSearch = (e) => {
-      if (e.type == "click" || e.keyCode == 13) fetchUsers();
-    };
-    
-  
+  // Set the user id to update
+  const handleUpdateClick = (ShopId) => {
+    setSelectedShopIdForUpdate(ShopId);
+  };
 
-    // Fetch the users when we change Page
-    useEffect(() => {
-        fetchShops();
-    }, [currentPage]);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchInput(e.target.value);
+    if (e.keyCode == 13) {
+      fetchShops();
+    }
+  };
 
-      // Function to handle window resize
+  const handleClickSearch = (e) => {
+    if (e.type == "click" || e.keyCode == 13) fetchShops();
+  };
+
+  // Fetch the users when we change Page
+  useEffect(() => {
+    fetchShops();
+  }, [currentPage]);
+
+  // Function to handle window resize
   useEffect(() => {
     const handleResize = () => {
       setExpanded(window.innerWidth > 980);
@@ -89,24 +90,24 @@ const Shops = () => {
     window.addEventListener("resize", handleResize);
   });
 
-    // Array of pagination [1,2,3,...,maxPages]
-    let startPage = Math.max(currentPage - pagesToShow, 1);
-    let endPage = Math.min(currentPage + pagesToShow, maxPages);
-    if (startPage !== 1) {
-      pageNumbers.push(1);
-      if (startPage > 2) pageNumbers.push("...");
-    }
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-    if (endPage < maxPages) {
-      if (endPage < maxPages - 1) pageNumbers.push("...");
-      pageNumbers.push(maxPages);
-    }
+  // Array of pagination [1,2,3,...,maxPages]
+  let startPage = Math.max(currentPage - pagesToShow, 1);
+  let endPage = Math.min(currentPage + pagesToShow, maxPages);
+  if (startPage !== 1) {
+    pageNumbers.push(1);
+    if (startPage > 2) pageNumbers.push("...");
+  }
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
+  if (endPage < maxPages) {
+    if (endPage < maxPages - 1) pageNumbers.push("...");
+    pageNumbers.push(maxPages);
+  }
 
-    return (
-      <div className={`h-screen p-8 pt-8 ${expanded ? "mx-6" : "mx-1"}`}>
-              <div className="flex mb-6 items-center">
+  return (
+    <div className={`h-screen p-8 pt-8 ${expanded ? "mx-6" : "mx-1"}`}>
+      <div className="flex mb-6 items-center">
         <h1
           className={`${
             expanded ? "text-3xl" : "text-2xl"
@@ -136,8 +137,8 @@ const Shops = () => {
           fetchUsers={fetchShops}
         />
       </div>
-       {/* Searchbar */}
-       <div className="flex gap-4 mb-6 items-stretch">
+      {/* Searchbar */}
+      <div className="flex gap-4 mb-6 items-stretch">
         <input
           type="text"
           // placeholder={searchPlaceholder}
@@ -154,20 +155,23 @@ const Shops = () => {
           <FormattedMessage id="users.search" defaultMessage="Search" />
         </button>
       </div>
-            {/* List of Users */}
-            <div className="overflow-x-auto">
+      {/* List of Users */}
+      <div className="overflow-x-auto">
         {/* Table of Users */}
         <table className="w-full text-left">
           <thead className="bg-gray-100">
             <tr>
-                <th className="py-4 w-1/6">
-                  {" "}
-                  <FormattedMessage id="shops.shopName" defaultMessage="Shop" />
-                </th>
+              <th className="py-4">
+                {" "}
+                <FormattedMessage id="shops.shopName" defaultMessage="Shop" />
+              </th>
               {expanded && (
                 <th>
                   {" "}
-                  <FormattedMessage id="shops.companyName" defaultMessage="Company" />
+                  <FormattedMessage
+                    id="shops.companyName"
+                    defaultMessage="Company"
+                  />
                 </th>
               )}
               <th className="ps-3 ">
@@ -190,11 +194,7 @@ const Shops = () => {
                     {shop.name}
                   </td>
                 )}{" "}
-                {expanded && (
-                  <td className="">
-                    {shop.company.name}
-                  </td>
-                )}
+                {expanded && <td className="">{shop.company.name}</td>}
                 {!expanded && (
                   <td className="flex flex-col py-4">
                     <span className="font-normal">{shop.name}</span>
@@ -205,28 +205,28 @@ const Shops = () => {
                 )}
                 {/* address */}
                 <td className=" max-w-xs ps-3 whitespace-nowrap overflow-hidden text-ellipsis">
-                    {shop.location.address} {expanded && (shop.location.zip_code)}
-                  </td>
+                  {shop.location.address} {expanded && shop.location.zip_code}
+                </td>
                 {/* actions */}
                 <td>
                   {shop.name != null && (
                     <>
                       <button
                         className="text-blue-600 hover:text-blue-800 mr-2"
-                        // onClick={() => handleUpdateClick(user.id)}
+                        onClick={() => handleUpdateClick(shop.id)}
                       >
                         {<Settings size={20} />}
                       </button>
-                      {/* {selectedUserIdForUpdate === user.id && (
-                        <UpdateUserModal
-                          UpdateModalOpen={selectedUserIdForUpdate === user.id}
+                      {selectedShopIdForUpdate === shop.id && (
+                        <UpdateShopModal
+                          UpdateModalOpen={selectedShopIdForUpdate === shop.id}
                           UpdateModalSetOpen={() =>
-                            setSelectedUserIdForUpdate(null)
+                            setSelectedShopIdForUpdate(null)
                           }
-                          user={user}
-                          fetchUsers={fetchUsers}
+                          shop={shop}
+                          fetchShops={fetchShops}
                         />
-                      )} */}
+                      )}
                       <button
                         className="text-red-600 hover:text-red-800 mr-2"
                         onClick={() => handleDeleteClick(shop.id)}
@@ -236,7 +236,7 @@ const Shops = () => {
                       <DeleteModal
                         open={selectedShopIdForDelete === shop.id}
                         onClose={() => setSelectedShopIdForDelete(null)}
-                        fetchUsers={() => deleteUser(shop.id)}
+                        fetchUsers={() => deleteShop(shop.id)}
                       />{" "}
                     </>
                   )}
@@ -268,10 +268,8 @@ const Shops = () => {
           )
         )}
       </div>
-      </div>
-    
-      )
-
+    </div>
+  );
 };
 
 export default Shops;

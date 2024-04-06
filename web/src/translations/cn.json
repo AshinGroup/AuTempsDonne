@@ -131,8 +131,29 @@
   "updateProfileModal.type": "类型：",
 
   "shops.shopsManagement": "商店管理",
-    "shops.addANewShop": "+ 添加新店铺",
-    "shops.shopName": "店铺",
-    "shops.companyName": "公司",
-    "shops.address": "地址"
+  "shops.addANewShop": "+ 添加新店铺",
+  "shops.shopName": "店铺",
+  "shops.companyName": "公司",
+  "shops.address": "地址",
+
+  "addShopModal.shopNamePlaceholder": "商店名称",
+  "addShopModal.shopNameRequired": "商店名称为必填项",
+  "addShopModal.selectCompany": "选择公司",
+  "addShopModal.createCompany": "创建公司",
+  "addShopModal.selectLocation": "选择位置",
+  "addShopModal.createLocation": "创建位置",
+  "addShopModal.submit": "添加商店",
+  "addShopModal.CompanyNamePlaceholder": "公司名称",
+  "addShopModal.CompanyNameRequired": "公司名称为必填项",
+  "addShopModal.CompanyDescriptionPlaceholder": "公司描述（最多100个字符）",
+  "addShopModal.CompanyDescriptionRequired": "公司描述为必填项",
+  "addShopModal.CompanyDescriptionLength": "公司描述必须少于或等于100个字符",
+  "addShopModal.LocationNamePlaceholder": "商店地址",
+  "addShopModal.LocationNameRequired": "商店地址为必填项",
+  "addShopModal.LocationZipPlaceholder": "邮政编码",
+  "addShopModal.LocationZipRequired": "商店邮编为必填项",
+  "addShopModal.LocationCityPlaceholder": "城市名称",
+  "addShopModal.LocationCityRequired": "城市名称为必填项",
+  "addShopModal.LocationCountryPlaceholder": "国家名称",
+  "addShopModal.LocationCountryRequired": "国家名称为必填项"
 }
