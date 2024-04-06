@@ -48,7 +48,7 @@ class PackageService:
         self.package_repo.insert(new_package=new_package)
 
     def update(self, package_id: int, args: dict):
-        update_package = Package(weight=args['weight'], description=args['description'], expiration_date=args['expiration_date'], food_id=args['food_id'])
+        update_package = Package(weight=args['weight'], description=args['description'], expiration_date=args['expiration_date'], food_id=args['food_id'], storage_id=args['storage_id'])
         package = self.package_repo.select_one_by_id(package_id=package_id)
 
         if not package:
