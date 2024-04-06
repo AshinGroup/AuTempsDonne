@@ -155,5 +155,32 @@
   "addShopModal.LocationCityPlaceholder": "City Name",
   "addShopModal.LocationCityRequired": "City Name required",
   "addShopModal.LocationCountryPlaceholder": "Country Name",
-  "addShopModal.LocationCountryRequired": "Country Name required"
+  "addShopModal.LocationCountryRequired": "Country Name required",
+
+  "stock.stockManagement": "Stock Management",
+  "stock.addANewItem": "+ Add a new Item",
+  "stock.foodName": "Food",
+  "stock.weight": "Weight",
+  "stock.expiration_date": "Expiration Date",
+  "stock.storage_location": "Storage Location",
+  "stock.kg": "Kg",
+  "stock.searchPlaceholder": "Search by Food ...",
+  "shop.searchPlaceholder": "Search by Shop ...",
+
+  "addStockModal.FoodName": "Food Name",
+  "addStockModal.FoodNameRequired": "Food Name is Required",
+  "addStockModal.FoodDescription": "Food Description",
+  "addStockModal.FoodDescriptionRequired": "Food Description is Required",
+  "addStockModal.FoodDescriptionLength": "Food Description is too long (100 max)",
+  "addStockModal.selectCategory": "Select a Category :",
+  "addStockModal.submit": "Add a Package",
+  "addStockModal.selectFood": "Select a Food",
+  "addStockModal.CreateFood": "Create a Food",
+  "addStockModal.weightPlaceholder": "Weight of the Package (in KG)",
+  "addStockModal.weightRequired": "Weight is Required",
+  "addStockModal.descriptionPlaceholder": "Description of the Package",
+  "addStockModal.descriptionRequired": "Description is Required",
+  "addStockModal.expirationRequired": "Expiration_Date is Required is Required",
+  "addStockModal.expirationDate": "Expiration Date :",
+  "addStockModal.selectStorage": "Select a Storage Location :"
 }

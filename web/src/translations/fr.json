@@ -155,5 +155,32 @@
   "addShopModal.LocationCityPlaceholder": "Nom de la ville",
   "addShopModal.LocationCityRequired": "Nom de la ville requis",
   "addShopModal.LocationCountryPlaceholder": "Nom du pays",
-  "addShopModal.LocationCountryRequired": "Nom du pays requis"
+  "addShopModal.LocationCountryRequired": "Nom du pays requis",
+
+  "stock.stockManagement": "Gestion des stocks",
+  "stock.addANewItem": "+ Ajouter un nouvel élément",
+  "stock.foodName": "Aliment",
+  "stock.weight": "Poids",
+  "stock.expiration_date": "Date d'expiration",
+  "stock.storage_location": "Emplacement de stockage",
+  "stock.kg": "Kg",
+  "stock.searchPlaceholder": "Rechercher par aliment...",
+  "shop.searchPlaceholder": "Rechercher par magasin...",
+
+  "addStockModal.FoodName": "Nom de l'aliment",
+  "addStockModal.FoodNameRequired": "Le nom de l'aliment est requis",
+  "addStockModal.FoodDescription": "Description de l'aliment",
+  "addStockModal.FoodDescriptionRequired": "La description de l'aliment est requise",
+  "addStockModal.FoodDescriptionLength": "La description de l'aliment est trop longue (100 max)",
+  "addStockModal.selectCategory": "Sélectionner une Catégorie :",
+  "addStockModal.submit": "Ajouter un Colis",
+  "addStockModal.selectFood": "Sélectionner un Aliment",
+  "addStockModal.CreateFood": "Créer un Aliment",
+  "addStockModal.weightPlaceholder": "Poids du Colis (en KG)",
+  "addStockModal.weightRequired": "Le poids est requis",
+  "addStockModal.descriptionPlaceholder": "Description du Colis",
+  "addStockModal.descriptionRequired": "La description est requise",
+  "addStockModal.expirationRequired": "La date d'expiration est requise",
+  "addStockModal.expirationDate": "Date d'expiration :",
+  "addStockModal.selectStorage": "Sélectionner un Lieu de Stockage :"
 }
