@@ -96,7 +96,7 @@ export default function AddShopModal({
         setResponseMessage(newCompany.message);
         setIsErrorMessage(false);
       }
-      data.company_id = newCompany.id;
+      data.company_id = newCompany.company_id;
     }
 
     if (!locationSwitch) {
@@ -119,7 +119,7 @@ export default function AddShopModal({
         setResponseMessage(newLocation.message);
         setIsErrorMessage(false);
       }
-      data.location_id = newLocation.id;
+      data.location_id = newLocation.location_id;
     }
 
     try {

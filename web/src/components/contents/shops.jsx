@@ -141,7 +141,7 @@ const Shops = () => {
         <AddShopModal
           AddModalOpen={AddModalOpen}
           AddModalSetOpen={() => AddModalSetOpen(false)}
-          fetchUsers={fetchShops}
+          fetchUsers={() => fetchShops()}
         />
       </div>
       {/* Searchbar */}
@@ -230,7 +230,7 @@ const Shops = () => {
                             setSelectedShopIdForUpdate(null)
                           }
                           shop={shop}
-                          fetchUsers={fetchShops}
+                          fetchShops={() => fetchShops()}
                         />
                       )}
                       <button

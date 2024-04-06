@@ -182,5 +182,7 @@
   "addStockModal.descriptionRequired": "La description est requise",
   "addStockModal.expirationRequired": "La date d'expiration est requise",
   "addStockModal.expirationDate": "Date d'expiration :",
-  "addStockModal.selectStorage": "Sélectionner un Lieu de Stockage :"
+  "addStockModal.selectStorage": "Sélectionner un Lieu de Stockage :",
+  "updateShopModal.submit": "Mettre à jour un magasin",
+  "updateStockModal.submit": "Mettre à jour un paquet"
 }

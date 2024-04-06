@@ -179,5 +179,7 @@
   "addStockModal.descriptionRequired": "La descripción es obligatoria",
   "addStockModal.expirationRequired": "Fecha de Vencimiento es obligatoria",
   "addStockModal.expirationDate": "Fecha de Vencimiento :",
-  "addStockModal.selectStorage": "Seleccionar una Ubicación de Almacenamiento :"
+  "addStockModal.selectStorage": "Seleccionar una Ubicación de Almacenamiento :",
+  "updateShopModal.submit": "Actualizar una tienda",
+  "updateStockModal.submit": "Actualizar un paquete"
 }

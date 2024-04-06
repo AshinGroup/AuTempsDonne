@@ -90,6 +90,7 @@ export default function AddPackageModal({
 
   // POST
   const onPostSubmit = async (data) => {
+    console.log(data);
     // CHANGER ICI POUR METTRE LES BONNES REQUETES
     if (!foodSwitch) {
       let response = await fetch("http://localhost:5000/api/food", {
@@ -98,8 +99,8 @@ export default function AddPackageModal({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: data.company_name,
-          description: data.company_description,
+          name: data.food_name,
+          description: data.food_description,
           category_id: data.category_id,
         }),
       });
@@ -110,7 +111,7 @@ export default function AddPackageModal({
         setResponseMessage(newFood.message);
         setIsErrorMessage(false);
       }
-      data.food_id = newFood.id;
+      data.food_id = newFood.food_id;
     }
 
     data.expiration_date = format(
