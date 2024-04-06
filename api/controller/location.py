@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.location import LocationService
-from exception.location import LocationIdNotFoundException, LocationAccessDbException
+from exception.location import *
 from flask import jsonify
 
 class LocationCheckArgs:
@@ -44,6 +44,8 @@ class LocationController(Resource):
         except LocationIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except LocationAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except LocationDetailsException as e:
             abort(http_status_code=500, message=str(e))        
    
 
@@ -81,4 +83,6 @@ class LocationListController(Resource):
             new_location_id = self.location_service.insert(args=args)
             return jsonify({'message': f"Location '{args['address']}' successfully created.", 'location_id': new_location_id})
         except LocationAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except LocationDetailsException as e:
             abort(http_status_code=500, message=str(e))

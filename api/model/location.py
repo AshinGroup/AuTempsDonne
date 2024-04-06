@@ -9,6 +9,9 @@ class Location(db.Model):
     zip_code = db.Column(db.String(10))
     city = db.Column(db.String(30))
     country = db.Column(db.String(30))
+    description = db.Column(db.Text)
+    latitude = db.Column(db.String(30))
+    longitude = db.Column(db.String(30))
     shops = db.relationship("Shop", backref="location")
     warehouses = db.relationship("Warehouse", backref="location")
 

@@ -45,6 +45,9 @@ class LocationRepo():
                 location.zip_code = update_location.zip_code
                 location.city = update_location.city
                 location.country = update_location.country
+                location.description = update_location.description
+                location.latitude = update_location.latitude
+                location.longitude = update_location.longitude
                 db.session.commit()
                 db.session.close()
         except Exception:
