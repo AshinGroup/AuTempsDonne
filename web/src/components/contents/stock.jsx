@@ -4,8 +4,8 @@ import { format } from "date-fns";
 import { Settings, Trash2, CalendarDays } from "lucide-react";
 
 import DeleteModal from "../modals/deleteModal";
-import AddShopModal from "../modals/addShopModal";
-import UpdateShopModal from "../modals/updateShopModal";
+import AddPackageModal from "../modals/addStockModal";
+import UpdateStockModal from "../modals/updateStockModal";
 
 const Stock = () => {
   const [stock, setStock] = useState([]);
@@ -21,6 +21,13 @@ const Stock = () => {
   const [AddModalOpen, AddModalSetOpen] = useState(false);
   const [selectedstockIdForUpdate, setSelectedstockIdForUpdate] =
     useState(null);
+
+  const intl = useIntl();
+
+  const searchPlaceholder = intl.formatMessage({
+    id: "stock.searchPlaceholder",
+    defaultMessage: "Search by Food ...",
+  });
 
   // Fetch the users from the API
   const fetchStock = () => {
@@ -43,7 +50,7 @@ const Stock = () => {
 
   // Remove a user from the API
   const deleteStock = (stockId) => {
-    fetch(`http://127.0.0.1:5000/api/stock/${stockId}`, {
+    fetch(`http://127.0.0.1:5000/api/package/${stockId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -118,8 +125,8 @@ const Stock = () => {
           } font-bold flex-grow`}
         >
           <FormattedMessage
-            id="shops.shopsManagement"
-            defaultMessage="Shops Management"
+            id="stock.stockManagement"
+            defaultMessage="stock Management"
           />
         </h1>
         <button
@@ -131,11 +138,11 @@ const Stock = () => {
           }}
         >
           <FormattedMessage
-            id="shops.addANewShop"
-            defaultMessage="+ Add a new Shop"
+            id="stock.addANewItem"
+            defaultMessage="+ Add a new Item"
           />
         </button>
-        <AddShopModal
+        <AddPackageModal
           AddModalOpen={AddModalOpen}
           AddModalSetOpen={() => AddModalSetOpen(false)}
           fetchUsers={fetchStock}
@@ -145,8 +152,7 @@ const Stock = () => {
       <div className="flex gap-4 mb-6 items-stretch">
         <input
           type="text"
-          // placeholder={searchPlaceholder}
-          placeholder={"SearchPlacehodler"}
+          placeholder={searchPlaceholder}
           className="p-2 border border-gray-300 rounded flex-grow focus:outline-none focus:border-AshinBlue transition"
           onChange={handleSearch}
           onKeyDown={handleClickSearch}
@@ -165,22 +171,29 @@ const Stock = () => {
         <table className="w-full text-left">
           <thead className="bg-gray-100">
             <tr>
-              <th className="py-4 ">
+              <th className="py-4">
                 {" "}
-                <FormattedMessage id="shops.shopName" defaultMessage="Shop" />
+                <FormattedMessage id="stock.foodName" defaultMessage="food" />
               </th>
               {expanded && (
-                <th>
+                <th className=" ">
                   {" "}
-                  <FormattedMessage
-                    id="shops.companyName"
-                    defaultMessage="Company"
-                  />
+                  <FormattedMessage id="stock.weight" defaultMessage="weight" />
                 </th>
               )}
-              <th className="ps-3 ">
+              <th className=" ">
                 {" "}
-                <FormattedMessage id="shops.address" defaultMessage="Address" />
+                <FormattedMessage
+                  id="stock.expiration_date"
+                  defaultMessage="expiration_date"
+                />
+              </th>
+              <th className=" ">
+                {" "}
+                <FormattedMessage
+                  id="stock.storage_location"
+                  defaultMessage="storage_location"
+                />
               </th>
               <th>
                 {" "}
@@ -191,7 +204,84 @@ const Stock = () => {
           <tbody>
             {/* For each Shop ... */}
             {stock.map((sto) => (
-              <tr key={sto.id}>{sto.food.name}</tr>
+              <tr key={sto.id} className="border-b">
+                {/* food name & wright */}
+                {expanded && (
+                  <td className="flex flex-col py-4 max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span className="font-normal">{sto.food.name}</span>
+                    <span className="font-light text-gray-400">
+                      {sto.food.category.name}
+                    </span>
+                  </td>
+                )}{" "}
+                {expanded && (
+                  <td className="">
+                    {sto.weight}{" "}
+                    <FormattedMessage id="stock.kg" defaultMessage="Kg" />
+                  </td>
+                )}
+                {!expanded && (
+                  <td className="flex flex-col py-4">
+                    <span className="font-normal">{sto.food.name}</span>
+                    <span className="font-light text-gray-400">
+                      {sto.weight}{" "}
+                      <FormattedMessage id="stock.kg" defaultMessage="Kg" />
+                    </span>
+                  </td>
+                )}
+                <td
+                  className={`max-w-xs whitespace-nowrap overflow-hidden text-ellipsis ${isExpired(
+                    sto.expiration_date
+                  )}`}
+                >
+                  {new Date(sto.expiration_date).toLocaleDateString("en-US")}
+                </td>
+                {/* storage location */}
+                <td className=" max-w-xs  flex flex-col whitespace-nowrap overflow-hidden text-ellipsis">
+                  <span className="font-normal">
+                    {" "}
+                    {sto.storage.name} {sto.storage.warehouse.name}{" "}
+                  </span>
+                  <span className="font-light text-gray-400">
+                    {sto.storage.warehouse.location.address}{" "}
+                    {sto.storage.warehouse.location.zip_code}{" "}
+                  </span>
+                </td>
+                {/* actions */}
+                <td>
+                  {sto.food.name != null && (
+                    <>
+                      <button
+                        className="text-blue-600 hover:text-blue-800 mr-2"
+                        onClick={() => handleUpdateClick(sto.id)}
+                      >
+                        {<Settings size={20} />}
+                      </button>
+                      {selectedstockIdForUpdate === sto.id && (
+                        <UpdateStockModal
+                          UpdateModalOpen={selectedstockIdForUpdate === sto.id}
+                          UpdateModalSetOpen={() =>
+                            setSelectedstockIdForUpdate(null)
+                          }
+                          stock={sto}
+                          fetchstocks={fetchStock}
+                        />
+                      )}
+                      <button
+                        className="text-red-600 hover:text-red-800 mr-2"
+                        onClick={() => handleDeleteClick(sto.id)}
+                      >
+                        {<Trash2 size={20} />}
+                      </button>
+                      <DeleteModal
+                        open={selectedstockIdForDelete === sto.id}
+                        onClose={() => setSelectedstockIdForDelete(null)}
+                        fetchUsers={() => deleteStock(sto.id)}
+                      />{" "}
+                    </>
+                  )}
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>
@@ -221,5 +311,20 @@ const Stock = () => {
     </div>
   );
 };
+
+function isExpired(expiration_date) {
+  const oneDay = 24 * 60 * 60 * 1000;
+  const today = new Date();
+  const expiration = new Date(expiration_date);
+  const differenceInDays = Math.round((expiration - today) / oneDay);
+
+  if (differenceInDays > 14) {
+    return "text-emerald-400";
+  } else if (differenceInDays <= 14 && differenceInDays >= 0) {
+    return "text-orange-300";
+  } else {
+    return "text-red-400";
+  }
+}
 
 export default Stock;

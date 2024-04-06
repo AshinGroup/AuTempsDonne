@@ -226,7 +226,7 @@ const Events = () => {
                     <br></br>
                     <span className="text-slate-500">
                       {" "}
-                      {format(new Date(event.datetime), "yy/MM/dd HH'H'mm ")}
+                      {format(new Date(event.datetime), "dd/MM/yy HH'H'mm ")}
                     </span>
                   </td>
                 )}{" "}
@@ -277,7 +277,7 @@ const Events = () => {
                 {expanded && (
                   <td className={`text-center`}>
                     {" "}
-                    {format(new Date(event.datetime), "yy/MM/dd HH'H'mm ")}
+                    {format(new Date(event.datetime), "dd/MM/yy HH'H'mm ")}
                   </td>
                 )}{" "}
                 {/* max_slot */}

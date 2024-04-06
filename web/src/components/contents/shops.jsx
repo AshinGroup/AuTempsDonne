@@ -20,6 +20,13 @@ const Shops = () => {
   const [AddModalOpen, AddModalSetOpen] = useState(false);
   const [selectedShopIdForUpdate, setSelectedShopIdForUpdate] = useState(null);
 
+  const intl = useIntl();
+
+  const searchPlaceholder = intl.formatMessage({
+    id: "shop.searchPlaceholder",
+    defaultMessage: "Search by Shop ...",
+  });
+
   // Fetch the users from the API
   const fetchShops = () => {
     let url =
@@ -141,8 +148,7 @@ const Shops = () => {
       <div className="flex gap-4 mb-6 items-stretch">
         <input
           type="text"
-          // placeholder={searchPlaceholder}
-          placeholder={"SearchPlacehodler"}
+          placeholder={searchPlaceholder}
           className="p-2 border border-gray-300 rounded flex-grow focus:outline-none focus:border-AshinBlue transition"
           onChange={handleSearch}
           onKeyDown={handleClickSearch}
@@ -190,7 +196,7 @@ const Shops = () => {
               <tr key={shop.id} className="border-b">
                 {/* email & companies */}
                 {expanded && (
-                  <td className="p-4 max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
+                  <td className="py-4 max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
                     {shop.name}
                   </td>
                 )}{" "}
@@ -224,7 +230,7 @@ const Shops = () => {
                             setSelectedShopIdForUpdate(null)
                           }
                           shop={shop}
-                          fetchShops={fetchShops}
+                          fetchUsers={fetchShops}
                         />
                       )}
                       <button

@@ -225,7 +225,7 @@ function CompanySelect(register, errors, companies, defaultValueCompany) {
       <select
         id="company_id"
         {...register("company_id", { required: true })}
-        value={defaultValueCompany}
+        defaultValue={defaultValueCompany}
         className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
       >
         <option value="">
@@ -237,7 +237,11 @@ function CompanySelect(register, errors, companies, defaultValueCompany) {
         </option>
         {/* For SELECT * FROM COMPANIES */}
         {companies.map((company) => (
-          <option key={company.id} value={company.id}>
+          <option
+            key={company.id}
+            value={company.id}
+            selected={company.id === defaultValueCompany ? true : false}
+          >
             {company.name}
           </option>
         ))}
@@ -260,7 +264,7 @@ function LocationSelect(register, errors, locations, defaultValueLocation) {
       <select
         id="location_id"
         {...register("location_id", { required: true })}
-        value={defaultValueLocation}
+        defaultValue={defaultValueLocation}
         className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
       >
         <option value="">
@@ -272,7 +276,11 @@ function LocationSelect(register, errors, locations, defaultValueLocation) {
         </option>
         {/* For SELECT * FROM locations */}
         {locations.map((location) => (
-          <option key={location.id} value={location.id}>
+          <option
+            key={location.id}
+            value={location.id}
+            selected={location.id === defaultValueLocation ? true : false}
+          >
             {location.address}, {location.zip_code}, {location.city},{" "}
             {location.country}
           </option>
