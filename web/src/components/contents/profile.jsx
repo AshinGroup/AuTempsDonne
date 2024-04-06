@@ -5,12 +5,12 @@ import atd_logo_ from "../../resources/atd_logo_.png";
 import atd_logo_typo from "../../resources/atd_logo_typo.png";
 import { FormattedMessage } from "react-intl";
 import DeleteModal from "../modals/deleteModal";
-import UpdateProfileModal from "../modals/UpdateProfileModal";
+import UpdateProfileModal from "../modals/updateProfileModal";
 
 const Profile = () => {
   // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
   const rule = "admin";
-  const userId = "3";
+  const userId = "1";
   const [user, setUser] = useState([]);
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
@@ -72,7 +72,7 @@ const Profile = () => {
 
   return (
     <div className="flex justify-center w-screen bg-gradient-to-t from-AshinBlue-light to-AshinBlue-dark mb-96">
-      <main className=" w-4/6 bg-white">
+      <main className={`${expanded ? "w-4/6" : "w-full"} bg-white`}>
         {/* Return Button */}
         {/* <div className="flex justify-between mt-5 ps-5 ">
           {" "}
@@ -106,7 +106,7 @@ const Profile = () => {
               src={
                 "https://media.licdn.com/dms/image/D4E35AQEz5P2DFRozXA/profile-framedphoto-shrink_800_800/0/1706228464071?e=1712574000&v=beta&t=XWoK30d3YWIQSmCpRrfWsrT_SeACd8_sj16hyKULcD8"
               }
-              className="w-40 h-40 rounded-full border-2 border-AshinBlue-light shadow-lg"
+              className="w-40 rounded-full border-2 border-AshinBlue-light shadow-lg"
             />
             <span className="mt-3 font-bold text-2xl">
               {user.first_name} {user.last_name}

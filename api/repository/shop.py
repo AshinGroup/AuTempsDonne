@@ -3,7 +3,8 @@ from database.db import db
 from app import app
 from exception.shop import ShopAccessDbException
 
-class ShopRepo():    
+
+class ShopRepo:
 
     def select_one_by_id(self, shop_id: int) -> Shop:
         try:
@@ -11,19 +12,17 @@ class ShopRepo():
             return shop
         except Exception:
             raise ShopAccessDbException(shop_id=shop_id, method="getting")
-        
 
     def select_per_page(self, page: int) -> list[Shop]:
         try:
-            shop = Shop.query.paginate(page=page, per_page=10)
-            if not shop:
+            shops = Shop.query.paginate(page=page, per_page=10)
+            if not shops:
                 return None
-            
-            return {'max_pages' : shop.pages, 'shop': shop}
+
+            return {"max_pages": shops.pages, "shops": shops}
         except Exception:
             raise ShopAccessDbException(shop_id=None, method="getting")
 
-    
     def select_all(self) -> list[Shop]:
         try:
             shops = Shop.query.all()
@@ -33,7 +32,6 @@ class ShopRepo():
         except Exception:
             raise ShopAccessDbException(shop_id=None, method="getting")
 
-
     def insert(self, new_shop: Shop) -> None:
         try:
             with app.app_context():
@@ -42,7 +40,6 @@ class ShopRepo():
                 db.session.close()
         except Exception:
             raise ShopAccessDbException(shop_id=None, method="creating")
-    
 
     def update(self, shop_id: int, update_shop: Shop) -> None:
         try:
@@ -55,7 +52,6 @@ class ShopRepo():
                 db.session.close()
         except Exception:
             raise ShopAccessDbException(shop_id=shop_id, method="updating")
-
 
     def delete(self, shop_id: int) -> None:
         try:

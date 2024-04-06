@@ -27,11 +27,15 @@ class LocationRepo():
         try:
             with app.app_context():
                 db.session.add(new_location)
+                db.session.flush()
+                new_location_id = new_location.id
                 db.session.commit()
                 db.session.close()
+                return new_location_id
         except Exception:
             raise LocationAccessDbException(location_id=None, method="creating")
     
+
 
     def update(self, location_id: int, update_location: Location) -> None:
         try:

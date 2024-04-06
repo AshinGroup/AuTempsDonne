@@ -80,8 +80,8 @@ class LocationListController(Resource):
     def post(self):
         try:
             args = self.check_args.get_location_args()
-            self.location_service.insert(args=args)
-            return jsonify({'message': f"Location '{args['address']}' successfully created."})
+            new_location_id = self.location_service.insert(args=args)
+            return jsonify({'message': f"Location '{args['address']}' successfully created.", 'location_id': new_location_id})
         except LocationAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         except LocationDetailsException as e:

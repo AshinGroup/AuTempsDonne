@@ -115,3 +115,18 @@ class EventPageController(Resource):
         except EventAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
+
+class EventSearchController(Resource):
+    def __init__(self) -> None:
+        self.event_service = EventService()
+
+    def get(self, page: int, search: str):
+        try:
+            events = self.event_service.select_by_search(page=page, search=search)
+            if events:
+                return jsonify({'max_pages': events['max_pages'], 'events': [event.json() for event in events['events']]})
+            else:
+                return jsonify({'message': "No events found."})
+        except EventAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        

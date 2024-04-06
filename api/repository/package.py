@@ -1,4 +1,5 @@
 from model.package import Package
+from model.food import Food
 from database.db import db
 from app import app
 from exception.package import PackageAccessDbException
@@ -22,7 +23,18 @@ class PackageRepo():
             return {'max_pages' : packages.pages, 'packages': packages}
         except Exception:
             raise PackageAccessDbException(package_id=None, method="getting")
+    
 
+    def select_by_search(self, page: int, search: str) -> list[Package]:
+        try:
+            packages = Package.query.join(Food).filter(Food.name.like(f'%{search}%')).paginate(page=page, per_page=10)
+            if not packages:
+                return None
+            
+            return {'max_pages' : packages.pages, 'packages': packages}
+        except Exception:
+            raise PackageAccessDbException(user_id=None, method="getting")
+    
     
     def select_all(self) -> list[Package]:
         try:

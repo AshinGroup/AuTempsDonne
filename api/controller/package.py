@@ -37,7 +37,9 @@ class PackageController(Resource):
             abort(http_status_code=404, message=str(e))
         except PackageAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-    
+        except FoodAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
 
     def put(self, package_id: int):
         try:
@@ -119,4 +121,20 @@ class PackagePageController(Resource):
                 return jsonify({'message': "No packages found."})
         except PackageAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+
+
+class PackageSearchController(Resource):
+    def __init__(self) -> None:
+        self.package_service = PackageService()
+
+    def get(self, page: int, search: str):
+        try:
+            packages = self.package_service.select_by_search(page=page, search=search)
+            if packages:
+                return jsonify({'max_pages': packages['max_pages'], 'packages': [package.json() for package in packages['packages']]})
+            else:
+                return jsonify({'message': "No packages found."})
+        except PackageAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        
         

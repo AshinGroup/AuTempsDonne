@@ -26,7 +26,8 @@ class LocationService:
     def insert(self, args: dict):
         new_location = Location(address=args['address'], zip_code=args['zip_code'], city=args['city'], country=args['country'])
         new_location.latitude, new_location.longitude, new_location.description = self.get_location_details(location=new_location)
-        self.location_repo.insert(new_location=new_location)
+        new_location_id = self.location_repo.insert(new_location=new_location)
+
     
 
     def update(self, location_id: int, args: dict):
