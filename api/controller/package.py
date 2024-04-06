@@ -37,9 +37,7 @@ class PackageController(Resource):
             abort(http_status_code=404, message=str(e))
         except PackageAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except TypeAccessDbException as e:
-            abort(http_status_code=500, message=str(e))
-   
+    
 
     def put(self, package_id: int):
         try:

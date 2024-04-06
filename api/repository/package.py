@@ -15,11 +15,11 @@ class PackageRepo():
 
     def select_per_page(self, page: int) -> list[Package]:
         try:
-            package = Package.query.paginate(page=page, per_page=10)
-            if not package:
+            packages = Package.query.paginate(page=page, per_page=10)
+            if not packages:
                 return None
             
-            return {'max_pages' : package.pages, 'package': package}
+            return {'max_pages' : packages.pages, 'packages': packages}
         except Exception:
             raise PackageAccessDbException(package_id=None, method="getting")
 
