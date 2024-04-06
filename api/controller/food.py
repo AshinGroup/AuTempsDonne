@@ -83,8 +83,8 @@ class FoodListController(Resource):
     def post(self):
         try:
             args = self.check_args.get_food_args()
-            self.food_service.insert(args=args)
-            return jsonify({'message': f"Food '{args['name']}' successfully created."})
+            new_food_id = self.food_service.insert(args=args)
+            return jsonify({'message': f"Food '{args['name']}' successfully created.", 'food_id': new_food_id})
         except FoodAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         except FoodIdGroupNotFoundException as e:

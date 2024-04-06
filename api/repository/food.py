@@ -38,8 +38,11 @@ class FoodRepo():
         try:
             with app.app_context():
                 db.session.add(new_food)
+                db.session.flush()
+                new_food_id = new_food.id
                 db.session.commit()
                 db.session.close()
+                return new_food_id
         except Exception:
             raise FoodAccessDbException(food_id=None, method="creating")
     

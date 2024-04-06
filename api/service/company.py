@@ -23,7 +23,8 @@ class CompanyService:
 
     def insert(self, args: dict):
         new_company = Company(name=args['name'], description=args['description'])
-        self.company_repo.insert(new_company=new_company)
+        new_company_id = self.company_repo.insert(new_company=new_company)
+        return new_company_id
     
 
     def update(self, company_id: int, args: dict):

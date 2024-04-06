@@ -23,12 +23,15 @@ class CompanyRepo():
             raise CompanyAccessDbException(company_id=None, method="getting")
 
 
-    def insert(self, new_company: Company) -> None:
+    def insert(self, new_company: Company) -> int:
         try:
             with app.app_context():
                 db.session.add(new_company)
+                db.session.flush()
+                new_company_id = new_company.id
                 db.session.commit()
                 db.session.close()
+                return new_company_id
         except Exception:
             raise CompanyAccessDbException(company_id=None, method="creating")
     
