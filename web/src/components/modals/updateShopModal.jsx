@@ -59,8 +59,8 @@ export default function UpdateShopModal({
     defaultMessage: "Create Location",
   });
   const submit = intl.formatMessage({
-    id: "addShopModal.submit",
-    defaultMessage: "Add a Shop",
+    id: "updateShopModal.submit",
+    defaultMessage: "Update a Shop",
   });
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function UpdateShopModal({
         setResponseMessage(newCompany.message);
         setIsErrorMessage(false);
       }
-      data.company_id = newCompany.id;
+      data.company_id = newCompany.company_id;
     }
 
     if (!locationSwitch) {
@@ -126,7 +126,7 @@ export default function UpdateShopModal({
         setResponseMessage(newLocation.message);
         setIsErrorMessage(false);
       }
-      data.location_id = newLocation.id;
+      data.location_id = newLocation.location_id;
     }
 
     try {
@@ -158,6 +158,7 @@ export default function UpdateShopModal({
       console.error("An error occurred:", error);
     }
   };
+
   return (
     <Modal open={UpdateModalOpen} onClose={UpdateModalSetOpen}>
       <div className="text-center mt-5 w-full ">

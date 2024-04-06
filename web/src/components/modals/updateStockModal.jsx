@@ -41,8 +41,8 @@ export default function UpdateStockModal({
   const intl = useIntl();
 
   const submit = intl.formatMessage({
-    id: "addStockModal.submit",
-    defaultMessage: "Add a Package",
+    id: "updateStockModal.submit",
+    defaultMessage: "Update a Package",
   });
   const selectFood = intl.formatMessage({
     id: "addStockModal.selectFood",

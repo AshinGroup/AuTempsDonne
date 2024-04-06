@@ -182,5 +182,7 @@
   "addStockModal.descriptionRequired": "Description is Required",
   "addStockModal.expirationRequired": "Expiration_Date is Required is Required",
   "addStockModal.expirationDate": "Expiration Date :",
-  "addStockModal.selectStorage": "Select a Storage Location :"
+  "addStockModal.selectStorage": "Select a Storage Location :",
+  "updateShopModal.submit": "Update a Shop",
+  "updateStockModal.submit": "Update a Package"
 }
