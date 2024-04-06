@@ -134,5 +134,26 @@
   "shops.addANewShop": "+ Add a new Shop",
   "shops.shopName": "Shop",
   "shops.companyName": "Company",
-  "shops.address": "Address"
+  "shops.address": "Address",
+
+  "addShopModal.shopNamePlaceholder": "Shop Name",
+  "addShopModal.shopNameRequired": "Name of the shop required",
+  "addShopModal.selectCompany": "Select Company",
+  "addShopModal.createCompany": "Create Company",
+  "addShopModal.selectLocation": "Select Location",
+  "addShopModal.createLocation": "Create Location",
+  "addShopModal.submit": "Add a Shop",
+  "addShopModal.CompanyNamePlaceholder": "Company Name",
+  "addShopModal.CompanyNameRequired": "Name of the company required",
+  "addShopModal.CompanyDescriptionPlaceholder": "Company Description (max 100 characters)",
+  "addShopModal.CompanyDescriptionRequired": "Description of the company required",
+  "addShopModal.CompanyDescriptionLength": "Description must be less than or equal to 100 characters",
+  "addShopModal.LocationNamePlaceholder": "Address of the Shop",
+  "addShopModal.LocationNameRequired": "Address of the Shop is required",
+  "addShopModal.LocationZipPlaceholder": "Zip Code",
+  "addShopModal.LocationZipRequired": "Zip of the Shop required",
+  "addShopModal.LocationCityPlaceholder": "City Name",
+  "addShopModal.LocationCityRequired": "City Name required",
+  "addShopModal.LocationCountryPlaceholder": "Country Name",
+  "addShopModal.LocationCountryRequired": "Country Name required"
 }

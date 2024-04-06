@@ -6,10 +6,11 @@ import { Store } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "./modal";
 
-export default function AddShopModal({
-  AddModalOpen,
-  AddModalSetOpen,
-  fetchUsers,
+export default function UpdateShopModal({
+  UpdateModalOpen,
+  UpdateModalSetOpen,
+  fetchShops,
+  shop,
 }) {
   const {
     register,
@@ -17,8 +18,13 @@ export default function AddShopModal({
     setValue,
     formState: { errors },
     reset,
-  } = useForm();
-
+  } = useForm({
+    defaultValues: {
+      name: shop.name,
+      company_id: shop.company.id,
+      location_id: shop.location.id,
+    },
+  });
   const [locations, setLocations] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
@@ -77,6 +83,7 @@ export default function AddShopModal({
 
   // POST
   const onPostSubmit = async (data) => {
+    console.log(data);
     // CHANGER ICI POUR METTRE LES BONNES REQUETES
     if (!companySwitch) {
       let response = await fetch("http://localhost:5000/api/company", {
@@ -123,8 +130,8 @@ export default function AddShopModal({
     }
 
     try {
-      let response = await fetch("http://localhost:5000/api/shop", {
-        method: "POST",
+      let response = await fetch(`http://localhost:5000/api/shop/${shop.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -135,25 +142,24 @@ export default function AddShopModal({
         }),
       });
 
-      const newEvent = await response.json();
+      const newShop = await response.json();
 
       if (!response.ok) {
-        setResponseMessage(newEvent.message);
+        setResponseMessage(newShop.message);
         setIsErrorMessage(false);
       } else {
-        setResponseMessage(newEvent.message);
+        setResponseMessage(newShop.message);
         setIsErrorMessage(true);
       }
 
-      fetchUsers();
+      fetchShops();
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
     }
   };
-
   return (
-    <Modal open={AddModalOpen} onClose={AddModalSetOpen}>
+    <Modal open={UpdateModalOpen} onClose={UpdateModalSetOpen}>
       <div className="text-center mt-5 w-full ">
         <Store size={40} className="mx-auto text-AshinBlue" />
         <p
@@ -187,7 +193,7 @@ export default function AddShopModal({
             setItemSwitch={setCompanySwitch}
           />
           {companySwitch
-            ? CompanySelect(register, errors, companies)
+            ? CompanySelect(register, errors, companies, shop.location.id)
             : CompanyForm(register, errors)}
 
           {/* location Selection */}
@@ -198,7 +204,7 @@ export default function AddShopModal({
             setItemSwitch={setLocationSwitch}
           />
           {locationSwitch
-            ? LocationSelect(register, errors, locations)
+            ? LocationSelect(register, errors, locations, shop.company.id)
             : LocationForm(register, errors)}
 
           {/* Submit Selection */}
@@ -213,12 +219,13 @@ export default function AddShopModal({
   );
 }
 
-function CompanySelect(register, errors, companies) {
+function CompanySelect(register, errors, companies, defaultValueCompany) {
   return (
     <>
       <select
         id="company_id"
         {...register("company_id", { required: true })}
+        value={defaultValueCompany}
         className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
       >
         <option value="">
@@ -247,12 +254,13 @@ function CompanySelect(register, errors, companies) {
   );
 }
 
-function LocationSelect(register, errors, locations) {
+function LocationSelect(register, errors, locations, defaultValueLocation) {
   return (
     <>
       <select
         id="location_id"
         {...register("location_id", { required: true })}
+        value={defaultValueLocation}
         className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
       >
         <option value="">
