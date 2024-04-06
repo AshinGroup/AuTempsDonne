@@ -26,8 +26,8 @@ export default function UpdateStockModal({
         new Date(stock.expiration_date),
         "yyyy-MM-dd HH:mm"
       ),
-      storage_id: stock.storage_id,
-      food_id: stock.food_id,
+      storage_id: stock.storage.id,
+      food_id: stock.food.id,
     },
   });
 
@@ -275,7 +275,7 @@ function FoodSelect(register, errors, foods, defaultValueFood) {
           <option
             key={food.id}
             value={food.id}
-            selected={food.id === defaultValueFood ? true : false}
+            selected={food.id == defaultValueFood ? true : false}
           >
             {food.name}
           </option>
@@ -298,6 +298,7 @@ function StorageSelect(register, errors, storages, defaultValueStorage) {
     <>
       <select
         id="storage_id"
+        defaultValue={defaultValueStorage}
         {...register("storage_id", { required: true })}
         className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
       >
@@ -313,7 +314,7 @@ function StorageSelect(register, errors, storages, defaultValueStorage) {
           <option
             key={storage.id}
             value={storage.id}
-            selected={storage.id === defaultValueStorage ? true : false}
+            selected={storage.id === defaultValueStorage ? "selected" : ""}
           >
             {storage.name}, {storage.warehouse.name},{" "}
             {storage.warehouse.location.address},{" "}

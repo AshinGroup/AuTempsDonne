@@ -145,7 +145,7 @@ const Stock = () => {
         <AddPackageModal
           AddModalOpen={AddModalOpen}
           AddModalSetOpen={() => AddModalSetOpen(false)}
-          fetchUsers={fetchStock}
+          fetchUsers={() => fetchStock()}
         />
       </div>
       {/* Searchbar */}
@@ -264,7 +264,7 @@ const Stock = () => {
                             setSelectedstockIdForUpdate(null)
                           }
                           stock={sto}
-                          fetchstocks={fetchStock}
+                          fetchUsers={() => fetchStock()}
                         />
                       )}
                       <button
