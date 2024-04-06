@@ -9,6 +9,7 @@ class Ticket(db.Model):
     subject = db.Column(db.String(50))
     description = db.Column(db.Text)
     status = db.Column(db.Integer)
+    type = db.Column(db.Integer)
 
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
@@ -24,6 +25,7 @@ class Ticket(db.Model):
                 'subject': self.subject,
                 'description': self.description,
                 'status': self.status,
+                'type': self.type,
                 'users': users}
 
     def json_rest(self):
@@ -32,6 +34,7 @@ class Ticket(db.Model):
                 'subject': self.subject,
                 'description': self.description,
                 'status': self.status,
+                'type': self.type,
                 }
 
 
