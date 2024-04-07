@@ -31,17 +31,16 @@ const Stock = () => {
 
   // Fetch the users from the API
   const fetchStock = () => {
-    // let url =
-    //   searchInput != ""
-    //     ? `http://127.0.0.1:5000/api/package/page/${currentPage}/search/${searchInput}`
-    //     : `http://127.0.0.1:5000/api/package/page/${currentPage}`;
-    let url = "http://127.0.0.1:5000/api/package";
+    let url =
+      searchInput != ""
+        ? `http://127.0.0.1:5000/api/package/page/${currentPage}/search/${searchInput}`
+        : `http://127.0.0.1:5000/api/package/page/${currentPage}`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        setStock(data);
-        // setMaxPages(data.max_pages);
-        setMaxPages(1);
+        setStock(data.packages);
+        setMaxPages(data.max_pages);
+        // setMaxPages(1);
       })
       .catch((error) => {
         console.error("Error fetching stock:", error);
