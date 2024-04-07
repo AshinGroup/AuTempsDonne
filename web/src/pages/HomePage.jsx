@@ -6,6 +6,9 @@ import HomePage from "../components/contents/home";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
+// import "./HomePage.css";
+import welcome from "../resources/homePage1.jpg";
+import atd_logo_typo from "../resources/atd_logo_typo.png";
 
 const WelcomePage = () => {
   // Profile Management from Dashboard (ugly code, to be refactored)
@@ -15,13 +18,62 @@ const WelcomePage = () => {
   );
 
   const navigate = useNavigate();
-  // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
   const rule = "admin";
 
   const getContent = () => {
     switch (activeItem) {
       case "homepage":
-        return <HomePage />;
+        return (
+          <>
+            <div
+              className="bg-cover bg-center h-screen flex justify-center items-center"
+              style={{
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)), url(${welcome})`,
+                backgroundPosition: "center top 40%",
+              }}
+            >
+            </div>
+          </>
+
+
+
+
+        );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
       case "services":
         return <div>Services</div>;
       case "activities":
