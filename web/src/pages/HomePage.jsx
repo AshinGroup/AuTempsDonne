@@ -6,9 +6,9 @@ import HomePage from "../components/contents/home";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
+import Carousel from "../components/contents/carousel";
 // import "./HomePage.css";
 import welcome from "../resources/homePage1.jpg";
-import atd_logo_typo from "../resources/atd_logo_typo.png";
 
 const WelcomePage = () => {
   // Profile Management from Dashboard (ugly code, to be refactored)
@@ -28,11 +28,47 @@ const WelcomePage = () => {
             <div
               className="bg-cover bg-center h-screen flex justify-center items-center"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)), url(${welcome})`,
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), url(${welcome})`,
                 backgroundPosition: "center top 40%",
               }}
             >
+              <div className="text-white text-center">
+                <h1 className="text-4xl font-bold mb-4">Nous avons besoin de vous</h1>
+                <div className="w-80 h-0.5 bg-white mx-auto mb-8"></div>
+              </div>
             </div>
+
+            <div className="text-black text-center mt-24 mb-40">
+              <h1 className="text-4xl font-bold mb-4">Nos missions</h1>
+              <div className="w-24 h-0.5 bg-black mx-auto mb-8"></div>
+            </div>
+
+            <div className="flex mb-64">
+              <div className="bg-gray-200 w-1/3 h-96 p-4 flex flex-col justify-center items-center rounded-lg mr-8 ml-8 shadow-md">
+                <p>Bla Bla Bla</p>
+              </div>
+              <div className="bg-gray-200 w-1/3 h-96 p-4 flex flex-col justify-center items-center rounded-lg mr-8 ml-8 shadow-md">
+                <p>Bla Bla Bla</p>
+              </div>
+              <div className="bg-gray-200 w-1/3 h-96 p-4 flex flex-col justify-center items-center rounded-lg mr-8 ml-8 shadow-md">
+                <p>Bla Bla Bla</p>
+              </div>
+            </div>
+            <Carousel />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           </>
 
 
