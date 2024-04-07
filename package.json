@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "country-flag-icons": "^1.5.10",
+    "flowbite-react": "^0.7.6",
+    "react-bootstrap": "^2.10.2",
+    "react-flagkit": "^2.0.4",
+    "uuid": "^9.0.1"
+  }
+}

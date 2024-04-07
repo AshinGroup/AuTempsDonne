@@ -22,22 +22,13 @@ class UserAlreadyExistsException(Exception):
         return f"User with email '{self.email}' already exists."
     
 
-class UserFollowsCourseAlreadyExistsException(Exception):
-    def __init__(self, user_id: int, course_id: int) -> None:
+
+class UserParticipatesEventAlreadyExistsException(Exception):
+    def __init__(self, user_id: int, event_id: int) -> None:
         self.user_id = user_id
-        self.course_id = course_id
-
+        self.event_id = event_id
     def __str__(self) -> str:
-        return f"User id '{self.user_id}' already follows course id '{self.activity_id}'."
-
-
-
-class UserParticipatesActivityAlreadyExistsException(Exception):
-    def __init__(self, user_id: int, activity_id: int) -> None:
-        self.user_id = user_id
-        self.activity_id = activity_id
-    def __str__(self) -> str:
-        return f"User id '{self.user_id}' participates activity id '{self.activity_id}' already exists."
+        return f"User id '{self.user_id}' participates event id '{self.event_id}' already exists."
     
 
 class UserIsRoleAlreadyExistsException(Exception):
@@ -54,23 +45,14 @@ class UserRoleNotEmptyException(Exception):
         return f"User id '{self.user_id}' must have role."
 
 
-class UserFollowsCourseNotFoundException(Exception):
-    def __init__(self, user_id: int, course_id: int) -> None:
+
+class UserParticipatesEventNotFoundException(Exception):
+    def __init__(self, user_id: int, event_id: int) -> None:
         self.user_id = user_id
-        self.course_id = course_id
+        self.event_id = event_id
 
     def __str__(self) -> str:
-        return f"User id '{self.user_id}' follows course id '{self.course_id}' not found."
-
-
-
-class UserParticipatesActivityNotFoundException(Exception):
-    def __init__(self, user_id: int, activity_id: int) -> None:
-        self.user_id = user_id
-        self.activity_id = activity_id
-
-    def __str__(self) -> str:
-        return f"User id '{self.user_id}' participates activity id '{self.activity_id}' not found."
+        return f"User id '{self.user_id}' participates event id '{self.event_id}' not found."
 
 
 class UserIsRoleNotFoundException(Exception):

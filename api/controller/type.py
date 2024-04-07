@@ -61,11 +61,11 @@ class TypeListController(Resource):
 
     def get(self):
         try:
-            activities = self.type_service.select_all()
-            if activities:
-                return jsonify([type.json() for type in activities])
+            events = self.type_service.select_all()
+            if events:
+                return jsonify([type.json() for type in events])
             else:
-                return jsonify({'message': "None activities."})
+                return jsonify({'message': "No type found."})
         except TypeAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         

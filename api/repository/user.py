@@ -1,6 +1,5 @@
 from model.user import User
-from model.course import Course
-from model.activity import Activity
+from model.event import Event
 from model.role import Role
 from database.db import db
 from app import app
@@ -65,25 +64,15 @@ class UserRepo():
             raise UserAccessDbException(user_id=None, method="getting")
 
 
-    def select_all_activities(self, user: User) -> list[Activity]:
+    def select_all_events(self, user: User) -> list[Event]:
         try:
-            user_activities = user.activity
-            if not user_activities:
+            user_events = user.event
+            if not user_events:
                 return None
-            return user_activities
+            return user_events
         except Exception:
-            raise UserAccessDbException(user_id=user.id, method="getting")
+            raise UserAccessDbException(user_id=user.id, method="getting")  
         
-    
-    def select_all_courses(self, user: User) -> list[Course]:
-        try:
-            user_courses = user.course
-            if not user_courses:
-                return None
-            return user_courses
-        except Exception:
-            raise UserAccessDbException(user_id=user.id, method="getting")
-
 
     def insert(self, new_user: User, role_id: int) -> int:
         try:
@@ -101,12 +90,12 @@ class UserRepo():
             raise UserAccessDbException(user_id=None, method="creating")
         
     
-    def insert_activity(self, user_id: int, activity_id: int) -> None:
+    def insert_event(self, user_id: int, event_id: int) -> None:
         try:
             with app.app_context():
                 user = User.query.filter_by(id=user_id).first()
-                activity = Activity.query.filter_by(id=activity_id).first()
-                user.activities.append(activity)
+                event = Event.query.filter_by(id=event_id).first()
+                user.events.append(event)
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -124,19 +113,6 @@ class UserRepo():
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="inserting")     
         
-    
-    def insert_course(self, user_id: int, course_id: int) -> None:
-        try:
-            with app.app_context():
-                user = User.query.filter_by(id=user_id).first()
-                course = Course.query.filter_by(id=course_id).first()
-                user.courses.append(course)
-                db.session.commit()
-                db.session.close()
-        except Exception:
-            raise UserAccessDbException(user_id=user_id, method="inserting")
-
-
 
     def update(self, user_id: int, update_user: User) -> None:
         try:
@@ -166,36 +142,23 @@ class UserRepo():
             raise UserAccessDbException(user_id=user_id, method="deleting")
 
 
-    def delete_activity(self, user_id: int, activity_id: int) -> None:
+    def delete_event(self, user_id: int, event_id: int) -> None:
         try:
             with app.app_context():
                 user = User.query.filter_by(id=user_id).first()
-                activity = Activity.query.filter_by(id=activity_id).first()
-                user.activity.remove(activity)
+                event = Event.query.filter_by(id=event_id).first()
+                user.events.remove(event)
                 db.session.commit()
                 db.session.close()
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="deleting") 
-            
-
-    def delete_course(self, user_id: int, course_id: int) -> None:
-        try:
-            with app.app_context():
-                user = User.query.filter_by(id=user_id).first()
-                course = Course.query.filter_by(id=course_id).first()
-                user.course.remove(course)
-                db.session.commit()
-                db.session.close()
-        except Exception:
-            raise UserAccessDbException(user_id=user_id, method="deleting") 
-
 
     def delete_role(self, user_id: int, role_id: int) -> None:
         try:
             with app.app_context():
                 user = User.query.filter_by(id=user_id).first()
                 role = Role.query.filter_by(id=role_id).first()
-                user.role.remove(role)
+                user.roles.remove(role)
                 db.session.commit()
                 db.session.close()
         except Exception:

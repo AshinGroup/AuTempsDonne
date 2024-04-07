@@ -2,9 +2,13 @@ import React, { useContext, createContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../translations/languageContext";
 import { FormattedMessage } from "react-intl";
+import Flag from "react-flagkit";
 import {
   ChevronsUpDown,
   Users2,
+  Store,
+  Apple,
+  Truck,
   HeartHandshake,
   BookMarked,
   LogOut,
@@ -19,7 +23,7 @@ const SidebarContext = createContext();
 export default function Sidebar({ activeItem, setActiveItem }) {
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { changeLocale } = useLanguage();
+  const { locale, changeLocale } = useLanguage();
 
   // Function to handle window resize
   useEffect(() => {
@@ -74,63 +78,43 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               onClick={() => handleItemClick("Users")}
             />
             <SidebarItem
-              key={"Activities"}
-              icon={<HeartHandshake size={20} />}
-              text={
-                <FormattedMessage
-                  id="sidebar.activities"
-                  defaultMessage="Activities"
-                />
-              }
-              active={activeItem === "Activities"}
-              onClick={() => handleItemClick("Activities")}
-            />
-            <SidebarItem
-              key={"Courses"}
+              key={"Events"}
               icon={<BookMarked size={20} />}
               text={
+                <FormattedMessage id="sidebar.events" defaultMessage="Events" />
+              }
+              active={activeItem === "Events"}
+              onClick={() => handleItemClick("Events")}
+            />
+            <SidebarItem
+              key={"Shops"}
+              icon={<Store size={20} />}
+              text={
+                <FormattedMessage id="sidebar.Shops" defaultMessage="Shops" />
+              }
+              active={activeItem === "Shops"}
+              onClick={() => handleItemClick("Shops")}
+            />
+            <SidebarItem
+              key={"Stock"}
+              icon={<Apple size={20} />}
+              text={
+                <FormattedMessage id="sidebar.Stock" defaultMessage="Stock" />
+              }
+              active={activeItem === "Stock"}
+              onClick={() => handleItemClick("Stock")}
+            />
+            <SidebarItem
+              key={"ToCollect"}
+              icon={<Truck size={20} />}
+              text={
                 <FormattedMessage
-                  id="sidebar.courses"
-                  defaultMessage="Courses"
+                  id="sidebar.ToCollect"
+                  defaultMessage="ToCollect"
                 />
               }
-              active={activeItem === "Courses"}
-              onClick={() => handleItemClick("Courses")}
-            />
-            <SidebarItem
-              key={"English"}
-              icon={<Languages size={20} />}
-              text={"English"}
-              active={activeItem === "English"}
-              onClick={() => changeLocale("en")}
-            />
-            <SidebarItem
-              key={"French"}
-              icon={<Languages size={20} />}
-              text={"Français"}
-              active={activeItem === "French"}
-              onClick={() => changeLocale("fr")}
-            />
-            <SidebarItem
-              key={"Chinese"}
-              icon={<Languages size={20} />}
-              text={"普通话"}
-              active={activeItem === "Chinese"}
-              onClick={() => changeLocale("cn")}
-            />
-            <SidebarItem
-              key={"Russian"}
-              icon={<Languages size={20} />}
-              text={"русский"}
-              active={activeItem === "Russian"}
-              onClick={() => changeLocale("ru")}
-            />
-            <SidebarItem
-              key={"Hindi"}
-              icon={<Languages size={20} />}
-              text={"हिंदी"}
-              active={activeItem === "Hindi"}
-              onClick={() => changeLocale("hi")}
+              active={activeItem === "ToCollect"}
+              onClick={() => handleItemClick("ToCollect")}
             />
           </ul>
         </SidebarContext.Provider>
@@ -193,6 +177,56 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                 active={activeItem === "Logout"}
                 onClick={() => handleItemClick("Logout")}
               />
+              {/* International */}
+              <div
+                className={`flex justify-around my-4 ${
+                  !expanded ? "flex-col" : ""
+                }`}
+              >
+                <button
+                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
+                    locale === "en"
+                      ? "from-AshinBlue-light to-AshinBlue-dark"
+                      : ""
+                  }`}
+                  onClick={() => changeLocale("en")}
+                >
+                  <Flag country="GB" />
+                </button>
+                <button
+                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
+                    locale === "fr"
+                      ? "from-AshinBlue-light to-AshinBlue-dark"
+                      : ""
+                  }`}
+                  onClick={() => changeLocale("fr")}
+                >
+                  {" "}
+                  <Flag country="FR" />
+                </button>
+                <button
+                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
+                    locale === "es"
+                      ? "from-AshinBlue-light to-AshinBlue-dark"
+                      : ""
+                  }`}
+                  onClick={() => changeLocale("es")}
+                >
+                  {" "}
+                  <Flag country="ES" />
+                </button>
+                <button
+                  className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
+                    locale === "cn"
+                      ? "from-AshinBlue-light to-AshinBlue-dark"
+                      : ""
+                  }`}
+                  onClick={() => changeLocale("cn")}
+                >
+                  {" "}
+                  <Flag country="CN" />
+                </button>
+              </div>
             </ul>
           </SidebarContext.Provider>
         </div>
