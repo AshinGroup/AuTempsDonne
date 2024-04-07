@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import welcome1 from "../../resources/homePage1.jpg";
-import welcome2 from "../../resources/atd_logo.png";
-import welcome3 from "../../resources/atd_logo_.png";
-import welcome4 from "../../resources/atd_logo_black.png";
+import carousel1 from "../../resources/carousel1.jpg";
+import carousel2 from "../../resources/carousel2.jpg";
+import carousel3 from "../../resources/carousel3.jpg";
+import carousel4 from "../../resources/carousel4.jpg";
 
 const Carousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const photos = [
-      welcome1,
-      welcome2,
-      welcome3,
-      welcome4,
+    const pictures = [
+        carousel1,
+        carousel2,
+        carousel3,
+        carousel4,
     ];
   
     useEffect(() => {
-      const intervalId = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex === photos.length - 1 ? 0 : prevIndex + 1));
-      }, 5000);
-  
-      return () => clearInterval(intervalId);
-    }, []);
-  
-    return (
-      <div className="relative w-full h-64">
-        {photos.map((photo, index) => (
-          <img
-            key={index}
-            src={photo}
-            alt={`Photo ${index + 1}`}
-            className="absolute top-0 left-0 w-full h-full transition-opacity duration-1000"
-            style={{ opacity: index === currentIndex ? 1 : 0 }}
-          />
-        ))}
-      </div>
-    );
-  };
+        const intervalId = setInterval(() => {
+          setCurrentIndex((prevIndex) => (prevIndex === pictures.length - 1 ? 0 : prevIndex + 1));
+        }, 6000);
+    
+        return () => clearInterval(intervalId);
+      }, []);
+    
+      return (
+          <div className="relative w-full max-w-[600px] h-64 max-h-[400px] mr-24">
+            {pictures.map((picture, index) => (
+              <img
+                key={index}
+                src={picture}
+                alt={`Photo ${index + 1}`}
+                className="absolute top-0 left-0 w-full h-full transition-opacity duration-1000"
+                style={{ opacity: index === currentIndex ? 1 : 0 }}
+              />
+            ))}
+          </div>
+      );
+    };
 
   export default Carousel;
