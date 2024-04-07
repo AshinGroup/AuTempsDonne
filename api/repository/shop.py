@@ -1,4 +1,5 @@
 from model.shop import Shop
+from model.company import Company
 from database.db import db
 from app import app
 from exception.shop import ShopAccessDbException
@@ -23,6 +24,7 @@ class ShopRepo:
         except Exception:
             raise ShopAccessDbException(shop_id=None, method="getting")
 
+
     def select_all(self) -> list[Shop]:
         try:
             shops = Shop.query.all()
@@ -31,6 +33,18 @@ class ShopRepo:
             return shops
         except Exception:
             raise ShopAccessDbException(shop_id=None, method="getting")
+        
+
+    def select_by_search(self, page: int, search: str) -> list[Shop]:
+        try:
+            shops = Shop.query.join(Company).filter(Company.name.like(f'%{search}%')).paginate(page=page, per_page=10)
+            if not shops:
+                return None
+            
+            return {'max_pages': shops.pages, 'shops': shops}
+        except Exception:
+            raise ShopAccessDbException(user_id=None, method="getting")
+
 
     def insert(self, new_shop: Shop) -> None:
         try:

@@ -25,6 +25,9 @@ class ShopService:
         shops = self.shop_repo.select_per_page(page=page)
         return shops
 
+    def select_by_search(self, page: int, search: str) -> list[Shop]:
+            shops = self.shop_repo.select_by_search(page=page, search=search)
+            return shops
 
 
 
