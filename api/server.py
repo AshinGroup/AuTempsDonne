@@ -95,6 +95,8 @@ api.add_resource(CompanyListController, f'{prefix}/company')
 api.add_resource(ShopController, f'{prefix}/shop/<int:shop_id>')
 api.add_resource(ShopListController, f'{prefix}/shop')
 api.add_resource(ShopPageController, f'{prefix}/shop/page/<int:page>')
+api.add_resource(ShopSearchController,
+                 f'{prefix}/shop/page/<int:page>/search/<string:search>')
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')

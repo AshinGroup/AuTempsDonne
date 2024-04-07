@@ -122,3 +122,18 @@ class ShopPageController(Resource):
                 return jsonify({"message": "No shops found."})
         except ShopAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+
+class ShopSearchController(Resource):
+    def __init__(self) -> None:
+        self.shop_service = ShopService()
+
+    def get(self, page: int, search: str):
+        try:
+            shops = self.shop_service.select_by_search(page=page, search=search)
+            if shops:
+                return jsonify({'max_pages': shops['max_pages'], 'shops': [shop.json() for shop in shops['shops']]})
+            else:
+                return jsonify({'message': "No shops found."})
+        except ShopAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        
