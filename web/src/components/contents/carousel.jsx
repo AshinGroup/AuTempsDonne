@@ -16,13 +16,13 @@ const Carousel = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
           setCurrentIndex((prevIndex) => (prevIndex === pictures.length - 1 ? 0 : prevIndex + 1));
-        }, 6000);
+        }, 5000);
     
         return () => clearInterval(intervalId);
       }, []);
     
       return (
-          <div className="relative w-full max-w-[600px] h-64 max-h-[400px] mr-24">
+          <div className="relative w-full max-w-[600px] h-64 max-h-[400px] mr-24 rounded-xl overflow-hidden">
             {pictures.map((picture, index) => (
               <img
                 key={index}

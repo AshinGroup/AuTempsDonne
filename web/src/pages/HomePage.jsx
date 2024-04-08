@@ -56,13 +56,13 @@ const WelcomePage = () => {
               </div>
             </div>
             
-            <div className="bg-gray-200 h-screen flex h-96 justify-between pt-16 pr-16 pb-16 pl-16 mb-80">
+            {/* <div className="bg-gray-200 flex justify-between pt-16 pb-16 pr-16 pl-16 mb-80">
               <div className="ml-24 mt-12">
                 <h2 className="text-3xl font-bold mb-1 ml-48">Rejoignez nous, on compte sur vous !</h2>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-16 ml-96">M'inscrire</button>
               </div>
               <Carousel />
-            </div>
+            </div> */}
 
             <div className="text-black text-center mt-24 mb-40">
               <h1 className="text-4xl font-bold mb-4">Nos services</h1>
@@ -84,13 +84,23 @@ const WelcomePage = () => {
             </div>
 
             <div className="text-black text-center mt-24 mb-16">
-              <h1 className="text-4xl font-bold mb-4">Votre aide est primordiale ...</h1>
+              <h1 className="text-3xl font-bold mb-4">Votre aide est primordiale ...</h1>
               <div className="w-64 h-0.5 bg-black mx-auto mb-8"></div>
             </div>
 
             <div className="text-center mb-40">
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Faire un don</button>
             </div>
+
+            <div className="bg-gray-200 flex flex-col justify-center items-center pt-16 pb-16 pr-16 pl-16 mb-80">
+              <div className="mt-12 ml-8 text-center">
+                <h2 className="text-3xl font-bold mb-8">Rejoignez nous, on compte sur vous !</h2>
+                <Carousel />
+                <div className="w-96 h-0.5 bg-black mt-8 mx-auto mb-8"></div>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">M'inscrire</button>
+              </div>
+            </div>
+
           </>
         );
                 
