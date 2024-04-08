@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import Navbar from "../components/navbar";
 import HomePage from "../components/contents/home";
@@ -89,7 +89,9 @@ const WelcomePage = () => {
             </div>
 
             <div className="text-center mb-40">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Faire un don</button>
+              <Link to="/coucou">
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Faire un don</button>
+              </Link>
             </div>
 
             <div className="bg-gray-200 flex flex-col justify-center items-center pt-16 pb-16 pr-16 pl-16 mb-80">
@@ -97,7 +99,9 @@ const WelcomePage = () => {
                 <h2 className="text-3xl font-bold mb-8">Rejoignez nous, on compte sur vous !</h2>
                 <Carousel />
                 <div className="w-96 h-0.5 bg-black mt-8 mx-auto mb-8"></div>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">M'inscrire</button>
+                <Link to="/toujours-coucou">
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">M'inscrire</button>
+                </Link>
               </div>
             </div>
 
