@@ -14,16 +14,14 @@ class Location(db.Model):
     longitude = db.Column(db.String(30))
     shops = db.relationship("Shop", backref="location")
     warehouses = db.relationship("Warehouse", backref="location")
+    deliveries = db.relationship(
+        'Delivery', secondary='delivers_to_location', back_populates='locations')
 
 
     def json(self):
-        warehouses = []
-        if self.warehouses:
-            warehouses = [warehouse.json_rest_location() for warehouse in self.warehouses]
-        
-        shops = []
-        if self.shops:
-            shops = [shop.json_rest_location() for shop in self.shops]
+        warehouses = [warehouse.json_rest_location() for warehouse in self.warehouses] if self.warehouses else []
+    
+        shops = [shop.json_rest_location() for shop in self.shops] if self.shops else []
             
         return {'id': self.id, 
                 'address': self.address, 
@@ -41,7 +39,6 @@ class Location(db.Model):
                 'id': self.id, 
                 'address': self.address,
                 'zip_code': self.zip_code}
-
 
 
 

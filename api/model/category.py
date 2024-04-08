@@ -12,9 +12,7 @@ class Category(db.Model):
 
 
     def json(self):
-        food_list = []
-        if self.food:
-            food_list= [food.json_rest_category() for food in self.food]
+        food_list = [food.json_rest_category() for food in self.food] if self.food else []
             
         return {'id': self.id, 
                 'name': self.name, 

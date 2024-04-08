@@ -34,6 +34,7 @@ from model.storage import Storage
 from model.warehouse import Warehouse
 from model.company import Company
 from model.shop import Shop
+from model.delivery import Delivery
 
 from app import app
 

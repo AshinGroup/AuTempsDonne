@@ -11,9 +11,7 @@ class Type(db.Model):
 
 
     def json(self):
-        events = []
-        if self.events:
-            events = [event.json_rest() for event in self.events]
+        events = [event.json_rest() for event in self.events] if self.events else []
             
         return {'id': self.id, 
                 'name': self.name, 

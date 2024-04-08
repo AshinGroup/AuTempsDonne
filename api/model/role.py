@@ -12,9 +12,7 @@ class Role(db.Model):
         'User', secondary='user_is_role', back_populates='roles')
 
     def json(self):
-        users = []
-        if self.users:
-            users = [user.json_rest() for user in self.users]
+        users = [user.json_rest() for user in self.users] if self.users else []
         return {'id': self.id,
                 'name': self.name,
                 'users': users}
