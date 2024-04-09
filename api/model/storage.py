@@ -27,8 +27,7 @@ class Storage(db.Model):
     
 
     def json_rest_warehouse(self):
-        if self.packages:
-            packages = [package.json_rest_storage() for package in self.packages]
+        packages = [package.json_rest_storage() for package in self.packages] if self.packages else []
         return {'url': f"{os.getenv('API_PATH')}/storage/{self.id}", 
                 'id': self.id,
                 'name': self.name,

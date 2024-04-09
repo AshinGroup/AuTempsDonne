@@ -2,6 +2,7 @@ from model.location import Location
 from repository.location import LocationRepo
 from exception.location import LocationIdNotFoundException, LocationDetailsException
 import requests
+import folium
 import os
 
 
@@ -65,3 +66,6 @@ class LocationService:
 
     def generate_roadmap(locations: list[Location]):
         pass
+
+m = folium.map()
+m
