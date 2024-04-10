@@ -17,8 +17,8 @@ const App = () => {
   return (
     <IntlProvider locale={locale} messages={messages}>
       <Routes>
-        <Route path="/" element={<AdminPanel />} />
-        {/* <Route path="/" element={<HomePage />} /> */}
+        {/* <Route path="/" element={<AdminPanel />} /> */}
+        <Route path="/" element={<HomePage/>}/>
         <Route path="/admin-panel" element={<AdminPanel />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/login" element={<LogIn />} />
