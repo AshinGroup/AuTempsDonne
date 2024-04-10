@@ -16,7 +16,7 @@ const WelcomePage = () => {
 
   const navigate = useNavigate();
   // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
-  const rule = "admin";
+  const rule = "";
 
   const getContent = () => {
     switch (activeItem) {
@@ -42,8 +42,8 @@ const WelcomePage = () => {
       case "login":
         navigate("/login");
         return;
-      case "signin":
-        navigate("/signin");
+      case "signup":
+        navigate("/signup");
         return;
       case "profile":
         return <Profile />;
