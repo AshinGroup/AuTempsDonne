@@ -104,7 +104,7 @@ const Profile = () => {
           <div className="flex items-center justify-center flex-col mt-5 pb-10 mx-32 border-b-4 border-AshinBlue">
             <img
               src={
-                "https://media.licdn.com/dms/image/D4E35AQEz5P2DFRozXA/profile-framedphoto-shrink_800_800/0/1706228464071?e=1712574000&v=beta&t=XWoK30d3YWIQSmCpRrfWsrT_SeACd8_sj16hyKULcD8"
+                "https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg"
               }
               className="w-40 rounded-full border-2 border-AshinBlue-light shadow-lg"
             />

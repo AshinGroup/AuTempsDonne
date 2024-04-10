@@ -19,6 +19,7 @@ const WelcomePage = () => {
   );
 
   const navigate = useNavigate();
+  // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
   const rule = "admin";
 
   const getContent = () => {
@@ -128,8 +129,8 @@ const WelcomePage = () => {
       case "login":
         navigate("/login");
         return;
-      case "signin":
-        navigate("/signin");
+      case "signup":
+        navigate("/signup");
         return;
       case "profile":
         return <Profile />;

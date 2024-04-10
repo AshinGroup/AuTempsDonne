@@ -8,7 +8,7 @@ import HomePage from "./pages/HomePage";
 import AdminPanel from "./pages/AdminPanel";
 import LogOut from "./pages/LogOut";
 import LogIn from "./pages/LogIn";
-import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
 const App = () => {
   const { locale } = useLanguage();
@@ -20,7 +20,7 @@ const App = () => {
         {/* <Route path="/" element={<AdminPanel />} /> */}
         <Route path="/" element={<HomePage/>}/>
         <Route path="/admin-panel" element={<AdminPanel />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/logout" element={<LogOut />} />
         <Route path="*" element={<h1>Not Found</h1>} />
