@@ -5,7 +5,7 @@ class Delivery(db.Model):
     __tablename__ = "delivery"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    datetime = db.Column(db.String(15))
+    datetime = db.Column(db.DateTime)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
@@ -16,7 +16,6 @@ class Delivery(db.Model):
     def json(self):
         locations = [location.json_rest() for location in self.locations] if self.locations else []
         return {'id': self.id,
-                'name': self.name,
                 'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'user' : self.user.json_rest(),
                 'locations': locations}
@@ -26,7 +25,6 @@ class Delivery(db.Model):
         locations = [location.json_rest() for location in self.locations] if self.locations else []
         return {'url': f"{os.getenv('API_PATH')}/delivery/{self.id}",
                 'id': self.id,
-                'name': self.name,
                 'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'locations': locations}
     
@@ -43,6 +41,5 @@ delivers_to_location = db.Table('delivers_to_location', db.metadata,
                         db.Column('location_id', db.Integer, db.ForeignKey(
                             'location.id'), primary_key=True),
                         db.Column('delivery_id', db.Integer, db.ForeignKey(
-                            'delivery.id'), primary_key=True),
-                        db.Column('order', db.Integer, primary_key=True)
+                            'delivery.id'), primary_key=True)
                         )
