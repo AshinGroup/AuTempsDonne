@@ -20,6 +20,7 @@ from controller.warehouse import *
 from controller.company import *
 from controller.shop import *
 from controller.delivery import *
+from controller.roadmap import *
 
 
 # Import Models
@@ -108,6 +109,7 @@ api.add_resource(DeliveryPageController, f'{prefix}/delivery/page/<int:page>')
 #                  f'{prefix}/shop/page/<int:page>/search/<string:search>')
 api.add_resource(DeliversToLocationController,
                  f'{prefix}/delivery/<int:delivery_id>/location/<int:location_id>')
+api.add_resource(RoadmapController, f'{prefix}/delivery/<int:delivery_id>/generate')
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')

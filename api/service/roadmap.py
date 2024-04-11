@@ -8,10 +8,16 @@ from scipy.spatial.distance import cdist
 import pandas as pd
 import requests
 from requests.structures import CaseInsensitiveDict
+from service.delivery import DeliveryService
+import os
 
 
 # Traveling Salesman Problem 
 class RoadmapService:
+    def __init__(self) -> None:
+        self.delivery_service = DeliveryService()
+
+
     def distance(self, coord1, coord2):
         lat1, lon1 = coord1
         lat2, lon2 = coord2
@@ -99,7 +105,7 @@ class RoadmapService:
     
 
     def transform_locations(self, locations: list) -> list:
-        locations_coords = [[location.latitude, location.longitude] for location in locations]
+        locations_coords = [[float(location.latitude), float(location.longitude)] for location in locations]
         return np.array(locations_coords)
 
 
@@ -119,60 +125,78 @@ class RoadmapService:
 
     # Points path
     def get_direction_coordinates(self, locations):
-        url = "https://api.geoapify.com/v1/routing?"
+        url = "https://api.geoapify.com/v1/routing"
         waypoints_param = self.get_waypoints_parameter(locations=locations)
-        api_key_param = f"?apiKey={os.getenv('GEOAPIFY_API_KEY')}"
+        api_key_param = f"&apiKey={os.getenv('GEOAPIFY_API_KEY')}"
         headers = CaseInsensitiveDict()
         headers["Accept"] = "application/json"
-
-        response = requests.get(url + waypoints_param + api_key_param, headers)
-        data = resp.json()
-
-        geometry = data['results'][0]['geometry']
+      
+        response = requests.get(url + waypoints_param + "&mode=drive" + api_key_param, headers)
+        data = response.json()
+    
+        geometry = data['features'][0]['geometry']['coordinates']
         coordinates = list()
+        
         for itinerary in geometry:
             for coordinate in itinerary:
-                coordinates.append([coordinate['lat'], coordinate['lon']])
+                coordinates.append([coordinate[1], coordinate[0]])
+        print("ok")
+        print("ok")
+        print("ok")
+        print("ok")
         return coordinates
 
 
     def get_waypoints_parameter(self, locations):
         locations_list = [[location.latitude, location.longitude] for location in locations]
         locations_list.append([locations[0].latitude, locations[0].longitude])
-        query = f"waypoints={locations_list.join('|')}"
+        parameters = list()
+        for coordinates in locations_list:
+            parameters.append(','.join(coordinates))
+        print("Parameters : ", parameters)
+        
+        query = f"?waypoints={'|'.join(parameters)}"
         return query
 
 
     def get_map_zoom(self, data):
-        df = pd.DataFrame(data, columns=['Lat', 'Long'])
+        df = pd.DataFrame(data, columns=['Lat', 'Lon'])
         sw = df[['Lat', 'Lon']].min().values.tolist()
         ne = df[['Lat', 'Lon']].max().values.tolist()
         return sw, ne
 
-    def create_map(self, locations: list[Location]):
+    def create_map(self, locations: list[Location], delivery_id: int):
         m = folium.Map()
         df = pd.DataFrame()
 
         # Marks
-        for location in ordered_locations:
+        for location in locations:
             point = [location.latitude, location.longitude]
-            folium.Marker(point).add_to(m)
-        
+            folium.Marker(
+                location=point,
+                popup=location.address    
+            ).add_to(m)
+
         # Line
-        points = self.get_direction_coordinates(locations=ordered_locations)
+        points = self.get_direction_coordinates(locations=locations)
+        # print(points)
         folium.PolyLine(points, weight=5, opacity=1).add_to(m)
 
+        
         sw, ne = self.get_map_zoom(points)
         m.fit_bounds([sw, ne])
-        m.save("img/image.html")
+        m.save(f"img/roadmap_delivery_{delivery_id}.html")
         return m
 
 
-    def generate_roadmap(self, locations: list[Location]):
-        coordinates_array = self.transform_locations(locations)
+    def generate_roadmap(self, delivery_id: int):
+        delivery = self.delivery_service.select_one_by_id(delivery_id=delivery_id)
+        coordinates_array = self.transform_locations(delivery.locations)
         optimal_order = self.get_optimal_order_index(locations=coordinates_array)
-        ordered_locations = self.get_ordered_locations(locations=locations, optimal_order=optimal_order)
-        self.create_map(locations=ordered_locations)
+        ordered_locations = self.get_ordered_locations(locations=delivery.locations, optimal_order=optimal_order)
+        self.create_map(locations=ordered_locations, delivery_id=delivery_id)
+
+
 
 
 
