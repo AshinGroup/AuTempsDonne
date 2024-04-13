@@ -165,7 +165,7 @@
   "stock.storage_location": "Storage Location",
   "stock.kg": "Kg",
   "stock.searchPlaceholder": "Search by Food ...",
-  "shop.searchPlaceholder": "Search by Shop ...",
+  "shop.searchPlaceholder": "Search by Shop or Company ...",
 
   "addStockModal.FoodName": "Food Name",
   "addStockModal.FoodNameRequired": "Food Name is Required",

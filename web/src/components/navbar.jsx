@@ -66,6 +66,17 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               path="/"
               text={
                 <FormattedMessage
+                  id="navbar.genqr"
+                  defaultMessage="Generate QR Code"
+                />
+              }
+              isActive={activeItem === "genqr"}
+              onClick={() => setActiveItem("genqr")}
+            />
+            <NavbarItem
+              path="/"
+              text={
+                <FormattedMessage
                   id="navbar.support"
                   defaultMessage="support"
                 />
@@ -334,12 +345,9 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
         >
           <div className="p-4 pb-3 relative flex justify-between items-center">
             <Link
-              to={{
-                pathname: "/",
-                // search: "?sort=name",
-                // hash: "#the-hash",
-                state: { id: "homepage" },
-              }}
+              to="/"
+              isActive={activeItem === "homepage"}
+              onClick={() => setActiveItem("homepage")}
             >
               <img
                 src={atd_logo_typo}
