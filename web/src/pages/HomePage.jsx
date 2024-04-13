@@ -7,23 +7,23 @@ import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
 
-
 const WelcomePage = () => {
   // Profile Management from Dashboard (ugly code, to be refactored)
   const location = useLocation();
+  console.log("aaa", location.hash);
   const [activeItem, setActiveItem] = useState(
-    location.state?.id ?  location.state?.id : "homepage"
+    location.hash.substring(1) ? location.hash.substring(1) : "homepage"
   );
 
-  console.log(activeItem)
+  console.log(activeItem);
   const navigate = useNavigate();
   // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
-  const rule = "admin";
+  const rule = "commerce";
 
   const getContent = () => {
     switch (activeItem) {
       case "homepage":
-        return <Home />
+        return <Home />;
       case "services":
         return <div>Services</div>;
       case "activities":
@@ -32,6 +32,8 @@ const WelcomePage = () => {
         return <div>Courses</div>;
       case "tocollect":
         return <div>To Collect</div>;
+      case "genqr":
+        return <div>Generate QR Code</div>;
       case "planning":
         return <div>Planning</div>;
       case "support":
