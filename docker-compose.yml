@@ -12,10 +12,11 @@ services:
       retries: 4
       start_period: 20s
     volumes:
-      - ./db-data:/var/lib/mysql
+      # - ./db-data:/var/lib/mysql
       - ./database/database.sql:/docker-entrypoint-initdb.d/1.sql
 
-  python-web:
+
+  backend:
     build:
       context: api
       dockerfile: Dockerfile

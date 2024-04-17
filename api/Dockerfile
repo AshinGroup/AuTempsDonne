@@ -1,15 +1,11 @@
 FROM python:3.10
 
-
-
 WORKDIR /app
 
 COPY . .
 
 RUN pip install -r requirements.txt
 
+EXPOSE 6001
 
-EXPOSE 5000
-
-
-ENTRYPOINT ["python","/app/server.py"]
+ENTRYPOINT ["python3","/app/server.py"]
