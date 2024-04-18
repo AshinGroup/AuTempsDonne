@@ -46,9 +46,7 @@ class DeliveryService:
 
 
     def insert_location(self, delivery_id: int, location_id: int):
-        print(delivery_id)
         delivery = self.select_one_by_id(delivery_id=delivery_id)
-        print(delivery)
         if delivery.locations:
             for location in delivery.locations:
                 if location.id == location_id:

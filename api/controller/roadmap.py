@@ -12,9 +12,7 @@ class RoadmapController(Resource):
 
     def post(self, delivery_id: int):
         try:
-            print("AAAAAAAA")
             delivery = self.roadmap_service.generate_roadmap(delivery_id=delivery_id)
-            print("BBBBBBBBBBBBBB")
             return jsonify({'message': 'Roadmap successfuly generated.'})
         except DeliveryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))

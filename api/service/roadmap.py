@@ -140,10 +140,6 @@ class RoadmapService:
         for itinerary in geometry:
             for coordinate in itinerary:
                 coordinates.append([coordinate[1], coordinate[0]])
-        print("ok")
-        print("ok")
-        print("ok")
-        print("ok")
         return coordinates
 
 
@@ -153,7 +149,6 @@ class RoadmapService:
         parameters = list()
         for coordinates in locations_list:
             parameters.append(','.join(coordinates))
-        print("Parameters : ", parameters)
         
         query = f"?waypoints={'|'.join(parameters)}"
         return query
@@ -170,11 +165,18 @@ class RoadmapService:
         df = pd.DataFrame()
 
         # Marks
-        for location in locations:
-            point = [location.latitude, location.longitude]
+        
+        for i in range(len(locations)):
+            description = f"{'Starting Point : ' if i == 0 else f'Location {i} : '}{locations[i].address}"
+            point = [locations[i].latitude, locations[i].longitude]
+            icon = folium.Icon(
+                color="green" if i == 0 else "blue",
+                icon="flag" if i == 0 else "star"
+            )
             folium.Marker(
                 location=point,
-                popup=location.address    
+                popup=description,
+                icon=icon    
             ).add_to(m)
 
         # Line
@@ -197,24 +199,3 @@ class RoadmapService:
         self.create_map(locations=ordered_locations, delivery_id=delivery_id)
 
 
-
-
-
-    # m = folium.Map(location=(45.5236, -122.6750))
-    # m = folium.Map([45.35, -121.6972], zoom_start=12)
-
-    # folium.Marker(
-    #     location=[45.3288, -121.6625],
-    #     tooltip="Click me!",
-    #     popup="Mt. Hood Meadows",
-    #     icon=folium.Icon(icon="cloud"),
-    # ).add_to(m)
-
-    # folium.Marker(
-    #     location=[45.3311, -121.7113],
-    #     tooltip="Click me!",
-    #     popup="Timberline Lodge",
-    #     icon=folium.Icon(color="green"),
-    # ).add_to(m)
-
-    # m.save("img/image.html")
