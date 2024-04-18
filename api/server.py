@@ -3,7 +3,7 @@ from flask_restful import Api
 from dotenv import load_dotenv, find_dotenv
 import os
 
-from database.db import db, create_database
+from database.db import db
 
 # Import Controllers
 from controller.user import *
@@ -119,7 +119,7 @@ api.add_resource(RefreshTokenController, f'{prefix}/token/refresh')
 
 if __name__ == "__main__":
     load_dotenv(find_dotenv())
-    
+    # print(f"mysql+mysqlconnector://{os.getenv('HOST_USER')}:{os.getenv('HOST_PASSWORD')}@{os.getenv('HOSTNAME')}:3306/{os.getenv('DB_NAME')}")
     db.init_app(app)
     with app.app_context():
         # db.drop_all()
