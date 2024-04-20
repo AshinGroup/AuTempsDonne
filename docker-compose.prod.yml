@@ -20,15 +20,6 @@ services:
     build:
       context: api
       dockerfile: Dockerfile
-      args:
-        - HOSTNAME=${HOSTNAME}
-        - HOST_USER=${HOST_USER}
-        - HOST_PASSWORD=${HOST_PASSWORD}
-        - DB_NAME=${DB_NAME}
-        - API_PATH=${API_PATH}
-        - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-        - GEOCODING_API_KEY=${GEOCODING_API_KEY}
-        - OPRS_API_KEY=${OPRS_API_KEY}
     depends_on:
       db:
         condition: service_healthy

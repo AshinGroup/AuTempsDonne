@@ -116,6 +116,9 @@ api.add_resource(LoginController, f'{prefix}/login')
 api.add_resource(ProtectedController, f'{prefix}/protected')
 api.add_resource(RefreshTokenController, f'{prefix}/token/refresh')
 
+app.add_url_rule(f'{prefix}/healthcheck', "healthcheck", view_func=lambda: health.run())
+
+
 
 if __name__ == "__main__":
     load_dotenv(find_dotenv())

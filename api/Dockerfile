@@ -11,7 +11,7 @@ ARG OPRS_API_KEY
 
 WORKDIR /app
 
-COPY . .
+COPY src/ .
 
 RUN pip install -r requirements.txt
 

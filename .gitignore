@@ -396,7 +396,10 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
-db-data/
+
+# DOCKER VOLUMES
+data/
+app/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/flask,python,node
