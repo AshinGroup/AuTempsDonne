@@ -187,15 +187,26 @@ class RoadmapService:
         
         sw, ne = self.get_map_zoom(points)
         m.fit_bounds([sw, ne])
-        m.save(f"img/roadmap_delivery_{delivery_id}.html")
-        return m
 
+        path = f"roadmap_delivery_{delivery_id}.html"
+        m.save(path)
+        return path
+
+    def get_map_html(self, filepath: str):
+        f = open(filepath, "r")
+        return f.read() 
+
+    def delete_map(self, filepath: str):
+        if os.path.exists(filepath):
+            os.remove(filepath)
 
     def generate_roadmap(self, delivery_id: int):
         delivery = self.delivery_service.select_one_by_id(delivery_id=delivery_id)
+        print(delivery.json())
         coordinates_array = self.transform_locations(delivery.locations)
         optimal_order = self.get_optimal_order_index(locations=coordinates_array)
         ordered_locations = self.get_ordered_locations(locations=delivery.locations, optimal_order=optimal_order)
-        self.create_map(locations=ordered_locations, delivery_id=delivery_id)
+        path = self.create_map(locations=ordered_locations, delivery_id=delivery_id)
+        return self.get_map_html(path), ordered_locations
 
 

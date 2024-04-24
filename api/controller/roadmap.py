@@ -10,10 +10,10 @@ class RoadmapController(Resource):
         self.roadmap_service = RoadmapService()
 
 
-    def post(self, delivery_id: int):
+    def get(self, delivery_id: int):
         try:
-            delivery = self.roadmap_service.generate_roadmap(delivery_id=delivery_id)
-            return jsonify({'message': 'Roadmap successfuly generated.'})
+            map_html, locations = self.roadmap_service.generate_roadmap(delivery_id=delivery_id)
+            return jsonify({'html': map_html, 'locations': [location.json_rest() for location in locations]})
         except DeliveryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except DeliveryAccessDbException as e:

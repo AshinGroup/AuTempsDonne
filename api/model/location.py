@@ -28,6 +28,8 @@ class Location(db.Model):
                 'zip_code': self.zip_code,
                 'city': self.city,
                 'country': self.country,
+                'latitude': self.latitude,
+                'longitude': self.longitude,
                 'warehouses' : warehouses,
                 'shops': shops
                 }
@@ -38,7 +40,9 @@ class Location(db.Model):
         return {'url': f"{os.getenv('API_PATH')}/location/{self.id}", 
                 'id': self.id, 
                 'address': self.address,
-                'zip_code': self.zip_code}
+                'zip_code': self.zip_code,
+                  'latitude': self.latitude,
+                'longitude': self.longitude,}
 
 
 
