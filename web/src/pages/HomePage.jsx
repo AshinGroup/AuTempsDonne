@@ -18,7 +18,7 @@ const WelcomePage = () => {
   console.log(activeItem);
   const navigate = useNavigate();
   // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
-  const rule = "commerce";
+  const rule = "admin";
 
   const getContent = () => {
     switch (activeItem) {
