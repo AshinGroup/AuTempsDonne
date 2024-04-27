@@ -6,6 +6,7 @@ import atd_logo_typo from "../../resources/atd_logo_typo.png";
 import { FormattedMessage } from "react-intl";
 import DeleteModal from "../modals/deleteModal";
 import UpdateProfileModal from "../modals/updateProfileModal";
+import handleFetch from "../handleFetch";
 
 const Profile = () => {
   // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
@@ -25,35 +26,40 @@ const Profile = () => {
     window.addEventListener("resize", handleResize);
   });
 
-  // Fetch the users from the API
-  const fetchUser = () => {
-    let url = `http://127.0.0.1:5000/api/user/${userId}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
+  // Fetch the user from the API
+  const fetchUser = async () => {
+    const url = `http://127.0.0.1:5000/api/user/${userId}`;
+
+    try {
+      const data = await handleFetch(url);
+      if (data) {
         setUser(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
-      });
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
   };
 
   // Delete an event
-  // Remove a user from the API
-  const deleteEvent = (EventId) => {
-    fetch(`http://127.0.0.1:5000/api/user/${user.id}/event/${EventId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  const deleteEvent = async (eventId) => {
+    const url = `http://127.0.0.1:5000/api/user/${user.id}/event/${eventId}`;
+
+    try {
+      const response = await handleFetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response) {
+        // Refresh the user data and quit the modal
+        fetchUser();
+        setSelectedEventIdForDelete(null);
       }
-      // Refresh the users list and quit the modal
-      fetchUser();
-      setSelectedEventIdForDelete(null);
-    });
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
   };
 
   // Set the user id to delete

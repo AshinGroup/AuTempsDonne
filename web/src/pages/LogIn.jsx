@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import atd_logo_typo from "../resources/atd_logo_typo.png";
 
 const LogIn = () => {
@@ -85,9 +85,60 @@ const LogInForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [responseMessage, setResponseMessage] = useState("");
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const intl = useIntl();
+
+  const emailRequired = intl.formatMessage({
+    id: "addUserModal.emailRequired",
+    defaultMessage: "Email is required.",
+  });
+  const emailValid = intl.formatMessage({
+    id: "addUserModal.emailValid",
+    defaultMessage: "Please enter a valid email address.",
+  });
+  const passwordRequired = intl.formatMessage({
+    id: "addUserModal.passwordRequired",
+    defaultMessage: "Password is required.",
+  });
+  const passwordValidPattern = intl.formatMessage({
+    id: "addUserModal.passwordValidPattern",
+    defaultMessage:
+      "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character.",
+  });
+  const passwordValidLength = intl.formatMessage({
+    id: "addUserModal.passwordValidLength",
+    defaultMessage: "Password must be at least 8 characters.",
+  });
+
+  const onSubmit = (adata) => {
+    fetch(`http://127.0.0.1:5000/api/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: adata.email,
+        password: adata.password,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((data) => {
+            throw new Error(data.message);
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Handle successful response
+        console.log("Response data:", data);
+      })
+      .catch((error) => {
+        setResponseMessage(error.message);
+        setIsErrorMessage(false);
+      });
   };
 
   return (
@@ -95,46 +146,58 @@ const LogInForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="w-full max-w-lg mt-8 flex flex-col items-center"
     >
+      <p
+        className={` mb-2 font-medium ${
+          isErrorMessage ? "text-green-500" : "text-red-500"
+        }`}
+      >
+        {responseMessage}
+      </p>
       {/* email */}
       <input
         id="email"
         placeholder="E-mail" // A DYNAMISER
-        {...register("email", { required: true })}
+        {...register("email", {
+          required: emailRequired,
+          pattern: {
+            value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            message: emailValid,
+          },
+        })}
         type="text"
         className="appearance-none border-2 border-gray-300 rounded w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       {errors.email && (
-        <p className="text-red-500 text-sm mt-1">
-          {" "}
-          <FormattedMessage
-            id="sign.email"
-            defaultMessage="email cannot be empty:"
-          />
-        </p>
+        <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
       )}
 
       {/* password */}
       <input
         id="password"
         placeholder="Password" // A DYNAMISER
-        {...register("password", { required: true })}
+        {...register("password", {
+          required: passwordRequired,
+          minLength: {
+            value: 8,
+            message: passwordValidLength,
+          },
+          pattern: {
+            value:
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+            message: passwordValidPattern,
+          },
+        })}
         type="password"
         className="appearance-none border-2 mt-2 border-gray-300 rounded w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       {errors.password && (
-        <p className="text-red-500 text-sm mt-1">
-          {" "}
-          <FormattedMessage
-            id="sign.password"
-            defaultMessage="password cannot be empty:"
-          />
-        </p>
+        <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
       )}
       {/* Keep logged */}
       <div className="self-start ms-8 mt-5">
         <input
           id="keepLogged"
-          {...register("keepLogged", { required: true })}
+          {...register("keepLogged")}
           type="checkbox"
           name="keepLogged"
         />

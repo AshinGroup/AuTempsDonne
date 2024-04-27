@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Modal } from "../modals/modal";
 import DeleteModal from "../modals/deleteModal";
+import handleFetch from "../handleFetch";
 
 export default function PlanningUserModal({
   PlanningModalOpen,
@@ -53,20 +54,24 @@ export default function PlanningUserModal({
   };
 
   // Fetch the events from the API
-  const fetchUserEvents = () => {
-    // Fetch each event individually
-    user.events.forEach((event) => {
-      let url = `http://127.0.0.1:5000/api/event/${event.id}`;
-      fetch(url)
-        .then((response) => response.json())
-        .then((eventData) => {
-          setEvents((prevEvents) => [...prevEvents, eventData]);
-        })
-        .catch((error) => {
-          console.error("Error fetching event:", error);
-        });
-    });
+  const fetchUserEvents = async () => {
+    try {
+      const eventsData = [];
+      // Fetch each event individually
+      for (const event of user.events) {
+        const eventData = await handleFetch(
+          `http://127.0.0.1:5000/api/event/${event.id}`
+        );
+        if (eventData) {
+          eventsData.push(eventData);
+        }
+      }
+      setEvents(eventsData);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
   };
+
   // Fetch the users when we change Page
   useEffect(() => {
     fetchUserEvents();
@@ -85,22 +90,30 @@ export default function PlanningUserModal({
   };
 
   // Remove an event for an user
-  const deleteUserEvent = (eventId) => {
-    fetch(`http://127.0.0.1:5000/api/user/${user.id}/event/${eventId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
+  const deleteUserEvent = async (eventId) => {
+    try {
+      const response = await handleFetch(
+        `http://127.0.0.1:5000/api/user/${user.id}/event/${eventId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
       setSelectedEventIdForDelete(null);
       // Refresh the users list and quit the modal
       setEvents((prevEvents) =>
         prevEvents.filter((event) => event.id !== eventId)
       );
-    });
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
   };
 
   // Set the user id to delete

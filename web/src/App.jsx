@@ -91,8 +91,8 @@ const App = () => {
     <IntlProvider locale={locale} messages={messages}>
       <Routes>
         {/* à voir mais, ptet ajouter les routes pour tout les contents de la navbar, pour pouvoir y accéderr */}
-        {/* <Route path="/" element={<LogIn />} /> */}
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<LogIn />} />
+        {/* <Route path="/" element={<HomePage />} /> */}
         <Route path="/admin-panel" element={<AdminPanel />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />

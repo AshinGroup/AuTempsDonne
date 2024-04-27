@@ -6,6 +6,7 @@ import { Settings, Trash2, CalendarDays } from "lucide-react";
 import DeleteModal from "../modals/deleteModal";
 import AddShopModal from "../modals/addShopModal";
 import UpdateShopModal from "../modals/updateShopModal";
+import handleFetch from "../handleFetch";
 
 const Shops = () => {
   const [shops, setShops] = useState([]);
@@ -27,40 +28,45 @@ const Shops = () => {
     defaultMessage: "Search by Shop ...",
   });
 
-  // Fetch the users from the API
-  const fetchShops = () => {
-    let url =
-      searchInput != ""
+  // Fetch the shops from the API
+  const fetchShops = async () => {
+    const url =
+      searchInput !== ""
         ? `http://127.0.0.1:5000/api/shop/page/${currentPage}/search/${searchInput}`
         : `http://127.0.0.1:5000/api/shop/page/${currentPage}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
+
+    try {
+      const data = await handleFetch(url);
+      if (data) {
         setShops(data.shops);
         setMaxPages(data.max_pages);
-      })
-      .catch((error) => {
-        console.error("Error fetching shops:", error);
-      });
-  };
-
-  // Remove a user from the API
-  const deleteShop = (shopId) => {
-    fetch(`http://127.0.0.1:5000/api/shop/${shopId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
       }
-      // Refresh the users list and quit the modal
-      fetchShops();
-      setSelectedShopIdForDelete(null);
-    });
+    } catch (error) {
+      console.error("Error fetching shops:", error);
+    }
   };
 
+  // Remove a shop from the API
+  const deleteShop = async (shopId) => {
+    const url = `http://127.0.0.1:5000/api/shop/${shopId}`;
+
+    try {
+      const response = await handleFetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response) {
+        // Refresh the shops list and quit the modal
+        fetchShops();
+        setSelectedShopIdForDelete(null);
+      }
+    } catch (error) {
+      console.error("Error deleting shop:", error);
+    }
+  };
   // Set the Shop id to delete
   const handleDeleteClick = (shopId) => {
     setSelectedShopIdForDelete(shopId);

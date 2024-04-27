@@ -1,6 +1,8 @@
 import React from "react";
 
 async function handleFetch(url, options = {}, retry = 1) {
+  console.log("refresh token : ", sessionStorage.getItem("refresh_token"));
+  console.log("access token : ", sessionStorage.getItem("access_token"));
   try {
     const tokenString = sessionStorage.getItem("access_token");
     options.headers = {

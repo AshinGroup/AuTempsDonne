@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
+import handleFetch from "../handleFetch";
 
 const Support = () => {
   const navigate = useNavigate();
@@ -12,8 +13,8 @@ const Support = () => {
   useEffect(() => {
     const checkServerStatus = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/type/1");
-        if (response.ok) {
+        const response = await handleFetch("http://127.0.0.1:5000/api/type/1");
+        if (response) {
           setServerStatus("Online");
         } else {
           setServerStatus("Offline");
@@ -26,7 +27,6 @@ const Support = () => {
         setServerStatus("Offline");
       }
     };
-
     checkServerStatus();
   }, []);
 
