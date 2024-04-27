@@ -124,7 +124,7 @@ class RoadmapService:
 
 
     # Points path
-    def get_direction_coordinates(self, locations):
+    def get_direction_details(self, locations):
         url = "https://api.geoapify.com/v1/routing"
         waypoints_param = self.get_waypoints_parameter(locations=locations)
         api_key_param = f"&apiKey={os.getenv('GEOAPIFY_API_KEY')}"
@@ -135,12 +135,17 @@ class RoadmapService:
         data = response.json()
     
         geometry = data['features'][0]['geometry']['coordinates']
+        
+        details = data['features'][0]['properties']
+        distance = details['distance']
+        distance_units = details['distance_units']
+        time = details['time']
         coordinates = list()
         
         for itinerary in geometry:
             for coordinate in itinerary:
                 coordinates.append([coordinate[1], coordinate[0]])
-        return coordinates
+        return coordinates, distance, distance_units, time
 
 
     def get_waypoints_parameter(self, locations):
@@ -180,7 +185,7 @@ class RoadmapService:
             ).add_to(m)
 
         # Line
-        points = self.get_direction_coordinates(locations=locations)
+        points, distance, distance_units, time = self.get_direction_details(locations=locations)
         # print(points)
         folium.PolyLine(points, weight=5, opacity=1).add_to(m)
 
@@ -190,7 +195,7 @@ class RoadmapService:
 
         path = f"roadmap_delivery_{delivery_id}.html"
         m.save(path)
-        return path
+        return path, distance, distance_units, time
 
     def get_map_html(self, filepath: str):
         f = open(filepath, "r")
@@ -202,11 +207,18 @@ class RoadmapService:
 
     def generate_roadmap(self, delivery_id: int):
         delivery = self.delivery_service.select_one_by_id(delivery_id=delivery_id)
-        print(delivery.json())
         coordinates_array = self.transform_locations(delivery.locations)
         optimal_order = self.get_optimal_order_index(locations=coordinates_array)
         ordered_locations = self.get_ordered_locations(locations=delivery.locations, optimal_order=optimal_order)
-        path = self.create_map(locations=ordered_locations, delivery_id=delivery_id)
-        return self.get_map_html(path), ordered_locations
+        path , distance, distance_units, time = self.create_map(locations=ordered_locations, delivery_id=delivery_id)
+        response = {
+            'locations': [location.json_rest() for location in ordered_locations],
+            'distance': distance,
+            'distance_units': distance_units,
+            'time': time,
+            'map':  self.get_map_html(path),
+        }
+        print(response)
+        return response
 
 
