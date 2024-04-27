@@ -82,7 +82,10 @@ class ProtectedController(Resource):
     @jwt_required()
     def get(self):
         current_user = get_jwt_identity()
-        return jsonify({'message': f"Logged in as user id '{current_user}'"})
+        return jsonify({
+                        'message': f"Logged in as user id '{current_user}'",
+                        'user_id' : current_user
+                        })
         
     
     
