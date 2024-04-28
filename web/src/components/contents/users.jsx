@@ -12,6 +12,7 @@ import DeleteModal from "../modals/deleteModal";
 import AddUserModal from "../modals/addUserModal";
 import UpdateUserModal from "../modals/updateUserModal";
 import PlanningUserModal from "../modals/planningUserModal";
+import handleFetch from "../handleFetch";
 
 const Users = () => {
   // Display the users and Pagination
@@ -38,14 +39,15 @@ const Users = () => {
   });
 
   // Fetch the users from the API
-  const fetchUsers = () => {
-    let url =
-      searchInput != ""
+  const fetchUsers = async () => {
+    const url =
+      searchInput !== ""
         ? `http://127.0.0.1:5000/api/user/page/${currentPage}/search/${searchInput}`
         : `http://127.0.0.1:5000/api/user/page/${currentPage}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
+
+    try {
+      const data = await handleFetch(url);
+      if (data) {
         setUsers(data.users);
         const usersLength = data.users.length;
         for (let i = 0; i < 10 - usersLength; i++) {
@@ -59,27 +61,32 @@ const Users = () => {
           });
         }
         setMaxPages(data.max_pages);
-      })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
-      });
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   // Remove a user from the API
-  const deleteUser = (userId) => {
-    fetch(`http://127.0.0.1:5000/api/user/${userId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  const deleteUser = async (userId) => {
+    const url = `http://127.0.0.1:5000/api/user/${userId}`;
+
+    try {
+      const response = await handleFetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response) {
+        // Refresh the users list and quit the modal
+        fetchUsers();
+        setSelectedUserIdForDelete(null);
       }
-      // Refresh the users list and quit the modal
-      fetchUsers();
-      setSelectedUserIdForDelete(null);
-    });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
 
   // Set the user id to delete

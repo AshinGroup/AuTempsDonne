@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "../modals/modal";
+import handleFetch from "../handleFetch";
 
 export default function UpdateProfileModal({
   UpdateModalOpen,
@@ -104,18 +105,26 @@ export default function UpdateProfileModal({
   });
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/role")
-      .then((response) => response.json())
-      .then((fetchedRoles) => {
-        setRoles(fetchedRoles);
-        const defaultSelectedRoles = user.roles
-          .map((userRole) => userRole.id)
-          .filter((roleId) =>
-            fetchedRoles.some((fetchedRole) => fetchedRole.id === roleId)
-          );
-        setSelectedRoles(defaultSelectedRoles);
-      })
-      .catch((error) => console.error("Error fetching roles:", error));
+    const fetchUserRoles = async () => {
+      try {
+        const rolesResponse = await handleFetch(
+          "http://127.0.0.1:5000/api/role"
+        );
+        if (rolesResponse) {
+          setRoles(rolesResponse);
+          const defaultSelectedRoles = user.roles
+            .map((userRole) => userRole.id)
+            .filter((roleId) =>
+              rolesResponse.some((role) => role.id === roleId)
+            );
+          setSelectedRoles(defaultSelectedRoles);
+        }
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
+
+    fetchUserRoles();
   }, [user.role]);
 
   useEffect(() => {
@@ -156,15 +165,18 @@ export default function UpdateProfileModal({
 
       data["status"] = status;
 
-      let response = await fetch(`http://localhost:5000/api/user/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-        }),
-      });
+      const response = await handleFetch(
+        `http://localhost:5000/api/user/${user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+          }),
+        }
+      );
 
       const req = await response.json();
 
@@ -175,34 +187,40 @@ export default function UpdateProfileModal({
         setResponseMessage(req.message);
         setIsErrorMessage(true);
       }
-      const userInitialRoles = user.roles.map((userRole) => userRole.id);
 
-      for (const selectedRole of selectedRoles) {
-        if (!userInitialRoles.includes(selectedRole)) {
-          await fetch(
-            `http://localhost:5000/api/user/${user.id}/role/${selectedRole}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-        }
+      // Update user roles
+      const userInitialRoles = user.roles.map((userRole) => userRole.id);
+      const rolesToAdd = selectedRoles.filter(
+        (role) => !userInitialRoles.includes(role)
+      );
+      const rolesToRemove = userInitialRoles.filter(
+        (role) => !selectedRoles.includes(role)
+      );
+
+      // Add new roles
+      for (const roleId of rolesToAdd) {
+        await handleFetch(
+          `http://localhost:5000/api/user/${user.id}/role/${roleId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
       }
 
-      for (const userInitialRole of userInitialRoles) {
-        if (!selectedRoles.includes(userInitialRole)) {
-          await fetch(
-            `http://localhost:5000/api/user/${user.id}/role/${userInitialRole}`,
-            {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-        }
+      // Remove old roles
+      for (const roleId of rolesToRemove) {
+        await handleFetch(
+          `http://localhost:5000/api/user/${user.id}/role/${roleId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
       }
 
       fetchUsers();
@@ -210,7 +228,6 @@ export default function UpdateProfileModal({
       console.error("An error occurred:", error);
     }
   };
-
   return (
     <Modal open={UpdateModalOpen} onClose={UpdateModalSetOpen}>
       <div className="text-center w-full ">

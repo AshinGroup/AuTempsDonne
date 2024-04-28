@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { Store } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "./modal";
+import handleFetch from "../handleFetch";
 
 export default function AddShopModal({
   AddModalOpen,
@@ -57,73 +58,87 @@ export default function AddShopModal({
     defaultMessage: "Add a Shop",
   });
 
+  // Fetch locations from the API
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/location")
-      .then((response) => response.json())
-      .then((data) => {
-        setLocations(data);
-      })
-      .catch((error) => console.error("Error fetching locations:", error));
+    const fetchLocations = async () => {
+      try {
+        const data = await handleFetch("http://127.0.0.1:5000/api/location");
+        if (data) {
+          setLocations(data);
+        }
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+
+    fetchLocations();
   }, []);
 
+  // Fetch companies from the API
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/company")
-      .then((response) => response.json())
-      .then((data) => {
-        setCompanies(data);
-      })
-      .catch((error) => console.error("Error fetching locations:", error));
+    const fetchCompanies = async () => {
+      try {
+        const data = await handleFetch("http://127.0.0.1:5000/api/company");
+        if (data) {
+          setCompanies(data);
+        }
+      } catch (error) {
+        console.error("Error fetching companies:", error);
+      }
+    };
+
+    fetchCompanies();
   }, []);
 
-  // POST
   const onPostSubmit = async (data) => {
-    // CHANGER ICI POUR METTRE LES BONNES REQUETES
-    if (!companySwitch) {
-      let response = await fetch("http://localhost:5000/api/company", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.company_name,
-          description: data.company_description,
-        }),
-      });
-
-      const newCompany = await response.json();
-
-      if (!response.ok) {
-        setResponseMessage(newCompany.message);
-        setIsErrorMessage(false);
-      }
-      data.company_id = newCompany.company_id;
-    }
-
-    if (!locationSwitch) {
-      let response = await fetch("http://localhost:5000/api/location", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          address: data.location_address,
-          zip_code: data.location_zip,
-          city: data.location_city,
-          country: data.location_country,
-        }),
-      });
-
-      const newLocation = await response.json();
-
-      if (!response.ok) {
-        setResponseMessage(newLocation.message);
-        setIsErrorMessage(false);
-      }
-      data.location_id = newLocation.location_id;
-    }
-
     try {
-      let response = await fetch("http://localhost:5000/api/shop", {
+      if (!companySwitch) {
+        const newCompany = await handleFetch(
+          "http://localhost:5000/api/company",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: data.company_name,
+              description: data.company_description,
+            }),
+          }
+        );
+
+        if (!newCompany.ok) {
+          setResponseMessage(newCompany.message);
+          setIsErrorMessage(false);
+        }
+        data.company_id = newCompany.company_id;
+      }
+
+      if (!locationSwitch) {
+        const newLocation = await handleFetch(
+          "http://localhost:5000/api/location",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              address: data.location_address,
+              zip_code: data.location_zip,
+              city: data.location_city,
+              country: data.location_country,
+            }),
+          }
+        );
+
+        if (!newLocation.ok) {
+          setResponseMessage(newLocation.message);
+          setIsErrorMessage(false);
+        }
+        data.location_id = newLocation.location_id;
+      }
+
+      const newEvent = await handleFetch("http://localhost:5000/api/shop", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -135,9 +150,7 @@ export default function AddShopModal({
         }),
       });
 
-      const newEvent = await response.json();
-
-      if (!response.ok) {
+      if (!newEvent.ok) {
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {

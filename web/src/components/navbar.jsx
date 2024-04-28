@@ -431,9 +431,9 @@ function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
     id: "navbar.profile",
     defaultMessage: "profile",
   });
-  const signin = intl.formatMessage({
-    id: "navbar.signin",
-    defaultMessage: "signin",
+  const signup = intl.formatMessage({
+    id: "navbar.signup",
+    defaultMessage: "signup",
   });
 
   useEffect(() => {
@@ -471,8 +471,8 @@ function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
         icon: <Fish size={20} className="me-1" />,
       },
       {
-        label: signin,
-        activeItem: "signin",
+        label: signup,
+        activeItem: "signup",
         icon: <UserRoundPlus size={20} className="me-1" />,
       },
     ];
