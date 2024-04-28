@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_PASSWORD: ${HOST_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: azerty
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent" ]
+      interval: 5s
+      timeout: 3s
+      retries: 4
+      start_period: 20s
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+  backend:
+    build:
+      context: api
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: curl --fail http://localhost:6001/api/user || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build: 
+      context: web
+      dockerfile: Dockerfile
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
