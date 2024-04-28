@@ -2,9 +2,10 @@ services:
   db:
     image: mysql:8
     environment:
-      MYSQL_PASSWORD: ${HOST_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_ROOT_PASSWORD: azerty
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: atd
+      MYSQL_PASSWORD: atd
+      MYSQL_DATABASE: atd
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent" ]
       interval: 5s
@@ -23,16 +24,21 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    env_file:
-      - .env
     ports:
       - "5000:5000"
-    healthcheck:
-      test: curl --fail http://localhost:5000/api/user || exit 1
-      interval: 5s
-      timeout: 3s
-      retries: 5
-      start_period: 20s
+    environment:
+        PORT: 5000
+        DB_HOST: db
+        DB_USER: atd
+        DB_PASSWORD: atd
+        DB_NAME: atd
+        DB_PORT: 3306
+    # healthcheck:
+    #   test: curl --fail http://localhost:5000/api/user || exit 1
+    #   interval: 5s
+    #   timeout: 3s
+    #   retries: 5
+    #   start_period: 20s
     volumes:
       - ./api:/app
 
@@ -40,8 +46,8 @@ services:
     build: 
       context: web
       dockerfile: Dockerfile
-    depends_on:
-      api:
-        condition: service_healthy
+    # depends_on:
+    #   api:
+    #     condition: service_healthy
     ports:
       - '3000:3000'
