@@ -6,6 +6,7 @@ import DeleteModal from "../modals/deleteModal";
 import AddEventModal from "../modals/addEventModal";
 import UpdateEventModal from "../modals/updateEventModal";
 import SlotsEventModal from "../modals/slotsEventModal";
+import handleFetch from "../handleFetch";
 
 const Events = () => {
   // Display the events and Pagination
@@ -30,40 +31,46 @@ const Events = () => {
     defaultMessage: "Search by title ...",
   });
 
-  // Fetch the users from the API
-  const fetchEvents = () => {
+  // Fetch the events from the API
+  const fetchEvents = async () => {
     let url =
-      searchInput != ""
+      searchInput !== ""
         ? `http://127.0.0.1:5000/api/event/page/${currentPage}/search/${searchInput}`
         : `http://127.0.0.1:5000/api/event/page/${currentPage}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
+
+    try {
+      const data = await handleFetch(url);
+      if (data) {
         setEvents(data.events);
         setMaxPages(data.max_pages);
-      })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
-      });
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
   };
 
   // Remove a user from the API
-  const deleteEvent = (EventId) => {
-    fetch(`http://127.0.0.1:5000/api/event/${EventId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      // Refresh the users list and quit the modal
-      fetchEvents();
-      setSelectedEventIdForDelete(null);
-    });
-  };
+  const deleteEvent = async (eventId) => {
+    try {
+      const response = await handleFetch(
+        `http://127.0.0.1:5000/api/event/${eventId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      if (response) {
+        // Refresh the users list and quit the modal
+        fetchEvents();
+        setSelectedEventIdForDelete(null);
+      }
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
+  };
   // Set the user id to delete
   const handleDeleteClick = (EventId) => {
     setSelectedEventIdForDelete(EventId);

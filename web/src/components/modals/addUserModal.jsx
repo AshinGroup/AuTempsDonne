@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { UserPlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "../modals/modal";
+import handleFetch from "../handleFetch";
 
 export default function AddUserModal({
   AddModalOpen,
@@ -112,17 +113,20 @@ export default function AddUserModal({
 
   // Get the roles for the pills and set default role
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/role")
-      .then((response) => response.json())
-      .then((data) => {
-        setRoles(data);
+    const fetchRoles = async () => {
+      try {
+        const data = await handleFetch("http://127.0.0.1:5000/api/role");
         if (data && data.length > 0) {
+          setRoles(data);
           setSelectedRoles([data[0].id]);
         }
-      })
-      .catch((error) => console.error("Error fetching roles:", error));
-  }, []);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
 
+    fetchRoles();
+  }, []);
   // Register in the Hook
   useEffect(() => {
     register("status");
@@ -162,46 +166,53 @@ export default function AddUserModal({
     const firstRoleId = selectedRoles[0];
     const additionalRoleIds = selectedRoles.slice(1);
 
-    // First Request
     try {
-      let response = await fetch("http://localhost:5000/api/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...data, role_id: firstRoleId, status: status }),
-      });
+      // First Request
+      const newUserResponse = await handleFetch(
+        "http://localhost:5000/api/user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+            role_id: firstRoleId,
+            status: status,
+          }),
+        }
+      );
 
-      const newUser = await response.json();
-
-      if (!response.ok) {
-        setResponseMessage(newUser.message);
+      if (!newUserResponse.ok) {
+        setResponseMessage(newUserResponse.message);
         setIsErrorMessage(false);
-      } else {
-        setResponseMessage(newUser.message);
-        setIsErrorMessage(true);
+        return;
       }
+
+      const newUser = newUserResponse.user;
 
       // Request for each role
-      if (newUser.user_id) {
-        for (const roleId of additionalRoleIds) {
-          response = await fetch(
-            `http://localhost:5000/api/user/${newUser.user_id}/role/${roleId}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
+      for (const roleId of additionalRoleIds) {
+        const response = await handleFetch(
+          `http://localhost:5000/api/user/${newUser.user_id}/role/${roleId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-          if (!response.ok)
-            throw new Error(`Problem assigning role ${roleId} to user`);
+        if (!response.ok) {
+          throw new Error(`Problem assigning role ${roleId} to user`);
         }
-
-        fetchUsers();
-        reset();
       }
+
+      setResponseMessage(newUserResponse.message);
+      setIsErrorMessage(true);
+
+      fetchUsers();
+      reset();
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -246,7 +257,8 @@ export default function AddUserModal({
             {...register("first_name", {
               required: firstNameRequired,
               pattern: {
-                value: /^(?=[a-zA-ZÀ-ÿ\u4e00-\u9fa5]{1,50}$)[a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+(?: [a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+)*$/,
+                value:
+                  /^(?=[a-zA-ZÀ-ÿ\u4e00-\u9fa5]{1,50}$)[a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+(?: [a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+)*$/,
                 message: firstNameValidPattern,
               },
               maxLength: {
@@ -265,7 +277,8 @@ export default function AddUserModal({
             {...register("last_name", {
               required: lastNameRequired,
               pattern: {
-                value: /^(?=[a-zA-ZÀ-ÿ\u4e00-\u9fa5]{1,50}$)[a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+(?: [a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+)*$/,
+                value:
+                  /^(?=[a-zA-ZÀ-ÿ\u4e00-\u9fa5]{1,50}$)[a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+(?: [a-zA-ZÀ-ÿ\u4e00-\u9fa5'-]+)*$/,
                 message: lastNameValidPattern,
               },
               maxLength: {

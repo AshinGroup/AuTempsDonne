@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { UserRoundCog } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "../modals/modal";
+import handleFetch from "../handleFetch";
 
 export default function UpdateUserModal({
   UpdateModalOpen,
@@ -88,19 +89,22 @@ export default function UpdateUserModal({
   const onPutSubmit = async (data) => {
     try {
       if (data.password === "") {
-        delete data["password"];
+        delete data.password;
       }
-      delete data["role_id"];
+      delete data.role_id;
 
-      let response = await fetch(`http://localhost:5000/api/user/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-        }),
-      });
+      const response = await handleFetch(
+        `http://localhost:5000/api/user/${user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...data,
+          }),
+        }
+      );
 
       const req = await response.json();
 

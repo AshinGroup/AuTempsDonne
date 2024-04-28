@@ -2,6 +2,7 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { Trash2 } from "lucide-react";
 import { Modal } from "./modal";
+import handleFetch from "../handleFetch";
 
 export default function SlotsEventModal({
   SlotsModalOpen,
@@ -10,19 +11,27 @@ export default function SlotsEventModal({
   fetchUsers,
 }) {
   // Remove a user from the Course
-  const deleteUserCourse = (eventId) => {
-    fetch(`http://127.0.0.1:5000/api/user/${eventId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
+  const deleteUserCourse = async (eventId) => {
+    try {
+      const response = await handleFetch(
+        `http://127.0.0.1:5000/api/user/${eventId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
       // Refresh the users list
       fetchUsers();
-    });
+    } catch (error) {
+      console.error("Error deleting user from course:", error);
+    }
   };
 
   return (

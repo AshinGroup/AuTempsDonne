@@ -5,6 +5,7 @@ import { format } from "date-fns";
 
 import { useForm } from "react-hook-form";
 import { Modal } from "./modal";
+import handleFetch from "../handleFetch";
 
 export default function UpdateCourseModal({
   UpdateModalOpen,
@@ -96,14 +97,23 @@ export default function UpdateCourseModal({
     defaultMessage: "Update Event",
   });
 
+  // Fetch types for the pills and set default type
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/type")
-      .then((response) => response.json())
-      .then((fetchedTypes) => {
-        setTypes(fetchedTypes);
-        setSelectedTypes([event.type.id]);
-      })
-      .catch((error) => console.error("Error fetching types:", error));
+    const fetchTypes = async () => {
+      try {
+        const fetchedTypes = await handleFetch(
+          "http://127.0.0.1:5000/api/type"
+        );
+        if (fetchedTypes) {
+          setTypes(fetchedTypes);
+          setSelectedTypes([event.type.id]);
+        }
+      } catch (error) {
+        console.error("Error fetching types:", error);
+      }
+    };
+
+    fetchTypes();
   }, [event.type]);
 
   // Register in the Hook
@@ -144,7 +154,7 @@ export default function UpdateCourseModal({
       data.datetime = format(new Date(data.datetime), "yyyy-MM-dd HH:mm:ss");
       data.type_id = selectedTypes[0];
       data.group = group;
-      let response = await fetch(
+      const response = await handleFetch(
         `http://localhost:5000/api/event/${event.id}`,
         {
           method: "PUT",

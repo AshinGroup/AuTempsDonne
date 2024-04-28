@@ -1,27 +1,55 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import Navbar from "../components/navbar";
-import HomePage from "../components/contents/home";
+import Home from "../components/contents/home";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
+
+import handleFetch from "../components/handleFetch";
 
 const WelcomePage = () => {
   // Profile Management from Dashboard (ugly code, to be refactored)
   const location = useLocation();
   const [activeItem, setActiveItem] = useState(
-    location.state?.id || "homepage"
+    location.hash.substring(1) ? location.hash.substring(1) : "homepage"
   );
 
+  console.log(activeItem);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const rule = sessionStorage.getItem("rule");
+
+    if (rule === null) {
+      handleFetch(`http://127.0.0.1:5000/api/protected`)
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((data) => {
+              throw new Error(data.message);
+            });
+          }
+          return response.json();
+        })
+        .then((data) => {
+          sessionStorage.setItem("rule", data?.role);
+          sessionStorage.setItem("user_id", data?.user_id);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          navigate("/");
+        });
+    }
+  }, []);
   // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
-  const rule = "admin";
+  // check ici la conversion entre int et string
+  const rule = sessionStorage.getItem("rule") || "";
 
   const getContent = () => {
     switch (activeItem) {
       case "homepage":
-        return <HomePage />;
+        return <Home />;
       case "services":
         return <div>Services</div>;
       case "activities":
@@ -30,6 +58,8 @@ const WelcomePage = () => {
         return <div>Courses</div>;
       case "tocollect":
         return <div>To Collect</div>;
+      case "genqr":
+        return <div>Generate QR Code</div>;
       case "planning":
         return <div>Planning</div>;
       case "support":
@@ -42,8 +72,8 @@ const WelcomePage = () => {
       case "login":
         navigate("/login");
         return;
-      case "signin":
-        navigate("/signin");
+      case "signup":
+        navigate("/signup");
         return;
       case "profile":
         return <Profile />;

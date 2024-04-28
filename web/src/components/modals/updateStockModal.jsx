@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { PackagePlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "./modal";
+import handleFetch from "../handleFetch";
 
 export default function UpdateStockModal({
   UpdateModalOpen,
@@ -73,73 +74,93 @@ export default function UpdateStockModal({
     defaultMessage: "Expiration_Date is Required is Required",
   });
 
+  // Fetch storages
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/storage")
-      .then((response) => response.json())
-      .then((data) => {
-        setStorages(data);
-      })
-      .catch((error) => console.error("Error fetching storages:", error));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/food")
-      .then((response) => response.json())
-      .then((data) => {
-        setFoods(data);
-      })
-      .catch((error) => console.error("Error fetching foods:", error));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/category")
-      .then((response) => response.json())
-      .then((data) => {
-        setCategories(data);
-      })
-      .catch((error) => console.error("Error fetching categories:", error));
-  }, []);
-
-  // POST
-  const onPostSubmit = async (data) => {
-    // CHANGER ICI POUR METTRE LES BONNES REQUETES
-    console.log(data);
-    if (!foodSwitch) {
-      let response = await fetch("http://localhost:5000/api/food", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.company_name,
-          description: data.company_description,
-          category_id: data.category_id,
-        }),
-      });
-
-      const newFood = await response.json();
-
-      if (!response.ok) {
-        setResponseMessage(newFood.message);
-        setIsErrorMessage(false);
+    const fetchStorages = async () => {
+      try {
+        const storageResponse = await handleFetch(
+          "http://127.0.0.1:5000/api/storage"
+        );
+        if (storageResponse) {
+          setStorages(storageResponse);
+        }
+      } catch (error) {
+        console.error("Error fetching storages:", error);
       }
-      data.food_id = newFood.id;
-    }
+    };
 
-    data.expiration_date = format(
-      new Date(data.expiration_date),
-      "yyyy-MM-dd HH:mm:ss"
-    );
+    fetchStorages();
+  }, []);
 
-    console.log(
-      data.weight,
-      data.expiration_date,
-      data.description,
-      data.storage_id,
-      data.food_id
-    );
+  // Fetch foods
+  useEffect(() => {
+    const fetchFoods = async () => {
+      try {
+        const foodResponse = await handleFetch(
+          "http://127.0.0.1:5000/api/food"
+        );
+        if (foodResponse) {
+          setFoods(foodResponse);
+        }
+      } catch (error) {
+        console.error("Error fetching foods:", error);
+      }
+    };
+
+    fetchFoods();
+  }, []);
+
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoryResponse = await handleFetch(
+          "http://127.0.0.1:5000/api/category"
+        );
+        if (categoryResponse) {
+          setCategories(categoryResponse);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const onPostSubmit = async (data) => {
     try {
-      let response = await fetch(
+      // Check if food switch is off
+      if (!foodSwitch) {
+        const newFoodResponse = await handleFetch(
+          "http://localhost:5000/api/food",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: data.company_name,
+              description: data.company_description,
+              category_id: data.category_id,
+            }),
+          }
+        );
+
+        if (!newFoodResponse.ok) {
+          setResponseMessage(newFoodResponse.message);
+          setIsErrorMessage(false);
+        } else {
+          data.food_id = newFoodResponse.id;
+        }
+      }
+
+      data.expiration_date = format(
+        new Date(data.expiration_date),
+        "yyyy-MM-dd HH:mm:ss"
+      );
+
+      const response = await handleFetch(
         `http://localhost:5000/api/package/${stock.id}`,
         {
           method: "PUT",
@@ -164,10 +185,9 @@ export default function UpdateStockModal({
       } else {
         setResponseMessage(newPackage.message);
         setIsErrorMessage(true);
+        fetchUsers();
+        reset();
       }
-
-      fetchUsers();
-      reset();
     } catch (error) {
       console.error("An error occurred:", error);
     }
