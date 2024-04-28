@@ -9,13 +9,36 @@ import UpdateProfileModal from "../modals/updateProfileModal";
 import handleFetch from "../handleFetch";
 
 const Profile = () => {
-  // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
-  const rule = "admin";
-  const userId = "1";
   const [user, setUser] = useState([]);
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
   const [profileUpdate, setProfileUpdate] = useState(null);
+
+  useEffect(() => {
+    const user_id = sessionStorage.getItem("user_id");
+
+    if (user_id === null) {
+      handleFetch(`http://127.0.0.1:5000/api/protected`)
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((data) => {
+              throw new Error(data.message);
+            });
+          }
+          return response.json();
+        })
+        .then((data) => {
+          sessionStorage.setItem("rule", data?.role);
+          sessionStorage.setItem("user_id", data?.user_id);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          navigate("/");
+        });
+    }
+  }, []);
+  // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
+  const userId = sessionStorage.getItem("user_id") || "";
 
   // Function to handle window resize
   useEffect(() => {

@@ -14,7 +14,8 @@ const Support = () => {
     const checkServerStatus = async () => {
       try {
         const response = await handleFetch("http://127.0.0.1:5000/api/type/1");
-        if (response) {
+        //127.0.0.1:5000/api/protected
+        http: if (response) {
           setServerStatus("Online");
         } else {
           setServerStatus("Offline");

@@ -6,7 +6,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import atd_logo_typo from "../resources/atd_logo_typo.png";
 
 const LogIn = () => {
-  const navigate = useNavigate();
   const [expanded, setExpanded] = useState(() => window.innerWidth > 1200);
 
   // Function to handle window resize
@@ -87,6 +86,7 @@ const LogInForm = () => {
   } = useForm();
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
+  const navigate = useNavigate();
 
   const intl = useIntl();
 
@@ -132,8 +132,13 @@ const LogInForm = () => {
         return response.json();
       })
       .then((data) => {
-        // Handle successful response
-        console.log("Response data:", data);
+        if (adata.keepLogged) {
+          localStorage.setItem("refresh_token", data?.refresh_token);
+        } else {
+          sessionStorage.setItem("refresh_token", data?.refresh_token);
+        }
+        sessionStorage.setItem("access_token", data?.access_token);
+        navigate("/");
       })
       .catch((error) => {
         setResponseMessage(error.message);

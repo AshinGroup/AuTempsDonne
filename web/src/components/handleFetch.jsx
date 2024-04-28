@@ -12,7 +12,7 @@ async function handleFetch(url, options = {}, retry = 1) {
 
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status === 401 && retry == 1) {
+      if ((response.status === 401 || response.status === 422) && retry == 1) {
         const refreshToken = sessionStorage.getItem("refresh_token");
         const refreshed = await refreshFetch(refreshToken);
         if (refreshed) {
@@ -42,7 +42,9 @@ async function refreshFetch(refreshToken) {
       },
     });
     if (!response.ok) {
-      navigate("/", { tokenExpired: true });
+      sessionStorage.clear();
+      localStorage.clear();
+      navigate("/", { tokenExpired: true }); // maybe usable for a modal
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
