@@ -26,13 +26,8 @@ services:
         condition: service_healthy
     ports:
       - "5000:5000"
-    environment:
-        PORT: 5000
-        DB_HOST: db
-        DB_USER: atd
-        DB_PASSWORD: atd
-        DB_NAME: atd
-        DB_PORT: 3306
+    env_file:
+      - .env
     # healthcheck:
     #   test: curl --fail http://localhost:5000/api/user || exit 1
     #   interval: 5s
@@ -43,7 +38,7 @@ services:
       - ./api:/app
 
   frontend:
-    build: 
+    build:
       context: web
       dockerfile: Dockerfile
     # depends_on:
@@ -51,3 +46,8 @@ services:
     #     condition: service_healthy
     ports:
       - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - ./web:/app
+    environment:
+      - WATCHPACK_POLLING=true

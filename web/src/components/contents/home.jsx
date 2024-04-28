@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 // import "./HomePage.css";
+import Footer from "../footer1";
 import welcome from "../../resources/homePage1.jpg";
 import maps from "../../resources/maps.png";
 import carousel1 from "../../resources/carousel1.jpg";
@@ -85,7 +86,7 @@ const HomePage = () => {
               </Link>
             </div>
 
-            <div className="bg-gray-200 flex flex-col justify-center items-center pt-16 pb-16 pr-16 pl-16 mb-80">
+            <div className="bg-gray-200 flex flex-col justify-center items-center pt-16 pb-16 pr-16 pl-16">
               <div className="mt-12 ml-8 text-center">
                 <h2 className="text-3xl font-bold mb-8">Rejoignez nous, on compte sur vous !</h2>
                 <Carousel />
@@ -95,7 +96,7 @@ const HomePage = () => {
                 </Link>
               </div>
             </div>
-
+            <Footer />
           </>
   );
 };
