@@ -29,8 +29,8 @@ class UserCheckArgs:
                                 help="Invalid or missing parameter 'role'")  # Required = True for post
         parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=(
             True if method == "post" else False), help="Invalid or missing parameter 'password'")
-        parser.add_argument('status', type=int, required=(
-            True if method == "register" else False), help="Invalid or missing parameter 'status'")
+        if method == "post":
+            parser.add_argument('status', type=int, required=(True), help="Invalid or missing parameter 'status'")
         args = parser.parse_args(strict=True)
         return args
 

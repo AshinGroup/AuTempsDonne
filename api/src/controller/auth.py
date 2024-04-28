@@ -3,10 +3,12 @@ from flask_jwt_extended import (
     create_refresh_token,
     get_jwt_identity,
     jwt_required,
+    get_jwt
 )
 from flask_restful import Resource, abort, reqparse
 from flask import jsonify
 from auth import jwt
+from function.roles_required import roles_required
 from service.user import UserService
 from service.auth import AuthService
 from exception.role import RoleIdNotFoundException
@@ -14,6 +16,7 @@ from exception.user import (
     UserEmailNotFoundException,
     UserAlreadyExistsException,
     UserAccessDbException,
+    UserStatusException
 )
 from exception.auth import LoginException
 from controller.user import UserCheckArgs
@@ -43,9 +46,12 @@ class LoginController(Resource):
             roles = list()
             args = self.check_login_args.get_login_args()
             user = self.auth_service.login(email=args['email'], password=args['password'])
+            if user.status == 0:
+                raise UserStatusException(email=args['email'])
             for role in user.roles:
                 roles.append(role.id)
-            access_token = create_access_token(identity=user.id)
+                additional_claims = {"roles" : roles}
+            access_token = create_access_token(identity=user.id, additional_claims=additional_claims)
             refresh_token = create_refresh_token(identity=user.id)
             return jsonify(access_token=access_token, refresh_token=refresh_token, roles=roles)
         except UserEmailNotFoundException as e:
@@ -54,8 +60,8 @@ class LoginController(Resource):
             abort(http_status_code=500, message=str(e))
         except LoginException as e:
             abort(http_status_code=400, message=str(e))
-        except Exception as e:
-            abort(http_status_code=500, message=e)
+        except UserStatusException as e:
+            abort(http_status_code=403, message=str(e))
 
 
 class RegisterController(Resource):
@@ -66,7 +72,7 @@ class RegisterController(Resource):
     def post(self):
         try:
             args = self.user_check_args.get_user_args(method="register")
-            new_user_id = self.user_service.insert(args=args)
+            new_user_id = self.user_service.insert(args=args, method="register")
             return jsonify(
                 {
                     "message": f"User {args['email']} successfully created.",
@@ -96,11 +102,13 @@ class ProtectedController(Resource):
         self.user_service = UserService()
 
     @jwt_required()
+    @roles_required(5)
     def get(self):
         current_user = get_jwt_identity()
-        user = self.user_service.select_one_by_id(user_id=current_user)
-        for role in user.roles:
-            role = role.id if role.id in [1,2,3,4] else -1
+        claims = get_jwt()
+        user_roles = claims['roles']
+        for role in user_roles:
+            role = role if role in [1,2,3,4] else -1
         return jsonify({
                         'message': f"Logged in as user id '{current_user}'",
                         'user_id' : current_user,

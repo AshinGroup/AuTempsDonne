@@ -76,4 +76,12 @@ class UserAccessDbException(Exception):
         else: 
             return f"Error {self.method} users."
 
+
+class UserStatusException(Exception):
+    def __init__(self, email: str) -> None:
+        self.email = email
+
+    def __str__(self) -> str:
+        return f"User '{self.email}' status has not yet been validated."
+
     
