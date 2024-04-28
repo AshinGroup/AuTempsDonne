@@ -223,9 +223,8 @@ export default function AddUserModal({
       <div className="text-center w-full ">
         <UserPlusIcon size={40} className="mx-auto text-AshinBlue" />
         <p
-          className={` my-2 font-medium ${
-            isErrorMessage ? "text-green-500" : "text-red-500"
-          }`}
+          className={` my-2 font-medium ${isErrorMessage ? "text-green-500" : "text-red-500"
+            }`}
         >
           {responseMessage}
         </p>
@@ -319,7 +318,7 @@ export default function AddUserModal({
               },
               pattern: {
                 value:
-                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
                 message: passwordValidPattern,
               },
             })}
@@ -342,11 +341,10 @@ export default function AddUserModal({
               <button
                 type="button"
                 onClick={() => toggleStatus(1)}
-                className={`px-4 mx-1 py-1 border ${
-                  status === 1
-                    ? "border-green-600 bg-green-500 text-white"
-                    : "border-gray-300 bg-gray-200 text-gray-400"
-                } rounded-full transition focus:outline-none`}
+                className={`px-4 mx-1 py-1 border ${status === 1
+                  ? "border-green-600 bg-green-500 text-white"
+                  : "border-gray-300 bg-gray-200 text-gray-400"
+                  } rounded-full transition focus:outline-none`}
               >
                 <FormattedMessage
                   id="addUserModal.active"
@@ -356,11 +354,10 @@ export default function AddUserModal({
               <button
                 type="button"
                 onClick={() => toggleStatus(0)}
-                className={`px-4 mx-1 py-1 border ${
-                  status === 0
-                    ? "border-red-700 bg-red-500 text-white"
-                    : "border-gray-300 bg-gray-200 text-gray-400"
-                } rounded-full transition focus:outline-none`}
+                className={`px-4 mx-1 py-1 border ${status === 0
+                  ? "border-red-700 bg-red-500 text-white"
+                  : "border-gray-300 bg-gray-200 text-gray-400"
+                  } rounded-full transition focus:outline-none`}
               >
                 <FormattedMessage
                   id="addUserModal.inactive"
@@ -385,11 +382,10 @@ export default function AddUserModal({
                   key={role.id}
                   type="button"
                   onClick={() => toggleRoleSelection(role.id)}
-                  className={`px-4 py-1 border transition-all ${
-                    selectedRoles.includes(role.id)
-                      ? "border-white bg-AshinBlue text-white"
-                      : "border-gray-300 bg-gray-200 text-gray-400"
-                  } rounded-full focus:outline-none`}
+                  className={`px-4 py-1 border transition-all ${selectedRoles.includes(role.id)
+                    ? "border-white bg-AshinBlue text-white"
+                    : "border-gray-300 bg-gray-200 text-gray-400"
+                    } rounded-full focus:outline-none`}
                 >
                   {role.name}
                 </button>

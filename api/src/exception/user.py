@@ -76,4 +76,20 @@ class UserAccessDbException(Exception):
         else: 
             return f"Error {self.method} users."
 
+
+class UserStatusException(Exception):
+    def __init__(self, email: str) -> None:
+        self.email = email
+
+    def __str__(self) -> str:
+        return f"User '{self.email}' status has not yet been validated."
+    
+
+class UserRoleInvalidException(Exception):
+    def __init__(self, role_id: int) -> None:
+        self.role_id = role_id
+
+    def __str__(self) -> str:
+        return f"Role with id '{self.role_id}' cannot be assigned."
+
     

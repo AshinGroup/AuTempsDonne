@@ -23,9 +23,8 @@ const LogIn = () => {
       <section className="flex flex-col justify-center h-screen w-screen items-center">
         {/* Sign In */}
         <div
-          className={`flex flex-col ${
-            expanded ? "w-1/4" : "w-3/4"
-          } h-4/6 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
+          className={`flex flex-col ${expanded ? "w-1/4" : "w-3/4"
+            } h-4/6 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
         >
           <div className="p-4 pb-2 relative flex flex-col justify-between items-center">
             <Link to="/">
@@ -47,9 +46,8 @@ const LogIn = () => {
         </div>
         {/* No Account */}
         <div
-          className={`flex ${
-            expanded ? "w-1/4" : "w-3/4"
-          } h-24 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
+          className={`flex ${expanded ? "w-1/4" : "w-3/4"
+            } h-24 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
         >
           No account yet ? &nbsp;
           <Link to="/SignUp">
@@ -152,9 +150,8 @@ const LogInForm = () => {
       className="w-full max-w-lg mt-8 flex flex-col items-center"
     >
       <p
-        className={` mb-2 font-medium ${
-          isErrorMessage ? "text-green-500" : "text-red-500"
-        }`}
+        className={` mb-2 font-medium ${isErrorMessage ? "text-green-500" : "text-red-500"
+          }`}
       >
         {responseMessage}
       </p>
@@ -188,7 +185,7 @@ const LogInForm = () => {
           },
           pattern: {
             value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
             message: passwordValidPattern,
           },
         })}
