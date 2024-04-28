@@ -92,7 +92,7 @@ class UserListController(Resource):
     def post(self):
         try:
             args = self.check_args.get_user_args(method="post")
-            new_user_id = self.user_service.insert(args=args)
+            new_user_id = self.user_service.insert(args=args, method="post")
             return jsonify({'message': f"User {args['email']} successfully created.", 'user_id': new_user_id})
         except UserAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))

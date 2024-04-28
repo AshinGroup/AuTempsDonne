@@ -16,7 +16,8 @@ from exception.user import (
     UserEmailNotFoundException,
     UserAlreadyExistsException,
     UserAccessDbException,
-    UserStatusException
+    UserStatusException,
+    UserRoleInvalidException
 )
 from exception.auth import LoginException
 from controller.user import UserCheckArgs
@@ -85,8 +86,9 @@ class RegisterController(Resource):
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except Exception as e:
-            abort(http_status_code=500, message=e)
+        except UserRoleInvalidException as e:
+            abort(http_status_code=400, message=str(e))
+        
 
 
 class RefreshTokenController(Resource):

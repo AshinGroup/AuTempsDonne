@@ -7,7 +7,15 @@ services:
       MYSQL_PASSWORD: atd
       MYSQL_DATABASE: atd
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent" ]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "127.0.0.1",
+          "--silent"
+        ]
       interval: 5s
       timeout: 3s
       retries: 4
@@ -15,7 +23,6 @@ services:
     volumes:
       - ./data:/var/lib/mysql
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-
 
   api:
     build:
@@ -38,7 +45,7 @@ services:
       - ./api:/app
 
   frontend:
-    build: 
+    build:
       context: web
       dockerfile: Dockerfile
     # depends_on:
@@ -47,4 +54,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
+      - /app/node_modules
       - ./web:/app
+    environment:
+      - WATCHPACK_POLLING=true

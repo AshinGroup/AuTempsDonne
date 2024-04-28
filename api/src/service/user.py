@@ -41,7 +41,8 @@ class UserService:
         return users
 
     def insert(self, args: dict, method: str) -> None:
-        
+        if method == "register" and args["role_id"] == 1:
+            raise UserRoleInvalidException(role_id=args["role_id"])
 
         new_user = User(
             first_name=args["first_name"],
