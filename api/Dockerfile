@@ -1,0 +1,20 @@
+FROM python:3.10
+
+# ARG HOSTNAME
+# ARG HOST_USER
+# ARG HOST_PASSWORD
+# ARG DB_NAME
+# ARG API_PATH
+# ARG JWT_SECRET_KEY
+# ARG GEOCODING_API_KEY
+# ARG OPRS_API_KEY
+
+WORKDIR /app
+
+COPY src/ .
+
+RUN pip install -r requirements.txt
+
+EXPOSE 5000
+
+ENTRYPOINT ["python3", "/app/server.py"]
