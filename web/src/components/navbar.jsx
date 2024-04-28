@@ -66,6 +66,17 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               path="/"
               text={
                 <FormattedMessage
+                  id="navbar.genqr"
+                  defaultMessage="Generate QR Code"
+                />
+              }
+              isActive={activeItem === "genqr"}
+              onClick={() => setActiveItem("genqr")}
+            />
+            <NavbarItem
+              path="/"
+              text={
+                <FormattedMessage
                   id="navbar.support"
                   defaultMessage="support"
                 />
@@ -325,7 +336,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
     // If the screen is expanded
     <>
       <nav
-        className={`flex flex-col bg-white sticky border-b-2 border-AshinBlue-light shadow-sm`}
+        className={`flex flex-wrap bg-white sticky border-b-2 border-AshinBlue-light shadow-sm`}
       >
         <div
           className={`flex w-screen bg-white border-0 shadow-sm ${
@@ -334,12 +345,9 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
         >
           <div className="p-4 pb-3 relative flex justify-between items-center">
             <Link
-              to={{
-                pathname: "/",
-                // search: "?sort=name",
-                // hash: "#the-hash",
-                state: { id: "homepage" },
-              }}
+              to="/"
+              isActive={activeItem === "homepage"}
+              onClick={() => setActiveItem("homepage")}
             >
               <img
                 src={atd_logo_typo}
@@ -423,9 +431,9 @@ function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
     id: "navbar.profile",
     defaultMessage: "profile",
   });
-  const signin = intl.formatMessage({
-    id: "navbar.signin",
-    defaultMessage: "signin",
+  const signup = intl.formatMessage({
+    id: "navbar.signup",
+    defaultMessage: "signup",
   });
 
   useEffect(() => {
@@ -463,8 +471,8 @@ function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
         icon: <Fish size={20} className="me-1" />,
       },
       {
-        label: signin,
-        activeItem: "signin",
+        label: signup,
+        activeItem: "signup",
         icon: <UserRoundPlus size={20} className="me-1" />,
       },
     ];

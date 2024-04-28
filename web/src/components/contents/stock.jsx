@@ -6,6 +6,7 @@ import { Settings, Trash2, CalendarDays } from "lucide-react";
 import DeleteModal from "../modals/deleteModal";
 import AddPackageModal from "../modals/addStockModal";
 import UpdateStockModal from "../modals/updateStockModal";
+import handleFetch from "../handleFetch";
 
 const Stock = () => {
   const [stock, setStock] = useState([]);
@@ -29,39 +30,44 @@ const Stock = () => {
     defaultMessage: "Search by Food ...",
   });
 
-  // Fetch the users from the API
-  const fetchStock = () => {
-    let url =
-      searchInput != ""
+  // Fetch the stock from the API
+  const fetchStock = async () => {
+    const url =
+      searchInput !== ""
         ? `http://127.0.0.1:5000/api/package/page/${currentPage}/search/${searchInput}`
         : `http://127.0.0.1:5000/api/package/page/${currentPage}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
+
+    try {
+      const data = await handleFetch(url);
+      if (data) {
         setStock(data.packages);
         setMaxPages(data.max_pages);
-        // setMaxPages(1);
-      })
-      .catch((error) => {
-        console.error("Error fetching stock:", error);
-      });
+      }
+    } catch (error) {
+      console.error("Error fetching stock:", error);
+    }
   };
 
-  // Remove a user from the API
-  const deleteStock = (stockId) => {
-    fetch(`http://127.0.0.1:5000/api/package/${stockId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  // Remove a stock item from the API
+  const deleteStock = async (stockId) => {
+    const url = `http://127.0.0.1:5000/api/package/${stockId}`;
+
+    try {
+      const response = await handleFetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response) {
+        // Refresh the stock list and quit the modal
+        fetchStock();
+        setSelectedstockIdForDelete(null);
       }
-      // Refresh the users list and quit the modal
-      fetchStock();
-      setSelectedstockIdForDelete(null);
-    });
+    } catch (error) {
+      console.error("Error deleting stock:", error);
+    }
   };
 
   // Set the Shop id to delete

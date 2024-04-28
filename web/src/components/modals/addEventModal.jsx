@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { SquarePen } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "./modal";
+import handleFetch from "../handleFetch";
 
 export default function AddEventModal({
   AddModalOpen,
@@ -88,15 +89,19 @@ export default function AddEventModal({
 
   // Get the types for the pills and set default types
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/type")
-      .then((response) => response.json())
-      .then((data) => {
-        setTypes(data);
+    const fetchTypes = async () => {
+      try {
+        const data = await handleFetch("http://127.0.0.1:5000/api/type");
         if (data && data.length > 0) {
+          setTypes(data);
           setSelectedTypes([data[0].id]);
         }
-      })
-      .catch((error) => console.error("Error fetching types:", error));
+      } catch (error) {
+        console.error("Error fetching types:", error);
+      }
+    };
+
+    fetchTypes();
   }, []);
 
   // Register in the Hook
@@ -140,7 +145,8 @@ export default function AddEventModal({
       data.datetime = format(new Date(data.datetime), "yyyy-MM-dd HH:mm:ss");
       data.type_id = selectedTypes[0];
       data.group = group;
-      let response = await fetch("http://localhost:5000/api/event", {
+
+      const response = await handleFetch("http://localhost:5000/api/event", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -148,18 +154,18 @@ export default function AddEventModal({
         body: JSON.stringify({ ...data }),
       });
 
-      const newEvent = await response.json();
+      if (response) {
+        if (!response.ok) {
+          setResponseMessage(response.message);
+          setIsErrorMessage(false);
+        } else {
+          setResponseMessage(response.message);
+          setIsErrorMessage(true);
+        }
 
-      if (!response.ok) {
-        setResponseMessage(newEvent.message);
-        setIsErrorMessage(false);
-      } else {
-        setResponseMessage(newEvent.message);
-        setIsErrorMessage(true);
+        fetchUsers();
+        reset();
       }
-
-      fetchUsers();
-      reset();
     } catch (error) {
       console.error("An error occurred:", error);
     }

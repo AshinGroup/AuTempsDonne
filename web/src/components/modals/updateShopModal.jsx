@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { Store } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Modal } from "./modal";
+import handleFetch from "../handleFetch";
 
 export default function UpdateShopModal({
   UpdateModalOpen,
@@ -63,84 +64,98 @@ export default function UpdateShopModal({
     defaultMessage: "Update a Shop",
   });
 
+  // Fetch locations and companies
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/location")
-      .then((response) => response.json())
-      .then((data) => {
-        setLocations(data);
-      })
-      .catch((error) => console.error("Error fetching locations:", error));
-  }, []);
+    const fetchLocationsAndCompanies = async () => {
+      try {
+        const locationResponse = await handleFetch(
+          "http://127.0.0.1:5000/api/location"
+        );
+        const companyResponse = await handleFetch(
+          "http://127.0.0.1:5000/api/company"
+        );
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/company")
-      .then((response) => response.json())
-      .then((data) => {
-        setCompanies(data);
-      })
-      .catch((error) => console.error("Error fetching locations:", error));
+        if (locationResponse && companyResponse) {
+          setLocations(locationResponse);
+          setCompanies(companyResponse);
+        }
+      } catch (error) {
+        console.error("Error fetching locations and companies:", error);
+      }
+    };
+
+    fetchLocationsAndCompanies();
   }, []);
 
   // POST
   const onPostSubmit = async (data) => {
-    console.log(data);
-    // CHANGER ICI POUR METTRE LES BONNES REQUETES
-    if (!companySwitch) {
-      let response = await fetch("http://localhost:5000/api/company", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.company_name,
-          description: data.company_description,
-        }),
-      });
-
-      const newCompany = await response.json();
-
-      if (!response.ok) {
-        setResponseMessage(newCompany.message);
-        setIsErrorMessage(false);
-      }
-      data.company_id = newCompany.company_id;
-    }
-
-    if (!locationSwitch) {
-      let response = await fetch("http://localhost:5000/api/location", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          address: data.location_address,
-          zip_code: data.location_zip,
-          city: data.location_city,
-          country: data.location_country,
-        }),
-      });
-
-      const newLocation = await response.json();
-
-      if (!response.ok) {
-        setResponseMessage(newLocation.message);
-        setIsErrorMessage(false);
-      }
-      data.location_id = newLocation.location_id;
-    }
-
     try {
-      let response = await fetch(`http://localhost:5000/api/shop/${shop.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          company_id: data.company_id,
-          location_id: data.location_id,
-        }),
-      });
+      console.log(data);
+      // Check if company switch is on
+      if (!companySwitch) {
+        const newCompanyResponse = await handleFetch(
+          "http://localhost:5000/api/company",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: data.company_name,
+              description: data.company_description,
+            }),
+          }
+        );
+
+        if (!newCompanyResponse.ok) {
+          setResponseMessage(newCompanyResponse.message);
+          setIsErrorMessage(false);
+        } else {
+          data.company_id = newCompanyResponse.company_id;
+        }
+      }
+
+      // Check if location switch is on
+      if (!locationSwitch) {
+        const newLocationResponse = await handleFetch(
+          "http://localhost:5000/api/location",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              address: data.location_address,
+              zip_code: data.location_zip,
+              city: data.location_city,
+              country: data.location_country,
+            }),
+          }
+        );
+
+        if (!newLocationResponse.ok) {
+          setResponseMessage(newLocationResponse.message);
+          setIsErrorMessage(false);
+        } else {
+          data.location_id = newLocationResponse.location_id;
+        }
+      }
+
+      // PUT request for updating shop
+      const response = await handleFetch(
+        `http://localhost:5000/api/shop/${shop.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: data.name,
+            company_id: data.company_id,
+            location_id: data.location_id,
+          }),
+        }
+      );
 
       const newShop = await response.json();
 
@@ -150,15 +165,13 @@ export default function UpdateShopModal({
       } else {
         setResponseMessage(newShop.message);
         setIsErrorMessage(true);
+        fetchShops();
+        reset();
       }
-
-      fetchShops();
-      reset();
     } catch (error) {
       console.error("An error occurred:", error);
     }
   };
-
   return (
     <Modal open={UpdateModalOpen} onClose={UpdateModalSetOpen}>
       <div className="text-center mt-5 w-full ">
