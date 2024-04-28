@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import atd_logo_typo from "../resources/atd_logo_typo.png";
 import handleFetch from "../components/handleFetch";
+import Footer from "../components/footer2";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const SignUp = () => {
   return (
     <>
       {/* Page Section */}
-      <section className="flex flex-col justify-center h-screen w-screen items-center">
+      <section className="flex flex-col justify-center h-screen w-full items-center">
         {/* Sign In */}
         <div
           className={`flex flex-col ${
@@ -65,11 +66,7 @@ const SignUp = () => {
           ></img>
         </Link>
       </section>
-      {/* Footer */}
-      <div className="flex flex-col w-full h-56 mt-10 items-center bg-white justify-center border-2 border-green-400 bg-green-600">
-        Footer (Different from the homepage (Need to set credits, links to the
-        homepage and Languages modifications))
-      </div>
+      <Footer />
     </>
   );
 };
