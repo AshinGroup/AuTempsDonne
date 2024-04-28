@@ -12,9 +12,7 @@ class Company(db.Model):
 
 
     def json(self):
-        shops = []
-        if self.shops:
-            shops= [shop.json_rest_company() for shop in self.shops]
+        shops = [shop.json_rest_company() for shop in self.shops] if self.shops else []
             
         return {'id': self.id, 
                 'name': self.name, 

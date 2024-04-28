@@ -40,13 +40,14 @@ class LoginController(Resource):
 
     def post(self):
         try:
+            roles = list()
             args = self.check_login_args.get_login_args()
-            user = self.auth_service.login(
-                email=args["email"], password=args["password"]
-            )
+            user = self.auth_service.login(email=args['email'], password=args['password'])
+            for role in user.roles:
+                roles.append(role.id)
             access_token = create_access_token(identity=user.id)
             refresh_token = create_refresh_token(identity=user.id)
-            return jsonify(access_token=access_token, refresh_token=refresh_token)
+            return jsonify(access_token=access_token, refresh_token=refresh_token, roles=roles)
         except UserEmailNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
@@ -91,7 +92,21 @@ class RefreshTokenController(Resource):
 
 
 class ProtectedController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
     @jwt_required()
     def get(self):
         current_user = get_jwt_identity()
-        return jsonify({"message": f"Logged in as user id '{current_user}'"})
+        user = self.user_service.select_one_by_id(user_id=current_user)
+        for role in user.roles:
+            role = role.id if role.id in [1,2,3,4] else -1
+        return jsonify({
+                        'message': f"Logged in as user id '{current_user}'",
+                        'user_id' : current_user,
+                        'role_id': role
+                        })
+        
+    
+    
+   

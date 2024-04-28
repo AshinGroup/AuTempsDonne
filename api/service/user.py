@@ -56,19 +56,21 @@ class UserService:
         new_user_id = self.user_repo.insert(new_user=new_user, role_id=args["role_id"])
         return new_user_id
 
+
     def insert_event(self, user_id: int, event_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
         if user.events:
             for event in user.events:
-                if event_id == event.id:
+                if event.id == event_id:
                     raise UserParticipatesEventAlreadyExistsException(
                         user_id=user_id, event_id=event_id
                     )
         if not self.event_service.select_one_by_id(event_id=event_id):
             raise EventIdNotFoundException
         self.user_repo.insert_event(user_id=user_id, event_id=event_id)
+
 
     def insert_role(self, user_id: int, role_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)

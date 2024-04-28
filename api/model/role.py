@@ -5,16 +5,14 @@ import os
 class Role(db.Model):
     __tablename__ = "role"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) # 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
     name = db.Column(db.String(15))
 
     users = db.relationship(
         'User', secondary='user_is_role', back_populates='roles')
 
     def json(self):
-        users = []
-        if self.users:
-            users = [user.json_rest() for user in self.users]
+        users = [user.json_rest() for user in self.users] if self.users else []
         return {'id': self.id,
                 'name': self.name,
                 'users': users}

@@ -30,9 +30,7 @@ class Event(db.Model):
     #         return 'Nameless'
 
     def json(self):
-        users = []
-        if self.users:
-            users = [user.json_rest() for user in self.users]
+        users = [user.json_rest() for user in self.users] if self.users else []
         # event_name = self.event_group_name(self.group)
 
         return {'id': self.id,

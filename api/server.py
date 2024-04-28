@@ -19,6 +19,8 @@ from controller.storage import *
 from controller.warehouse import *
 from controller.company import *
 from controller.shop import *
+from controller.delivery import *
+from controller.roadmap import *
 
 
 # Import Models
@@ -34,6 +36,7 @@ from model.storage import Storage
 from model.warehouse import Warehouse
 from model.company import Company
 from model.shop import Shop
+from model.delivery import Delivery
 
 from app import app
 
@@ -97,6 +100,16 @@ api.add_resource(ShopListController, f'{prefix}/shop')
 api.add_resource(ShopPageController, f'{prefix}/shop/page/<int:page>')
 api.add_resource(ShopSearchController,
                  f'{prefix}/shop/page/<int:page>/search/<string:search>')
+
+
+api.add_resource(DeliveryController, f'{prefix}/delivery/<int:delivery_id>')
+api.add_resource(DeliveryListController, f'{prefix}/delivery')
+api.add_resource(DeliveryPageController, f'{prefix}/delivery/page/<int:page>')
+# api.add_resource(ShopSearchController,
+#                  f'{prefix}/shop/page/<int:page>/search/<string:search>')
+api.add_resource(DeliversToLocationController,
+                 f'{prefix}/delivery/<int:delivery_id>/location/<int:location_id>')
+api.add_resource(RoadmapController, f'{prefix}/delivery/<int:delivery_id>/roadmap')
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')

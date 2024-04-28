@@ -63,5 +63,4 @@ class LocationService:
     def get_description(self, data: dict):
         return data[0]['display_name']
 
-    def generate_roadmap(locations: list[Location]):
-        pass
+
