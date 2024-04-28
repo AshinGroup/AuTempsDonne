@@ -5,7 +5,7 @@ import os
 class Role(db.Model):
     __tablename__ = "role"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) # 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
     name = db.Column(db.String(15))
 
     users = db.relationship(

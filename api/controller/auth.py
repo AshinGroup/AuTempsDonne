@@ -79,12 +79,19 @@ class RefreshTokenController(Resource):
 
 
 class ProtectedController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
     @jwt_required()
     def get(self):
         current_user = get_jwt_identity()
+        user = self.user_service.select_one_by_id(user_id=current_user)
+        for role in user.roles:
+            role = role.id if role.id in [1,2,3,4] else -1
         return jsonify({
                         'message': f"Logged in as user id '{current_user}'",
-                        'user_id' : current_user
+                        'user_id' : current_user,
+                        'role_id': role
                         })
         
     
