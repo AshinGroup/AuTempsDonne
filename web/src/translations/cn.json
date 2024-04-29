@@ -184,5 +184,12 @@
   "addStockModal.expirationDate": "过期日期：",
   "addStockModal.selectStorage": "选择存储位置：",
   "updateShopModal.submit": "更新商店",
-  "updateStockModal.submit": "更新包裹"
+  "updateStockModal.submit": "更新包裹",
+
+  "navbar.signup": "注册",
+  "sign.keeplog": "保持登录状态",
+  "sign.login": "登录",
+  "sign.forgotpwd": "忘记密码？",
+  "sign.noaccyet": "还没有账号？",
+  "sign.signup": "注册"
 }

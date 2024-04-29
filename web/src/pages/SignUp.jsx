@@ -37,7 +37,9 @@ const SignUp = () => {
                 className="max-w-80"
               />
             </Link>
-            <h2 className="font-semibold text-2xl mt-5">Sign Up</h2>
+            <h2 className="font-semibold text-2xl mt-5">
+              <FormattedMessage id="sign.signup" defaultMessage="Sign Up" />
+            </h2>
             <SignUpForm />
           </div>
         </div>
@@ -47,9 +49,16 @@ const SignUp = () => {
             expanded ? "w-1/4" : "w-3/4"
           } h-24 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
         >
-          Already have an account ? &nbsp;
+          <FormattedMessage
+            id="sign.alreadyacc"
+            defaultMessage="Already have an account ? "
+          />{" "}
+          &nbsp;
           <Link to="/LogIn">
-            <span className="text-AshinBlue hover:underline"> Log In </span>
+            <span className="text-AshinBlue hover:underline">
+              {" "}
+              <FormattedMessage id="sign.login" defaultMessage="Log In" />
+            </span>
           </Link>
         </div>
         {/* Download Android App */}

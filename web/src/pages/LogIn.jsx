@@ -23,8 +23,9 @@ const LogIn = () => {
       <section className="flex flex-col justify-center h-screen w-screen items-center">
         {/* Sign In */}
         <div
-          className={`flex flex-col ${expanded ? "w-1/4" : "w-3/4"
-            } h-4/6 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
+          className={`flex flex-col ${
+            expanded ? "w-1/4" : "w-3/4"
+          } h-4/6 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
         >
           <div className="p-4 pb-2 relative flex flex-col justify-between items-center">
             <Link to="/">
@@ -34,24 +35,38 @@ const LogIn = () => {
                 className="max-w-80"
               />
             </Link>
-            <h2 className="font-semibold text-2xl mt-5">Log In</h2>
+            <h2 className="font-semibold text-2xl mt-5">
+              {" "}
+              <FormattedMessage id="sign.login" defaultMessage="Log In" />
+            </h2>
             <LogInForm />
             <Link to="/" className="mt-2">
               <span className="text-AshinBlue hover:underline">
                 {" "}
-                Forgot Password ?{" "}
+                <FormattedMessage
+                  id="sign.forgotpwd"
+                  defaultMessage="Forgot Password ?"
+                />
               </span>
             </Link>
           </div>
         </div>
         {/* No Account */}
         <div
-          className={`flex ${expanded ? "w-1/4" : "w-3/4"
-            } h-24 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
+          className={`flex ${
+            expanded ? "w-1/4" : "w-3/4"
+          } h-24 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
         >
-          No account yet ? &nbsp;
+          <FormattedMessage
+            id="sign.noaccyet"
+            defaultMessage="No account yet ?"
+          />
+          &nbsp;
           <Link to="/SignUp">
-            <span className="text-AshinBlue hover:underline"> Sign Up </span>
+            <span className="text-AshinBlue hover:underline">
+              {" "}
+              <FormattedMessage id="sign.signup" defaultMessage="Sign Up" />
+            </span>
           </Link>
         </div>
         {/* Download Android App */}
@@ -88,6 +103,10 @@ const LogInForm = () => {
 
   const intl = useIntl();
 
+  const emailPlaceholder = intl.formatMessage({
+    id: "addUserModal.email",
+    defaultMessage: "Email",
+  });
   const emailRequired = intl.formatMessage({
     id: "addUserModal.emailRequired",
     defaultMessage: "Email is required.",
@@ -95,6 +114,10 @@ const LogInForm = () => {
   const emailValid = intl.formatMessage({
     id: "addUserModal.emailValid",
     defaultMessage: "Please enter a valid email address.",
+  });
+  const passwordPlaceholder = intl.formatMessage({
+    id: "addUserModal.password",
+    defaultMessage: "password",
   });
   const passwordRequired = intl.formatMessage({
     id: "addUserModal.passwordRequired",
@@ -136,6 +159,8 @@ const LogInForm = () => {
           sessionStorage.setItem("refresh_token", data?.refresh_token);
         }
         sessionStorage.setItem("access_token", data?.access_token);
+        sessionStorage.setItem("rule", data?.role_id);
+        sessionStorage.setItem("user_id", data?.user_id);
         navigate("/");
       })
       .catch((error) => {
@@ -150,15 +175,16 @@ const LogInForm = () => {
       className="w-full max-w-lg mt-8 flex flex-col items-center"
     >
       <p
-        className={` mb-2 font-medium ${isErrorMessage ? "text-green-500" : "text-red-500"
-          }`}
+        className={` mb-2 font-medium ${
+          isErrorMessage ? "text-green-500" : "text-red-500"
+        }`}
       >
         {responseMessage}
       </p>
       {/* email */}
       <input
         id="email"
-        placeholder="E-mail" // A DYNAMISER
+        placeholder={emailPlaceholder}
         {...register("email", {
           required: emailRequired,
           pattern: {
@@ -176,7 +202,7 @@ const LogInForm = () => {
       {/* password */}
       <input
         id="password"
-        placeholder="Password" // A DYNAMISER
+        placeholder={passwordPlaceholder}
         {...register("password", {
           required: passwordRequired,
           minLength: {
@@ -205,7 +231,10 @@ const LogInForm = () => {
         />
         <label for="keepLogged" className="text-AshinBlue">
           {" "}
-          Maintain connexion
+          <FormattedMessage
+            id="sign.keeplog"
+            defaultMessage="Keep me logged in"
+          />
         </label>
       </div>
       {errors.checkbox && (

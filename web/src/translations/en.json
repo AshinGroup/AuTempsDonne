@@ -91,6 +91,7 @@
   "navbar.logout": "Log Out",
   "navbar.profile": "Profile",
   "navbar.signin": "Sign In",
+  "navbar.signup": "Sign Up",
   "navbar.adminpanel": "Admin Panel",
 
   "donation.DonAutantDonne": "Donation: Give as much as you can!",
@@ -184,5 +185,11 @@
   "addStockModal.expirationDate": "Expiration Date :",
   "addStockModal.selectStorage": "Select a Storage Location :",
   "updateShopModal.submit": "Update a Shop",
-  "updateStockModal.submit": "Update a Package"
+  "updateStockModal.submit": "Update a Package",
+
+  "sign.keeplog": "Keep me logged in",
+  "sign.login": "Log In",
+  "sign.forgotpwd": "Forgot Password ?",
+  "sign.noaccyet": "No account yet ?",
+  "sign.signup": "Sign Up"
 }

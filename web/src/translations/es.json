@@ -181,5 +181,12 @@
   "addStockModal.expirationDate": "Fecha de Vencimiento :",
   "addStockModal.selectStorage": "Seleccionar una Ubicación de Almacenamiento :",
   "updateShopModal.submit": "Actualizar una tienda",
-  "updateStockModal.submit": "Actualizar un paquete"
+  "updateStockModal.submit": "Actualizar un paquete",
+
+  "navbar.signup": "Registrarse",
+  "sign.keeplog": "Mantenerme conectado",
+  "sign.login": "Iniciar sesión",
+  "sign.forgotpwd": "¿Olvidaste tu contraseña?",
+  "sign.noaccyet": "¿Todavía no tienes una cuenta?",
+  "sign.signup": "Registrarse"
 }
