@@ -56,6 +56,7 @@
   "event.dateTime": "Date & Time",
   "event.maxSlots": "Slots",
   "event.location": "Location",
+  "event.actions": "Actions",
 
   "event.group": "Group",
   "event.activity": "Activity",
@@ -227,5 +228,15 @@
   "signUp.alreadyAccount": "Already have an account ?",
   "signUp.logIn": " Log In ",
 
-  "activities.title": "Activities available"
+  "activities.title": "Activities available",
+  "activityModal.title": "Title of the Activity",
+  "serviceModal.title": "Title of the Service",
+  "courseModal.title": "Title of the Course",
+
+  "modal.type": "Type",
+  "modal.dateTime": "Date & Time",
+  "modal.location": "Location",
+  "modal.description": "Description",
+  "modal.registryButton": "Registry"
+
 }

@@ -15,7 +15,7 @@ export default function ServicesModal({
     const intl = useIntl();
 
     const titlePlaceholder = intl.formatMessage({
-        id: "serviceModal.titlePlaceholder",
+        id: "serviceModal.title",
         defaultMessage: "Title of the Service",
     });
 
@@ -25,16 +25,16 @@ export default function ServicesModal({
     });
 
     const locationPlaceholder = intl.formatMessage({
-        id: "serviceModal.locationPlaceholder",
+        id: "modal.location",
         defaultMessage: "Location",
     });
 
-    const signUpButton = intl.formatMessage({
-        id: "serviceModal.registryButton",
+    const registryButton = intl.formatMessage({
+        id: "modal.registryButton",
         defaultMessage: "Registry",
     });
 
-    const handleSignUp = async () => {
+    const handleRegistry = async () => {
         try {
             // post
             // partie pour s'inscrire
@@ -64,7 +64,7 @@ export default function ServicesModal({
 
                     <p className="font-bold text-gray-500">
                         <FormattedMessage
-                            id="serviceModal.type"
+                            id="modal.type"
                             defaultMessage="Type"
                         />
                         :
@@ -73,7 +73,7 @@ export default function ServicesModal({
 
                     <p className="font-bold text-gray-500">
                         <FormattedMessage
-                            id="serviceModal.dateTime"
+                            id="modal.dateTime"
                             defaultMessage="Date & Time"
                         />
                         :
@@ -87,7 +87,7 @@ export default function ServicesModal({
 
                     <p className="font-bold text-gray-500">
                         <FormattedMessage
-                            id="serviceModal.description"
+                            id="modal.description"
                             defaultMessage="Description"
                         />
                         :
@@ -95,10 +95,10 @@ export default function ServicesModal({
                     <p className="text-gray-800">{service.description}</p>
 
                     <button
-                        onClick={handleSignUp}
+                        onClick={handleRegistry}
                         className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
                     >
-                        {signUpButton}
+                        {registryButton}
                     </button>
                 </div>
             </div>

@@ -124,7 +124,7 @@ const Courses = () => {
                                         defaultMessage="Location"
                                     />
                                 </th>
-                                <th className="p-4 w-1/3">Actions</th>
+                                <th className="p-4 w-1/3"><FormattedMessage id="event.actions" defaultMessage="Actions" /></th>
                             </tr>
                         </thead>
                         <tbody>

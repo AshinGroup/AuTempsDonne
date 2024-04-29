@@ -56,6 +56,7 @@
   "event.dateTime": "日期和时间",
   "event.maxSlots": "名额",
   "event.location": "地点",
+  "event.actions": "操作",
 
   "event.group": "群组",
   "event.activity": "活动",
@@ -226,5 +227,14 @@
   "signUp.alreadyAccount": "已有帐号？",
   "signUp.logIn": " 登录 ",
 
-  "activities.title": "可用活动"
+  "activities.title": "可用活动",
+  "activityModal.title": "活动标题",
+  "serviceModal.title": "服务标题",
+  "courseModal.title": "课程标题",
+  
+  "modal.type": "类型",
+  "modal.dateTime": "日期和时间",
+  "modal.location": "地点",
+  "modal.description": "描述",
+  "modal.registryButton": "注册"
 }
