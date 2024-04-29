@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import Navbar from "../components/navbar";
 import Home from "../components/contents/home";
+import Services from "../components/contents/services";
 import Activities from "../components/contents/activities";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
@@ -26,7 +27,7 @@ const WelcomePage = () => {
       case "homepage":
         return <Home />;
       case "services":
-        return <div>Services</div>;
+        return <Services />;
       case "activities":
         return <Activities />;
       case "courses":

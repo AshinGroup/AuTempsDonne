@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { format } from "date-fns";
 import handleFetch from "../handleFetch";
-import ActivityModal from "../modals/activityModal";
+import ServiceModal from "../modals/serviceModal";
 import Footer from "../footer1";
 
-const Activities = () => {
-    const [activities, setActivities] = useState([]);
+const Services = () => {
+    const [services, setServices] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPages, setMaxPages] = useState(0);
     const pageNumbers = [];
     const pagesToShow = 2;
     const [searchInput, setSearchInput] = useState("");
-    const [selectedActivity, setSelectedActivity] = useState(null);
+    const [selectedService, setSelectedService] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const intl = useIntl();
@@ -22,7 +22,7 @@ const Activities = () => {
         defaultMessage: "Search by title ...",
     });
 
-    const fetchActivities = async () => {
+    const fetchServices = async () => {
         let url =
             searchInput !== ""
                 ? `http://127.0.0.1:5000/api/event/page/${currentPage}/search/${searchInput}`
@@ -31,11 +31,11 @@ const Activities = () => {
         try {
             const data = await handleFetch(url);
             if (data) {
-                setActivities(data.events.filter(event => event.group === 1));
+                setServices(data.events.filter(event => event.group === 3));
                 setMaxPages(data.max_pages);
             }
         } catch (error) {
-            console.error("Error fetching activities:", error);
+            console.error("Error fetching services:", error);
         }
     };
 
@@ -43,16 +43,16 @@ const Activities = () => {
         e.preventDefault();
         setSearchInput(e.target.value);
         if (e.keyCode === 13) {
-            fetchActivities();
+            fetchServices();
         }
     };
 
     const handleClickSearch = (e) => {
-        if (e.type === "click" || e.keyCode === 13) fetchActivities();
+        if (e.type === "click" || e.keyCode === 13) fetchServices();
     };
 
     useEffect(() => {
-        fetchActivities();
+        fetchServices();
     }, [currentPage]);
 
     let startPage = Math.max(currentPage - pagesToShow, 1);
@@ -70,8 +70,8 @@ const Activities = () => {
     }
 
     // ouvrir modal
-    const openSignUpModal = (activity) => {
-        setSelectedActivity(activity);
+    const openSignUpModal = (service) => {
+        setSelectedService(service);
         setIsModalOpen(true);
     };
 
@@ -81,8 +81,8 @@ const Activities = () => {
                 <div className="flex mb-6 items-center">
                     <h1 className="text-3xl font-bold flex-grow">
                         <FormattedMessage
-                            id="activities.title"
-                            defaultMessage="Activities available"
+                            id="serviceses.title"
+                            defaultMessage="Services available"
                         />
                     </h1>
                 </div>
@@ -128,18 +128,18 @@ const Activities = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {activities.map((activity) => (
-                                <tr key={activity.id} className="border-b">
-                                    <td className="p-4">{activity.name}</td>
-                                    <td className="p-4">{activity.type.name}</td>
+                            {services.map((service) => (
+                                <tr key={service.id} className="border-b">
+                                    <td className="p-4">{service.name}</td>
+                                    <td className="p-4">{service.type.name}</td>
                                     <td className="p-4">
-                                        {format(new Date(activity.datetime), "dd/MM/yy HH'H'mm")}
+                                        {format(new Date(service.datetime), "dd/MM/yy HH'H'mm")}
                                     </td>
-                                    <td className="p-4">{activity.place}</td>
+                                    <td className="p-4">{service.place}</td>
                                     <td className="p-4">
                                         <button
                                             className="bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 py-2 rounded hover:opacity-90 transition self-end"
-                                            onClick={() => openSignUpModal(activity)}
+                                            onClick={() => openSignUpModal(service)}
                                         >
                                             +
                                         </button>
@@ -166,9 +166,9 @@ const Activities = () => {
                         )
                     )}
                 </div>
-                {selectedActivity && (
-                    <ActivityModal
-                        activity={selectedActivity}
+                {selectedService && (
+                    <ServiceModal
+                        service={selectedService}
                         modalOpen={isModalOpen}
                         setModalOpen={setIsModalOpen}
                     />
@@ -179,19 +179,4 @@ const Activities = () => {
     );
 };
 
-export default Activities;
-
-
-
-/*
-        -> update le front -> notamment location pas assez large
-
-        -> implémenter le post pour s'inscrire a une activity
-
-        -> bouton pr s'inscrire et autre bouton pr se désinscrire
-
-        -> search by 'type' ?
-
-        -> vérification ds la modal + les langues
-
-*/
+export default Services;

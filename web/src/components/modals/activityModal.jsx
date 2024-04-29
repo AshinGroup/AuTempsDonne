@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { PlusSquare } from "lucide-react";
 import { format } from "date-fns";
-
 import { Modal } from "./modal";
 
 export default function ActivityModal({
