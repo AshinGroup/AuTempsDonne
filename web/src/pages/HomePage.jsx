@@ -5,6 +5,7 @@ import Navbar from "../components/navbar";
 import Home from "../components/contents/home";
 import Services from "../components/contents/services";
 import Activities from "../components/contents/activities";
+import Courses from "../components/contents/courses";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
@@ -31,7 +32,7 @@ const WelcomePage = () => {
       case "activities":
         return <Activities />;
       case "courses":
-        return <div>Courses</div>;
+        return <Courses />;
       case "tocollect":
         return <div>To Collect</div>;
       case "genqr":
