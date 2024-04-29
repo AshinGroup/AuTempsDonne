@@ -90,7 +90,7 @@
   "navbar.login": "Log In",
   "navbar.logout": "Log Out",
   "navbar.profile": "Profile",
-  "navbar.signin": "Sign In",
+  "navbar.signup": "Sign UP",
   "navbar.adminpanel": "Admin Panel",
 
   "donation.DonAutantDonne": "Donation: Give as much as you can!",
@@ -184,5 +184,40 @@
   "addStockModal.expirationDate": "Expiration Date :",
   "addStockModal.selectStorage": "Select a Storage Location :",
   "updateShopModal.submit": "Update a Shop",
-  "updateStockModal.submit": "Update a Package"
+  "updateStockModal.submit": "Update a Package",
+
+  "home.principalTitle": "We Need You",
+  "home.missions": "Our Missions",
+  "home.paragraph1": "Bla Bla Bla",
+  "home.paragraph2": "Bla Bla Bla",
+  "home.paragraph3": "Bla Bla Bla",
+  "home.services": "Our Services",
+  "home.paragraph4": "Bla Bla Bla",
+  "home.paragraph5": "Bla Bla Bla",
+  "home.paragraph6": "Bla Bla Bla",
+  "home.help": "Your Help is Essential ...",
+  "home.donate": "Make a Donation",
+  "home.joinUs": "Join us, we're counting on you!",
+  "home.signUp": "Sign Me Up",
+
+  "footer.credits": "All rights reserved.",
+  "footer.home": "Home",
+  "footer.contact": "Contact",
+  "footer.donate": "Donate",
+
+  "logIn.logInTitle": "Log In",
+  "logIn.forgotPasswd": "Forgot Password ?",
+  "logIn.noAccount": "No account yet ?",
+  "logIn.signUp": " Sign Up ",
+  "logIn.email": "E-mail",
+  "logIn.passwd": "Password",
+  "logIn.maintain": "Maintain connexion",
+  "logIn.button": "Log In",
+
+  "signUp.signUpTitle": "Sign Up",
+  "signUp.confirmPasswd": "Confirm Password",
+  "signUp.register": "Register",
+  "signUp.alreadyAccount": "Already have an account ?",
+  "signUp.logIn": " Log In "
+
 }

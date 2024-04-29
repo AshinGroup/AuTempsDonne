@@ -36,12 +36,12 @@ const LogIn = () => {
                 className="max-w-80"
               />
             </Link>
-            <h2 className="font-semibold text-2xl mt-5">Log In</h2>
+            <h2 className="font-semibold text-2xl mt-5"><FormattedMessage id="logIn.logInTitle" defaultMessage="Log In" /></h2>
             <LogInForm />
             <Link to="/" className="mt-2">
               <span className="text-AshinBlue hover:underline">
                 {" "}
-                Forgot Password ?{" "}
+                <FormattedMessage id="logIn.forgotPasswd" defaultMessage="Forgot Password ?" />{" "}
               </span>
             </Link>
           </div>
@@ -52,9 +52,9 @@ const LogIn = () => {
             expanded ? "w-1/4" : "w-3/4"
           } h-24 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
         >
-          No account yet ? &nbsp;
+          <FormattedMessage id="logIn.noAccount" defaultMessage="No account yet ?" /> &nbsp;
           <Link to="/SignUp">
-            <span className="text-AshinBlue hover:underline"> Sign Up </span>
+            <span className="text-AshinBlue hover:underline"><FormattedMessage id="logIn.signUp" defaultMessage=" Sign Up " /></span>
           </Link>
         </div>
         {/* Download Android App */}
@@ -155,43 +155,50 @@ const LogInForm = () => {
       >
         {responseMessage}
       </p>
-      {/* email */}
-      <input
-        id="email"
-        placeholder="E-mail" // A DYNAMISER
-        {...register("email", {
-          required: emailRequired,
-          pattern: {
-            value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            message: emailValid,
-          },
-        })}
-        type="text"
-        className="appearance-none border-2 border-gray-300 rounded w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
+        {/* email */}
+      <FormattedMessage id="logIn.email" defaultMessage="E-mail">
+        {placeholderText => (
+          <input
+            type="email"
+            placeholder={placeholderText}
+            {...register("email", {
+              required: emailRequired,
+              pattern: {
+                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                message: emailValid,
+              },
+            })}
+            className="appearance-none border-2 border-gray-300 rounded w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        )}
+      </FormattedMessage>
       {errors.email && (
         <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
       )}
 
       {/* password */}
-      <input
-        id="password"
-        placeholder="Password" // A DYNAMISER
-        {...register("password", {
-          required: passwordRequired,
-          minLength: {
-            value: 8,
-            message: passwordValidLength,
-          },
-          pattern: {
-            value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-            message: passwordValidPattern,
-          },
-        })}
-        type="password"
-        className="appearance-none border-2 mt-2 border-gray-300 rounded w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
+      <FormattedMessage id="logIn.passwd" defaultMessage="Password">
+        {placeholderText => (
+          <input
+            id="password"
+            placeholder={placeholderText}
+            {...register("password", {
+              required: passwordRequired,
+              minLength: {
+                value: 8,
+                message: passwordValidLength,
+              },
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                message: passwordValidPattern,
+              },
+            })}
+            type="password"
+            className="appearance-none border-2 mt-2 border-gray-300 rounded w-5/6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        )}
+        </FormattedMessage>
       {errors.password && (
         <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
       )}
@@ -205,7 +212,7 @@ const LogInForm = () => {
         />
         <label for="keepLogged" className="text-AshinBlue">
           {" "}
-          Maintain connexion
+          <FormattedMessage id="logIn.maintain" defaultMessage="Maintain connexion" />
         </label>
       </div>
       {errors.checkbox && (
@@ -222,7 +229,7 @@ const LogInForm = () => {
         type="submit"
         className="bg-AshinBlue hover:bg-AshinBlue-dark text-white mt-4 w-5/6 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       >
-        <FormattedMessage id="sign.login" defaultMessage="Log In" />
+        <FormattedMessage id="logIn.button" defaultMessage="Log In" />
       </button>
     </form>
   );

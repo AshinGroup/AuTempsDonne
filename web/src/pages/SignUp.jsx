@@ -38,7 +38,7 @@ const SignUp = () => {
                 className="max-w-80"
               />
             </Link>
-            <h2 className="font-semibold text-2xl mt-5">Sign Up</h2>
+            <h2 className="font-semibold text-2xl mt-5"><FormattedMessage id="signUp.signUpTitle" defaultMessage="Sign Up" /></h2>
             <SignUpForm />
           </div>
         </div>
@@ -48,9 +48,9 @@ const SignUp = () => {
             expanded ? "w-1/4" : "w-3/4"
           } h-24 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
         >
-          Already have an account ? &nbsp;
+          <FormattedMessage id="signUp.alreadyAccount" defaultMessage="Already have an account ?" /> &nbsp;
           <Link to="/LogIn">
-            <span className="text-AshinBlue hover:underline"> Log In </span>
+            <span className="text-AshinBlue hover:underline"> <FormattedMessage id="signUp.logIn" defaultMessage=" Log In " /></span>
           </Link>
         </div>
         {/* Download Android App */}
@@ -376,23 +376,27 @@ const SignUpForm = () => {
         <p className="text-red-500">{errors.password.message}</p>
       )}
       {/* confirmPassword Selection */}
-      <input
-        type="password"
-        placeholder={"Confirm Password"}
-        {...register("confirmPassword", {
-          required: "Confirm Password",
-          minLength: {
-            value: 8,
-            message: "Confirm Password",
-          },
-          pattern: {
-            value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-            message: "Confirm Password",
-          },
-        })}
-        className="p-2 mt-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
-      />
+      <FormattedMessage id="signUp.confirmPasswd" defaultMessage="Confirm Password">
+        {placeholderText => (
+          <input
+            type="password"
+            placeholder={placeholderText}
+            {...register("confirmPassword", {
+              required: "Confirm Password",
+              minLength: {
+                value: 8,
+                message: "Confirm Password",
+              },
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                message: "Confirm Password",
+              },
+            })}
+            className="p-2 mt-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
+          />
+        )}
+      </FormattedMessage>
       {errors.confirmPassword && (
         <p className="text-red-500">{errors.confirmPassword.message}</p>
       )}
@@ -425,7 +429,7 @@ const SignUpForm = () => {
         type="submit"
         className="bg-AshinBlue hover:bg-AshinBlue-dark text-white mt-4 w-5/6 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       >
-        <FormattedMessage id="sign.register" defaultMessage="Register" />
+        <FormattedMessage id="signUp.register" defaultMessage="Register" />
       </button>
     </form>
   );
