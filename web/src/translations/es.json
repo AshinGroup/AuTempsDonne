@@ -183,12 +183,11 @@
   "updateShopModal.submit": "Actualizar una tienda",
   "updateStockModal.submit": "Actualizar un paquete",
 
-  "navbar.signup": "Registrarse",
   "sign.keeplog": "Mantenerme conectado",
   "sign.login": "Iniciar sesión",
   "sign.forgotpwd": "¿Olvidaste tu contraseña?",
   "sign.noaccyet": "¿Todavía no tienes una cuenta?",
-  "sign.signup": "Registrarse"
+  "sign.signup": "Registrarse",
 
   "home.principalTitle": "Te Necesitamos",
   "home.missions": "Nuestras Misiones",
@@ -204,7 +203,7 @@
   "home.joinUs": "Únete a nosotros, ¡contamos contigo!",
   "home.signUp": "Regístrame",
 
-  "footer.credits":"Derechos reservados.",
+  "footer.credits": "Derechos reservados.",
   "footer.home": "Hogar",
   "footer.contact": "Contacto",
   "footer.donate": "Donar",
@@ -223,5 +222,4 @@
   "signUp.register": "Registrarse",
   "signUp.alreadyAccount": "¿Ya tienes una cuenta?",
   "signUp.logIn": " Iniciar sesión "
-  
 }

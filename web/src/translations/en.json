@@ -191,7 +191,7 @@
   "sign.login": "Log In",
   "sign.forgotpwd": "Forgot Password ?",
   "sign.noaccyet": "No account yet ?",
-  "sign.signup": "Sign Up"
+  "sign.signup": "Sign Up",
 
   "home.principalTitle": "We Need You",
   "home.missions": "Our Missions",
@@ -226,5 +226,4 @@
   "signUp.register": "Register",
   "signUp.alreadyAccount": "Already have an account ?",
   "signUp.logIn": " Log In "
-
 }

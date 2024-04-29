@@ -186,12 +186,11 @@
   "updateShopModal.submit": "更新商店",
   "updateStockModal.submit": "更新包裹",
 
-  "navbar.signup": "注册",
   "sign.keeplog": "保持登录状态",
   "sign.login": "登录",
   "sign.forgotpwd": "忘记密码？",
   "sign.noaccyet": "还没有账号？",
-  "sign.signup": "注册"
+  "sign.signup": "注册",
 
   "home.principalTitle": "我们需要你",
   "home.missions": "我们的任务",
@@ -207,7 +206,7 @@
   "home.joinUs": "加入我们，我们依靠你！",
   "home.signUp": "注册",
 
-  "footer.credits":"版权所有",
+  "footer.credits": "版权所有",
   "footer.home": "主页",
   "footer.contact": "支持",
   "footer.donate": "捐赠",
@@ -226,5 +225,4 @@
   "signUp.register": "注册",
   "signUp.alreadyAccount": "已有帐号？",
   "signUp.logIn": " 登录 "
-  
 }
