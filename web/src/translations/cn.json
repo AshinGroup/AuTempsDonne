@@ -224,5 +224,7 @@
   "signUp.confirmPasswd": "确认密码",
   "signUp.register": "注册",
   "signUp.alreadyAccount": "已有帐号？",
-  "signUp.logIn": " 登录 "
+  "signUp.logIn": " 登录 ",
+
+  "activities.title": "可用活动"
 }

@@ -224,5 +224,7 @@
   "signUp.confirmPasswd": "Confirmer le mot de passe",
   "signUp.register": "S'inscrire",
   "signUp.alreadyAccount": "Vous avez déjà un compte ?",
-  "signUp.logIn": " Connexion "
+  "signUp.logIn": " Connexion ",
+
+  "activities.title": "Activités disponibles"
 }

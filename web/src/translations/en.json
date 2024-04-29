@@ -225,5 +225,7 @@
   "signUp.confirmPasswd": "Confirm Password",
   "signUp.register": "Register",
   "signUp.alreadyAccount": "Already have an account ?",
-  "signUp.logIn": " Log In "
+  "signUp.logIn": " Log In ",
+
+  "activities.title": "Activities available"
 }

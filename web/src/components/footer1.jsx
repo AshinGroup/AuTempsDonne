@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="ml-4 mr-80">
           <img src={logo} alt="Logo" className="h-8" />
         </div>
-        
+
         <div className={`${isChinese ? 'pl-56' : 'pl-40'} ${isChinese ? 'mr-80' : 'mr-72'}`}>
           <p>© 2024 - Au Temps Donné. <FormattedMessage id="footer.credits" defaultMessage="All rights reserved." /></p>
         </div>

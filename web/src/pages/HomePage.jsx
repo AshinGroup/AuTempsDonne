@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import Navbar from "../components/navbar";
 import Home from "../components/contents/home";
+import Activities from "../components/contents/activities";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
@@ -17,8 +18,8 @@ const WelcomePage = () => {
   console.log(activeItem);
   const navigate = useNavigate();
   // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
-  const rule = sessionStorage.getItem("rule");
-  // const rule = "4";
+  // const rule = sessionStorage.getItem("rule");
+  const rule = "3";
 
   const getContent = () => {
     switch (activeItem) {
@@ -27,7 +28,7 @@ const WelcomePage = () => {
       case "services":
         return <div>Services</div>;
       case "activities":
-        return <div>Activities</div>;
+        return <Activities />;
       case "courses":
         return <div>Courses</div>;
       case "tocollect":
