@@ -29,8 +29,8 @@ class UserCheckArgs:
                                 help="Invalid or missing parameter 'role'")  # Required = True for post
         parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=(
             True if method == "post" else False), help="Invalid or missing parameter 'password'")
-        parser.add_argument('status', type=int, required=(
-            True if method == "register" else False), help="Invalid or missing parameter 'status'")
+        if method != "register":
+            parser.add_argument('status', type=int, required=(True), help="Invalid or missing parameter 'status'")
         args = parser.parse_args(strict=True)
         return args
 
@@ -92,7 +92,7 @@ class UserListController(Resource):
     def post(self):
         try:
             args = self.check_args.get_user_args(method="post")
-            new_user_id = self.user_service.insert(args=args)
+            new_user_id = self.user_service.insert(args=args, method="post")
             return jsonify({'message': f"User {args['email']} successfully created.", 'user_id': new_user_id})
         except UserAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))

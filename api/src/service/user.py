@@ -40,14 +40,17 @@ class UserService:
         users = self.user_repo.select_all()
         return users
 
-    def insert(self, args: dict) -> None:
+    def insert(self, args: dict, method: str) -> None:
+        if method == "register" and args["role_id"] == 1:
+            raise UserRoleInvalidException(role_id=args["role_id"])
+
         new_user = User(
             first_name=args["first_name"],
             last_name=args["last_name"],
             email=args["email"],
             phone=args["phone"],
             password=args["password"],
-            status=args["status"],
+            status= 0 if method == "register" else args["status"],
         )
         if self.user_repo.select_one_by_email(email=new_user.email):
             raise UserAlreadyExistsException(new_user.email)
