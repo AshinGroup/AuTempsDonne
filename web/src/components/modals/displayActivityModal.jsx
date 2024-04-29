@@ -86,6 +86,15 @@ export default function ActivityModal({
                     <p className="font-bold text-gray-500">{locationPlaceholder}:</p>
                     <p className="text-gray-800">{activity.place}</p>
 
+                    <p className="font-bold text-gray-500">
+                        <FormattedMessage
+                            id="activityModal.description"
+                            defaultMessage="Description"
+                        />
+                        :
+                    </p>
+                    <p className="text-gray-800">{activity.description}</p>
+
                     <button
                         onClick={handleSignUp}
                         className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
