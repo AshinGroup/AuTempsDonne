@@ -12,6 +12,12 @@ class LocationRepo():
         except Exception:
             raise LocationAccessDbException(location_id=location_id, method="getting")
 
+    def select_all_by_id(self, locations_id: list[int]) -> Location:
+        try:
+            locations = Location.query.filter(Location.id.in_(locations_id))
+            return locations
+        except Exception:
+            raise LocationAccessDbException(location_id=-1, method="getting")
     
     def select_all(self) -> list[Location]:
         try:

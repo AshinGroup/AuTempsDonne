@@ -109,7 +109,7 @@ api.add_resource(DeliveryPageController, f'{prefix}/delivery/page/<int:page>')
 #                  f'{prefix}/shop/page/<int:page>/search/<string:search>')
 api.add_resource(DeliversToLocationController,
                  f'{prefix}/delivery/<int:delivery_id>/location/<int:location_id>')
-api.add_resource(RoadmapController, f'{prefix}/delivery/<int:delivery_id>/roadmap')
+api.add_resource(RoadmapController, f'{prefix}/roadmap')
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')
