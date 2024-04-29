@@ -178,13 +178,11 @@ export default function UpdateProfileModal({
         }
       );
 
-      const req = await response.json();
-
-      if (!response.ok) {
-        setResponseMessage(req.message);
+      if (!response) {
+        setResponseMessage("An error occurred.");
         setIsErrorMessage(false);
       } else {
-        setResponseMessage(req.message);
+        setResponseMessage("Successfully updated.");
         setIsErrorMessage(true);
       }
 

@@ -183,6 +183,13 @@
   "updateShopModal.submit": "Actualizar una tienda",
   "updateStockModal.submit": "Actualizar un paquete",
 
+  "navbar.signup": "Registrarse",
+  "sign.keeplog": "Mantenerme conectado",
+  "sign.login": "Iniciar sesión",
+  "sign.forgotpwd": "¿Olvidaste tu contraseña?",
+  "sign.noaccyet": "¿Todavía no tienes una cuenta?",
+  "sign.signup": "Registrarse"
+
   "home.principalTitle": "Te Necesitamos",
   "home.missions": "Nuestras Misiones",
   "home.paragraph1": "Bla Bla Bla",
