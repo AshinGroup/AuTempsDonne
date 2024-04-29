@@ -85,15 +85,17 @@ const SignUpForm = () => {
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
+  const [roleMessage, setRoleMessage] = useState("");
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         const response = await handleFetch("http://127.0.0.1:5000/api/role");
         if (response) {
-          setRoles(response);
-          if (response.length > 0) {
-            setSelectedRoles([response[0].id]);
+          const filteredRoles = response.filter((role, index) => index !== 0);
+          setRoles(filteredRoles);
+          if (filteredRoles.length > 0) {
+            setSelectedRoles([filteredRoles[0].id]);
           }
         }
       } catch (error) {
@@ -110,6 +112,25 @@ const SignUpForm = () => {
 
   // Change the roles and set the value in the form
   const toggleRoleSelection = (roleId) => {
+    const isSpecialRole = [1, 2, 3, 4].includes(roleId);
+
+    const specialRoleSelected = selectedRoles.some((id) =>
+      [1, 2, 3, 4].includes(id)
+    );
+
+    if (isSpecialRole && specialRoleSelected) {
+      const newSelectedRoles = selectedRoles.filter(
+        (id) => ![1, 2, 3, 4].includes(id)
+      );
+
+      setSelectedRoles([...newSelectedRoles, roleId]);
+
+      setRoleMessage(
+        "WARNING : Only one special role can be selected among Beneficiary, Volonteer."
+      );
+      return;
+    }
+
     // Minimum 1 role
     if (selectedRoles.length === 1 && selectedRoles.includes(roleId)) {
       return;
@@ -421,8 +442,9 @@ const SignUpForm = () => {
           ))}
         </div>
       </div>
-      {errors.roles && <p className="text-red-500">{errors.roles.message}</p>}
-
+      {roleMessage && (
+        <p className="text-center text-yellow-500">{roleMessage}</p>
+      )}
       {/* Bouton de soumission */}
       <button
         type="submit"

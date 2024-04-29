@@ -11,14 +11,32 @@ import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import ErrorPage from "./pages/ErrorPage";
 
+import handleFetch from "./components/handleFetch";
+
 const App = () => {
   const { locale } = useLanguage();
   const messages = translations[locale];
+  const navigate = useNavigate();
 
   useEffect(() => {
     const refreshToken = localStorage.getItem("refresh_token");
     if (refreshToken) {
       sessionStorage.setItem("refresh_token", refreshToken);
+      handleFetch(`http://127.0.0.1:5000/api/protected`)
+        .then((response) => {
+          if (!response) {
+            throw new Error(response.message);
+          }
+          return response;
+        })
+        .then((data) => {
+          sessionStorage.setItem("rule", data?.role_id);
+          sessionStorage.setItem("user_id", data?.user_id);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          navigate("/");
+        });
     }
     console.log(
       "localStorage refresh token : ",
@@ -37,7 +55,7 @@ const App = () => {
       sessionStorage.getItem("access_token")
     );
     console.log("user Id : ", sessionStorage.getItem("user_id"));
-    console.log("role : ", sessionStorage.getItem("role"));
+    console.log("role : ", sessionStorage.getItem("rule"));
   }, []);
 
   return (

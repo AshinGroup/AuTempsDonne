@@ -7,8 +7,6 @@ import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
 
-import handleFetch from "../components/handleFetch";
-
 const WelcomePage = () => {
   // Profile Management from Dashboard (ugly code, to be refactored)
   const location = useLocation();
@@ -18,33 +16,9 @@ const WelcomePage = () => {
 
   console.log(activeItem);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const rule = sessionStorage.getItem("rule");
-
-    if (rule === null) {
-      handleFetch(`http://127.0.0.1:5000/api/protected`)
-        .then((response) => {
-          if (!response.ok) {
-            return response.json().then((data) => {
-              throw new Error(data.message);
-            });
-          }
-          return response.json();
-        })
-        .then((data) => {
-          sessionStorage.setItem("rule", data?.role);
-          sessionStorage.setItem("user_id", data?.user_id);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-          navigate("/");
-        });
-    }
-  }, []);
-  // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
-  // check ici la conversion entre int et string
-  const rule = sessionStorage.getItem("rule") || "";
+  // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
+  const rule = sessionStorage.getItem("rule");
+  // const rule = "admin";
 
   const getContent = () => {
     switch (activeItem) {

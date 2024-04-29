@@ -37,7 +37,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
   // Render links based on user role
   const renderLinks = () => {
     switch (Rule) {
-      case "commerce":
+      case "4": // Commerçant
         return (
           <>
             <NavbarItem
@@ -100,7 +100,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
             />
           </>
         );
-      case "bénéficiaire":
+      case "3": // Bénéficiaire
         return (
           <>
             <NavbarItem
@@ -163,7 +163,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
             />
           </>
         );
-      case "bénévole":
+      case "2": // Bénévole
         return (
           <>
             <NavbarItem
@@ -237,7 +237,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
             />
           </>
         );
-      case "admin":
+      case "1": // Admin
         return (
           <>
             <NavbarItem
@@ -445,12 +445,7 @@ function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
   }, []);
 
   let links = [];
-  if (
-    Rule == "commerce" ||
-    Rule == "bénéficiaire" ||
-    Rule == "bénévole" ||
-    Rule == "admin"
-  ) {
+  if (Rule == "1" || Rule == "2" || Rule == "3" || Rule == "4") {
     links = [
       {
         label: profile,
