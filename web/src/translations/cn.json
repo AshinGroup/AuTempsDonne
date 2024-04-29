@@ -90,7 +90,7 @@
   "navbar.login": "登录",
   "navbar.logout": "登出",
   "navbar.profile": "个人资料",
-  "navbar.signin": "注册",
+  "navbar.signup": "注册",
   "navbar.adminpanel": "管理",
 
   "donation.DonAutantDonne": "捐赠：尽力而为！",
@@ -192,4 +192,39 @@
   "sign.forgotpwd": "忘记密码？",
   "sign.noaccyet": "还没有账号？",
   "sign.signup": "注册"
+
+  "home.principalTitle": "我们需要你",
+  "home.missions": "我们的任务",
+  "home.paragraph1": "Bla Bla Bla",
+  "home.paragraph2": "Bla Bla Bla",
+  "home.paragraph3": "Bla Bla Bla",
+  "home.services": "我们的服务",
+  "home.paragraph4": "Bla Bla Bla",
+  "home.paragraph5": "Bla Bla Bla",
+  "home.paragraph6": "Bla Bla Bla",
+  "home.help": "你的帮助至关重要 ...",
+  "home.donate": "捐款",
+  "home.joinUs": "加入我们，我们依靠你！",
+  "home.signUp": "注册",
+
+  "footer.credits":"版权所有",
+  "footer.home": "主页",
+  "footer.contact": "支持",
+  "footer.donate": "捐赠",
+
+  "logIn.logInTitle": "登录",
+  "logIn.forgotPasswd": "忘记密码？",
+  "logIn.noAccount": "还没有帐号？",
+  "logIn.signUp": " 注册 ",
+  "logIn.email": "电子邮件",
+  "logIn.passwd": "密码",
+  "logIn.maintain": "保持登录状态",
+  "logIn.button": "登录",
+
+  "signUp.signUpTitle": "注册",
+  "signUp.confirmPasswd": "确认密码",
+  "signUp.register": "注册",
+  "signUp.alreadyAccount": "已有帐号？",
+  "signUp.logIn": " 登录 "
+  
 }

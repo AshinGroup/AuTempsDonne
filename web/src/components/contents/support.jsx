@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import handleFetch from "../handleFetch";
+import Footer from "../footer1";
 
 const Support = () => {
   const navigate = useNavigate();
@@ -91,6 +92,7 @@ const Support = () => {
           <SupportForm />
         </div>
       </section>
+      <Footer />
     </>
   );
 };

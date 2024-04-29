@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import atd_logo_typo from "../resources/atd_logo_typo.png";
+import Footer from "../components/footer2";
 
 const LogIn = () => {
   const [expanded, setExpanded] = useState(() => window.innerWidth > 1200);
@@ -20,7 +21,7 @@ const LogIn = () => {
   return (
     <>
       {/* Page Section */}
-      <section className="flex flex-col justify-center h-screen w-screen items-center">
+      <section className="flex flex-col justify-center h-screen w-full items-center">
         {/* Sign In */}
         <div
           className={`flex flex-col ${
@@ -36,13 +37,11 @@ const LogIn = () => {
               />
             </Link>
             <h2 className="font-semibold text-2xl mt-5">
-              {" "}
               <FormattedMessage id="sign.login" defaultMessage="Log In" />
             </h2>
             <LogInForm />
             <Link to="/" className="mt-2">
               <span className="text-AshinBlue hover:underline">
-                {" "}
                 <FormattedMessage
                   id="sign.forgotpwd"
                   defaultMessage="Forgot Password ?"
@@ -64,7 +63,6 @@ const LogIn = () => {
           &nbsp;
           <Link to="/SignUp">
             <span className="text-AshinBlue hover:underline">
-              {" "}
               <FormattedMessage id="sign.signup" defaultMessage="Sign Up" />
             </span>
           </Link>
@@ -82,11 +80,7 @@ const LogIn = () => {
           ></img>
         </Link>
       </section>
-      {/* Footer */}
-      <div className="flex flex-col w-full h-56 mt-10 items-center bg-white justify-center border-2 border-green-400 bg-green-600">
-        Footer (Different from the homepage (Need to set credits, links to the
-        homepage and Languages modifications))
-      </div>
+      <Footer />
     </>
   );
 };
@@ -251,7 +245,7 @@ const LogInForm = () => {
         type="submit"
         className="bg-AshinBlue hover:bg-AshinBlue-dark text-white mt-4 w-5/6 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       >
-        <FormattedMessage id="sign.login" defaultMessage="Log In" />
+        <FormattedMessage id="logIn.button" defaultMessage="Log In" />
       </button>
     </form>
   );

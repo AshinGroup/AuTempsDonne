@@ -87,7 +87,7 @@
   "navbar.login": "Iniciar Sesión",
   "navbar.logout": "Cerrar Sesión",
   "navbar.profile": "Perfil",
-  "navbar.signin": "Registrarse",
+  "navbar.signup": "Registrarse",
   "navbar.adminpanel": "Administración",
 
   "donation.DonAutantDonne": "Donación: ¡Da todo lo que puedas!",
@@ -189,4 +189,39 @@
   "sign.forgotpwd": "¿Olvidaste tu contraseña?",
   "sign.noaccyet": "¿Todavía no tienes una cuenta?",
   "sign.signup": "Registrarse"
+
+  "home.principalTitle": "Te Necesitamos",
+  "home.missions": "Nuestras Misiones",
+  "home.paragraph1": "Bla Bla Bla",
+  "home.paragraph2": "Bla Bla Bla",
+  "home.paragraph3": "Bla Bla Bla",
+  "home.services": "Nuestros Servicios",
+  "home.paragraph4": "Bla Bla Bla",
+  "home.paragraph5": "Bla Bla Bla",
+  "home.paragraph6": "Bla Bla Bla",
+  "home.help": "Tu Ayuda es Esencial ...",
+  "home.donate": "Hacer una Donación",
+  "home.joinUs": "Únete a nosotros, ¡contamos contigo!",
+  "home.signUp": "Regístrame",
+
+  "footer.credits":"Derechos reservados.",
+  "footer.home": "Hogar",
+  "footer.contact": "Contacto",
+  "footer.donate": "Donar",
+
+  "logIn.logInTitle": "Iniciar sesión",
+  "logIn.forgotPasswd": "¿Olvidó la contraseña?",
+  "logIn.noAccount": "¿Todavía no tienes una cuenta?",
+  "logIn.signUp": " Registrarse ",
+  "logIn.email": "Correo electrónico",
+  "logIn.passwd": "Contraseña",
+  "logIn.maintain": "Mantener la sesión iniciada",
+  "logIn.button": "Iniciar sesión",
+
+  "signUp.signUpTitle": "Registrarse",
+  "signUp.confirmPasswd": "Confirmar Contraseña",
+  "signUp.register": "Registrarse",
+  "signUp.alreadyAccount": "¿Ya tienes una cuenta?",
+  "signUp.logIn": " Iniciar sesión "
+  
 }
