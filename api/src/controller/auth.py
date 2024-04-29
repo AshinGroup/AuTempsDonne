@@ -45,6 +45,7 @@ class LoginController(Resource):
     def post(self):
         try:
             roles = list()
+            role_id = -1
             args = self.check_login_args.get_login_args()
             user = self.auth_service.login(
                 email=args['email'], password=args['password'])
@@ -52,11 +53,13 @@ class LoginController(Resource):
                 raise UserStatusException(email=args['email'])
             for role in user.roles:
                 roles.append(role.id)
-                additional_claims = {"roles": roles}
+                if role.id in [1, 2, 3, 4]:
+                    role_id = role.id
+            additional_claims = {"roles": roles}
             access_token = create_access_token(
                 identity=user.id, additional_claims=additional_claims)
             refresh_token = create_refresh_token(identity=user.id)
-            return jsonify(access_token=access_token, refresh_token=refresh_token, roles=roles)
+            return jsonify(access_token=access_token, refresh_token=refresh_token, user_id=user.id, role_id=role_id)
         except UserEmailNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
@@ -108,13 +111,15 @@ class ProtectedController(Resource):
     @jwt_required()
     # @roles_required(5)
     def get(self):
+        role_id = -1
         current_user = get_jwt_identity()
         claims = get_jwt()
         user_roles = claims['roles']
         for role in user_roles:
-            role = role if role in [1, 2, 3, 4] else -1
+            if role in [1, 2, 3, 4]:
+                role_id = role
         return jsonify({
             'message': f"Logged in as user id '{current_user}'",
             'user_id': current_user,
-            'role_id': role
+            'role_id': role_id
         })
