@@ -4,7 +4,7 @@
   "sidebar.courses": "Cours",
   "sidebar.profile": "Profil",
   "sidebar.logout": "Déconnexion",
-  "sidebar.ToCollect": "À Collecter",
+  "sidebar.ToDemand": "À Demander",
   "sidebar.Stock": "Stock",
   "sidebar.Shops": "Magasins",
 
@@ -80,7 +80,7 @@
   "EventModal.updateEvent": "Mettre à jour l'événement",
 
   "navbar.homepage": "Accueil",
-  "navbar.tocollect": "À Collecter",
+  "navbar.tocollect": "À Demander",
   "navbar.support": "Support",
   "navbar.donate": "Donner",
   "navbar.services": "Services",

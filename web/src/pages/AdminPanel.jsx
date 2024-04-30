@@ -4,7 +4,7 @@ import Sidebar from "../components/sidebar";
 import Users from "../components/contents/users";
 import Events from "../components/contents/events";
 import Stock from "../components/contents/stock";
-import ToCollect from "../components/contents/toCollect";
+import ToDemand from "../components/contents/toDemand";
 import Shops from "../components/contents/shops";
 
 const AdminPanel = () => {
@@ -21,8 +21,8 @@ const AdminPanel = () => {
         return <Stock />;
       case "Shops":
         return <Shops />;
-      case "ToCollect":
-        return <ToCollect />;
+      case "ToDemand":
+        return <ToDemand />;
       case "Profile":
         navigate("/", { state: { id: "profile" } });
         return;

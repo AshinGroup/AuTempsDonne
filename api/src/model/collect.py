@@ -6,30 +6,32 @@ class Collect(db.Model):
     __tablename__ = "collect"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    submitted_datetime = db.Column(db.DateTime)
-    limit_datetime = db.Column(db.DateTime)
-    status = db.Column(db.Integer) # 0 = Submitted / 1 = In Progress / 2 = Collected
-    additional = db.Column(db.Text)
-    shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'), nullable=False)
+    datetime = db.Column(db.DateTime)
+    roadmap = db.Column(db.String(200))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
  
 
     def json(self):
         return {'id': self.id,
-                'submitted_datetime': self.submitted_datetime.strftime("%Y-%m-%d %H:%M:%S"),
-                'limit_datetime': self.limit_datetime.strftime("%Y-%m-%d %H:%M:%S"),
-                'status': self.status,
-                'additional': self.additional,
-                'shop' : self.shop.json_shop()
+                'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'roadmap': self.roadmap,
+                'user': self.user.json_collect(),
+                'vehicle' : self.vehicle.json_collect()
                 }
 
 
-    def json_rest_shop(self):
-        return {'url': f"{os.getenv('API_PATH')}/collect/{self.id}",
-                'id': self.id,
-                'submitted_datetime': self.submitted_datetime.strftime("%Y-%m-%d %H:%M:%S"),
-                'limit_datetime': self.limit_datetime.strftime("%Y-%m-%d %H:%M:%S"),
-                'status': self.status,
-                'additional': self.additional
+    def json_rest_user(self):
+        return {'id': self.id,
+                'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'roadmap': self.roadmap,
+                'vehicle' : self.vehicle.json_collect()
                 }
 
+    def json_rest_vehicle(self):
+        return {'id': self.id,
+                'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'roadmap': self.roadmap,
+                'user': self.user.json_collect()
+                }
 

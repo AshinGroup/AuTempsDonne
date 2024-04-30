@@ -30,7 +30,7 @@ class Shop(db.Model):
                 'company': self.company.json_rest()}
     
     
-    def json_rest_collect(self):
+    def json_rest_demand(self):
         return {'url': f"{os.getenv('API_PATH')}/shop/{self.id}", 
                 'id': self.id,
                 'company': self.company.json_rest(),

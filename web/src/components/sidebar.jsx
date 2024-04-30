@@ -105,16 +105,16 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               onClick={() => handleItemClick("Stock")}
             />
             <SidebarItem
-              key={"ToCollect"}
+              key={"ToDemand"}
               icon={<Truck size={20} />}
               text={
                 <FormattedMessage
-                  id="sidebar.ToCollect"
-                  defaultMessage="ToCollect"
+                  id="sidebar.ToDemand"
+                  defaultMessage="ToDemand"
                 />
               }
-              active={activeItem === "ToCollect"}
-              onClick={() => handleItemClick("ToCollect")}
+              active={activeItem === "ToDemand"}
+              onClick={() => handleItemClick("ToDemand")}
             />
           </ul>
         </SidebarContext.Provider>
