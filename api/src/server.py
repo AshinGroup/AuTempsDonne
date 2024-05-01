@@ -21,6 +21,9 @@ from controller.company import *
 from controller.shop import *
 from controller.delivery import *
 from controller.roadmap import *
+from controller.collect import *
+from controller.demand import *
+from controller.vehicle import *
 
 
 # Import Models
@@ -37,6 +40,9 @@ from model.warehouse import Warehouse
 from model.company import Company
 from model.shop import Shop
 from model.delivery import Delivery
+from model.collect import Collect
+from model.demand import Demand
+from model.vehicle import Vehicle
 
 from app import app
 
@@ -55,6 +61,10 @@ api.add_resource(UserIsRoleController,
                  f'{prefix}/user/<int:user_id>/role/<int:role_id>')
 api.add_resource(UserParticipatesEventController,
                  f'{prefix}/user/<int:user_id>/event/<int:event_id>')
+api.add_resource(UserDeliversController,
+                 f'{prefix}/user/<int:user_id>/delivery/<int:delivery_id>')
+api.add_resource(UserCollectsController,
+                 f'{prefix}/user/<int:user_id>/collect/<int:collect_id>')
 
 api.add_resource(EventController, f'{prefix}/event/<int:event_id>')
 api.add_resource(EventListController, f'{prefix}/event')
@@ -109,7 +119,27 @@ api.add_resource(DeliveryPageController, f'{prefix}/delivery/page/<int:page>')
 #                  f'{prefix}/shop/page/<int:page>/search/<string:search>')
 api.add_resource(DeliversToLocationController,
                  f'{prefix}/delivery/<int:delivery_id>/location/<int:location_id>')
-api.add_resource(RoadmapController, f'{prefix}/delivery/<int:delivery_id>/roadmap')
+
+api.add_resource(CollectController, f'{prefix}/collect/<int:collect_id>')
+api.add_resource(CollectListController, f'{prefix}/collect')
+api.add_resource(CollectPageController, f'{prefix}/collect/page/<int:page>')
+
+api.add_resource(DemandController, f'{prefix}/demand/<int:collect_id>')
+api.add_resource(DemandListController, f'{prefix}/demand')
+api.add_resource(DemandPageController, f'{prefix}/demand/page/<int:page>')
+
+api.add_resource(VehicleController, f'{prefix}/vehicle/<int:vehicle_id>')
+api.add_resource(VehicleListController, f'{prefix}/vehicle')
+# api.add_resource(VehiclePageController, f'{prefix}/vehicle/page/<int:page>')
+# api.add_resource(ShopSearchController,
+#                  f'{prefix}/shop/page/<int:page>/search/<string:search>')
+# api.add_resource(DeliversToLocationController,
+#                  f'{prefix}/delivery/<int:delivery_id>/location/<int:location_id>')
+
+
+
+
+api.add_resource(RoadmapController, f'{prefix}/roadmap')
 
 api.add_resource(RegisterController, f'{prefix}/register')
 api.add_resource(LoginController, f'{prefix}/login')

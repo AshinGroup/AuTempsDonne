@@ -22,7 +22,7 @@ const WelcomePage = () => {
   // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
   const rule = sessionStorage.getItem("rule");
   // const rule = "2";
-
+  
   const getContent = () => {
     switch (activeItem) {
       case "homepage":
@@ -34,7 +34,7 @@ const WelcomePage = () => {
       case "courses":
         return <Courses />;
       case "tocollect":
-        return <div>To Collect</div>;
+        return <div>To Demand</div>;
       case "genqr":
         return <div>Generate QR Code</div>;
       case "planning":

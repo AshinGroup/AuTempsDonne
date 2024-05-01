@@ -4,7 +4,7 @@
   "sidebar.courses": "Courses",
   "sidebar.profile": "Profile",
   "sidebar.logout": "Logout",
-  "sidebar.ToCollect": "To Collect",
+  "sidebar.ToDemand": "To Demand",
   "sidebar.Stock": "Stock",
   "sidebar.Shops": "Shops",
 
@@ -81,7 +81,7 @@
   "EventModal.updateEvent": "Update Event",
 
   "navbar.homepage": "HomePage",
-  "navbar.tocollect": "To Collect",
+  "navbar.tocollect": "To Demand",
   "navbar.support": "Support",
   "navbar.donate": "Donate",
   "navbar.services": "Services",

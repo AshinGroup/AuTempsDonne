@@ -6,6 +6,8 @@ class Shop(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50))
+    demands = db.relationship('Demand', backref='shop')
+
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
 
@@ -28,4 +30,13 @@ class Shop(db.Model):
         return {'url': f"{os.getenv('API_PATH')}/shop/{self.id}", 
                 'id': self.id,
                 'company': self.company.json_rest()}
+    
+    
+    def json_rest_demand(self):
+        return {'url': f"{os.getenv('API_PATH')}/shop/{self.id}", 
+                'id': self.id,
+                'company': self.company.json_rest(),
+                'location': self.location.json_rest()}
+    
+
 

@@ -3,6 +3,8 @@ from service.delivery import DeliveryService
 from exception.delivery import *
 from exception.location import LocationAccessDbException, LocationIdNotFoundException
 from exception.type import *
+from exception.vehicle import *
+from exception.location import *
 from flask import jsonify
 
 class DeliveryCheckArgs:
@@ -13,8 +15,9 @@ class DeliveryCheckArgs:
     def get_delivery_args(self) -> dict:
         parser = reqparse.RequestParser()
         parser.add_argument('datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'datetime'.")
-        parser.add_argument('user_id', type=int, required=True, help="Invalid or missing parameter 'user_id'.")
+        parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
         parser.add_argument('locations', type=int, required=True, action='append', help="Invalid or missing parameter 'locations'.")
+        parser.add_argument('vehicle_id', type=int, required=True,  help="Invalid or missing parameter 'vehicle_id'.")
         args = parser.parse_args(strict=True)
         return args
 
@@ -34,6 +37,8 @@ class DeliveryController(Resource):
             abort(http_status_code=404, message=str(e))
         except DeliveryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+        except VehicleAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
 
    
 
@@ -45,7 +50,9 @@ class DeliveryController(Resource):
         except DeliveryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except DeliveryAccessDbException as e:
-            abort(http_status_code=500, message=str(e))        
+            abort(http_status_code=500, message=str(e))     
+        except VehicleIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))   
    
 
     def delete(self, delivery_id: int):
@@ -86,6 +93,10 @@ class DeliveryListController(Resource):
         except LocationIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except LocationAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except VehicleIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except VehicleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
 
@@ -133,7 +144,7 @@ class DeliversToLocationController(Resource):
             abort(http_status_code=404, message=str(e))
         except DeliveryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except DeliversToLocationEventAlreadyExistsException as e:
+        except DeliversToLocationAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
         except LocationAccessDbException as e:
             abort(http_status_code=500, message=str(e))
@@ -141,10 +152,12 @@ class DeliversToLocationController(Resource):
             abort(http_status_code=500, message=str(e))
         
 
-    def delete(self, user_id: int, delivery_id: int) -> None:
+    def delete(self, delivery_id: int, location_id: int) -> None:
         try: 
-            self.user_service.delete_delivery(user_id=user_id, delivery_id=delivery_id)
-            return jsonify({'message':f"User id '{user_id}' successfully leave delivery id '{delivery_id}'."})
+            self.delivery_service.delete_location(location_id=location_id, delivery_id=delivery_id)
+            return jsonify({'message':f"Location id '{location_id}' successfully deleted from delivery id '{delivery_id}'."})
+        except LocationIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
         except DeliveryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except DeliversToLocationNotFoundException as e:

@@ -3,8 +3,12 @@ from repository.user import UserRepo
 from exception.user import *
 from exception.event import EventIdNotFoundException
 from exception.role import RoleIdNotFoundException
+from exception.delivery import DeliveryIdNotFoundException
+from exception.collect import CollectIdNotFoundException
 from service.role import RoleService
 from service.event import EventService
+from service.delivery import DeliveryService
+from service.collect import CollectService
 
 
 class UserService:
@@ -13,6 +17,8 @@ class UserService:
         self.user_repo = UserRepo()
         self.role_service = RoleService()
         self.event_service = EventService()
+        self.delivery_service = DeliveryService()
+        self.collect_service = CollectService()
 
     def select_one_by_id(self, user_id: int) -> User:
         user = self.user_repo.select_one_by_id(user_id=user_id)
@@ -89,6 +95,38 @@ class UserService:
             raise RoleIdNotFoundException
         self.user_repo.insert_role(user_id=user_id, role_id=role_id)
 
+
+
+    def insert_delivery(self, user_id: int, delivery_id: int) -> None:
+        user = self.select_one_by_id(user_id=user_id)
+        if not user:
+            raise UserIdNotFoundException(user_id=user_id)
+        if user.deliveries:
+            for delivery in user.deliveries:
+                if delivery.id == delivery_id:
+                    raise UserDeliversAlreadyExistsException(
+                        user_id=user_id, delivery_id=delivery_id
+                    )
+        if not self.delivery_service.select_one_by_id(delivery_id=delivery_id):
+            raise DeliveryIdNotFoundException
+        self.user_repo.insert_delivery(user_id=user_id, delivery_id=delivery_id)
+
+
+    def insert_collect(self, user_id: int, collect_id: int) -> None:
+        user = self.select_one_by_id(user_id=user_id)
+        if not user:
+            raise UserIdNotFoundException(user_id=user_id)
+        if user.collects:
+            for collect in user.deliveries:
+                if collect.id == collect_id:
+                    raise UserCollectsAlreadyExistsException(
+                        user_id=user_id, collect_id=collect_id
+                    )
+        if not self.collect_service.select_one_by_id(collect_id=collect_id):
+            raise CollectIdNotFoundException
+        self.user_repo.insert_collect(user_id=user_id, collect_id=collect_id)
+
+
     def update(self, user_id: int, args: dict) -> None:
         update_user = User(
             first_name=args["first_name"],
@@ -114,6 +152,7 @@ class UserService:
             raise UserIdNotFoundException(user_id=user_id)
         self.user_repo.delete(user_id=user_id)
 
+
     def delete_event(self, user_id: int, event_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)
         if not user:
@@ -129,6 +168,7 @@ class UserService:
             )
         self.user_repo.delete_event(user_id=user_id, event_id=event_id)
 
+
     def delete_role(self, user_id: int, role_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)
         if not user:
@@ -143,3 +183,31 @@ class UserService:
         if not role_exist:
             raise UserIsRoleNotFoundException(user_id=user_id, role_id=role_id)
         self.user_repo.delete_role(user_id=user_id, role_id=role_id)
+
+
+    def delete_delivery(self, user_id: int, delivery_id: int) -> None:
+        user = self.select_one_by_id(user_id=user_id)
+        if not user:
+            raise UserIdNotFoundException(user_id=user_id)
+        delivery_exist = False
+        if user.deliveries:
+            for delivery in user.deliveries:
+                if delivery.id == delivery_id:
+                    delivery_exist = True
+        if not delivery_exist:
+            raise UserDeliversNotFoundException(user_id=user_id, delivery_id=delivery_id)
+        self.user_repo.delete_delivery(user_id=user_id, delivery_id=delivery_id)
+
+
+    def delete_collect(self, user_id: int, collect_id: int) -> None:
+        user = self.select_one_by_id(user_id=user_id)
+        if not user:
+            raise UserIdNotFoundException(user_id=user_id)
+        collect_exist = False
+        if user.collects:
+            for collect in user.collects:
+                if collect.id == collect_id:
+                    collect_exist = True
+        if not collect_exist:
+            raise UserCollectsNotFoundException(user_id=user_id, collect_id=collect_id)
+        self.user_repo.delete_collect(user_id=user_id, collect_id=collect_id)

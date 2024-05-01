@@ -14,6 +14,8 @@ import {
   LogOut,
   User2,
   Languages,
+  ShoppingBasket,
+  PackageOpen,
 } from "lucide-react";
 import atd_logo_ from "../resources/atd_logo_.png";
 import atd_logo_typo from "../resources/atd_logo_typo.png";
@@ -105,16 +107,40 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               onClick={() => handleItemClick("Stock")}
             />
             <SidebarItem
-              key={"ToCollect"}
+              key={"Collects"}
               icon={<Truck size={20} />}
               text={
                 <FormattedMessage
-                  id="sidebar.ToCollect"
-                  defaultMessage="ToCollect"
+                  id="sidebar.Collects"
+                  defaultMessage="Collects"
                 />
               }
-              active={activeItem === "ToCollect"}
-              onClick={() => handleItemClick("ToCollect")}
+              active={activeItem === "Collects"}
+              onClick={() => handleItemClick("Collects")}
+            />
+            <SidebarItem
+              key={"Demands"}
+              icon={<ShoppingBasket size={20} />}
+              text={
+                <FormattedMessage
+                  id="sidebar.Demands"
+                  defaultMessage="Demands"
+                />
+              }
+              active={activeItem === "Demands"}
+              onClick={() => handleItemClick("Demands")}
+            />
+            <SidebarItem
+              key={"Deliveries"}
+              icon={<PackageOpen size={20} />}
+              text={
+                <FormattedMessage
+                  id="sidebar.Deliveries"
+                  defaultMessage="Deliveries"
+                />
+              }
+              active={activeItem === "Deliveries"}
+              onClick={() => handleItemClick("Deliveries")}
             />
           </ul>
         </SidebarContext.Provider>
