@@ -12,6 +12,7 @@ class Demand(db.Model):
     additional = db.Column(db.Text)
     collect_id = db.Column(db.Integer, db.ForeignKey('collect.id'))
     shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'), nullable=False)
+    qr_code = db.Column(db.String(200))
  
 
     def json(self):
@@ -20,7 +21,9 @@ class Demand(db.Model):
                 'limit_datetime': self.limit_datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'status': self.status,
                 'additional': self.additional,
-                'shop' : self.shop.json_shop()
+                'qr_code': self.qr_code,
+                'shop' : self.shop.json_rest_demand(),
+                'collect': self.collect.json_rest_demand() if self.collect else None
                 }
 
 
@@ -30,7 +33,9 @@ class Demand(db.Model):
                 'submitted_datetime': self.submitted_datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'limit_datetime': self.limit_datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'status': self.status,
-                'additional': self.additional
+                'additional': self.additional,
+                'qr_code': self.qr_code,
+                'collect': self.collect.json_rest_demand() if self.collect else None
                 }
     
 
@@ -41,7 +46,8 @@ class Demand(db.Model):
                 'limit_datetime': self.limit_datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'status': self.status,
                 'additional': self.additional,
-                'shop' : self.shop.json_shop()
+                'shop' : self.shop.json_rest_demand(),
+                'qr_code': self.qr_code,
                 }
 
 

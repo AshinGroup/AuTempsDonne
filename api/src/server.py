@@ -61,6 +61,10 @@ api.add_resource(UserIsRoleController,
                  f'{prefix}/user/<int:user_id>/role/<int:role_id>')
 api.add_resource(UserParticipatesEventController,
                  f'{prefix}/user/<int:user_id>/event/<int:event_id>')
+api.add_resource(UserDeliversController,
+                 f'{prefix}/user/<int:user_id>/delivery/<int:delivery_id>')
+api.add_resource(UserCollectsController,
+                 f'{prefix}/user/<int:user_id>/collect/<int:collect_id>')
 
 api.add_resource(EventController, f'{prefix}/event/<int:event_id>')
 api.add_resource(EventListController, f'{prefix}/event')

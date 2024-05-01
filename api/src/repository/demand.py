@@ -65,12 +65,11 @@ class DemandRepo():
                 demand.status = update_demand.status
                 demand.additional = update_demand.additional
                 demand.shop_id = update_demand.shop_id
-                demand_collect_id = update_demand.collect_id
                 db.session.commit()
                 db.session.close()
         except Exception:
             raise DemandAccessDbException(demand_id=demand_id, method="updating")
-
+    
 
     def delete(self, demand_id: int) -> None:
         try:

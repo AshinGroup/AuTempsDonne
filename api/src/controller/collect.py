@@ -88,7 +88,11 @@ class CollectListController(Resource):
             return jsonify({'message': f"Collect successfully created."})
         except CollectAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+        except CollectsDemandAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
         except VehicleIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except DemandIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except VehicleAccessDbException as e:
             abort(http_status_code=500, message=str(e))

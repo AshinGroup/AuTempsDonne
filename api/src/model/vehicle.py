@@ -13,7 +13,7 @@ class Vehicle(db.Model):
 
 
     def json(self):
-        collects = [collect.json_rest() for collect in self.collects] if self.collects else []
+        collects = [collect.json_rest_vehicle() for collect in self.collects] if self.collects else []
         deliveries = [delivery.json_rest() for delivery in self.deliveries] if self.deliveries else []
         
         return {'id': self.id, 

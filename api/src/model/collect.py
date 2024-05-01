@@ -52,6 +52,17 @@ class Collect(db.Model):
                 'user': users
                 }
     
+    def json_rest_demand(self):
+        users = [user.json_rest() for user in self.users] if self.users else []
+
+        return {'url': f"{os.getenv('API_PATH')}/collect/{self.id}", 
+                'id': self.id,
+                'datetime': self.datetime.strftime("%d/%m/%Y"),
+                'roadmap': self.roadmap,
+                'vehicle' : self.vehicle.json_rest(),
+                'user': users
+                }
+    
     
 user_collects = db.Table('user_collects', db.metadata,
                                    db.Column('user_id', db.Integer, db.ForeignKey(

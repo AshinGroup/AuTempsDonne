@@ -6,6 +6,8 @@ class Shop(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50))
+    demands = db.relationship('Demand', backref='shop')
+
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
 
