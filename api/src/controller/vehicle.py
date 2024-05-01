@@ -9,7 +9,7 @@ class VehicleCheckArgs:
         parser = reqparse.RequestParser()
         parser.add_argument('license_plate', type=str, required=True, help="Invalid or missing parameter 'license_plate'")
         parser.add_argument('brand', type=str, required=True, help="Invalid or missing parameter 'brand'")
-        parser.add_argument('type', type=str, required=True, help="Invalid or missing parameter 'type'")
+        parser.add_argument('type', type=int, required=True, help="Invalid or missing parameter 'type'")
 
         args = parser.parse_args(strict=True)
         return args

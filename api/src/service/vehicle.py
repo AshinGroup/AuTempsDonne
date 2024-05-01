@@ -22,12 +22,12 @@ class VehicleService:
 
 
     def insert(self, args: dict):
-        new_vehicle = Vehicle(name=args['license_plate'], brand=args['brand'], type=args['license_plate'])
+        new_vehicle = Vehicle(license_plate=args['license_plate'], brand=args['brand'], type=args['type'])
         self.vehicle_repo.insert(new_vehicle=new_vehicle)
     
 
     def update(self, vehicle_id: int, args: dict):
-        update_vehicle = Vehicle(name=args['license_plate'], brand=args['brand'], type=args['license_plate'])
+        update_vehicle = Vehicle(license_plate=args['license_plate'], brand=args['brand'], type=args['type'])
         vehicle = self.vehicle_repo.select_one_by_id(vehicle_id=vehicle_id)
         
         if not vehicle:

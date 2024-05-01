@@ -7,12 +7,13 @@ class DemandIdNotFoundException(Exception):
     
 
 
-class DemandIdStatuspNotFoundException(Exception):
-    def __init__(self, status: int) -> None:
-        self.status = status
+class CollectsDemandAlreadyExistsException(Exception):
+    def __init__(self, demand_id: int) -> None:
+        self.demand_id = demand_id
 
     def __str__(self) -> str:
-        return f"Demand status '{self.status}' not found."
+        return f"Demand with id '{self.demand_id}' already have a collect id."
+    
     
 
 

@@ -17,7 +17,7 @@ class DeliveryCheckArgs:
         parser.add_argument('datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'datetime'.")
         parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
         parser.add_argument('locations', type=int, required=True, action='append', help="Invalid or missing parameter 'locations'.")
-        parser.add_argument('vehicle_id', type=int, required=True, action='append', help="Invalid or missing parameter 'locations'.")
+        parser.add_argument('vehicle_id', type=int, required=True,  help="Invalid or missing parameter 'vehicle_id'.")
         args = parser.parse_args(strict=True)
         return args
 

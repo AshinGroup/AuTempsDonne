@@ -5,6 +5,7 @@ class CollectIdNotFoundException(Exception):
     def __str__(self) -> str:
         return f"Collect with id '{self.collect_id}' not found."
     
+    
 
 class CollectAccessDbException(Exception):
     def __init__(self, collect_id: int, method: str) -> None:
