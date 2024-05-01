@@ -123,24 +123,3 @@ class CollectSearchController(Resource):
         except CollectAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
-class CollectsDemandController(Resource):
-    def __init__(self) -> None:
-        self.collect_service = CollectService()
-
-
-    def post(self, collect_id: int, demand_id: int) -> None:
-        try:
-            self.collect_service.insert_demand(collect_id=collect_id, demand_id=demand_id)
-            return jsonify({'message': f"Demand id '{demand_id}' successfully added to collect id '{collect_id}'."})
-        except DemandIdNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except CollectIdNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except CollectsDemandAlreadyExistsException as e:
-            abort(http_status_code=400, message=str(e))
-        except DemandAccessDbException as e:
-            abort(http_status_code=500, message=str(e))
-        except CollectAccessDbException as e:
-            abort(http_status_code=500, message=str(e))
-        

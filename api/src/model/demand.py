@@ -10,8 +10,7 @@ class Demand(db.Model):
     limit_datetime = db.Column(db.DateTime)
     status = db.Column(db.Integer) # 0 = Submitted / 1 = In Progress / 2 = Demanded
     additional = db.Column(db.Text)
-    collects = db.relationship(
-        'Collect', secondary='collects_demand', back_populates='demands')
+    collect_id = db.Column(db.Integer, db.ForeignKey('collect.id'))
     shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'), nullable=False)
  
 

@@ -6,13 +6,13 @@ class Delivery(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     datetime = db.Column(db.DateTime)
-    roadmap = db.String(200)
-    status = db.Integer(db.Integer)
+    roadmap = db.Column(db.String(200))
+    status = db.Column(db.Integer)
 
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
 
     users = db.relationship(
-        'User', secondary='users_delivers', back_populates='deliveries')
+        'User', secondary='user_delivers', back_populates='deliveries')
 
     locations = db.relationship(
         'Location', secondary='delivers_to_location', back_populates='deliveries')

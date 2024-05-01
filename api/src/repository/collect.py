@@ -59,18 +59,6 @@ class CollectRepo():
         except Exception:
             raise CollectAccessDbException(collect_id=None, method="creating")
 
-    def insert_demand(self, collect_id: int, demand_id: int):
-        try:
-            with app.app_context():
-                collect = Collect.query.filter_by(id=collect_id).first()
-                demand = Demand.query.filter_by(id=demand_id).first()
-                collect.demands.append(demand)
-                db.session.commit()
-                db.session.close()
-        except Exception:
-            raise CollectAccessDbException(collect_id=collect_id, method="inserting")
-
-
 
     def update(self, collect_id: int, update_collect: Collect) -> None:
         try:
@@ -95,14 +83,3 @@ class CollectRepo():
         except Exception:
             raise CollectAccessDbException(collect_id=collect_id, method="deleting")
 
-
-    def delete_demand(self, collect_id: int, demand_id: int):
-        try:
-            with app.app_context():
-                collect = Collect.query.filter_by(id=collect_id).first()
-                demand = Demand.query.filter_by(id=demand_id).first()
-                collect.demands.remove(demand)
-                db.session.commit()
-                db.session.close()
-        except Exception:
-            raise CollectAccessDbException(collect_id=collect_id, method="deleting")

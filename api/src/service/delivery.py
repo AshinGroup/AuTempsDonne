@@ -2,6 +2,7 @@ from model.delivery import Delivery
 from repository.delivery import DeliveryRepo
 from exception.delivery import DeliveryIdNotFoundException, DeliversToLocationAlreadyExistsException, DeliversToLocationNotFoundException
 from service.location import LocationService
+from service.vehicle import VehicleService
 
 
 
@@ -10,6 +11,7 @@ class DeliveryService:
     def __init__(self) -> None:
         self.delivery_repo = DeliveryRepo()
         self.location_service = LocationService()
+        self.vehicle_service = VehicleService()
 
     def select_one_by_id(self, delivery_id: int):
         delivery = self.delivery_repo.select_one_by_id(delivery_id=delivery_id)
@@ -33,10 +35,11 @@ class DeliveryService:
 
 
     def insert(self, args: dict):
-        new_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=None)
+        new_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=None, vehicle_id=args['vehicle_id'])
         self.delivery_repo.select_one_by_id(delivery_id=new_delivery.id)
         for location_id in args['locations']:
             self.location_service.select_one_by_id(location_id=location_id)
+        self.vehicle_service.select_one_by_id(vehicle_id=new_delivery.vehicle_id)
 
         new_delivery_id = self.delivery_repo.insert(new_delivery=new_delivery, locations=args['locations'])
 
@@ -55,8 +58,10 @@ class DeliveryService:
 
 
     def update(self, delivery_id: int, args: dict):
-        update_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=None)
+        update_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=None, vehicle_id=args['vehicle_id'])
         self.delivery_repo.select_one_by_id(delivery_id=delivery_id)
+        self.vehicle_service.select_one_by_id(vehicle_id=update_delivery.vehicle_id)
+
         self.delivery_repo.update(delivery_id=delivery_id, update_delivery=update_delivery)
 
 

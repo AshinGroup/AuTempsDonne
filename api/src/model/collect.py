@@ -10,8 +10,8 @@ class Collect(db.Model):
     roadmap = db.Column(db.String(200))
     users = db.relationship(
         'User', secondary='user_collects', back_populates='collects')
-    demands = db.relationship(
-        'Demand', secondary='collects_demand', back_populates='collects')
+    
+    demands = db.relationship('Demand', backref='collect')
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
  
 

@@ -13,9 +13,9 @@ class User(db.Model):
     password = db.Column(db.String(64))
     status = db.Column(db.Integer)  # 0 = waiting, 1 = valided
     deliveries = db.relationship(
-        'Delivery', secondary='user_delivers', backref='users')
+        'Delivery', secondary='user_delivers', back_populates='users')
     collects = db.relationship(
-        'Collect', secondary='user_collects', backref='users')
+        'Collect', secondary='user_collects', back_populates='users')
     roles = db.relationship(
         'Role', secondary='user_is_role', back_populates='users')
     events = db.relationship(

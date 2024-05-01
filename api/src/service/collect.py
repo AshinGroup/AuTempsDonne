@@ -42,17 +42,6 @@ class CollectService:
         self.collect_repo.insert(new_collect=new_collect, demands=args['demands'])
 
 
-    def insert_demand(self, collect_id: int, demand_id: int):
-        collect = self.select_one_by_id(collect_id=collect_id)
-        if collect.demands:
-            for demand in collect.demands:
-                if demand.id == demand_id:
-                    raise CollectsDemandAlreadyExistsException(collect_id=collect_id, demand_id=demand_id)
-        self.demand_service.select_one_by_id(demand_id=demand_id)
-        self.collect_repo.insert_demand(collect_id=collect_id, demand_id=demand_id)  
-                    
-
-
 
     def update(self, collect_id: int, args: dict):
         update_collect = Collect(datetime=args['datetime'], roadmap=None, vehicle_id=args['vehicle_id'])
@@ -74,16 +63,3 @@ class CollectService:
             raise CollectIdNotFoundException(collect_id=collect_id)
         self.collect_repo.delete(collect_id=collect_id)
 
-
-    def delete_demand(self, collect_id: int, demand_id: int) -> None:
-        collect = self.select_one_by_id(collect_id=collect_id)
-        demand_exist = False
-        if collect.demands:
-            for demand in collect.demands:
-                if demand.id == demand_id:
-                    demand_exist = True
-                    break
-        if not demand_exist:
-            raise CollectsDemandNotFoundException(
-                collect_id=collect_id, demand_id=demand_id)
-        self.collect_repo.delete_demand(collect_id=collect_id, demand_id=demand_id)
