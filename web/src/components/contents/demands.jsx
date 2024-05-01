@@ -1,26 +1,72 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { format } from "date-fns";
+import { Trash2, QrCode } from "lucide-react";
 
 import AddDemandModal from "../modals/addDemandModal";
+import handleFetch from "../handleFetch";
+import DeleteModal from "../modals/deleteModal";
 
 const Demands = () => {
   // Display the events and Pagination
-  const [events, setEvents] = useState([]);
+  const [demands, setDemands] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
   const pageNumbers = [];
   const pagesToShow = 2;
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
-  const [searchInput, setSearchInput] = useState("");
 
-  const [AddModalOpen, AddModalSetOpen] = useState(true);
+  const [AddModalOpen, AddModalSetOpen] = useState(false);
+  const [slectedDemandIdForDelete, setSelectedDemandIdForDelete] =
+    useState(null);
 
-  const intl = useIntl();
-  const searchPlaceholder = intl.formatMessage({
-    id: "demands.searchPlaceholder",
-    defaultMessage: "Search by name ...",
-  });
+  const fetchDemands = async () => {
+    try {
+      const data = await handleFetch("http://127.0.0.1:5000/api/demand");
+      if (data) {
+        setDemands(data);
+        setMaxPages(1);
+        // setDemands(data.demands);
+        // setMaxPages(data.max_pages);
+      }
+    } catch (error) {
+      console.error("Error fetching demands:", error);
+    }
+  };
+
+  // Remove a user from the API
+  const deleteDemand = async (demandId) => {
+    try {
+      const response = await handleFetch(
+        `http://127.0.0.1:5000/api/demand/${demandId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response) {
+        // Refresh the users list and quit the modal
+        fetchDemands();
+        setSelectedDemandIdForDelete(null);
+      }
+    } catch (error) {
+      console.error("Error deleting demand:", error);
+    }
+  };
+
+  // Set the user id to delete
+  const handleDeleteClick = (DemandId) => {
+    setSelectedDemandIdForDelete(DemandId);
+  };
+
+  // Fetch the users when we change Page
+  useEffect(() => {
+    fetchDemands();
+  }, [currentPage]);
+
   // Function to handle window resize
   useEffect(() => {
     const handleResize = () => {
@@ -44,23 +90,6 @@ const Demands = () => {
     if (endPage < maxPages - 1) pageNumbers.push("...");
     pageNumbers.push(maxPages);
   }
-
-  // Fetch the users when we change Page
-  useEffect(() => {
-    // fetchDemands();
-  }, [currentPage]);
-
-  const handleClickSearch = (e) => {
-    if (e.type == "click" || e.keyCode == 13) fetchDemands();
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setSearchInput(e.target.value);
-    if (e.keyCode == 13) {
-      fetchDemands();
-    }
-  };
 
   return (
     <div className={`h-screen p-8 pt-8 ${expanded ? "mx-6" : "mx-1"}`}>
@@ -91,23 +120,6 @@ const Demands = () => {
           fetchUsers={() => fetchDemands()}
         />
       </div>
-      {/* Searchbar */}
-      <div className="flex gap-4 mb-6 items-stretch">
-        <input
-          type="text"
-          placeholder={searchPlaceholder}
-          className="p-2 border border-gray-300 rounded flex-grow focus:outline-none focus:border-AshinBlue transition"
-          onChange={handleSearch}
-          onKeyDown={handleClickSearch}
-          value={searchInput}
-        />
-        <button
-          className="bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 py-2 rounded hover:opacity-90 transition self-end"
-          onClick={handleClickSearch}
-        >
-          <FormattedMessage id="demands.search" defaultMessage="Search" />
-        </button>
-      </div>
       {/* List of Users */}
       <div className="overflow-x-auto">
         {/* Table of Users */}
@@ -116,7 +128,7 @@ const Demands = () => {
             <tr>
               <th className={` p-4 w-1/12  max-w-xs text-center`}>
                 {" "}
-                <FormattedMessage id="demands.name" defaultMessage="Name" />
+                <FormattedMessage id="demands.name" defaultMessage="ID" />
                 <br />
                 {!expanded && (
                   <span className="font-normal text-center text-sm text-gray-500">
@@ -151,13 +163,68 @@ const Demands = () => {
                 {" "}
                 <FormattedMessage id="demands.status" defaultMessage="Status" />
               </th>
-              <th className="w-1/12">
+              <th className="w-1/12 text-center">
                 {" "}
                 <FormattedMessage id="users.actions" defaultMessage="Actions" />
               </th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {demands?.map((demand) => (
+              <tr key={demand.id}>
+                <td className="p-4 text-center">
+                  {demand.id}
+                  <br />
+                  {!expanded && (
+                    <span className="text-gray-500 text-sm">
+                      {format(new Date(demand.limit_datetime), "dd/MM/yyyy")}
+                    </span>
+                  )}
+                </td>
+                {expanded && (
+                  <td className="p-4 text-center">
+                    {format(new Date(demand.limit_datetime), "dd/MM/yyyy")}
+                    <br />
+                    <span className="text-gray-500 text-sm">
+                      {format(
+                        new Date(demand.submitted_datetime),
+                        "dd/MM/yyyy"
+                      )}
+                    </span>
+                  </td>
+                )}
+                <td className="p-4 text-center">
+                  {demand.shop.location.address}
+                </td>
+                <td className={`p-4 text-center`}>
+                  <button
+                    className={`hover:opacity-60 ${
+                      demand.collect
+                        ? demand.status
+                          ? "text-green-500"
+                          : "text-orange-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    <QrCode size={23} />
+                  </button>
+                </td>
+                <td className="p-4 text-center">
+                  <button
+                    className="transition-transform duration-200 ease-in-out transform hover:scale-110 text-red-500"
+                    onClick={() => handleDeleteClick(demand.id)}
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                  <DeleteModal
+                    open={slectedDemandIdForDelete === demand.id}
+                    onClose={() => setSelectedDemandIdForDelete(null)}
+                    fetchUsers={() => deleteDemand(demand.id)}
+                  />{" "}
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
       {/* Pagination */}

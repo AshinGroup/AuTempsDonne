@@ -1,17 +1,75 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { Trash2, Map, Truck, Plane, Car, Train } from "lucide-react";
 import { format } from "date-fns";
 
+import AddCollectModal from "../modals/addCollectModal";
+import handleFetch from "../handleFetch";
+import DeleteModal from "../modals/deleteModal";
+import SlotsCollectModal from "../modals/slotsCollectModal";
+
 const Collects = () => {
-  // Display the events and Pagination
-  const [events, setEvents] = useState([]);
+  // Display the collects and Pagination
+  const [collects, setCollects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
   const pageNumbers = [];
   const pagesToShow = 2;
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
 
-  const intl = useIntl();
+  const [AddModalOpen, AddModalSetOpen] = useState(false);
+  const [slectedCollectIdForDelete, setSelectedCollectIdForDelete] =
+    useState(null);
+  const [SelectedCollectIdForSlots, setSelectedCollectIdForSlots] =
+    useState(null);
+
+  const fetchCollects = async () => {
+    try {
+      const data = await handleFetch("http://127.0.0.1:5000/api/collect");
+      if (data) {
+        setCollects(data);
+        setMaxPages(1);
+        // setCollects(data.collects);
+        // setMaxPages(data.max_pages);
+      }
+    } catch (error) {
+      console.error("Error fetching collects:", error);
+    }
+  };
+
+  // Remove a user from the API
+  const deleteCollect = async (collectId) => {
+    try {
+      const response = await handleFetch(
+        `http://127.0.0.1:5000/api/collect/${collectId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response) {
+        // Refresh the users list and quit the modal
+        fetchCollects();
+        setSelectedCollectIdForDelete(null);
+      }
+    } catch (error) {
+      console.error("Error deleting demand:", error);
+    }
+  };
+
+  // Set the user id to delete
+  const handleDeleteClick = (CollectId) => {
+    setSelectedCollectIdForDelete(CollectId);
+  };
+
+  // Fetch the users when we change Page
+  useEffect(() => {
+    fetchCollects();
+  }, [currentPage]);
+
   // Function to handle window resize
   useEffect(() => {
     const handleResize = () => {
@@ -36,6 +94,11 @@ const Collects = () => {
     pageNumbers.push(maxPages);
   }
 
+  // Set the user id to update
+  const handleSlotsClick = (CollectId) => {
+    setSelectedCollectIdForSlots(CollectId);
+  };
+
   // Fetch the users when we change Page
   useEffect(() => {
     // fetchEvents();
@@ -55,18 +118,20 @@ const Collects = () => {
           className={`text-base bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 ${
             expanded ? "py-3" : "py-2"
           } rounded transition hover:opacity-90 text-sm`}
-          //   onClick={}
+          onClick={() => {
+            AddModalSetOpen(true);
+          }}
         >
           <FormattedMessage
             id="collects.genCollect"
             defaultMessage="+ Generate a Collect"
           />
         </button>
-        {/* <AddEventModal
-              AddModalOpen={AddModalOpen}
-              AddModalSetOpen={() => AddModalSetOpen(false)}
-              fetchUsers={fetchEvents}
-            /> */}
+        <AddCollectModal
+          AddModalOpen={AddModalOpen}
+          AddModalSetOpen={() => AddModalSetOpen(false)}
+          fetchUsers={() => fetchCollects()}
+        />
       </div>
       {/* List of Users */}
       <div className="overflow-x-auto">
@@ -117,13 +182,102 @@ const Collects = () => {
                   defaultMessage="Vehicle"
                 />
               </th>
-              <th className="w-1/12">
+              <th className="w-1/12 text-center">
                 {" "}
                 <FormattedMessage id="users.actions" defaultMessage="Actions" />
               </th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {collects.length > 0 &&
+              collects.map((collect) => (
+                <tr key={collect.id}>
+                  {/* ID */}
+                  <td className="p-4 text-center">
+                    {collect.id}
+                    <br />
+                    {!expanded && (
+                      <span className="text-gray-500 text-sm">
+                        {collect.datetime}
+                      </span>
+                    )}
+                  </td>
+                  {/* Roadmap */}
+                  <td className="p-4 text-center">
+                    {/*collect.roadmap ? collect.roadmap : "WIP"*/}
+                    <button
+                      className=" hover:scale-110 text-AshinBlue"
+                      // onClick={() => handleDeleteClick(collect.id)}
+                    >
+                      <Map size={23} />
+                    </button>
+                  </td>
+                  {/* day of the collect */}
+
+                  {expanded && (
+                    <td className="p-4 text-center">{collect.datetime}</td>
+                  )}
+                  {/* max_slot */}
+                  <td
+                    className={` py-4 text-center ${
+                      !expanded ? "text-sm" : ""
+                    }`}
+                  >
+                    <button
+                      className={`bg-gradient-to-tr text-white px-2 py-1 rounded hover:opacity-90 transition self-end  ${
+                        collect.user?.length != 0
+                          ? "from-green-300 to-green-600"
+                          : "from-red-300 to-red-600"
+                      } `}
+                      onClick={() => handleSlotsClick(collect.id)}
+                    >
+                      {collect.user?.length}
+                    </button>
+                    {SelectedCollectIdForSlots === collect.id && (
+                      <SlotsCollectModal
+                        SlotsModalOpen={
+                          SelectedCollectIdForSlots === collect.id
+                        }
+                        SlotsModalSetOpen={() =>
+                          setSelectedCollectIdForSlots(null)
+                        }
+                        event={collect}
+                        fetchUsers={fetchCollects}
+                      />
+                    )}
+                  </td>
+                  {/* Licence plate */}
+                  <td className="p-4 text-center flex justify-center">
+                    {collect.vehicle.license_plate}{" "}
+                    <div className="ms-2 pt-1 text-AshinBlue-dark">
+                      {collect.vehicle.type == 1 ? (
+                        <Truck size={20} />
+                      ) : collect.vehicle.type == 2 ? (
+                        <Train size={20} />
+                      ) : collect.vehicle.type == 3 ? (
+                        <Car size={20} />
+                      ) : (
+                        <Plane size={20} />
+                      )}
+                    </div>
+                  </td>
+                  {/* Trash */}
+                  <td className="p-4 text-center">
+                    <button
+                      className=" hover:scale-110 text-red-500"
+                      onClick={() => handleDeleteClick(collect.id)}
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                    <DeleteModal
+                      open={slectedCollectIdForDelete === collect.id}
+                      onClose={() => setSelectedCollectIdForDelete(null)}
+                      fetchUsers={() => deleteCollect(collect.id)}
+                    />{" "}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
       {/* Pagination */}
