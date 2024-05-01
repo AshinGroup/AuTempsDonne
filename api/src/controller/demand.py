@@ -16,6 +16,8 @@ class DemandCheckArgs:
         parser.add_argument('limit_datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'limit_datetime'.")
         parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
         parser.add_argument('shop_id', type=int, required=True, help="Invalid or missing parameter 'shop_id'.")
+        parser.add_argument('demand_id', type=int, required=True, help="Invalid or missing parameter 'demand_id'.")
+
         parser.add_argument('additional', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'additional'.")
         args = parser.parse_args(strict=True)
         return args

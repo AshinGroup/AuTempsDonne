@@ -16,6 +16,7 @@ class CollectCheckArgs:
         parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
         parser.add_argument('demands', type=int, required=True, action='append', help="Invalid or missing parameter 'demands'.")
         parser.add_argument('vehicle_id', type=int, required=True, help="Invalid or missing parameter 'vehicle_id.")
+        
         args = parser.parse_args(strict=True)
         return args
 
