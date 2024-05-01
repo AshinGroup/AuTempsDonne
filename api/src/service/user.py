@@ -117,7 +117,7 @@ class UserService:
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
         if user.collects:
-            for collect in user.deliveries:
+            for collect in user.collects:
                 if collect.id == collect_id:
                     raise UserCollectsAlreadyExistsException(
                         user_id=user_id, collect_id=collect_id

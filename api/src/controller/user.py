@@ -242,7 +242,7 @@ class UserCollectsController(Resource):
             abort(http_status_code=404, message=str(e))
         except CollectIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except UserDeliversAlreadyExistsException as e:
+        except UserCollectsAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
@@ -255,7 +255,7 @@ class UserCollectsController(Resource):
             return jsonify({'message': f"User id '{user_id}' successfully leave collect id '{collect_id}'."})
         except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except UserDeliversNotFoundException as e:
+        except UserCollectsNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
