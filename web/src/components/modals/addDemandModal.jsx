@@ -278,28 +278,36 @@ function ShopSelect(register, errors, shops) {
   );
 }
 
-// ADD A TOGGLE SWITCH FOR THE FOODS SELECTION / CAN DELETE A FOOD SELECTION
 function FoodManager({ foods, selectedFood, setSelectedFood }) {
   const [selectedFoodId, setSelectedFoodId] = useState("");
   const [foodWeight, setFoodWeight] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
+  const [manualEntry, setManualEntry] = useState(false);
+  const [manualFoodName, setManualFoodName] = useState("");
 
   const handleAddFood = () => {
-    // Find the food object with the selectedFoodId
-    const selectedFoodObject = foods.find((food) => food.id == selectedFoodId);
+    let foodName = manualFoodName;
 
-    // Check if the food object is found and add it to the selectedFood list
-    if (selectedFoodObject?.name && selectedFoodId && expirationDate) {
+    if (!manualEntry) {
+      const selectedFoodObject = foods.find(
+        (food) => food.id === selectedFoodId
+      );
+      foodName = selectedFoodObject?.name;
+    }
+
+    if (foodName && foodWeight && expirationDate) {
       const newFood = {
-        id: selectedFoodId,
-        name: selectedFoodObject.name, // Use the name of the selected food
+        id: manualEntry ? Date.now().toString() : selectedFoodId, // Use timestamp as ID for manual entries
+        name: foodName,
         weight: foodWeight,
-        expirationDate: expirationDate, // Add the expiration date if available
+        expirationDate: expirationDate,
       };
 
       setSelectedFood([...selectedFood, newFood]);
 
+      // Reset fields
       setSelectedFoodId("");
+      setManualFoodName("");
       setFoodWeight("");
       setExpirationDate("");
     }
@@ -308,18 +316,57 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
   return (
     <>
       <div className="p-2 bg-AshinBlue-light border-0 w-96 rounded flex flex-col">
-        <select
-          value={selectedFoodId}
-          onChange={(e) => setSelectedFoodId(e.target.value)}
-          className="p-2 my-1 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
+        <label
+          htmlFor="toggleManual"
+          className="flex items-center justify-center cursor-pointer"
         >
-          <option value="">Select Food</option>
-          {foods.map((food) => (
-            <option key={food.id} value={food.id}>
-              {food.name}
-            </option>
-          ))}
-        </select>
+          <div className="relative">
+            <input
+              id="toggleManual"
+              type="checkbox"
+              className="sr-only"
+              onChange={() => setManualEntry(!manualEntry)}
+              checked={manualEntry}
+            />
+            <div
+              className={`block  ${
+                manualEntry ? "bg-blue-600" : "bg-gray-600"
+              } w-14 h-8 rounded-full`}
+            ></div>
+            <div
+              className={`dot absolute ${
+                manualEntry ? "right-1" : "left-1"
+              } top-1 bg-white w-6 h-6 rounded-full transition`}
+            ></div>
+          </div>
+          <div className="ml-3 text-sm font-medium">
+            {manualEntry ? "Manual Entry" : "Select Food"}
+          </div>
+        </label>
+
+        {manualEntry ? (
+          <input
+            type="text"
+            value={manualFoodName}
+            placeholder="Enter Food Name"
+            onChange={(e) => setManualFoodName(e.target.value)}
+            className="p-2 my-1 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
+          />
+        ) : (
+          <select
+            value={selectedFoodId}
+            onChange={(e) => setSelectedFoodId(e.target.value)}
+            className="p-2 my-1 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
+          >
+            <option value="">Select Food</option>
+            {foods.map((food) => (
+              <option key={food.id} value={food.id}>
+                {food.name}
+              </option>
+            ))}
+          </select>
+        )}
+
         <input
           type="number"
           value={foodWeight}
@@ -327,7 +374,6 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
           onChange={(e) => setFoodWeight(e.target.value)}
           className="p-2 my-1 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
         />
-        {/* Date & Time Selection */}
         <span className="mt-1 self-start font-semibold">Expiration Date :</span>
         <input
           type="datetime-local"
