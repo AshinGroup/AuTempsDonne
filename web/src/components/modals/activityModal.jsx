@@ -13,7 +13,7 @@ export default function ActivityModal({
 }) {
     const [responseMessage, setResponseMessage] = useState("");
     const [isErrorMessage, setIsErrorMessage] = useState(false);
-
+    const [isSubscribed, setIsSubscribed] = useState(false);
     const intl = useIntl();
 
     const titlePlaceholder = intl.formatMessage({
@@ -31,30 +31,89 @@ export default function ActivityModal({
         defaultMessage: "Location",
     });
 
-    const registryButton = intl.formatMessage({
-        id: "modal.registryButton",
-        defaultMessage: "Registry",
-    });
+    const registryButton = isSubscribed ? "Unsubscribe" : "Registry"; // change button
 
+    // to subscribe
     const handleRegistry = async (eventId) => {
         try {
-            const response = await handleFetch(
-                `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+            if (isSubscribed) {
+                handleUnsubscribe(eventId);
+            } else {
+                const response = await handleFetch(
+                    `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
 
-            setResponseMessage("You have successfully signed up for this activity!");
+                setResponseMessage("You have successfully signed up for this activity!");
+                setIsSubscribed(true);
+            }
         } catch (error) {
             console.error("An error occurred while signing up:", error);
             setResponseMessage("An error occurred while signing up.");
             setIsErrorMessage(true);
         }
     };
+
+    // to unsubscribe
+    const handleUnsubscribe = async (eventId) => {
+        try {
+            const response = await handleFetch(
+                `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            setResponseMessage("You have successfully unsubscribed from this activity!");
+            setIsSubscribed(false);
+        } catch (error) {
+            console.error("An error occurred while unsubscribing:", error);
+            setResponseMessage("An error occurred while unsubscribing.");
+            setIsErrorMessage(true);
+        }
+    };
+
+    // get event list to user participate
+    const fetchUserEvents = async (userId) => {
+        const url = `http://127.0.0.1:5000/api/user/${userId}`;
+
+        try {
+            const data = await handleFetch(url);
+            return data.events;
+        } catch (error) {
+            console.error("Error fetching user events:", error);
+            return [];
+        }
+    };
+
+    const isUserSubscribedToEvent = async (userId, eventId) => {
+        const userEvents = await fetchUserEvents(userId);
+        return userEvents.some(event => event.id === eventId);
+    };
+
+    const checkSubscription = async () => {
+        try {
+            const isSubscribed = await isUserSubscribedToEvent(userId, activity.id);
+            setIsSubscribed(isSubscribed);
+        } catch (error) {
+            console.error("An error occurred while checking subscription:", error);
+        }
+    };
+
+    useEffect(() => {
+        setResponseMessage("");
+
+        if (modalOpen) {
+            checkSubscription();
+        }
+    }, [modalOpen]);
+
+    
 
     return (
         <Modal open={modalOpen} onClose={() => setModalOpen(false)}>

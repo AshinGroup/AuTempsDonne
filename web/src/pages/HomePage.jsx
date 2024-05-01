@@ -20,8 +20,8 @@ const WelcomePage = () => {
   console.log(activeItem);
   const navigate = useNavigate();
   // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
-  // const rule = sessionStorage.getItem("rule");
-  const rule = "1";
+  const rule = sessionStorage.getItem("rule");
+  // const rule = "1";
 
   const getContent = () => {
     switch (activeItem) {

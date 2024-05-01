@@ -188,12 +188,8 @@ export default Activities;
 /*
         -> update le front -> notamment location pas assez large
 
-        -> implémenter le post pour s'inscrire a une activity
-
-        -> bouton pr s'inscrire et autre bouton pr se désinscrire
-
         -> search by 'type' ?
 
-        -> vérification ds la modal + les langues
+        -> les langues
 
 */
