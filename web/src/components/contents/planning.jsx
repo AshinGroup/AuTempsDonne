@@ -75,7 +75,7 @@ const Planning = () => {
                 <main className="w-full bg-white">
                     <h1 className="text-3xl flex items-center justify-center my-2 mt-24 mb-4">
                         <FormattedMessage
-                            id="seeMyPlanning"
+                            id="planning.title"
                             defaultMessage="See My Planning"
                         />
                     </h1>
@@ -84,7 +84,10 @@ const Planning = () => {
                         <div className="flex items-center mr-8">
                             <div className="bg-gray-200 rounded-full p-4">
                                 <span className="text-gray-800 font-semibold">
-                                    To see your planning, it's just here ...
+                                    <p><FormattedMessage
+                                        id="planning.bubleTitle"
+                                        defaultMessage="To see your planning, it's just here ..."
+                                    /></p>
                                 </span>
                             </div>
                         </div>

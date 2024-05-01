@@ -37,3 +37,5 @@ const Footer = () => {
 };
 
 export default Footer;
+
+// Faire le responsive

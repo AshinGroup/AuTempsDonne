@@ -124,7 +124,7 @@
   "updateProfileModal.email": "电子邮件：",
   "updateProfileModal.phone": "电话：",
   "updateProfileModal.roles": "角色：",
-  "updateProfileModal.events": "活动：",
+  "updateProfileModal.events": "您的事件列表：",
   "updateProfileModal.place": "地点：",
   "updateProfileModal.datetime": "日期时间：",
   "updateProfileModal.description": "描述：",
@@ -236,5 +236,12 @@
   "modal.dateTime": "日期和时间",
   "modal.location": "地点",
   "modal.description": "描述",
-  "modal.registryButton": "注册"
+  "modal.registryButton": "注册",
+
+  "event.unsubscribeButton": "取消订阅",
+  "event.registryButton": "注册",
+
+  "planning.title": "查看我的计划",
+  "planning.bubleTitle": "要查看您的计划，就在这里..."
+  
 }

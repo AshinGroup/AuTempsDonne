@@ -237,6 +237,12 @@
   "modal.dateTime": "Date & Time",
   "modal.location": "Location",
   "modal.description": "Description",
-  "modal.registryButton": "Registry"
+  "modal.registryButton": "Registry",
+
+  "event.unsubscribeButton": "Unsubscribe",
+  "event.registryButton": "Registry",
+
+  "planning.title": "See My Planning",
+  "planning.bubleTitle": "To see your planning, it's just here ..."
 
 }

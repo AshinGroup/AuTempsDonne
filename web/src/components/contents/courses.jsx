@@ -107,25 +107,25 @@ const Courses = () => {
                     <table className="w-full text-left">
                         <thead className="bg-gray-100">
                             <tr>
-                                <th className="p-4 w-1/3">
+                                <th className="p-4 w-1/5">
                                     <FormattedMessage id="event.title" defaultMessage="Title" />
                                 </th>
-                                <th className="p-4 w-1/3">
+                                <th className="p-4 w-1/5">
                                     <FormattedMessage id="event.type" defaultMessage="Type" />
                                 </th>
-                                <th className="p-4 w-1/3">
+                                <th className="p-4 w-1/5">
                                     <FormattedMessage
                                         id="event.dateTime"
                                         defaultMessage="Date & Time"
                                     />
                                 </th>
-                                <th className="p-4 w-1/3">
+                                <th className="p-4 w-2/5">
                                     <FormattedMessage
                                         id="event.location"
                                         defaultMessage="Location"
                                     />
                                 </th>
-                                <th className="p-4 w-1/3"><FormattedMessage id="event.actions" defaultMessage="Actions" /></th>
+                                <th className="p-4 w-1/5"><FormattedMessage id="event.actions" defaultMessage="Actions" /></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -184,10 +184,7 @@ const Courses = () => {
 export default Courses;
 
 /*
-        -> update le front -> notamment location pas assez large
 
         -> search by 'type' ?
-
-        -> les langues
 
 */
