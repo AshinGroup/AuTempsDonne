@@ -3,6 +3,9 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import Navbar from "../components/navbar";
 import Home from "../components/contents/home";
+import Services from "../components/contents/services";
+import Activities from "../components/contents/activities";
+import Courses from "../components/contents/courses";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
@@ -18,18 +21,18 @@ const WelcomePage = () => {
   const navigate = useNavigate();
   // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
   const rule = sessionStorage.getItem("rule");
-  // const rule = "1";
-
+  // const rule = "2";
+  
   const getContent = () => {
     switch (activeItem) {
       case "homepage":
         return <Home />;
       case "services":
-        return <div>Services</div>;
+        return <Services />;
       case "activities":
-        return <div>Activities</div>;
+        return <Activities />;
       case "courses":
-        return <div>Courses</div>;
+        return <Courses />;
       case "tocollect":
         return <div>To Demand</div>;
       case "genqr":

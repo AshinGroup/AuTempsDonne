@@ -9,12 +9,14 @@ export default function SlotsEventModal({
   SlotsModalSetOpen,
   event,
   fetchUsers,
-}) {
+}) {  
+  const userId = sessionStorage.getItem("user_id") || "";
+
   // Remove a user from the Course
   const deleteUserCourse = async (eventId) => {
     try {
       const response = await handleFetch(
-        `http://127.0.0.1:5000/api/user/${eventId}`,
+        `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
         {
           method: "DELETE",
           headers: {
@@ -22,10 +24,6 @@ export default function SlotsEventModal({
           },
         }
       );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
 
       // Refresh the users list
       fetchUsers();
