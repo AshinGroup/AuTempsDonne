@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { PlusSquare } from "lucide-react";
+import handleFetch from "../handleFetch";
 import { format } from "date-fns";
 import { Modal } from "./modal";
 
@@ -8,10 +9,11 @@ export default function ServicesModal({
     service,
     modalOpen,
     setModalOpen,
+    userId,
 }) {
     const [responseMessage, setResponseMessage] = useState("");
     const [isErrorMessage, setIsErrorMessage] = useState(false);
-
+    const [isSubscribed, setIsSubscribed] = useState(false);
     const intl = useIntl();
 
     const titlePlaceholder = intl.formatMessage({
@@ -29,24 +31,87 @@ export default function ServicesModal({
         defaultMessage: "Location",
     });
 
-    const registryButton = intl.formatMessage({
-        id: "modal.registryButton",
-        defaultMessage: "Registry",
-    });
+    const registryButton = isSubscribed ? "Unsubscribe" : "Registry"; // change button
 
-    const handleRegistry = async () => {
+    // to subscribe
+    const handleRegistry = async (eventId) => {
         try {
-            // post
-            // partie pour s'inscrire
-            
-            setResponseMessage("You have successfully signed up for this service!");
-            setIsErrorMessage(false);
+            if (isSubscribed) {
+                handleUnsubscribe(eventId);
+            } else {
+                const response = await handleFetch(
+                    `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                setResponseMessage("You have successfully signed up for this service!");
+                setIsSubscribed(true);
+            }
         } catch (error) {
             console.error("An error occurred while signing up:", error);
-            setResponseMessage("An error occurred while signing up. Please try again.");
+            setResponseMessage("An error occurred while signing up.");
             setIsErrorMessage(true);
         }
     };
+
+    // to unsubscribe
+    const handleUnsubscribe = async (eventId) => {
+        try {
+            const response = await handleFetch(
+                `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            setResponseMessage("You have successfully unsubscribed from this service!");
+            setIsSubscribed(false);
+        } catch (error) {
+            console.error("An error occurred while unsubscribing:", error);
+            setResponseMessage("An error occurred while unsubscribing.");
+            setIsErrorMessage(true);
+        }
+    };
+
+    // get event list to user participate
+    const fetchUserEvents = async (userId) => {
+        const url = `http://127.0.0.1:5000/api/user/${userId}`;
+
+        try {
+            const data = await handleFetch(url);
+            return data.events;
+        } catch (error) {
+            console.error("Error fetching user events:", error);
+            return [];
+        }
+    };
+
+    const isUserSubscribedToEvent = async (userId, eventId) => {
+        const userEvents = await fetchUserEvents(userId);
+        return userEvents.some(event => event.id === eventId);
+    };
+
+    const checkSubscription = async () => {
+        try {
+            const isSubscribed = await isUserSubscribedToEvent(userId, service.id);
+            setIsSubscribed(isSubscribed);
+        } catch (error) {
+            console.error("An error occurred while checking subscription:", error);
+        }
+    };
+
+    useEffect(() => {
+        setResponseMessage("");
+
+        if (modalOpen) {
+            checkSubscription();
+        }
+    }, [modalOpen]);
 
     return (
         <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
@@ -95,8 +160,8 @@ export default function ServicesModal({
                     <p className="text-gray-800">{service.description}</p>
 
                     <button
-                        onClick={handleRegistry}
                         className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
+                        onClick={() => handleRegistry(service.id)}
                     >
                         {registryButton}
                     </button>
@@ -105,16 +170,3 @@ export default function ServicesModal({
         </Modal>
     );
 }
-
-/*
-        -> update le front -> notamment location pas assez large
-
-        -> implémenter le post pour s'inscrire a un service
-
-        -> bouton pr s'inscrire et autre bouton pr se désinscrire
-
-        -> search by 'type' ?
-
-        -> vérification ds la modal + les langues
-
-*/

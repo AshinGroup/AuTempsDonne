@@ -183,8 +183,6 @@ const Activities = () => {
 
 export default Activities;
 
-
-
 /*
         -> update le front -> notamment location pas assez large
 

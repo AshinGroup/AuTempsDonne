@@ -14,6 +14,7 @@ const Services = () => {
     const [searchInput, setSearchInput] = useState("");
     const [selectedService, setSelectedService] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const userId = sessionStorage.getItem("user_id") || "";
 
     const intl = useIntl();
 
@@ -171,6 +172,7 @@ const Services = () => {
                         service={selectedService}
                         modalOpen={isModalOpen}
                         setModalOpen={setIsModalOpen}
+                        userId={userId}
                     />
                 )}
             </div>
@@ -180,3 +182,12 @@ const Services = () => {
 };
 
 export default Services;
+
+/*
+        -> update le front -> notamment location pas assez large
+
+        -> search by 'type' ?
+
+        -> les langues
+
+*/
