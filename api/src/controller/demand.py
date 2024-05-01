@@ -16,6 +16,7 @@ class DemandCheckArgs:
         parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
         parser.add_argument('shop_id', type=int, required=True, help="Invalid or missing parameter 'shop_id'.")
         parser.add_argument('additional', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'additional'.")
+        parser.add_argument('packages', action='append', help="Invalid or missing parameter 'packages'.")
         args = parser.parse_args(strict=True)
         return args
 

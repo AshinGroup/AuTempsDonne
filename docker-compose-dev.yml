@@ -45,6 +45,10 @@ services:
       GEOCODING_API_KEY: ${GEOCODING_API_KEY}
       OPRS_API_KEY: ${OPRS_API_KEY}
       GEOAPIFY_API_KEY: ${GEOAPIFY_API_KEY}
+      WASABI_ENDPOINT: ${WASABI_ENDPOINT}
+      WASABI_ACCESS_KEY: ${WASABI_ACCESS_KEY}
+      WASABI_SECRET_KEY: ${WASABI_SECRET_KEY}
+      WASABI_BUCKET_NAME: ${WASABI_BUCKET_NAME}
 
     # healthcheck:
     #   test: curl --fail http://localhost:5000/api/user || exit 1
