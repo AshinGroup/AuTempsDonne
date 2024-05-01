@@ -401,3 +401,7 @@ pyrightconfig.json
 data/
 
 roadmap*.html
+
+portainer_data/
+prometheus_data/
+grafana/

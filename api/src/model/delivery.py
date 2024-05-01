@@ -42,10 +42,20 @@ class Delivery(db.Model):
 
         return {'url': f"{os.getenv('API_PATH')}/delivery/{self.id}",
                 'id': self.id,
-                'name': self.name,
                 'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'vehicle': self.vehicle.json_rest(),
                 'user' : users
+                }
+    
+    def json_rest_vehicle(self):
+        users = [user.json_rest() for user in self.users] if self.users else []
+        locations = [location.json_rest() for location in self.locations] if self.locations else []
+
+        return {'url': f"{os.getenv('API_PATH')}/delivery/{self.id}",
+                'id': self.id,
+                'datetime': self.datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'user' : users,
+                'locations': locations,
                 }
 
 
