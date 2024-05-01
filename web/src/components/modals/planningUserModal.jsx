@@ -106,13 +106,15 @@ export default function PlanningUserModal({
         throw new Error("Network response was not ok");
       }
 
-      setSelectedEventIdForDelete(null);
       // Refresh the users list and quit the modal
       setEvents((prevEvents) =>
         prevEvents.filter((event) => event.id !== eventId)
       );
     } catch (error) {
       console.error("Error deleting event:", error);
+    } finally {
+      // Close the delete modal
+      setSelectedEventIdForDelete(null);
     }
   };
 
@@ -120,6 +122,7 @@ export default function PlanningUserModal({
   const handleDeleteClick = (eventId) => {
     setSelectedEventIdForDelete(eventId);
   };
+  
   return (
     <Modal open={PlanningModalOpen} onClose={PlanningModalSetOpen}>
       {/* Main Div */}

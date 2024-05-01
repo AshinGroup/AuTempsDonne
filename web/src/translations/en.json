@@ -125,7 +125,7 @@
   "updateProfileModal.email": "Email :",
   "updateProfileModal.phone": "phone :",
   "updateProfileModal.roles": "role(s) :",
-  "updateProfileModal.events": "Event(s) :",
+  "updateProfileModal.events": "List of your events :",
   "updateProfileModal.place": "Place :",
   "updateProfileModal.datetime": "DateTime :",
   "updateProfileModal.description": "Description :",

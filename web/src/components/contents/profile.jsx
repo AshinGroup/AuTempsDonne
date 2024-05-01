@@ -76,7 +76,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="flex justify-center w-screen bg-gradient-to-t from-AshinBlue-light to-AshinBlue-dark mb-96">
+    <div className="flex justify-center w-full bg-gradient-to-t from-AshinBlue-light to-AshinBlue-dark mb-96">
       <main className={`${expanded ? "w-4/6" : "w-full"} bg-white`}>
         {/* Return Button */}
         {/* <div className="flex justify-between mt-5 ps-5 ">
@@ -207,7 +207,7 @@ const Profile = () => {
                     {user.events.map((event, index) => (
                       <li
                         key={index}
-                        className="bg-AshinBlue p-2 border-0 rounded "
+                        className="bg-AshinBlue p-2 border-0 rounded mb-4"
                       >
                         <div className="font-bold text-xl pb-2 mb-2 border-b-2 border-white flex items-center justify-between text-white">
                           <span>{event.name}</span>
