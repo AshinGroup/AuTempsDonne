@@ -36,7 +36,7 @@ class DemandController(Resource):
             abort(http_status_code=404, message=str(e))
         except DemandAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except TypeAccessDbException as e:
+        except ShopAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
 
@@ -47,9 +47,7 @@ class DemandController(Resource):
             return jsonify({'message': f"Demand '{demand_id}' successfully updated."})
         except DemandIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except DemandIdGroupNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except TypeIdNotFoundException as e:
+        except ShopIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except DemandAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
@@ -87,14 +85,12 @@ class DemandListController(Resource):
         try:
             args = self.check_args.get_demand_args()
             self.demand_service.insert(args=args)
-            return jsonify({'message': f"Demand '{args['name']}' successfully created."})
+            return jsonify({'message': f"Demand successfully created."})
         except DemandAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except DemandIdGroupNotFoundException as e:
+        except ShopIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeIdNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
-        except TypeAccessDbException as e:
+        except ShopAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
 

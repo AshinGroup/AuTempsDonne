@@ -38,6 +38,23 @@ class UserIsRoleAlreadyExistsException(Exception):
     def __str__(self) -> str:
         return f"User id '{self.user_id}' is role id '{self.role_id}' already exists."
     
+
+class UserDeliversAlreadyExistsException(Exception):
+    def __init__(self, user_id: int, delivery_id: int) -> None:
+        self.user_id = user_id
+        self.delivery_id = delivery_id
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' participates delivery '{self.delivery_id}' already exists."
+    
+
+class UserCollectsAlreadyExistsException(Exception):
+    def __init__(self, user_id: int, collect_id: int) -> None:
+        self.user_id = user_id
+        self.collect_id = collect_id
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' participates collect '{self.collect_id}' already exists."
+    
+
 class UserRoleNotEmptyException(Exception):
     def __init__(self, user_id: int) -> None:
         self.user_id = user_id
@@ -62,6 +79,25 @@ class UserIsRoleNotFoundException(Exception):
 
     def __str__(self) -> str:
         return f"User id '{self.user_id}' is role id '{self.role_id}' not found."
+    
+
+class UserDeliversNotFoundException(Exception):
+    def __init__(self, user_id: int, delivery_id: int) -> None:
+        self.user_id = user_id
+        self.delivery_id = delivery_id
+
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' delivers '{self.delivery_id}' not found."
+
+
+class UserCollectsNotFoundException(Exception):
+    def __init__(self, user_id: int, collect_id: int) -> None:
+        self.user_id = user_id
+        self.collect_id = collect_id
+
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' collects '{self.collect_id}' not found."
+
 
 
 

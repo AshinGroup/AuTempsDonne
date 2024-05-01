@@ -13,7 +13,7 @@ class DeliveryCheckArgs:
     def get_delivery_args(self) -> dict:
         parser = reqparse.RequestParser()
         parser.add_argument('datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'datetime'.")
-        parser.add_argument('user_id', type=int, required=True, help="Invalid or missing parameter 'user_id'.")
+        parser.add_argument('status', type=inputs.regex(self.pattern['status']), required=True, help="Invalid or missing parameter 'status'.")
         parser.add_argument('locations', type=int, required=True, action='append', help="Invalid or missing parameter 'locations'.")
         args = parser.parse_args(strict=True)
         return args
@@ -133,7 +133,7 @@ class DeliversToLocationController(Resource):
             abort(http_status_code=404, message=str(e))
         except DeliveryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except DeliversToLocationEventAlreadyExistsException as e:
+        except DeliversToLocationAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
         except LocationAccessDbException as e:
             abort(http_status_code=500, message=str(e))

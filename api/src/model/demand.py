@@ -10,6 +10,8 @@ class Demand(db.Model):
     limit_datetime = db.Column(db.DateTime)
     status = db.Column(db.Integer) # 0 = Submitted / 1 = In Progress / 2 = Demanded
     additional = db.Column(db.Text)
+    collects = db.relationship(
+        'Collect', secondary='collects_demand', back_populates='demands')
     shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'), nullable=False)
  
 
@@ -30,6 +32,17 @@ class Demand(db.Model):
                 'limit_datetime': self.limit_datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'status': self.status,
                 'additional': self.additional
+                }
+    
+
+    def json_rest_collect(self):
+        return {'url': f"{os.getenv('API_PATH')}/demand/{self.id}",
+                'id': self.id,
+                'submitted_datetime': self.submitted_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'limit_datetime': self.limit_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'status': self.status,
+                'additional': self.additional,
+                'shop' : self.shop.json_shop()
                 }
 
 

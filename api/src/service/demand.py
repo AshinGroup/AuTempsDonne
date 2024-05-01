@@ -1,6 +1,6 @@
 from model.demand import Demand
 from repository.demand import DemandRepo
-from exception.demand import DemandIdNotFoundException, DemandIdGroupNotFoundException
+from exception.demand import DemandIdNotFoundException
 from exception.shop import ShopIdNotFoundException
 from service.shop import ShopService
 
@@ -38,8 +38,7 @@ class DemandService:
     def insert(self, args: dict):
         new_demand = Demand(submitted_datetime=args['submitted_datetime'], limit_datetime=args['limit_datetime'], status=args['status'],
                           additional=args['additional'], shop_id=args['shop_id'])
-        if new_demand.status < 0 or new_demand.status > 2:
-            raise DemandIdGroupNotFoundException
+
         if not self.shop_service.select_one_by_id(new_demand.shop_id):
             raise ShopIdNotFoundException
         self.shop_service.select_one_by_id(shop_id=new_demand.shop_id)
@@ -50,9 +49,6 @@ class DemandService:
         update_demand = Demand(submitted_datetime=args['submitted_datetime'], limit_datetime=args['limit_datetime'], status=args['status'],
                           additional=args['additional'], shop_id=args['shop_id'])
         demand = self.demand_repo.select_one_by_id(demand_id=demand_id)
-
-        if update_demand.status < 0 or update_demand.status > 2:
-            raise DemandIdStatusNotFoundException
 
         if not demand:
             raise DemandIdNotFoundException(demand_id=demand_id)

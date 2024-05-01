@@ -1,8 +1,8 @@
 from model.delivery import Delivery
 from repository.delivery import DeliveryRepo
-from exception.delivery import DeliveryIdNotFoundException, DeliversToLocationEventAlreadyExistsException, DeliversToLocationNotFoundException
+from exception.delivery import DeliveryIdNotFoundException, DeliversToLocationAlreadyExistsException, DeliversToLocationNotFoundException
 from service.location import LocationService
-from service.user import UserService
+
 
 
 class DeliveryService:
@@ -10,7 +10,6 @@ class DeliveryService:
     def __init__(self) -> None:
         self.delivery_repo = DeliveryRepo()
         self.location_service = LocationService()
-        self.user_service = UserService()
 
     def select_one_by_id(self, delivery_id: int):
         delivery = self.delivery_repo.select_one_by_id(delivery_id=delivery_id)
@@ -34,9 +33,8 @@ class DeliveryService:
 
 
     def insert(self, args: dict):
-        new_delivery = Delivery(datetime=args['datetime'], user_id=args['user_id'])
+        new_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=None)
         self.delivery_repo.select_one_by_id(delivery_id=new_delivery.id)
-        self.user_service.select_one_by_id(new_delivery.user_id)
         for location_id in args['locations']:
             self.location_service.select_one_by_id(location_id=location_id)
 
@@ -50,16 +48,15 @@ class DeliveryService:
         if delivery.locations:
             for location in delivery.locations:
                 if location.id == location_id:
-                    raise DeliversToLocationEventAlreadyExistsException(delivery_id=delivery_id, location_id=location_id)
+                    raise DeliversToLocationAlreadyExistsException(delivery_id=delivery_id, location_id=location_id)
         self.location_service.select_one_by_id(location_id=location_id)
         self.delivery_repo.insert_location(delivery_id=delivery_id, location_id=location_id)  
                     
 
 
     def update(self, delivery_id: int, args: dict):
-        update_delivery = Delivery(datetime=args['datetime'], user_id=args['user_id'])
+        update_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=None)
         self.delivery_repo.select_one_by_id(delivery_id=delivery_id)
-        self.delivery_repo.select_one_by_id(delivery_id=update_delivery.id)
         self.delivery_repo.update(delivery_id=delivery_id, update_delivery=update_delivery)
 
 
@@ -76,6 +73,7 @@ class DeliveryService:
             for location in delivery.locations:
                 if location.id == location_id:
                     location_exist = True
+                    break
         if not location_exist:
             raise DeliversToLocationNotFoundException(
                 delivery_id=delivery_id, location_id=location_id)
