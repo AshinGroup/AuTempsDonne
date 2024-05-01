@@ -63,6 +63,8 @@ services:
     restart: always
     depends_on:
       - backend
+    volumes:
+      - /app/node_modules
 
   portainer:
     image: portainer/portainer-ce
@@ -70,7 +72,7 @@ services:
       - 9000:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./portainer_data:/data
+      - ./docker-data/portainer_data:/data
     restart: always
 
   cadvisor:
