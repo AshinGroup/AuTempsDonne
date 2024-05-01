@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 const ErrorPage = () => {
   return (
     <div className="flex justify-content items-center">

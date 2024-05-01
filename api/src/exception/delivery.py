@@ -18,7 +18,7 @@ class DeliveryAccessDbException(Exception):
             return f"Error {self.method} deliveries."
 
 
-class DeliversToLocationEventAlreadyExistsException(Exception):
+class DeliversToLocationAlreadyExistsException(Exception):
     def __init__(self, delivery_id: int, location_id: int) -> None:
         self.delivery_id = delivery_id
         self.location_id = location_id
@@ -32,4 +32,4 @@ class DeliversToLocationNotFoundException(Exception):
         self.location_id = location_id
 
     def __str__(self) -> str:
-        return f"Delivery id '{self.delivery_id}' don't contains location id '{self.location_id}'."
+        return f"Delivery id '{self.delivery_id}' don't contain location id '{self.location_id}'."

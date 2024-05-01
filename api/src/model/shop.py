@@ -28,4 +28,13 @@ class Shop(db.Model):
         return {'url': f"{os.getenv('API_PATH')}/shop/{self.id}", 
                 'id': self.id,
                 'company': self.company.json_rest()}
+    
+    
+    def json_rest_demand(self):
+        return {'url': f"{os.getenv('API_PATH')}/shop/{self.id}", 
+                'id': self.id,
+                'company': self.company.json_rest(),
+                'location': self.location.json_rest()}
+    
+
 

@@ -8,14 +8,14 @@ from scipy.spatial.distance import cdist
 import pandas as pd
 import requests
 from requests.structures import CaseInsensitiveDict
-from service.delivery import DeliveryService
+from service.location import LocationService
 import os
-
+from datetime import datetime
 
 # Traveling Salesman Problem 
 class RoadmapService:
     def __init__(self) -> None:
-        self.delivery_service = DeliveryService()
+        self.location_service = LocationService()
 
 
     def distance(self, coord1, coord2):
@@ -75,18 +75,15 @@ class RoadmapService:
         max_dist = pairs.ravel().max()
         for i in range(locations.shape[0]):
             pairs[i, i] = max_dist
-        arg = numpy.argmin(pairs, axis=1)
-        arg_dist = [(pairs[i, arg[i]], i, arg[i]) for i in range(locations.shape[0])]
-        mn = min(arg_dist)
-        perm = list(mn[1:])
-        pairs[perm[0], :] = max_dist
-        pairs[:, perm[0]] = max_dist
+        perm = []
         while len(perm) < locations.shape[0]:
-            last = perm[-1]
-            arg = numpy.argmin(pairs[last:last+1])
-            perm.append(arg)
-            pairs[perm[-2], :] = max_dist
-            pairs[:, perm[-2]] = max_dist
+            last = perm[-1] if perm else None
+            arg = np.unravel_index(np.argmin(pairs), pairs.shape)
+            next_index = arg[1] if arg[0] != last else arg[0]
+            perm.append(next_index)
+            pairs[next_index, :] = max_dist
+            pairs[:, next_index] = max_dist
+        print(perm)
         return perm
 
 
@@ -100,7 +97,7 @@ class RoadmapService:
             if min_dist == -1 or self.turn_distance(locations, perm) < min_dist:
                 min_dist = self.turn_distance(locations, perm)
                 optimal_order = perm
-        
+
         return optimal_order
     
 
@@ -165,12 +162,10 @@ class RoadmapService:
         ne = df[['Lat', 'Lon']].max().values.tolist()
         return sw, ne
 
-    def create_map(self, locations: list[Location], delivery_id: int):
+    def create_map(self, locations: list[Location]):
         m = folium.Map()
-        df = pd.DataFrame()
-
-        # Marks
         
+        # Marks
         for i in range(len(locations)):
             description = f"{'Starting Point : ' if i == 0 else f'Location {i} : '}{locations[i].address}"
             point = [locations[i].latitude, locations[i].longitude]
@@ -186,14 +181,13 @@ class RoadmapService:
 
         # Line
         points, distance, distance_units, time = self.get_direction_details(locations=locations)
-        # print(points)
         folium.PolyLine(points, weight=5, opacity=1).add_to(m)
-
         
         sw, ne = self.get_map_zoom(points)
         m.fit_bounds([sw, ne])
-
-        path = f"roadmap_delivery_{delivery_id}.html"
+        time = datetime.now()
+        formatted_time = time.strftime('%Y-%m-%d_%H_%M_%f')
+        path = f"roadmap_{formatted_time}.html"
         m.save(path)
         return path, distance, distance_units, time
 
@@ -205,12 +199,15 @@ class RoadmapService:
         if os.path.exists(filepath):
             os.remove(filepath)
 
-    def generate_roadmap(self, delivery_id: int):
-        delivery = self.delivery_service.select_one_by_id(delivery_id=delivery_id)
-        coordinates_array = self.transform_locations(delivery.locations)
+    def generate_roadmap(self, locations_id: int):
+        locations = list()
+        for id in locations_id:
+            locations.append(self.location_service.select_one_by_id(location_id=id))
+        # locations = self.location_service.select_all_by_id(locations_id=locations_id)
+        coordinates_array = self.transform_locations(locations)
         optimal_order = self.get_optimal_order_index(locations=coordinates_array)
-        ordered_locations = self.get_ordered_locations(locations=delivery.locations, optimal_order=optimal_order)
-        path , distance, distance_units, time = self.create_map(locations=ordered_locations, delivery_id=delivery_id)
+        ordered_locations = self.get_ordered_locations(locations=locations, optimal_order=optimal_order)
+        path , distance, distance_units, time = self.create_map(locations=ordered_locations)
         response = {
             'locations': [location.json_rest() for location in ordered_locations],
             'distance': distance,
@@ -218,7 +215,6 @@ class RoadmapService:
             'time': time,
             'map':  self.get_map_html(path),
         }
-        print(response)
         return response
 
 

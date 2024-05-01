@@ -1,6 +1,8 @@
 from model.user import User
 from model.event import Event
 from model.role import Role
+from model.delivery import Delivery
+from model.collect import Collect
 from database.db import db
 from app import app
 from exception.user import UserAccessDbException
@@ -113,6 +115,30 @@ class UserRepo():
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="inserting")     
         
+    
+    def insert_delivery(self, user_id: int, delivery_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(id=user_id).first()
+                delivery = Delivery.query.filter_by(id=delivery_id).first()
+                user.deliveries.append(delivery)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="inserting")   
+    
+        
+    def insert_collect(self, user_id: int, collect_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(id=user_id).first()
+                collect = Collect.query.filter_by(id=collect_id).first()
+                user.collects.append(collect)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="inserting")   
+
 
     def update(self, user_id: int, update_user: User) -> None:
         try:
@@ -153,16 +179,30 @@ class UserRepo():
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="deleting") 
 
-    def delete_role(self, user_id: int, role_id: int) -> None:
+    def delete_delivery(self, user_id: int, delivery_id: int) -> None:
         try:
             with app.app_context():
                 user = User.query.filter_by(id=user_id).first()
-                role = Role.query.filter_by(id=role_id).first()
-                user.roles.remove(role)
+                delivery = Delivery.query.filter_by(id=delivery_id).first()
+                user.deliveries.remove(delivery)
                 db.session.commit()
                 db.session.close()
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="deleting") 
+        
+
+    def delete_collect(self, user_id: int, collect_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(id=user_id).first()
+                collect = Collect.query.filter_by(id=collect_id).first()
+                user.collects.remove(collect)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="deleting") 
+
+    
             
          
             

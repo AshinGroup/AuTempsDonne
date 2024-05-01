@@ -20,6 +20,13 @@ class LocationService:
     def select_all(self):
         events = self.location_repo.select_all()
         return events
+    
+    def select_all_by_id(self, locations_id: list[int]):
+        locations = self.location_repo.select_all_by_id(locations_id=locations_id)
+        if locations:
+            return locations
+        else:
+            raise LocationIdNotFoundException(location_id=-1)
 
     def insert(self, args: dict):
         new_location = Location(

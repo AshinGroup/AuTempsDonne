@@ -31,7 +31,7 @@ const WelcomePage = () => {
       case "courses":
         return <div>Courses</div>;
       case "tocollect":
-        return <div>To Collect</div>;
+        return <div>To Demand</div>;
       case "genqr":
         return <div>Generate QR Code</div>;
       case "planning":
