@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { format } from "date-fns";
 
+import AddDemandModal from "../modals/addDemandModal";
+
 const Demands = () => {
   // Display the events and Pagination
   const [events, setEvents] = useState([]);
@@ -11,6 +13,8 @@ const Demands = () => {
   const pagesToShow = 2;
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [searchInput, setSearchInput] = useState("");
+
+  const [AddModalOpen, AddModalSetOpen] = useState(true);
 
   const intl = useIntl();
   const searchPlaceholder = intl.formatMessage({
@@ -43,18 +47,18 @@ const Demands = () => {
 
   // Fetch the users when we change Page
   useEffect(() => {
-    // fetchEvents();
+    // fetchDemands();
   }, [currentPage]);
 
   const handleClickSearch = (e) => {
-    if (e.type == "click" || e.keyCode == 13) fetchEvents();
+    if (e.type == "click" || e.keyCode == 13) fetchDemands();
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchInput(e.target.value);
     if (e.keyCode == 13) {
-      fetchEvents();
+      fetchDemands();
     }
   };
 
@@ -72,18 +76,20 @@ const Demands = () => {
           className={`text-base bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 ${
             expanded ? "py-3" : "py-2"
           } rounded transition hover:opacity-90 text-sm`}
-          //   onClick={}
+          onClick={() => {
+            AddModalSetOpen(true);
+          }}
         >
           <FormattedMessage
             id="demands.addADemand"
             defaultMessage="+ Add a new demand"
           />
         </button>
-        {/* <AddEventModal
-              AddModalOpen={AddModalOpen}
-              AddModalSetOpen={() => AddModalSetOpen(false)}
-              fetchUsers={fetchEvents}
-            /> */}
+        <AddDemandModal
+          AddModalOpen={AddModalOpen}
+          AddModalSetOpen={() => AddModalSetOpen(false)}
+          fetchUsers={() => fetchDemands()}
+        />
       </div>
       {/* Searchbar */}
       <div className="flex gap-4 mb-6 items-stretch">
