@@ -111,9 +111,7 @@ export default function ActivityModal({
         if (modalOpen) {
             checkSubscription();
         }
-    }, [modalOpen]);
-
-    
+    }, [modalOpen]);   
 
     return (
         <Modal open={modalOpen} onClose={() => setModalOpen(false)}>

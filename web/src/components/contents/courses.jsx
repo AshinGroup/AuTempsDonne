@@ -14,6 +14,7 @@ const Courses = () => {
     const [searchInput, setSearchInput] = useState("");
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const userId = sessionStorage.getItem("user_id") || "";
 
     const intl = useIntl();
 
@@ -171,6 +172,7 @@ const Courses = () => {
                     course={selectedCourse}
                         modalOpen={isModalOpen}
                         setModalOpen={setIsModalOpen}
+                        userId={userId}
                     />
                 )}
             </div>
@@ -181,17 +183,11 @@ const Courses = () => {
 
 export default Courses;
 
-
-
 /*
         -> update le front -> notamment location pas assez large
 
-        -> implémenter le post pour s'inscrire a une course (formation / cours)
-
-        -> bouton pr s'inscrire et autre bouton pr se désinscrire
-
         -> search by 'type' ?
 
-        -> vérification ds la modal + les langues
+        -> les langues
 
 */
