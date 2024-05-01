@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { PlusSquare } from "lucide-react";
+import handleFetch from "../handleFetch";
 import { format } from "date-fns";
 import { Modal } from "./modal";
 
@@ -8,6 +9,7 @@ export default function ActivityModal({
     activity,
     modalOpen,
     setModalOpen,
+    userId,
 }) {
     const [responseMessage, setResponseMessage] = useState("");
     const [isErrorMessage, setIsErrorMessage] = useState(false);
@@ -34,16 +36,22 @@ export default function ActivityModal({
         defaultMessage: "Registry",
     });
 
-    const handleRegistry = async () => {
+    const handleRegistry = async (eventId) => {
         try {
-            // post
-            // partie pour s'inscrire à l'activité...
-            
+            const response = await handleFetch(
+                `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
             setResponseMessage("You have successfully signed up for this activity!");
-            setIsErrorMessage(false);
         } catch (error) {
             console.error("An error occurred while signing up:", error);
-            setResponseMessage("An error occurred while signing up. Please try again.");
+            setResponseMessage("An error occurred while signing up.");
             setIsErrorMessage(true);
         }
     };
@@ -95,8 +103,8 @@ export default function ActivityModal({
                     <p className="text-gray-800">{activity.description}</p>
 
                     <button
-                        onClick={handleRegistry}
                         className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
+                        onClick={() => handleRegistry(activity.id)}
                     >
                         {registryButton}
                     </button>

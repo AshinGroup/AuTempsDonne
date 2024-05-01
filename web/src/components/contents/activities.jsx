@@ -14,6 +14,7 @@ const Activities = () => {
     const [searchInput, setSearchInput] = useState("");
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const userId = sessionStorage.getItem("user_id") || "";
 
     const intl = useIntl();
 
@@ -171,6 +172,7 @@ const Activities = () => {
                         activity={selectedActivity}
                         modalOpen={isModalOpen}
                         setModalOpen={setIsModalOpen}
+                        userId={userId}
                     />
                 )}
             </div>
