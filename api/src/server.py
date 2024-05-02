@@ -100,7 +100,8 @@ api.add_resource(StoragePageController, f'{prefix}/storage/page/<int:page>')
 
 api.add_resource(WarehouseController, f'{prefix}/warehouse/<int:warehouse_id>')
 api.add_resource(WarehouseListController, f'{prefix}/warehouse')
-api.add_resource(WarehousePageController, f'{prefix}/warehouse/page/<int:page>')
+api.add_resource(WarehousePageController,
+                 f'{prefix}/warehouse/page/<int:page>')
 
 api.add_resource(CompanyController, f'{prefix}/company/<int:company_id>')
 api.add_resource(CompanyListController, f'{prefix}/company')
@@ -124,7 +125,7 @@ api.add_resource(CollectController, f'{prefix}/collect/<int:collect_id>')
 api.add_resource(CollectListController, f'{prefix}/collect')
 api.add_resource(CollectPageController, f'{prefix}/collect/page/<int:page>')
 
-api.add_resource(DemandController, f'{prefix}/demand/<int:collect_id>')
+api.add_resource(DemandController, f'{prefix}/demand/<int:demand_id>')
 api.add_resource(DemandListController, f'{prefix}/demand')
 api.add_resource(DemandPageController, f'{prefix}/demand/page/<int:page>')
 
@@ -135,8 +136,6 @@ api.add_resource(VehicleListController, f'{prefix}/vehicle')
 #                  f'{prefix}/shop/page/<int:page>/search/<string:search>')
 # api.add_resource(DeliversToLocationController,
 #                  f'{prefix}/delivery/<int:delivery_id>/location/<int:location_id>')
-
-
 
 
 api.add_resource(RoadmapController, f'{prefix}/roadmap')

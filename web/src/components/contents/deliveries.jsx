@@ -1,17 +1,75 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { Trash2, Map, Truck, Plane, Car, Train } from "lucide-react";
 import { format } from "date-fns";
 
+import AddDeliveryModal from "../modals/addDeliveryModal";
+import handleFetch from "../handleFetch";
+import DeleteModal from "../modals/deleteModal";
+import SlotsDeliveryModal from "../modals/slotsDeliveryModal";
+
 const Deliveries = () => {
-  // Display the events and Pagination
-  const [events, setEvents] = useState([]);
+  // Display the deliveries and Pagination
+  const [deliveries, setDeliveries] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
   const pageNumbers = [];
   const pagesToShow = 2;
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
 
-  const intl = useIntl();
+  const [AddModalOpen, AddModalSetOpen] = useState(false);
+  const [slectedDeliveryIdForDelete, setSelectedDeliveryIdForDelete] =
+    useState(null);
+  const [SelectedDeliveryIdForSlots, setSelectedDeliveryIdForSlots] =
+    useState(null);
+
+  const fetchDeliveries = async () => {
+    try {
+      const data = await handleFetch("http://127.0.0.1:5000/api/delivery");
+      if (data) {
+        setDeliveries(data);
+        setMaxPages(1);
+        // setDeliveries(data.deliveries);
+        // setMaxPages(data.max_pages);
+      }
+    } catch (error) {
+      console.error("Error fetching deliveries:", error);
+    }
+  };
+
+  // Remove a user from the API
+  const deleteDelivery = async (deliveryId) => {
+    try {
+      const response = await handleFetch(
+        `http://127.0.0.1:5000/api/delivery/${deliveryId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response) {
+        // Refresh the users list and quit the modal
+        fetchDeliveries();
+        setSelectedDeliveryIdForDelete(null);
+      }
+    } catch (error) {
+      console.error("Error deleting demand:", error);
+    }
+  };
+
+  // Set the user id to delete
+  const handleDeleteClick = (DeliveryId) => {
+    setSelectedDeliveryIdForDelete(DeliveryId);
+  };
+
+  // Fetch the users when we change Page
+  useEffect(() => {
+    fetchDeliveries();
+  }, [currentPage]);
+
   // Function to handle window resize
   useEffect(() => {
     const handleResize = () => {
@@ -36,10 +94,10 @@ const Deliveries = () => {
     pageNumbers.push(maxPages);
   }
 
-  // Fetch the users when we change Page
-  useEffect(() => {
-    // fetchEvents();
-  }, [currentPage]);
+  // Set the user id to update
+  const handleSlotsClick = (DeliveryId) => {
+    setSelectedDeliveryIdForSlots(DeliveryId);
+  };
 
   return (
     <div className={`h-screen p-8 pt-8 ${expanded ? "mx-6" : "mx-1"}`}>
@@ -58,18 +116,20 @@ const Deliveries = () => {
           className={`text-base bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 ${
             expanded ? "py-3" : "py-2"
           } rounded transition hover:opacity-90 text-sm`}
-          //   onClick={}
+          onClick={() => {
+            AddModalSetOpen(true);
+          }}
         >
           <FormattedMessage
             id="deliveries.genDelivery"
             defaultMessage="+ Generate a Delivery"
           />
         </button>
-        {/* <AddEventModal
-              AddModalOpen={AddModalOpen}
-              AddModalSetOpen={() => AddModalSetOpen(false)}
-              fetchUsers={fetchEvents}
-            /> */}
+        <AddDeliveryModal
+          AddModalOpen={AddModalOpen}
+          AddModalSetOpen={() => AddModalSetOpen(false)}
+          fetchUsers={() => fetchDeliveries()}
+        />
       </div>
       {/* List of Users */}
       <div className="overflow-x-auto">
@@ -79,12 +139,12 @@ const Deliveries = () => {
             <tr>
               <th className={` p-4 w-1/12  max-w-xs text-center`}>
                 {" "}
-                <FormattedMessage id="collects.id" defaultMessage="ID" />
+                <FormattedMessage id="deliveries.id" defaultMessage="ID" />
                 <br />
                 {!expanded && (
                   <span className="font-normal text-center text-sm text-gray-500">
                     <FormattedMessage
-                      id="delivery.datetime"
+                      id="deliveries.datetime"
                       defaultMessage="Day of Delivery"
                     />
                   </span>
@@ -93,7 +153,7 @@ const Deliveries = () => {
               <th className="p-4 w-1/12 max-w-xs text-center">
                 {" "}
                 <FormattedMessage
-                  id="collects.roadmap"
+                  id="deliveries.roadmap"
                   defaultMessage="Roadmap"
                 />
               </th>
@@ -101,7 +161,7 @@ const Deliveries = () => {
                 <th className={` p-4 w-1/12 text-center max-w-xs`}>
                   {" "}
                   <FormattedMessage
-                    id="delivery.datetime"
+                    id="deliveries.datetime"
                     defaultMessage="Day of Delivery"
                   />
                 </th>
@@ -109,24 +169,114 @@ const Deliveries = () => {
               <th className="p-4 w-1/12 max-w-xs text-center">
                 {" "}
                 <FormattedMessage
-                  id="collects.assigned"
+                  id="deliveries.assigned"
                   defaultMessage="Assigned"
                 />
               </th>
               <th className="p-4 w-1/12 max-w-xs text-center">
                 {" "}
                 <FormattedMessage
-                  id="collects.vehicle"
+                  id="deliveries.vehicle"
                   defaultMessage="Vehicle"
                 />
               </th>
-              <th className="w-1/12">
+              <th className="w-1/12 text-center">
                 {" "}
                 <FormattedMessage id="users.actions" defaultMessage="Actions" />
               </th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {deliveries.length > 0 &&
+              deliveries.map((delivery) => (
+                <tr key={delivery.id}>
+                  {/* ID */}
+                  <td className="p-4 text-center">
+                    {delivery.id}
+                    <br />
+                    {!expanded && (
+                      <span className="text-gray-500 text-sm">
+                        {format(new Date(delivery.datetime), "dd/MM/yyyy")}
+                      </span>
+                    )}
+                  </td>
+
+                  {/* Roadmap */}
+                  <td className="p-4 text-center">
+                    {/*delivery.roadmap ? delivery.roadmap : "WIP"*/}
+                    <button
+                      className=" hover:scale-110 text-AshinBlue"
+                      // onClick={() => handleDeleteClick(delivery.id)}
+                    >
+                      <Map size={23} />
+                    </button>
+                  </td>
+                  {/* day of the delivery */}
+
+                  {expanded && (
+                    <td className="p-4 text-center">{delivery.datetime}</td>
+                  )}
+                  {/* max_slot */}
+                  <td
+                    className={` py-4 text-center ${
+                      !expanded ? "text-sm" : ""
+                    }`}
+                  >
+                    <button
+                      className={`bg-gradient-to-tr text-white px-2 py-1 rounded hover:opacity-90 transition self-end  ${
+                        delivery.user?.length != 0
+                          ? "from-green-300 to-green-600"
+                          : "from-red-300 to-red-600"
+                      } `}
+                      onClick={() => handleSlotsClick(delivery.id)}
+                    >
+                      {delivery.user?.length}
+                    </button>
+                    {SelectedDeliveryIdForSlots === delivery.id && (
+                      <SlotsDeliveryModal
+                        SlotsModalOpen={
+                          SelectedDeliveryIdForSlots === delivery.id
+                        }
+                        SlotsModalSetOpen={() =>
+                          setSelectedDeliveryIdForSlots(null)
+                        }
+                        event={delivery}
+                        fetchUsers={fetchDeliveries}
+                      />
+                    )}
+                  </td>
+                  {/* Licence plate */}
+                  <td className="p-4 text-center flex justify-center">
+                    {delivery.vehicle.license_plate}{" "}
+                    <div className="ms-2 pt-1 text-AshinBlue-dark">
+                      {delivery.vehicle.type == 1 ? (
+                        <Truck size={20} />
+                      ) : delivery.vehicle.type == 2 ? (
+                        <Train size={20} />
+                      ) : delivery.vehicle.type == 3 ? (
+                        <Car size={20} />
+                      ) : (
+                        <Plane size={20} />
+                      )}
+                    </div>
+                  </td>
+                  {/* Trash */}
+                  <td className="p-4 text-center">
+                    <button
+                      className=" hover:scale-110 text-red-500"
+                      onClick={() => handleDeleteClick(delivery.id)}
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                    <DeleteModal
+                      open={slectedDeliveryIdForDelete === delivery.id}
+                      onClose={() => setSelectedDeliveryIdForDelete(null)}
+                      fetchUsers={() => deleteDelivery(delivery.id)}
+                    />{" "}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
       {/* Pagination */}
