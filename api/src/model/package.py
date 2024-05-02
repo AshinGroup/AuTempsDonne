@@ -10,7 +10,7 @@ class Package(db.Model):
     expiration_date = db.Column(db.DateTime)
     food_id = db.Column(db.Integer, db.ForeignKey('food.id'), nullable=False)
     storage_id = db.Column(db.Integer, db.ForeignKey('storage.id'), nullable=False)
-    # delivery_id = db.Column(db.Integer, db.ForeignKey('delivery.id'), nullable=True)
+    delivery_id = db.Column(db.Integer, db.ForeignKey('delivery.id'))
     
 
     def json(self):

@@ -109,7 +109,6 @@ class ProtectedController(Resource):
         self.user_service = UserService()
 
     @jwt_required()
-    # @roles_required(5)
     def get(self):
         role_id = -1
         current_user = get_jwt_identity()

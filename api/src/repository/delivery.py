@@ -1,5 +1,6 @@
 from model.delivery import Delivery
 from model.location import Location
+from model.package import Package
 from database.db import db
 from app import app
 from exception.delivery import DeliveryAccessDbException
@@ -48,13 +49,16 @@ class DeliveryRepo():
             raise DeliveryAccessDbException(delivery_id=None, method="getting")
 
 
-    def insert(self, new_delivery: Delivery, locations: list[int]) -> None:
+    def insert(self, new_delivery: Delivery, locations: list[int], packages: list[int]) -> None:
         try:
             with app.app_context():
                 db.session.add(new_delivery)
                 to_add_locations = Location.query.filter(Location.id.in_(locations)).all()
                 for location in to_add_locations:
                     new_delivery.locations.append(location)
+                to_add_packages = Package.query.filter(Package.id.in_(packages)).all()
+                for package in to_add_packages:
+                    new_delivery.packages.append(package)
                 db.session.flush()
                 new_delivery_id = new_delivery.id
                 db.session.commit()

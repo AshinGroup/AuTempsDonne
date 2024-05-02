@@ -25,3 +25,12 @@ class PackageAccessDbException(Exception):
             return f"Error {self.method} package '{self.package_id}'."
         else: 
             return f"Error {self.method} packages."
+
+
+class PackageDeliveryAlreadyExistsException(Exception):
+    def __init__(self, package_id: int) -> None:
+        self.package_id = package_id
+
+    def __str__(self) -> str:
+        return f"Package with id '{self.package_id}' has already an delivery_id."
+

@@ -10,13 +10,14 @@ class DemandCheckArgs:
                'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b'}  # format : YYYY-MM-DD.
         
     
-    def get_demand_args(self) -> dict:
+    def get_demand_args(self, method=None) -> dict:
         parser = reqparse.RequestParser()
         parser.add_argument('limit_datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'limit_datetime'.")
         parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
         parser.add_argument('shop_id', type=int, required=True, help="Invalid or missing parameter 'shop_id'.")
         parser.add_argument('additional', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'additional'.")
-        parser.add_argument('packages', action='append', help="Invalid or missing parameter 'packages'.")
+        if method == "post":
+            parser.add_argument('packages', action='append', help="Invalid or missing parameter 'packages'.")
         args = parser.parse_args(strict=True)
         return args
 
@@ -83,7 +84,7 @@ class DemandListController(Resource):
 
     def post(self):
         try:
-            args = self.check_args.get_demand_args()
+            args = self.check_args.get_demand_args(method="post")
             self.demand_service.insert(args=args)
             return jsonify({'message': f"Demand successfully created."})
         except DemandAccessDbException as e:
