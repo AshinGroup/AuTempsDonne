@@ -4,6 +4,7 @@ from repository.demand import DemandRepo
 from exception.demand import DemandIdNotFoundException
 from exception.shop import ShopIdNotFoundException
 from service.shop import ShopService
+from service.qr_code import QrCodeService
 
 
 class DemandService:
@@ -11,6 +12,7 @@ class DemandService:
     def __init__(self) -> None:
         self.demand_repo = DemandRepo()
         self.shop_service = ShopService()
+        self.qrcode_service = QrCodeService()
        
 
     def select_one_by_id(self, demand_id: int):
@@ -39,8 +41,10 @@ class DemandService:
     def insert(self, args: dict):
         time = datetime.now()
         formatted_time = time.strftime('%Y-%m-%d %H:%M:%S')
+        data = {'packages' : args['packages']}
+        qrcode_src = self.qrcode_service.generate_qrcode(data)
         new_demand = Demand(submitted_datetime=formatted_time, limit_datetime=args['limit_datetime'], status=args['status'],
-                          additional=args['additional'], shop_id=args['shop_id'], qr_code="WIP")
+                          additional=args['additional'], shop_id=args['shop_id'], qr_code=qrcode_src)
 
         if not self.shop_service.select_one_by_id(new_demand.shop_id):
             raise ShopIdNotFoundException
@@ -51,7 +55,7 @@ class DemandService:
 
     def update(self, demand_id: int, args: dict):
         update_demand = Demand(limit_datetime=args['limit_datetime'], status=args['status'],
-                          additional=args['additional'], shop_id=args['shop_id'], qr_code="WIP")
+                          additional=args['additional'], shop_id=args['shop_id'])
         demand = self.demand_repo.select_one_by_id(demand_id=demand_id)
 
         if not demand:
