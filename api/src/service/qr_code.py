@@ -20,7 +20,8 @@ class QrCodeService:
         qr.make(fit=True)
 
         img = qr.make_image(fill_color="black", back_color="white")
-        
+        if not os.path.exists("tmp"):
+            os.makedirs("tmp")
         img.save("tmp/qrcode.png")
 
     def delete_qrcode(self):
