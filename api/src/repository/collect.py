@@ -67,6 +67,7 @@ class CollectRepo():
                 collect.datetime = update_collect.datetime
                 collect.roadmap = update_collect.roadmap
                 collect.vehicle_id = update_collect.vehicle_id
+                collect.storage_id = update_collect.storage_id
                 db.session.commit()
                 db.session.close()
         except Exception:
