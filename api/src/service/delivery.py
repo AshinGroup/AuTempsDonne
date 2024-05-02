@@ -1,9 +1,10 @@
 from model.delivery import Delivery
 from repository.delivery import DeliveryRepo
 from exception.delivery import DeliveryIdNotFoundException, DeliversToLocationAlreadyExistsException, DeliversToLocationNotFoundException
+from exception.package import PackageDeliveryAlreadyExistsException
 from service.location import LocationService
 from service.vehicle import VehicleService
-
+from service.package import PackageService
 
 
 class DeliveryService:
@@ -12,6 +13,8 @@ class DeliveryService:
         self.delivery_repo = DeliveryRepo()
         self.location_service = LocationService()
         self.vehicle_service = VehicleService()
+        self.package_service = PackageService()
+        
 
     def select_one_by_id(self, delivery_id: int):
         delivery = self.delivery_repo.select_one_by_id(delivery_id=delivery_id)
@@ -39,9 +42,13 @@ class DeliveryService:
         self.delivery_repo.select_one_by_id(delivery_id=new_delivery.id)
         for location_id in args['locations']:
             self.location_service.select_one_by_id(location_id=location_id)
+        for package_id in args['packages']:
+            package = self.package_service.select_one_by_id(package_id=package_id)
+            if package.delivery_id:
+                raise PackageDeliveryAlreadyExistsException(package_id=package_id)# A SETUP
         self.vehicle_service.select_one_by_id(vehicle_id=new_delivery.vehicle_id)
 
-        new_delivery_id = self.delivery_repo.insert(new_delivery=new_delivery, locations=args['locations'])
+        new_delivery_id = self.delivery_repo.insert(new_delivery=new_delivery, locations=args['locations'], packages=args['packages'])
 
         return new_delivery_id
 

@@ -9,6 +9,7 @@ class Delivery(db.Model):
     datetime = db.Column(db.DateTime)
     roadmap = db.Column(db.String(200))
     status = db.Column(db.Integer)
+    packages = db.relationship('Package', backref='delivery')
 
     vehicle_id = db.Column(db.Integer, db.ForeignKey(
         'vehicle.id'), nullable=False)
