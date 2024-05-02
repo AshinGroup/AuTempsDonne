@@ -55,12 +55,15 @@
   "event.dateTime": "Fecha y Hora",
   "event.maxSlots": "Espacios",
   "event.location": "Ubicación",
+  "event.actions": "Acciones",
+
   "event.group": "Grupo",
   "event.activity": "Actividad",
   "event.course": "Curso",
   "event.service": "Servicio",
   "event.type": "Tipo",
   "event.event": "Evento",
+  
   "EventModal.titlePlaceholder": "Título del evento",
   "EventModal.titleRequired": "El título es obligatorio.",
   "EventModal.descriptionPlaceholder": "Descripción de mi evento",
@@ -120,7 +123,7 @@
   "updateProfileModal.email": "Correo electrónico :",
   "updateProfileModal.phone": "Teléfono :",
   "updateProfileModal.roles": "rol(es) :",
-  "updateProfileModal.events": "Evento(s) :",
+  "updateProfileModal.events": "Lista de tus eventos :",
   "updateProfileModal.place": "Lugar :",
   "updateProfileModal.datetime": "Fecha y hora :",
   "updateProfileModal.description": "Descripción :",
@@ -277,5 +280,23 @@
   "addDemandModal.date_required": "La fecha es obligatoria...",
   "addDemandModal.enterFoodName": "Introduzca el nombre del alimento",
   "addDemandModal.addFood": "Añadir un alimento",
-  "addCollectModal.addDemand": "Añadir una demanda"
+  "addCollectModal.addDemand": "Añadir una demanda",
+  
+  "activities.title": "Actividades disponibles",
+  "activityModal.title": "Título de la Actividad",
+  "serviceModal.title": "Título del Servicio",
+  "courseModal.title": "Título del Curso",
+  
+  "modal.type": "Tipo",
+  "modal.dateTime": "Fecha y Hora",
+  "modal.location": "Ubicación",
+  "modal.description": "Descripción",
+  "modal.registryButton": "Registro",
+
+  "event.unsubscribeButton": "Cancelar suscripción",
+  "event.registryButton": "Registro",
+
+  "planning.title": "Ver Mi Planificación",
+  "planning.bubleTitle": "Para ver su planificación, está justo aquí ..."
+  
 }

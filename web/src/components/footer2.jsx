@@ -13,9 +13,8 @@ const Footer = () => {
 
     return (
       <button
-        className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${
-          isActive(country) ? "from-AshinBlue-light to-AshinBlue-dark" : ""
-        }`}
+        className={`rounded-full bg-gradient-to-tr hover:from-AshinBlue-light hover:to-AshinBlue-dark p-2 m-1 focus:outline-none transition ease-in-out duration-300 ${isActive(country) ? "from-AshinBlue-light to-AshinBlue-dark" : ""
+          }`}
         onClick={() => changeLocale(country == "gb" ? "en" : country)}
       >
         <Flag country={country.toUpperCase()} />
@@ -29,7 +28,7 @@ const Footer = () => {
         <div className="ml-4 mr-80">
           <img src={logo} alt="Logo" className="h-8" />
         </div>
-        
+
         <div className={`${isChinese ? 'pl-56' : 'pl-40'} ${isChinese ? 'mr-80' : 'mr-72'}`}>
           <p>© 2024 - Au Temps Donné. <FormattedMessage id="footer.credits" defaultMessage="All rights reserved." /></p>
         </div>
@@ -46,3 +45,5 @@ const Footer = () => {
 };
 
 export default Footer;
+
+// Faire le responsive

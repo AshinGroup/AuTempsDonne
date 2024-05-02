@@ -56,6 +56,7 @@
   "event.dateTime": "Date & Heure",
   "event.maxSlots": "Places",
   "event.location": "Lieu",
+  "event.actions": "Actions",
 
   "event.group": "Groupe",
   "event.activity": "Activité",
@@ -123,7 +124,7 @@
   "updateProfileModal.email": "Email :",
   "updateProfileModal.phone": "Téléphone :",
   "updateProfileModal.roles": "rôle(s) :",
-  "updateProfileModal.events": "Événement(s) :",
+  "updateProfileModal.events": "Liste de vos événements :",
   "updateProfileModal.place": "Lieu :",
   "updateProfileModal.datetime": "Date et heure :",
   "updateProfileModal.description": "Description :",
@@ -280,5 +281,23 @@
   "addDemandModal.date_required": "La date est requise...",
   "addDemandModal.enterFoodName": "Entrer le nom de l'aliment",
   "addDemandModal.addFood": "Ajouter un aliment",
-  "addCollectModal.addDemand": "Ajouter une demande"
+  "addCollectModal.addDemand": "Ajouter une demande",
+  
+  "activities.title": "Activités disponibles",
+  "activityModal.title": "Titre de l'Activité",
+  "serviceModal.title": "Titre du Service",
+  "courseModal.title": "Titre du Cours",
+  
+  "modal.type": "Type",
+  "modal.dateTime": "Date et Heure",
+  "modal.location": "Lieu",
+  "modal.description": "Description",
+  "modal.registryButton": "Inscription",
+
+  "event.unsubscribeButton": "Se désinscrire",
+  "event.registryButton": "S'inscrire",
+
+  "planning.title": "Voir Mon Planning",
+  "planning.bubleTitle": "Pour voir votre planning, c'est juste ici ..."
+  
 }

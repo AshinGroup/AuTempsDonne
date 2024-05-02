@@ -56,6 +56,7 @@
   "event.dateTime": "Date & Time",
   "event.maxSlots": "Slots",
   "event.location": "Location",
+  "event.actions": "Actions",
 
   "event.group": "Group",
   "event.activity": "Activity",
@@ -124,7 +125,7 @@
   "updateProfileModal.email": "Email :",
   "updateProfileModal.phone": "phone :",
   "updateProfileModal.roles": "role(s) :",
-  "updateProfileModal.events": "Event(s) :",
+  "updateProfileModal.events": "List of your events :",
   "updateProfileModal.place": "Place :",
   "updateProfileModal.datetime": "DateTime :",
   "updateProfileModal.description": "Description :",
@@ -281,5 +282,23 @@
   "addDemandModal.date_required": "The date is required ..",
   "addDemandModal.enterFoodName": "Enter Food Name",
   "addDemandModal.addFood": "Add a Food",
-  "addCollectModal.addDemand": "Add a Demand"
+  "addCollectModal.addDemand": "Add a Demand",
+  
+  "activities.title": "Activities available",
+  "activityModal.title": "Title of the Activity",
+  "serviceModal.title": "Title of the Service",
+  "courseModal.title": "Title of the Course",
+
+  "modal.type": "Type",
+  "modal.dateTime": "Date & Time",
+  "modal.location": "Location",
+  "modal.description": "Description",
+  "modal.registryButton": "Registry",
+
+  "event.unsubscribeButton": "Unsubscribe",
+  "event.registryButton": "Registry",
+
+  "planning.title": "See My Planning",
+  "planning.bubleTitle": "To see your planning, it's just here ..."
+
 }
