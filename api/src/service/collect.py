@@ -5,6 +5,7 @@ from exception.demand import CollectsDemandAlreadyExistsException
 from exception.vehicle import VehicleIdNotFoundException
 from service.vehicle import VehicleService
 from service.demand import DemandService
+from service.storage import StorageService
 
 
 class CollectService:
@@ -13,6 +14,7 @@ class CollectService:
         self.collect_repo = CollectRepo()
         self.vehicle_service = VehicleService()
         self.demand_service = DemandService()
+        self.storage_service = StorageService()
 
 
     def select_one_by_id(self, collect_id: int):
@@ -39,8 +41,9 @@ class CollectService:
 
 
     def insert(self, args: dict):
-        new_collect = Collect(datetime=args['datetime'], roadmap=None, vehicle_id=args['vehicle_id'])
+        new_collect = Collect(datetime=args['datetime'], roadmap=None, vehicle_id=args['vehicle_id'], storage_id=args['storage_id'])
         self.vehicle_service.select_one_by_id(new_collect.vehicle_id)
+        self.storage_service.select_one_by_id(new_collect.storage_id)
         for demand_id in args['demands']:
             check_demand = self.demand_service.select_one_by_id(demand_id=demand_id)
             if check_demand.collect_id:
@@ -50,7 +53,8 @@ class CollectService:
 
 
     def update(self, collect_id: int, args: dict):
-        update_collect = Collect(datetime=args['datetime'], roadmap=None, vehicle_id=args['vehicle_id'])
+        update_collect = Collect(datetime=args['datetime'], roadmap=None, vehicle_id=args['vehicle_id'], storage_id=args['storage_id'])
+        self.storage_service.select_one_by_id(update_collect.storage_id)
         collect = self.collect_repo.select_one_by_id(collect_id=collect_id)
 
         if not collect:

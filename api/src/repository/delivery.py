@@ -84,6 +84,8 @@ class DeliveryRepo():
             with app.app_context():
                 delivery = Delivery.query.filter_by(id=delivery_id).first()
                 delivery.datetime = update_delivery.datetime
+                delivery.roadmap = update_delivery.roadmap
+                delivery.status = update_delivery.status
                 db.session.commit()
                 db.session.close()
         except Exception:

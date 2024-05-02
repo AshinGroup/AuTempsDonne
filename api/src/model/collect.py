@@ -13,6 +13,8 @@ class Collect(db.Model):
     
     demands = db.relationship('Demand', backref='collect')
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    storage_id = db.Column(db.Integer, db.ForeignKey('storage.id'), nullable=False)
+
  
 
     def json(self):
@@ -23,6 +25,7 @@ class Collect(db.Model):
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
                 'vehicle' : self.vehicle.json_rest(),
+                'storage': self.storage.json_rest_collect(),
                 'demands': demands,
                 'user': users,
                 }
@@ -35,6 +38,7 @@ class Collect(db.Model):
                 'id': self.id,
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
+                'storage': self.storage.json_rest_collect(),
                 'vehicle' : self.vehicle.json_rest(),
                 'demands': demands
                 }
@@ -48,6 +52,7 @@ class Collect(db.Model):
                 'id': self.id,
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
+                'storage': self.storage.json_rest_collect(),
                 'demands': demands,
                 'user': users
                 }
@@ -59,7 +64,21 @@ class Collect(db.Model):
                 'id': self.id,
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
+                'storage': self.storage.json_rest_collect(),
                 'vehicle' : self.vehicle.json_rest(),
+                'user': users
+                }
+
+    def json_rest_storage(self):
+        users = [user.json_rest() for user in self.users] if self.users else []
+        demands = [demand.json_rest_collect() for demand in self.demands] if self.demands else []
+
+        return {'url': f"{os.getenv('API_PATH')}/collect/{self.id}", 
+                'id': self.id,
+                'datetime': self.datetime.strftime("%d/%m/%Y"),
+                'roadmap': self.roadmap,
+                'vehicle' : self.vehicle.json_rest(),
+                'demands': demands,
                 'user': users
                 }
     
