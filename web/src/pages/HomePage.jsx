@@ -6,6 +6,7 @@ import Home from "../components/contents/home";
 import Services from "../components/contents/services";
 import Activities from "../components/contents/activities";
 import Courses from "../components/contents/courses";
+import Planning from "../components/contents/planning";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
@@ -38,7 +39,7 @@ const WelcomePage = () => {
       case "genqr":
         return <div>Generate QR Code</div>;
       case "planning":
-        return <div>Planning</div>;
+        return <Planning />;
       case "support":
         return <Support />;
       case "donate":

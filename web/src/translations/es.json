@@ -123,7 +123,7 @@
   "updateProfileModal.email": "Correo electrónico :",
   "updateProfileModal.phone": "Teléfono :",
   "updateProfileModal.roles": "rol(es) :",
-  "updateProfileModal.events": "Evento(s) :",
+  "updateProfileModal.events": "Lista de tus eventos :",
   "updateProfileModal.place": "Lugar :",
   "updateProfileModal.datetime": "Fecha y hora :",
   "updateProfileModal.description": "Descripción :",
@@ -235,5 +235,12 @@
   "modal.dateTime": "Fecha y Hora",
   "modal.location": "Ubicación",
   "modal.description": "Descripción",
-  "modal.registryButton": "Registro"
+  "modal.registryButton": "Registro",
+
+  "event.unsubscribeButton": "Cancelar suscripción",
+  "event.registryButton": "Registro",
+
+  "planning.title": "Ver Mi Planificación",
+  "planning.bubleTitle": "Para ver su planificación, está justo aquí ..."
+  
 }

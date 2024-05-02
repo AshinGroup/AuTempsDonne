@@ -31,7 +31,17 @@ export default function ActivityModal({
         defaultMessage: "Location",
     });
 
-    const registryButton = isSubscribed ? "Unsubscribe" : "Registry"; // change button
+    const registryButton = isSubscribed ? (
+        <FormattedMessage
+            id="event.unsubscribeButton"
+            defaultMessage="Unsubscribe"
+        />
+    ) : (
+        <FormattedMessage
+            id="event.registryButton"
+            defaultMessage="Registry"
+        />
+    );
 
     // to subscribe
     const handleRegistry = async (eventId) => {
@@ -111,7 +121,7 @@ export default function ActivityModal({
         if (modalOpen) {
             checkSubscription();
         }
-    }, [modalOpen]);   
+    }, [modalOpen]);
 
     return (
         <Modal open={modalOpen} onClose={() => setModalOpen(false)}>

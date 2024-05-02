@@ -125,7 +125,7 @@
   "updateProfileModal.email": "Email :",
   "updateProfileModal.phone": "phone :",
   "updateProfileModal.roles": "role(s) :",
-  "updateProfileModal.events": "Event(s) :",
+  "updateProfileModal.events": "List of your events :",
   "updateProfileModal.place": "Place :",
   "updateProfileModal.datetime": "DateTime :",
   "updateProfileModal.description": "Description :",
@@ -237,6 +237,12 @@
   "modal.dateTime": "Date & Time",
   "modal.location": "Location",
   "modal.description": "Description",
-  "modal.registryButton": "Registry"
+  "modal.registryButton": "Registry",
+
+  "event.unsubscribeButton": "Unsubscribe",
+  "event.registryButton": "Registry",
+
+  "planning.title": "See My Planning",
+  "planning.bubleTitle": "To see your planning, it's just here ..."
 
 }

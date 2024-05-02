@@ -31,7 +31,17 @@ export default function ServicesModal({
         defaultMessage: "Location",
     });
 
-    const registryButton = isSubscribed ? "Unsubscribe" : "Registry"; // change button
+    const registryButton = isSubscribed ? (
+        <FormattedMessage
+            id="event.unsubscribeButton"
+            defaultMessage="Unsubscribe"
+        />
+    ) : (
+        <FormattedMessage
+            id="event.registryButton"
+            defaultMessage="Registry"
+        />
+    );
 
     // to subscribe
     const handleRegistry = async (eventId) => {
