@@ -1,6 +1,6 @@
 from dotenv import find_dotenv, load_dotenv
 from app import app
-from database.db import create_database, db
+from database.db import db
 
 from model.user import User
 from model.event import Event
@@ -14,6 +14,11 @@ from model.storage import Storage
 from model.warehouse import Warehouse
 from model.shop import Shop
 from model.company import Company
+from model.delivery import Delivery
+from model.package import Package
+from model.vehicle import Vehicle
+from model.collect import Collect
+from model.demand import Demand
 
 
 def init_database():
@@ -153,7 +158,7 @@ def init_database():
 
 if __name__ == "__main__":
     load_dotenv(find_dotenv())
-    create_database()
+    # create_database()
     db.init_app(app)
     with app.app_context():
         db.drop_all()

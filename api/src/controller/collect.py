@@ -3,6 +3,7 @@ from service.collect import CollectService
 from exception.collect import *
 from exception.vehicle import *
 from exception.demand import *
+from exception.storage import StorageIdNotFoundException
 from flask import jsonify
 
 class CollectCheckArgs:
@@ -16,6 +17,7 @@ class CollectCheckArgs:
         parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
         parser.add_argument('demands', type=int, required=True, action='append', help="Invalid or missing parameter 'demands'.")
         parser.add_argument('vehicle_id', type=int, required=True, help="Invalid or missing parameter 'vehicle_id.")
+        parser.add_argument('storage_id', type=int, required=True, help="Invalid or missing parameter 'storage_id.")
         
         args = parser.parse_args(strict=True)
         return args
@@ -50,7 +52,9 @@ class CollectController(Resource):
         except VehicleIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except CollectAccessDbException as e:
-            abort(http_status_code=500, message=str(e))        
+            abort(http_status_code=500, message=str(e)) 
+        except StorageIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))       
    
 
     def delete(self, collect_id: int):
@@ -96,6 +100,8 @@ class CollectListController(Resource):
             abort(http_status_code=404, message=str(e))
         except VehicleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+        except StorageIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
 
 
 class CollectPageController(Resource):

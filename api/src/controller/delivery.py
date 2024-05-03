@@ -5,6 +5,7 @@ from exception.location import LocationAccessDbException, LocationIdNotFoundExce
 from exception.type import *
 from exception.vehicle import *
 from exception.location import *
+from exception.package import PackageDeliveryAlreadyExistsException
 from flask import jsonify
 
 class DeliveryCheckArgs:
@@ -12,11 +13,13 @@ class DeliveryCheckArgs:
     pattern = {'datetime': r'\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b'}  # format : YYYY-MM-DD.
         
     
-    def get_delivery_args(self) -> dict:
+    def get_delivery_args(self, method=None) -> dict:
         parser = reqparse.RequestParser()
         parser.add_argument('datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'datetime'.")
         parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
-        parser.add_argument('locations', type=int, required=True, action='append', help="Invalid or missing parameter 'locations'.")
+        if method == "post":
+            parser.add_argument('locations', type=int, required=True, action='append', help="Invalid or missing parameter 'locations'.")
+            parser.add_argument('packages', type=int, required=True, action='append', help="Invalid or missing parameter 'packages'.")
         parser.add_argument('vehicle_id', type=int, required=True,  help="Invalid or missing parameter 'vehicle_id'.")
         args = parser.parse_args(strict=True)
         return args
@@ -85,7 +88,7 @@ class DeliveryListController(Resource):
 
     def post(self):
         try:
-            args = self.check_args.get_delivery_args()
+            args = self.check_args.get_delivery_args(method="post")
             self.delivery_service.insert(args=args)
             return jsonify({'message': f"Delivery successfully created."})
         except DeliveryAccessDbException as e:
@@ -98,6 +101,10 @@ class DeliveryListController(Resource):
             abort(http_status_code=404, message=str(e))
         except VehicleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+        except PackageDeliveryAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except PackageIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
 
 
 class DeliveryPageController(Resource):
