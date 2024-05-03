@@ -37,7 +37,9 @@ class VehicleRepo():
         try:
             with app.app_context():
                 vehicle = Vehicle.query.filter_by(id=vehicle_id).first()
-                vehicle.name = update_vehicle.name
+                vehicle.license_plate = update_vehicle.license_plate
+                vehicle.type = update_vehicle.type
+                vehicle.brand = update_vehicle.brand
                 db.session.commit()
                 db.session.close()
         except Exception:

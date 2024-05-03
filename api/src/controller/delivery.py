@@ -5,7 +5,7 @@ from exception.location import LocationAccessDbException, LocationIdNotFoundExce
 from exception.type import *
 from exception.vehicle import *
 from exception.location import *
-from exception.package import PackageDeliveryAlreadyExistsException
+from exception.package import PackageDeliveryAlreadyExistsException, PackageIdNotFoundException
 from flask import jsonify
 
 class DeliveryCheckArgs:
