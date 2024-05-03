@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Trash2 } from "lucide-react";
 import { Modal } from "../modals/modal";
+import fetchBucket from "../wasabiBucket";
 
 export default function ShowQrModal({ open, onClose, item }) {
+  const [imageUrl, setImageUrl] = useState("");
+
+  useEffect(() => {
+    const loadUrl = async () => {
+      try {
+        const url = await fetchBucket(item.qr_code);
+        setImageUrl(url);
+      } catch (error) {
+        console.error("Failed to fetch image URL:", error);
+        setImageUrl("");
+      }
+    };
+
+    loadUrl();
+  }, []);
   return (
     <Modal open={open} onClose={onClose}>
       <div className="text-center w-64">
-        <img src={item.qr_code} alt="QR Code" />
+        <img src={imageUrl} alt="QR Code" />
         <div className="mx-auto my-4 w-48">
           <h3 className="text-lg font-back text-gray-800">
             <FormattedMessage
