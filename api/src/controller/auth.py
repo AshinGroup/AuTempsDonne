@@ -3,7 +3,7 @@ from flask_jwt_extended import (
     create_refresh_token,
     get_jwt_identity,
     jwt_required,
-    get_jwt
+    get_jwt,
 )
 from flask_restful import Resource, abort, reqparse
 from flask import jsonify
@@ -17,7 +17,7 @@ from exception.user import (
     UserAlreadyExistsException,
     UserAccessDbException,
     UserStatusException,
-    UserRoleInvalidException
+    UserRoleInvalidException,
 )
 from exception.auth import LoginException
 from controller.user import UserCheckArgs
@@ -48,18 +48,27 @@ class LoginController(Resource):
             role_id = -1
             args = self.check_login_args.get_login_args()
             user = self.auth_service.login(
-                email=args['email'], password=args['password'])
+                email=args["email"], password=args["password"]
+            )
             if user.status == 0:
-                raise UserStatusException(email=args['email'])
+                raise UserStatusException(email=args["email"])
             for role in user.roles:
                 roles.append(role.id)
                 if role.id in [1, 2, 3, 4]:
                     role_id = role.id
             additional_claims = {"roles": roles}
             access_token = create_access_token(
-                identity=user.id, additional_claims=additional_claims)
-            refresh_token = create_refresh_token(identity=user.id)
-            return jsonify(access_token=access_token, refresh_token=refresh_token, user_id=user.id, role_id=role_id)
+                identity=user.id, additional_claims=additional_claims
+            )
+            refresh_token = create_refresh_token(
+                identity=user.id, additional_claims=additional_claims
+            )
+            return jsonify(
+                access_token=access_token,
+                refresh_token=refresh_token,
+                user_id=user.id,
+                role_id=role_id,
+            )
         except UserEmailNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
@@ -78,8 +87,7 @@ class RegisterController(Resource):
     def post(self):
         try:
             args = self.user_check_args.get_user_args(method="register")
-            new_user_id = self.user_service.insert(
-                args=args, method="register")
+            new_user_id = self.user_service.insert(args=args, method="register")
             return jsonify(
                 {
                     "message": f"User {args['email']} successfully created.",
@@ -100,7 +108,11 @@ class RefreshTokenController(Resource):
     @jwt_required(refresh=True)
     def post(self):
         current_user = get_jwt_identity()
-        new_token = create_access_token(identity=current_user)
+        claims = get_jwt()
+        additional_claims = {"roles": claims["roles"]}
+        new_token = create_access_token(
+            identity=current_user, additional_claims=additional_claims
+        )
         return jsonify(access_token=new_token)
 
 
@@ -109,17 +121,18 @@ class ProtectedController(Resource):
         self.user_service = UserService()
 
     @jwt_required()
-    # @roles_required(5)
     def get(self):
         role_id = -1
         current_user = get_jwt_identity()
         claims = get_jwt()
-        user_roles = claims['roles']
+        user_roles = claims["roles"]
         for role in user_roles:
             if role in [1, 2, 3, 4]:
                 role_id = role
-        return jsonify({
-            'message': f"Logged in as user id '{current_user}'",
-            'user_id': current_user,
-            'role_id': role_id
-        })
+        return jsonify(
+            {
+                "message": f"Logged in as user id '{current_user}'",
+                "user_id": current_user,
+                "role_id": role_id,
+            }
+        )

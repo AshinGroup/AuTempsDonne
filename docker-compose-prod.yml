@@ -25,7 +25,7 @@ services:
       start_period: 20s
     volumes:
       - ./data:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
     build:
@@ -83,7 +83,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
-      - 8080:8080
+      - 8081:8080
     restart: always
     deploy:
       mode: global
