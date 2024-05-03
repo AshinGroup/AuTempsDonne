@@ -44,8 +44,6 @@ class FoodController(Resource):
             return jsonify({'message': f"Food '{food_id}' successfully updated."})
         except FoodIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except FoodIdGroupNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
         except CategoryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except FoodAccessDbException as e:
