@@ -9,7 +9,7 @@ class WarehouseService:
 
     def __init__(self) -> None:
         self.warehouse_repo = WarehouseRepo()
-        self.warehouse_service = LocationService()
+        self.location_service = LocationService()
 
     def select_one_by_id(self, warehouse_id: int):
         warehouse = self.warehouse_repo.select_one_by_id(warehouse_id=warehouse_id)
@@ -30,8 +30,8 @@ class WarehouseService:
     def insert(self, args: dict):
         new_warehouse = Warehouse(name=args['name'], location_id=args['location_id'])
 
-        if not self.warehouse_service.select_one_by_id(new_warehouse.warehouse_id):
-            raise LocationIdNotFoundException
+        self.location_service.select_one_by_id(new_warehouse.location_id)
+           
       
         self.warehouse_repo.insert(new_warehouse=new_warehouse)
 
@@ -42,8 +42,7 @@ class WarehouseService:
         if not warehouse:
             raise WarehouseIdNotFoundException(warehouse_id=warehouse_id)
 
-        if not self.warehouse_service.select_one_by_id(update_warehouse.warehouse_id):
-            raise LocationIdNotFoundException
+        self.location_service.select_one_by_id(update_warehouse.location_id)
 
         self.warehouse_repo.update(warehouse_id=warehouse_id, update_warehouse=update_warehouse)
 

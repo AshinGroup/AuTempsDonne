@@ -2,6 +2,7 @@ from flask_restful import Resource, reqparse, inputs, abort
 from service.warehouse import WarehouseService
 from exception.warehouse import *
 from exception.type import *
+from exception.location import LocationIdNotFoundException
 from flask import jsonify
 
 class WarehouseCheckArgs:
@@ -45,7 +46,9 @@ class WarehouseController(Resource):
         except TypeIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except WarehouseAccessDbException as e:
-            abort(http_status_code=500, message=str(e))        
+            abort(http_status_code=500, message=str(e))     
+        except LocationIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))   
    
 
     def delete(self, warehouse_id: int):
@@ -89,6 +92,8 @@ class WarehouseListController(Resource):
             abort(http_status_code=404, message=str(e))
         except TypeAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+        except LocationIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
 
 
 class WarehousePageController(Resource):
