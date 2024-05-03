@@ -92,6 +92,7 @@ export default function AddDemandModal({
   };
 
   const onPostSubmit = async (data) => {
+    const [storage_id, storage_location_id] = data.storage.split("|");
     if (selectedDemand.length === 0) {
       setResponseMessage(
         <FormattedMessage
@@ -111,9 +112,12 @@ export default function AddDemandModal({
         body: JSON.stringify({
           datetime: `${data.date} 23:59:59`,
           status: 0,
-          demands: selectedDemand.map((demand) => parseInt(demand.id)),
+          demands: [
+            storage_location_id,
+            selectedDemand.map((demand) => parseInt(demand.id)),
+          ],
           vehicle_id: data.vehicle_id,
-          // storage_id: data.storage_id,
+          storage_id: storage_id,
         }),
       });
 
@@ -252,8 +256,8 @@ function StorageSelect(register, errors, storages) {
   return (
     <>
       <select
-        id="storage_id"
-        {...register("storage_id", { required: true })}
+        id="storage"
+        {...register("storage", { required: true })}
         className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
       >
         <option value="">
@@ -265,14 +269,17 @@ function StorageSelect(register, errors, storages) {
         </option>
         {/* For SELECT * FROM storages */}
         {storages.map((storage) => (
-          <option key={storage.id} value={storage.id}>
+          <option
+            key={storage.id}
+            value={`${storage.id}|${storage.warehouse.location.id}`}
+          >
             {storage.name}, {storage.warehouse.name},{" "}
             {storage.warehouse.location.address},{" "}
             {storage.warehouse.location.zip_code}
           </option>
         ))}
       </select>
-      {errors.storage_id && (
+      {errors.storage && (
         <span className="text-red-500 mt-1">
           <FormattedMessage
             id="addStockModal.selectStorage"

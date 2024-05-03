@@ -55,23 +55,12 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               path="/"
               text={
                 <FormattedMessage
-                  id="navbar.tocollect"
-                  defaultMessage="tocollect"
+                  id="navbar.demandToCollect"
+                  defaultMessage="Demand to Collect"
                 />
               }
-              isActive={activeItem === "tocollect"}
-              onClick={() => setActiveItem("tocollect")}
-            />
-            <NavbarItem
-              path="/"
-              text={
-                <FormattedMessage
-                  id="navbar.genqr"
-                  defaultMessage="Generate QR Code"
-                />
-              }
-              isActive={activeItem === "genqr"}
-              onClick={() => setActiveItem("genqr")}
+              isActive={activeItem === "demandToCollect"}
+              onClick={() => setActiveItem("demandToCollect")}
             />
             <NavbarItem
               path="/"

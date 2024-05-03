@@ -121,9 +121,6 @@ export default function AddDeliveryModal({
   };
 
   const onPostSubmit = async (data) => {
-    // console.log("locations :",selectedLocation.map((location) => parseInt(location.id)));
-    // console.log("packages :",selectedPackages.map((pack) => parseInt(pack.id)));
-
     if (selectedLocation.length === 0) {
       setResponseMessage(
         <FormattedMessage
@@ -143,7 +140,10 @@ export default function AddDeliveryModal({
         body: JSON.stringify({
           datetime: `${data.date} 23:59:59`,
           status: 0,
-          locations: selectedLocation.map((location) => parseInt(location.id)),
+          locations: [
+            storage_location_id,
+            selectedLocation.map((location) => parseInt(location.id)),
+          ],
           // packages: selectedPackages.map((pack) => parseInt(pack.id)),
           vehicle_id: data.vehicle_id,
         }),
@@ -307,8 +307,8 @@ function StorageSelect(register, errors, storages) {
   return (
     <>
       <select
-        id="storage_id"
-        {...register("storage_id", { required: true })}
+        id="storage_location_id"
+        {...register("storage_location_id", { required: true })}
         className="p-2 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
       >
         <option value="">
@@ -320,14 +320,14 @@ function StorageSelect(register, errors, storages) {
         </option>
         {/* For SELECT * FROM storages */}
         {storages.map((storage) => (
-          <option key={storage.id} value={storage.id}>
+          <option key={storage.id} value={storage.location.id}>
             {storage.name}, {storage.warehouse.name},{" "}
             {storage.warehouse.location.address},{" "}
             {storage.warehouse.location.zip_code}
           </option>
         ))}
       </select>
-      {errors.storage_id && (
+      {errors.storage_location_id && (
         <span className="text-red-500 mt-1">
           <FormattedMessage
             id="addStockModal.selectStorage"

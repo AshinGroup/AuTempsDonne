@@ -8,7 +8,7 @@ import handleFetch from "../handleFetch";
 import DeleteModal from "../modals/deleteModal";
 import ShowQrModal from "../modals/showQrModal";
 
-const Demands = () => {
+const DemandToCollect = () => {
   // Display the events and Pagination
   const [demands, setDemands] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -268,4 +268,4 @@ const Demands = () => {
   );
 };
 
-export default Demands;
+export default DemandToCollect;

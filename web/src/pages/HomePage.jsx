@@ -10,6 +10,7 @@ import Planning from "../components/contents/planning";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
+import DemandToCollect from "../components/contents/demandToCollect";
 
 const WelcomePage = () => {
   // Profile Management from Dashboard (ugly code, to be refactored)
@@ -21,9 +22,9 @@ const WelcomePage = () => {
   console.log(activeItem);
   const navigate = useNavigate();
   // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
-  const rule = sessionStorage.getItem("rule");
-  // const rule = "2";
-  
+  // const rule = sessionStorage.getItem("rule");
+  const rule = "4";
+
   const getContent = () => {
     switch (activeItem) {
       case "homepage":
@@ -34,10 +35,8 @@ const WelcomePage = () => {
         return <Activities />;
       case "courses":
         return <Courses />;
-      case "tocollect":
-        return <div>To Demand</div>;
-      case "genqr":
-        return <div>Generate QR Code</div>;
+      case "demandToCollect":
+        return <DemandToCollect />;
       case "planning":
         return <Planning />;
       case "support":

@@ -103,11 +103,11 @@ export default function AddDemandModal({
           additional:
             data.additional_info == "" ? "null" : data.additional_info,
           limit_datetime: `${data.date} 23:59:59`,
-          // packages: selectedFood.map((food) => ({
-          // food_id: food.id,
-          // weight: food.weight,
-          // expiration_date: food.expirationDate,
-          // })),
+          packages: selectedFood.map((food) => ({
+            food_id: food.id,
+            weight: food.weight,
+            expiration_date: food.expirationDate,
+          })),
         }),
       });
 
