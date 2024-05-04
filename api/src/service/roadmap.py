@@ -11,11 +11,16 @@ from requests.structures import CaseInsensitiveDict
 from service.location import LocationService
 import os
 from datetime import datetime
+from PIL import Image
+import io
+import selenium
+from service.wasabi_s3 import WasabiS3
 
 # Traveling Salesman Problem 
 class RoadmapService:
     def __init__(self) -> None:
         self.location_service = LocationService()
+        self.wasabi_s3 = WasabiS3()
 
 
     def distance(self, coord1, coord2):
@@ -71,20 +76,17 @@ class RoadmapService:
 
 
     def build_permutation(self, locations: list):
-        pairs = cdist(locations, locations)
-        max_dist = pairs.ravel().max()
-        for i in range(locations.shape[0]):
-            pairs[i, i] = max_dist
-        perm = []
-        while len(perm) < locations.shape[0]:
-            last = perm[-1] if perm else None
-            arg = np.unravel_index(np.argmin(pairs), pairs.shape)
-            next_index = arg[1] if arg[0] != last else arg[0]
-            perm.append(next_index)
-            pairs[next_index, :] = max_dist
-            pairs[:, next_index] = max_dist
-        print(perm)
-        return perm
+        n = len(locations)
+        dist_matrix = cdist(locations, locations)
+        permutation = [0]  # Commencer avec le premier indice
+        while len(permutation) < n:
+            last_index = permutation[-1]
+            # Exclure les indices déjà utilisés pour éviter les doublons
+            remaining_indices = [i for i in range(n) if i not in permutation]
+            # Trouver l'indice le plus proche du dernier indice dans la permutation
+            next_index = min(remaining_indices, key=lambda x: dist_matrix[last_index][x])
+            permutation.append(next_index)
+        return permutation  
 
 
     def get_optimal_order_index(self, locations: list) -> list : 
@@ -164,7 +166,7 @@ class RoadmapService:
 
     def create_map(self, locations: list[Location]):
         m = folium.Map()
-        
+        print(locations)
         # Marks
         for i in range(len(locations)):
             description = f"{'Starting Point : ' if i == 0 else f'Location {i} : '}{locations[i].address}"
@@ -186,8 +188,7 @@ class RoadmapService:
         sw, ne = self.get_map_zoom(points)
         m.fit_bounds([sw, ne])
         time = datetime.now()
-        formatted_time = time.strftime('%Y-%m-%d_%H_%M_%f')
-        path = f"roadmap_{formatted_time}.html"
+        path = f"tmp/roadmap.html"
         m.save(path)
         return path, distance, distance_units, time
 
@@ -199,21 +200,29 @@ class RoadmapService:
         if os.path.exists(filepath):
             os.remove(filepath)
 
-    def generate_roadmap(self, locations_id: int):
-        locations = list()
+    def map_to_png(self, map): 
+        img_data = map._to_png(3)
+        img = Image.open(io.BytesIO(img_data))
+        img.save('tmp/map.png')
+
+    def generate_roadmap(self, locations_id: int) -> dict :
         for id in locations_id:
-            locations.append(self.location_service.select_one_by_id(location_id=id))
-        # locations = self.location_service.select_all_by_id(locations_id=locations_id)
+            self.location_service.select_one_by_id(location_id=id)
+        locations = self.location_service.select_all_by_id(locations_id=locations_id)
         coordinates_array = self.transform_locations(locations)
+        print("locations: ", coordinates_array)
         optimal_order = self.get_optimal_order_index(locations=coordinates_array)
+        print("optimal_order: ", optimal_order)
         ordered_locations = self.get_ordered_locations(locations=locations, optimal_order=optimal_order)
         path , distance, distance_units, time = self.create_map(locations=ordered_locations)
+        src = self.wasabi_s3.upload_file(folder="roadmap/delivery", file_path=path, type="delivery_roadmap", extension="html")
+        self.delete_map(path)
         response = {
             'locations': [location.json_rest() for location in ordered_locations],
             'distance': distance,
             'distance_units': distance_units,
             'time': time,
-            'map':  self.get_map_html(path),
+            'src': src,
         }
         return response
 

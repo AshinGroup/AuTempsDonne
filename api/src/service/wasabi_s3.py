@@ -26,14 +26,25 @@ class WasabiS3:
     
 
     
-    def upload_file(self, folder:str, file_path: str):
+    def upload_file(self, folder:str, file_path: str, type: str, extension: str):
         bucket = os.getenv('WASABI_BUCKET_NAME')
         time = datetime.now()
         formatted_time = time.strftime('%Y-%m-%d_%H_%M_%f')
-        key = f"{folder}/qr-code_{formatted_time}.png"
+        key = f"{folder}/{type}_{formatted_time}.{extension}"
         s3 = self.connect_s3()
         with open(file_path, "rb") as f:
             file_data = f.read()
         s3.put_object(Body=file_data, Bucket=bucket, Key=key)
-        print("File uploaded successfully.")
-        return key
+        return f"{os.getenv('WASABI_ENDPOINT')}/{os.getenv('WASABI_BUCKET_NAME')}/{key}"
+    
+
+    def parse_key(self, src: str):
+        values = src.split(f"{os.getenv('WASABI_BUCKET_NAME')}/")
+        return values[1]
+
+
+    def delete_file(self, src: str):
+        key = self.parse_key(src)
+        bucket = os.getenv('WASABI_BUCKET_NAME')
+        s3 = self.connect_s3()
+        s3.delete_object(Bucket=bucket, Key=key)
