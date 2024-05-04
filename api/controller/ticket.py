@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.ticket import TicketService
 from exception.ticket import *
-from exception.type import *
+from exception.user import *
 from flask import jsonify
 
 class TicketCheckArgs:
@@ -9,12 +9,16 @@ class TicketCheckArgs:
     pattern = {'description': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\s\d\-,.#]{1,500}\b'}
         
     
-    def get_ticket_args(self) -> dict:
+    def get_ticket_args(self, method=None) -> dict:
         parser = reqparse.RequestParser()
-        parser.add_argument('subject', type=str, required=True, help="Invalid or missing parameter 'subject'.")
-        parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'.")
-        parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
-        parser.add_argument('type', type=int, required=True, help="Invalid or missing parameter 'type'.")
+        if method == None:
+            parser.add_argument('subject', type=str, required=True, help="Invalid or missing parameter 'subject'.")
+            parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'.")
+            parser.add_argument('type', type=int, required=True, help="Invalid or missing parameter 'type'.")
+            parser.add_argument('user_id', type=int, required=True, help="Invalid or missing parameter 'user_id'.")
+        else:
+            parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
+            parser.add_argument('admin_id', type=int, required=True, help="Invalid or missing parameter 'admin_id'.")
         args = parser.parse_args(strict=True)
         return args
 
@@ -34,9 +38,7 @@ class TicketController(Resource):
             abort(http_status_code=404, message=str(e))
         except TicketAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except TypeAccessDbException as e:
-            abort(http_status_code=500, message=str(e))
-   
+ 
 
     def put(self, ticket_id: int):
         try:
@@ -45,7 +47,7 @@ class TicketController(Resource):
             return jsonify({'message': f"Ticket '{ticket_id}' successfully updated."})
         except TicketIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeIdNotFoundException as e:
+        except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except TicketAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
@@ -86,10 +88,8 @@ class TicketListController(Resource):
             return jsonify({'message': f"Ticket '{args['subject']}' successfully created."})
         except TicketAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except TypeIdNotFoundException as e:
+        except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except TypeAccessDbException as e:
-            abort(http_status_code=500, message=str(e))
 
 
 class TicketPageController(Resource):

@@ -1,12 +1,14 @@
 from model.ticket import Ticket
 from repository.ticket import TicketRepo
 from exception.ticket import TicketIdNotFoundException
+from service.user import UserService
 
 
 class TicketService:
 
     def __init__(self) -> None:
         self.ticket_repo = TicketRepo()
+        self.user_service = UserService()
 
     def select_one_by_id(self, ticket_id: int):
         ticket = self.ticket_repo.select_one_by_id(ticket_id=ticket_id)
@@ -29,13 +31,14 @@ class TicketService:
         return tickets
 
     def insert(self, args: dict):
-        new_ticket = Ticket(subject=args['subject'], description=args['description'], status=args['status'],
-                            type=args['type'], admin_id=args['admin_id'])
+        new_ticket = Ticket(subject=args['subject'], description=args['description'], 
+                            type=args['type'], user_id=args['user_id'], status=0)
+        self.user_service.select_one_by_id(user_id=new_ticket.user_id)
         self.ticket_repo.insert(new_ticket=new_ticket)
 
+
     def update(self, ticket_id: int, args: dict):
-        update_ticket = Ticket(subject=args['subject'], description=args['description'], status=args['status'],
-                               type=args['type'], admin_id=args['admin_id'])
+        update_ticket = Ticket(status=args['status'], admin_id=args['admin_id'])
         ticket = self.ticket_repo.select_one_by_id(ticket_id=ticket_id)
 
         if not ticket:

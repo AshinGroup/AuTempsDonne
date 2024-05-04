@@ -60,10 +60,7 @@ class TicketRepo():
         try:
             with app.app_context():
                 ticket = Ticket.query.filter_by(id=ticket_id).first()
-                ticket.subject = update_ticket.subject
-                ticket.description = update_ticket.description
                 ticket.status = update_ticket.status
-                ticket.type = update_ticket.type
                 ticket.admin_id = update_ticket.admin_id
                 db.session.commit()
                 db.session.close()
