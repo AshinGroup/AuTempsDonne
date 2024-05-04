@@ -1,5 +1,6 @@
 from database.db import db
 import os
+from model.ticket import Ticket
 
 
 class User(db.Model):
@@ -12,6 +13,7 @@ class User(db.Model):
     phone = db.Column(db.String(50))
     password = db.Column(db.String(64))
     status = db.Column(db.Integer)  # 0 = waiting, 1 = valided
+   
     deliveries = db.relationship(
         'Delivery', secondary='user_delivers', back_populates='users')
     collects = db.relationship(
@@ -20,12 +22,7 @@ class User(db.Model):
         'Role', secondary='user_is_role', back_populates='users')
     events = db.relationship(
         'Event', secondary='user_participates_event', back_populates='users')
-<<<<<<< HEAD:api/src/model/user.py
-    
-=======
-    tickets = db.relationship(
-        'Ticket', secondary='user_writes_ticket', back_populates='users')
->>>>>>> feature/ticket:api/model/user.py
+
 
     def json(self):
         roles = [role.json_rest() for role in self.roles]
@@ -35,7 +32,6 @@ class User(db.Model):
         deliveries = [delivery.json_rest_user() for delivery in self.deliveries] if self.deliveries else []
 
         collects = [collect.json_rest() for collect in self.collects] if self.collects else []
-
 
         return {'id': self.id,
                 'first_name': self.first_name,

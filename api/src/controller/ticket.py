@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse, inputs, abort
-from api.src.service.ticket import TicketService
-from api.src.exception.ticket import *
+from service.ticket import TicketService
+from exception.ticket import *
 from exception.user import *
 from flask import jsonify
 
@@ -11,14 +11,14 @@ class TicketCheckArgs:
     
     def get_ticket_args(self, method=None) -> dict:
         parser = reqparse.RequestParser()
-        if method == None:
+        if method == "put":
+            parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
+            parser.add_argument('admin_id', type=int, required=True, help="Invalid or missing parameter 'admin_id'.")
+        else:
             parser.add_argument('subject', type=str, required=True, help="Invalid or missing parameter 'subject'.")
             parser.add_argument('description', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'description'.")
             parser.add_argument('type', type=int, required=True, help="Invalid or missing parameter 'type'.")
-            parser.add_argument('user_id', type=int, required=True, help="Invalid or missing parameter 'user_id'.")
-        else:
-            parser.add_argument('status', type=int, required=True, help="Invalid or missing parameter 'status'.")
-            parser.add_argument('admin_id', type=int, required=True, help="Invalid or missing parameter 'admin_id'.")
+            parser.add_argument('author_id', type=int, required=True, help="Invalid or missing parameter 'author_id'.")
         args = parser.parse_args(strict=True)
         return args
 
@@ -42,7 +42,7 @@ class TicketController(Resource):
 
     def put(self, ticket_id: int):
         try:
-            args = self.check_args.get_ticket_args()
+            args = self.check_args.get_ticket_args(method="put")
             self.ticket_service.update(ticket_id=ticket_id, args=args)
             return jsonify({'message': f"Ticket '{ticket_id}' successfully updated."})
         except TicketIdNotFoundException as e:
@@ -115,6 +115,20 @@ class TicketSearchController(Resource):
     def get(self, page: int, search: str):
         try:
             tickets = self.ticket_service.select_by_search(page=page, search=search)
+            if tickets:
+                return jsonify({'max_pages': tickets['max_pages'], 'tickets': [ticket.json() for ticket in tickets['tickets']]})
+            else:
+                return jsonify({'message': "No tickets found."})
+        except TicketAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        
+class TicketUserController(Resource):
+    def __init__(self) -> None:
+        self.ticket_service = TicketService()
+
+    def get(self, page: int, user_id: int):
+        try:
+            tickets = self.ticket_service.select_all_by_user_id(page=page, user_id=user_id)
             if tickets:
                 return jsonify({'max_pages': tickets['max_pages'], 'tickets': [ticket.json() for ticket in tickets['tickets']]})
             else:
