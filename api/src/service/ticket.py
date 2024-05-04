@@ -1,6 +1,6 @@
-from api.src.model.ticket import Ticket
-from api.src.repository.ticket import TicketRepo
-from api.src.exception.ticket import TicketIdNotFoundException
+from model.ticket import Ticket
+from repository.ticket import TicketRepo
+from exception.ticket import TicketIdNotFoundException
 from service.user import UserService
 
 
@@ -29,11 +29,16 @@ class TicketService:
     def select_all(self):
         tickets = self.ticket_repo.select_all()
         return tickets
+    
+    def select_all_by_user_id(self, user_id: int, page: int):
+        tickets = self.ticket_repo.select_all_by_user_id(user_id=user_id, page=page)
+        return tickets
+
 
     def insert(self, args: dict):
         new_ticket = Ticket(subject=args['subject'], description=args['description'], 
-                            type=args['type'], user_id=args['user_id'], status=0)
-        self.user_service.select_one_by_id(user_id=new_ticket.user_id)
+                            type=args['type'], author_id=args['author_id'], status=0)
+        self.user_service.select_one_by_id(user_id=new_ticket.author_id)
         self.ticket_repo.insert(new_ticket=new_ticket)
 
 

@@ -1,7 +1,7 @@
-from api.src.model.ticket import Ticket
+from model.ticket import Ticket
 from database.db import db
 from app import app
-from api.src.exception.ticket import TicketAccessDbException
+from exception.ticket import TicketAccessDbException
 
 
 class TicketRepo():
@@ -12,6 +12,18 @@ class TicketRepo():
             return ticket
         except Exception:
             raise TicketAccessDbException(ticket_id=ticket_id, method="getting")
+
+
+    def select_all_by_user_id(self, user_id: int, page: int) -> Ticket:
+        try:
+            tickets = Ticket.query.filter(Ticket.author_id.like(user_id) | Ticket.admin_id.like(user_id)).paginate(page=page, per_page=10)
+            if not tickets:
+                return None
+            
+            return {'max_pages': tickets.pages, 'tickets': tickets}
+        except Exception:
+            raise TicketAccessDbException(user_id=None, method="getting")
+        
 
 
     def select_per_page(self, page: int) -> list[Ticket]:

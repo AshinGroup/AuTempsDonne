@@ -10,8 +10,11 @@ class Ticket(db.Model):
     description = db.Column(db.Text)
     status = db.Column(db.Integer)
     type = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     admin_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
+    author = db.relationship('User', foreign_keys=[author_id])
+    admin = db.relationship('User', foreign_keys=[admin_id])
 
     def json(self):
 
@@ -20,7 +23,7 @@ class Ticket(db.Model):
                 'description': self.description,
                 'status': self.status,
                 'type': self.type,
-                'user': self.user.json_rest(),
+                'author': self.author.json_rest(),
                 'admin': self.admin.json_rest() if self.admin else None}
 
     def json_rest(self):
@@ -31,5 +34,6 @@ class Ticket(db.Model):
                 'status': self.status,
                 'type': self.type,
                 }
+
 
 
