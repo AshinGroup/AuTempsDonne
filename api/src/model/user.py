@@ -12,6 +12,8 @@ class User(db.Model):
     phone = db.Column(db.String(50))
     password = db.Column(db.String(64))
     status = db.Column(db.Integer)  # 0 = waiting, 1 = valided
+    shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'))
+
     deliveries = db.relationship(
         'Delivery', secondary='user_delivers', back_populates='users')
     collects = db.relationship(
@@ -31,7 +33,6 @@ class User(db.Model):
 
         collects = [collect.json_rest() for collect in self.collects] if self.collects else []
 
-
         return {'id': self.id,
                 'first_name': self.first_name,
                 'last_name': self.last_name,
@@ -39,6 +40,7 @@ class User(db.Model):
                 'status': self.status,
                 'phone': self.phone,
                 'roles': roles,
+                'shop': self.shop.json_rest_user() if self.shop else None,
                 'events': events,
                 'deliveries': deliveries,
                 'collects': collects}

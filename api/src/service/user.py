@@ -9,6 +9,7 @@ from service.role import RoleService
 from service.event import EventService
 from service.delivery import DeliveryService
 from service.collect import CollectService
+from service.shop import ShopService
 
 
 class UserService:
@@ -19,6 +20,7 @@ class UserService:
         self.event_service = EventService()
         self.delivery_service = DeliveryService()
         self.collect_service = CollectService()
+        self.shop_service = ShopService()
 
     def select_one_by_id(self, user_id: int) -> User:
         user = self.user_repo.select_one_by_id(user_id=user_id)
@@ -123,6 +125,17 @@ class UserService:
             raise CollectIdNotFoundException
         self.user_repo.insert_collect(user_id=user_id, collect_id=collect_id)
 
+
+    def insert_shop(self, user_id: int, shop_id: int) -> None:
+        user = self.select_one_by_id(user_id=user_id)
+        if user.shop_id:
+            raise UserShopAlreadyExistsException(user_id=user_id)
+        
+        self.shop_service.select_one_by_id(shop_id=shop_id)
+        self.user_repo.insert_shop(user_id=user_id, shop_id=shop_id)
+
+
+
     def update(self, user_id: int, args: dict) -> None:
         update_user = User(
             first_name=args["first_name"],
@@ -207,3 +220,11 @@ class UserService:
             raise UserCollectsNotFoundException(
                 user_id=user_id, collect_id=collect_id)
         self.user_repo.delete_collect(user_id=user_id, collect_id=collect_id)
+
+
+    def delete_shop(self, user_id: int, shop_id: int) -> None:
+        user = self.select_one_by_id(user_id=user_id)
+        if not user.shop_id or user.shop_id != shop_id:
+            raise UserShopsNotFoundException(user_id=user_id, shop_id=shop_id)
+        
+        self.user_repo.delete_shop(user_id=user_id)

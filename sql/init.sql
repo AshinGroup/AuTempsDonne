@@ -1,3 +1,8 @@
+CREATE DATABASE IF NOT EXISTS atd;
+
+USE atd;
+
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -399,20 +404,21 @@ CREATE TABLE `user` (
   `email` varchar(320) DEFAULT NULL,
   `phone` varchar(50) DEFAULT NULL,
   `password` varchar(64) DEFAULT NULL,
-  `status` int DEFAULT NULL
+  `status` int DEFAULT NULL,
+  `shop_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `password`, `status`) VALUES
-(1, 'Admin', 'Admin', 'admin@atd.com', '00000000', '$5$A5bRoRfHWyvxSSsz$BidD44Qfi3GXV3sEoU5szwHYa4fCh/lPIwX4TVGwEL.', 1),
-(2, 'Volontaire', 'Volontaire', 'volontaire@atd.com', '00000000', '$5$gljAzkQyhK8lSSXt$6bUjWBIX5GdLtSQ2EJeTI2QROaFrxP9wc5laZaRDCR6', 1),
-(3, 'Commercant', 'Commercant', 'commercant@atd.com', '00000000', '$5$C7QRhTR4KAgf9mGl$sMp1BumVFRdTeFIZ2jl14lexuIu88i7EYxUoxHZz6P0', 1),
-(4, 'Beneficiaire', 'Beneficiaire', 'beneficiaire@atd.com', '00000000', '$5$glu9CRjugSMXQM2q$F4lrVrPEtLe/9RcCAmKsQnSf5Qk0Y/dhA8.JrfS1BD8', 1),
-(5, 'Fredoudou', 'Doux', 'fredoudou@atd.com', '00000000', '$5$QKfEPlY6E31psNXi$VWTJZYOHGluNOHBQO2gDOVxOrNIifOlt9ECsYrFgIK5', 1),
-(6, 'Goat', 'Yié', 'goat@atd.com', '00000000', '$5$D3udawwqJRFNrp48$RT7wOce99C4rUcXHhXjc4gzPE5xLITX3zRqq.DGpZn7', 1);
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `password`, `status`, `shop_id` ) VALUES
+(1, 'Admin', 'Admin', 'admin@atd.com', '00000000', '$5$A5bRoRfHWyvxSSsz$BidD44Qfi3GXV3sEoU5szwHYa4fCh/lPIwX4TVGwEL.', 1, NULL),
+(2, 'Volontaire', 'Volontaire', 'volontaire@atd.com', '00000000', '$5$gljAzkQyhK8lSSXt$6bUjWBIX5GdLtSQ2EJeTI2QROaFrxP9wc5laZaRDCR6', 1, NULL),
+(3, 'Commercant', 'Commercant', 'commercant@atd.com', '00000000', '$5$C7QRhTR4KAgf9mGl$sMp1BumVFRdTeFIZ2jl14lexuIu88i7EYxUoxHZz6P0', 1, NULL),
+(4, 'Beneficiaire', 'Beneficiaire', 'beneficiaire@atd.com', '00000000', '$5$glu9CRjugSMXQM2q$F4lrVrPEtLe/9RcCAmKsQnSf5Qk0Y/dhA8.JrfS1BD8', 1, NULL),
+(5, 'Fredoudou', 'Doux', 'fredoudou@atd.com', '00000000', '$5$QKfEPlY6E31psNXi$VWTJZYOHGluNOHBQO2gDOVxOrNIifOlt9ECsYrFgIK5', 1, NULL),
+(6, 'Goat', 'Yié', 'goat@atd.com', '00000000', '$5$D3udawwqJRFNrp48$RT7wOce99C4rUcXHhXjc4gzPE5xLITX3zRqq.DGpZn7', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -645,7 +651,8 @@ ALTER TABLE `type`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `shop_id` (`shop_id`);
 
 --
 -- Index pour la table `user_collects`
@@ -858,6 +865,12 @@ ALTER TABLE `shop`
 --
 ALTER TABLE `storage`
   ADD CONSTRAINT `storage_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`);
+
+--
+-- Contraintes pour la table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`);
 
 --
 -- Contraintes pour la table `user_collects`

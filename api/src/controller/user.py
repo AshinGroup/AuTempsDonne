@@ -5,6 +5,7 @@ from exception.event import *
 from exception.role import *
 from exception.delivery import *
 from exception.collect import *
+from exception.shop import *
 from flask import jsonify
 
 
@@ -256,6 +257,37 @@ class UserCollectsController(Resource):
         except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserCollectsNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+class UserShopController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
+    def post(self, user_id: int, shop_id: int) -> None:
+        try:
+            self.user_service.insert_shop(user_id=user_id, shop_id=shop_id)
+            return jsonify({'message': f"User id '{user_id}' successfully assigned shop id '{shop_id}'."})
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except ShopIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserShopAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except ShopAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+    def delete(self, user_id: int, shop_id: int) -> None:
+        try:
+            self.user_service.delete_shop(user_id=user_id, shop_id=shop_id)
+            return jsonify({'message': f"User id '{user_id}' successfully deleted shop id '{shop_id}'."})
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserShopsNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
