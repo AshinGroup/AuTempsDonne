@@ -30,8 +30,8 @@ class TicketService:
         tickets = self.ticket_repo.select_all()
         return tickets
     
-    def select_all_by_user_id(self, user_id: int, page: int):
-        tickets = self.ticket_repo.select_all_by_user_id(user_id=user_id, page=page)
+    def select_all_by_user_id(self, user_id: int):
+        tickets = self.ticket_repo.select_all_by_user_id(user_id=user_id)
         return tickets
 
 

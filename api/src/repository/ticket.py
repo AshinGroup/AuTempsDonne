@@ -14,13 +14,13 @@ class TicketRepo():
             raise TicketAccessDbException(ticket_id=ticket_id, method="getting")
 
 
-    def select_all_by_user_id(self, user_id: int, page: int) -> Ticket:
+    def select_all_by_user_id(self, user_id: int) -> Ticket:
         try:
-            tickets = Ticket.query.filter(Ticket.author_id.like(user_id) | Ticket.admin_id.like(user_id)).paginate(page=page, per_page=10)
+            tickets = Ticket.query.filter(Ticket.author_id.like(user_id) | Ticket.admin_id.like(user_id)).all()
             if not tickets:
                 return None
             
-            return {'max_pages': tickets.pages, 'tickets': tickets}
+            return {'tickets': tickets}
         except Exception:
             raise TicketAccessDbException(user_id=None, method="getting")
         

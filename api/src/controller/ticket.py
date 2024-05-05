@@ -126,11 +126,11 @@ class TicketUserController(Resource):
     def __init__(self) -> None:
         self.ticket_service = TicketService()
 
-    def get(self, page: int, user_id: int):
+    def get(self, user_id: int):
         try:
-            tickets = self.ticket_service.select_all_by_user_id(page=page, user_id=user_id)
+            tickets = self.ticket_service.select_all_by_user_id(user_id=user_id)
             if tickets:
-                return jsonify({'max_pages': tickets['max_pages'], 'tickets': [ticket.json() for ticket in tickets['tickets']]})
+                return jsonify({'tickets': [ticket.json() for ticket in tickets['tickets']]})
             else:
                 return jsonify({'message': "No tickets found."})
         except TicketAccessDbException as e:
