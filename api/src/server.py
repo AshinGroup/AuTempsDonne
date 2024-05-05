@@ -24,6 +24,7 @@ from controller.roadmap import *
 from controller.collect import *
 from controller.demand import *
 from controller.vehicle import *
+from controller.ticket import *
 
 
 # Import Models
@@ -43,6 +44,7 @@ from model.delivery import Delivery
 from model.collect import Collect
 from model.demand import Demand
 from model.vehicle import Vehicle
+from model.ticket import Ticket
 
 from app import app
 
@@ -114,6 +116,13 @@ api.add_resource(ShopPageController, f'{prefix}/shop/page/<int:page>')
 api.add_resource(ShopSearchController,
                  f'{prefix}/shop/page/<int:page>/search/<string:search>')
 
+api.add_resource(TicketController, f'{prefix}/ticket/<int:ticket_id>')
+api.add_resource(TicketListController, f'{prefix}/ticket')
+api.add_resource(TicketPageController, f'{prefix}/ticket/page/<int:page>')
+api.add_resource(TicketSearchController,
+                 f'{prefix}/ticket/page/<int:page>/search/<string:search>')
+api.add_resource(TicketUserController,
+                 f'{prefix}/ticket/user/<int:user_id>')
 
 api.add_resource(DeliveryController, f'{prefix}/delivery/<int:delivery_id>')
 api.add_resource(DeliveryListController, f'{prefix}/delivery')

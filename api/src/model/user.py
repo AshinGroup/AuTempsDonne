@@ -1,5 +1,6 @@
 from database.db import db
 import os
+from model.ticket import Ticket
 
 
 class User(db.Model):
@@ -13,7 +14,6 @@ class User(db.Model):
     password = db.Column(db.String(64))
     status = db.Column(db.Integer)  # 0 = waiting, 1 = valided
     shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'))
-
     deliveries = db.relationship(
         'Delivery', secondary='user_delivers', back_populates='users')
     collects = db.relationship(
@@ -22,7 +22,7 @@ class User(db.Model):
         'Role', secondary='user_is_role', back_populates='users')
     events = db.relationship(
         'Event', secondary='user_participates_event', back_populates='users')
-    
+
 
     def json(self):
         roles = [role.json_rest() for role in self.roles]

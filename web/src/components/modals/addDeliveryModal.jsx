@@ -141,7 +141,7 @@ export default function AddDeliveryModal({
           datetime: `${data.date} 23:59:59`,
           status: 0,
           locations: [
-            storage_location_id,
+            data.storage_location_id,
             selectedLocation.map((location) => parseInt(location.id)),
           ],
           // packages: selectedPackages.map((pack) => parseInt(pack.id)),
@@ -320,7 +320,7 @@ function StorageSelect(register, errors, storages) {
         </option>
         {/* For SELECT * FROM storages */}
         {storages.map((storage) => (
-          <option key={storage.id} value={storage.location.id}>
+          <option key={storage.id} value={storage.warehouse.location.id}>
             {storage.name}, {storage.warehouse.name},{" "}
             {storage.warehouse.location.address},{" "}
             {storage.warehouse.location.zip_code}

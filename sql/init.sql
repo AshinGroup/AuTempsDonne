@@ -2,7 +2,6 @@ CREATE DATABASE IF NOT EXISTS atd;
 
 USE atd;
 
-
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -12,15 +11,16 @@ USE atd;
 -- Version du serveur : 8.4.0
 -- Version de PHP : 8.2.18
 
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+-- /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+-- /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+-- /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+-- /*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données : `atd`
@@ -191,7 +191,9 @@ CREATE TABLE `event` (
   `type_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
+--
+-- Déchargement des données de la table `event`
+--
 
 INSERT INTO `event` (`id`, `name`, `datetime`, `description`, `capacity`, `group`, `place`, `type_id`) VALUES
 (1, 'Rencontre avec les personnes en difficulté', '2023-10-12 13:00:00', 'Rencontre avec les personnes en difficulté', 15, 1, '100 Avenue de la Douane, 75012 Paris', 1),
@@ -369,6 +371,22 @@ INSERT INTO `storage` (`id`, `name`, `warehouse_id`) VALUES
 (8, 'Rangement C', 2),
 (9, 'Rangement D', 2),
 (10, 'Rangement E', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ticket`
+--
+
+CREATE TABLE `ticket` (
+  `id` int NOT NULL,
+  `subject` varchar(100) DEFAULT NULL,
+  `description` text,
+  `status` int DEFAULT NULL,
+  `type` int DEFAULT NULL,
+  `author_id` int DEFAULT NULL,
+  `admin_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -641,6 +659,15 @@ ALTER TABLE `storage`
   ADD KEY `warehouse_id` (`warehouse_id`);
 
 --
+-- Index pour la table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author_id` (`author_id`),
+  ADD KEY `admin_id` (`admin_id`);
+
+
+--
 -- Index pour la table `type`
 --
 ALTER TABLE `type`
@@ -772,6 +799,14 @@ ALTER TABLE `storage`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT pour la table `ticket`
+--
+ALTER TABLE `ticket`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+
+--
 -- AUTO_INCREMENT pour la table `type`
 --
 ALTER TABLE `type`
@@ -866,6 +901,15 @@ ALTER TABLE `shop`
 ALTER TABLE `storage`
   ADD CONSTRAINT `storage_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`);
 
+
+--
+-- Contraintes pour la table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `user` (`id`);
+
+--
 --
 -- Contraintes pour la table `user`
 --
