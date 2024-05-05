@@ -140,6 +140,18 @@ class UserRepo():
             raise UserAccessDbException(user_id=user_id, method="inserting")   
 
 
+    def insert_shop(self, user_id: int, shop_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(id=user_id).first()
+                user.shop_id = shop_id
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="inserting")   
+
+
+
     def update(self, user_id: int, update_user: User) -> None:
         try:
             with app.app_context():
@@ -203,6 +215,18 @@ class UserRepo():
             raise UserAccessDbException(user_id=user_id, method="deleting") 
 
     
+    def delete_shop(self, user_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(id=user_id).first()
+                user.shop_id = None
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="deleting") 
+
+    
+            
             
          
             

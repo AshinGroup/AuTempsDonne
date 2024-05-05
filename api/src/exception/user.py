@@ -55,6 +55,16 @@ class UserCollectsAlreadyExistsException(Exception):
         return f"User id '{self.user_id}' participates collect '{self.collect_id}' already exists."
     
 
+
+class UserShopAlreadyExistsException(Exception):
+    def __init__(self, user_id: int) -> None:
+        self.user_id = user_id
+
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' already has a shop."
+    
+
+
 class UserRoleNotEmptyException(Exception):
     def __init__(self, user_id: int) -> None:
         self.user_id = user_id
@@ -98,6 +108,14 @@ class UserCollectsNotFoundException(Exception):
     def __str__(self) -> str:
         return f"User id '{self.user_id}' collects '{self.collect_id}' not found."
 
+
+class UserShopsNotFoundException(Exception):
+    def __init__(self, user_id: int, shop_id: int) -> None:
+        self.user_id = user_id
+        self.shop_id = shop_id
+
+    def __str__(self) -> str:
+        return f"User id '{self.user_id}' don't have shop '{self.shop_id}' assigned."
 
 
 

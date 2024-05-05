@@ -6,6 +6,8 @@ from exception.vehicle import VehicleIdNotFoundException
 from service.vehicle import VehicleService
 from service.demand import DemandService
 from service.storage import StorageService
+from service.roadmap import RoadmapService
+from service.wasabi_s3 import WasabiS3
 
 
 class CollectService:
@@ -15,6 +17,8 @@ class CollectService:
         self.vehicle_service = VehicleService()
         self.demand_service = DemandService()
         self.storage_service = StorageService()
+        self.roadmap_service = RoadmapService()
+        self.wasabi_service = WasabiS3()
 
 
     def select_one_by_id(self, collect_id: int):
@@ -41,25 +45,27 @@ class CollectService:
 
 
     def insert(self, args: dict):
+        locations = list()
         new_collect = Collect(datetime=args['datetime'], roadmap=None, vehicle_id=args['vehicle_id'], storage_id=args['storage_id'])
-        self.vehicle_service.select_one_by_id(new_collect.vehicle_id)
-        self.storage_service.select_one_by_id(new_collect.storage_id)
+        self.vehicle_service.select_one_by_id(vehicle_id=new_collect.vehicle_id)
+        
+        storage = self.storage_service.select_one_by_id(new_collect.storage_id)
+        locations.append(storage.warehouse.location_id)
         for demand_id in args['demands']:
             check_demand = self.demand_service.select_one_by_id(demand_id=demand_id)
             if check_demand.collect_id:
                 raise CollectsDemandAlreadyExistsException(demand_id=demand_id)
-        self.vehicle_service.select_one_by_id(vehicle_id=new_collect.vehicle_id)
+            locations.append(check_demand.shop.location_id)
+        roadmap = self.roadmap_service.generate_roadmap(locations_id=locations, type="collect")
+        new_collect.roadmap = roadmap['src']
         self.collect_repo.insert(new_collect=new_collect, demands=args['demands'])
 
 
     def update(self, collect_id: int, args: dict):
         update_collect = Collect(datetime=args['datetime'], roadmap=None, vehicle_id=args['vehicle_id'], storage_id=args['storage_id'])
         self.storage_service.select_one_by_id(update_collect.storage_id)
-        collect = self.collect_repo.select_one_by_id(collect_id=collect_id)
-
-        if not collect:
-            raise CollectIdNotFoundException(collect_id=collect_id)
-
+        self.select_one_by_id(collect_id=collect_id)
+       
         if not self.vehicle_service.select_one_by_id(update_collect.vehicle_id):
             raise VehicleIdNotFoundException
 
@@ -69,7 +75,7 @@ class CollectService:
 
 
     def delete(self, collect_id: str):
-        if not self.collect_repo.select_one_by_id(collect_id=collect_id):
-            raise CollectIdNotFoundException(collect_id=collect_id)
+        collect = self.select_one_by_id(collect_id=collect_id)
+        self.wasabi_service.delete_file(collect.roadmap)
         self.collect_repo.delete(collect_id=collect_id)
 

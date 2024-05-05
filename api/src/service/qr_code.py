@@ -31,9 +31,8 @@ class QrCodeService:
     def generate_qrcode(self, data: dict):
         print(data)
         self.create_qrcode(data)
-        key = self.wasabi_s3_service.upload_file(folder="qrcode", file_path="tmp/qrcode.png",)
+        src = self.wasabi_s3_service.upload_file(folder="qrcode", file_path="tmp/qrcode.png", type="qr-code", extension="png")
         self.delete_qrcode()
-        src = f"{os.getenv('WASABI_ENDPOINT')}/{os.getenv('WASABI_BUCKET_NAME')}/{key}"
         return src
 
 # a = QrCodeService()
