@@ -44,7 +44,7 @@ class DeliveryService:
     def insert(self, args: dict):
         for location_id in args['locations']:
             self.location_service.select_one_by_id(location_id=location_id)
-        roadmap = self.roadmap_service.generate_roadmap(args['locations'])
+        roadmap = self.roadmap_service.generate_roadmap(args['locations'], type="delivery")
         new_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=roadmap['src'], vehicle_id=args['vehicle_id'])
         
         for package_id in args['packages']:
@@ -71,14 +71,14 @@ class DeliveryService:
 
     def update(self, delivery_id: int, args: dict):
         update_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=None, vehicle_id=args['vehicle_id'])
-        self.delivery_repo.select_one_by_id(delivery_id=delivery_id)
+        self.select_one_by_id(delivery_id=delivery_id)
         self.vehicle_service.select_one_by_id(vehicle_id=update_delivery.vehicle_id)
 
         self.delivery_repo.update(delivery_id=delivery_id, update_delivery=update_delivery)
 
 
     def delete(self, delivery_id: str):
-        delivery = self.delivery_repo.select_one_by_id(delivery_id=delivery_id)
+        delivery = self.select_one_by_id(delivery_id=delivery_id)
         self.wasabi_service.delete_file(delivery.roadmap)
         self.delivery_repo.delete(delivery_id=delivery_id)
 

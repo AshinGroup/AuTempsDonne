@@ -205,17 +205,16 @@ class RoadmapService:
         img = Image.open(io.BytesIO(img_data))
         img.save('tmp/map.png')
 
-    def generate_roadmap(self, locations_id: int) -> dict :
+
+    def generate_roadmap(self, locations_id: int, type: str) -> dict :
         for id in locations_id:
             self.location_service.select_one_by_id(location_id=id)
         locations = self.location_service.select_all_by_id(locations_id=locations_id)
         coordinates_array = self.transform_locations(locations)
-        print("locations: ", coordinates_array)
         optimal_order = self.get_optimal_order_index(locations=coordinates_array)
-        print("optimal_order: ", optimal_order)
         ordered_locations = self.get_ordered_locations(locations=locations, optimal_order=optimal_order)
         path , distance, distance_units, time = self.create_map(locations=ordered_locations)
-        src = self.wasabi_s3.upload_file(folder="roadmap/delivery", file_path=path, type="delivery_roadmap", extension="html")
+        src = self.wasabi_s3.upload_file(folder=f"roadmap/{type}", file_path=path, type=f"{type}_roadmap", extension="html")
         self.delete_map(path)
         response = {
             'locations': [location.json_rest() for location in ordered_locations],
