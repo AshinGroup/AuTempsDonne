@@ -120,7 +120,7 @@ api.add_resource(TicketPageController, f'{prefix}/ticket/page/<int:page>')
 api.add_resource(TicketSearchController,
                  f'{prefix}/ticket/page/<int:page>/search/<string:search>')
 api.add_resource(TicketUserController,
-                 f'{prefix}/ticket/page/<int:page>/user/<int:user_id>')
+                 f'{prefix}/ticket/user/<int:user_id>')
 
 api.add_resource(DeliveryController, f'{prefix}/delivery/<int:delivery_id>')
 api.add_resource(DeliveryListController, f'{prefix}/delivery')
