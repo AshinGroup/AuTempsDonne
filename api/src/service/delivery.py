@@ -44,14 +44,16 @@ class DeliveryService:
     def insert(self, args: dict):
         for location_id in args['locations']:
             self.location_service.select_one_by_id(location_id=location_id)
-        roadmap = self.roadmap_service.generate_roadmap(args['locations'], type="delivery")
-        new_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=roadmap['src'], vehicle_id=args['vehicle_id'])
-        
+
         for package_id in args['packages']:
             package = self.package_service.select_one_by_id(package_id=package_id)
             if package.delivery_id:
-                raise PackageDeliveryAlreadyExistsException(package_id=package_id)# A SETUP
-        self.vehicle_service.select_one_by_id(vehicle_id=new_delivery.vehicle_id)
+                raise PackageDeliveryAlreadyExistsException(package_id=package_id)
+        self.vehicle_service.select_one_by_id(vehicle_id=args['vehicle_id'])
+        roadmap = self.roadmap_service.generate_roadmap(args['locations'], type="delivery")
+        new_delivery = Delivery(datetime=args['datetime'], status=args['status'], roadmap=roadmap['roadmap_src'], pdf=roadmap['pdf_src'], vehicle_id=args['vehicle_id'])
+        
+        
 
         new_delivery_id = self.delivery_repo.insert(new_delivery=new_delivery, locations=args['locations'], packages=args['packages'])
 
@@ -80,6 +82,7 @@ class DeliveryService:
     def delete(self, delivery_id: str):
         delivery = self.select_one_by_id(delivery_id=delivery_id)
         self.wasabi_service.delete_file(delivery.roadmap)
+        self.wasabi_service.delete_file(delivery.pdf)
         self.delivery_repo.delete(delivery_id=delivery_id)
 
 

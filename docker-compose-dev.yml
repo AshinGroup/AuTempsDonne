@@ -75,7 +75,8 @@ services:
 
   phpmyadmin:
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     image: phpmyadmin
     ports:
       - "8090:80"
