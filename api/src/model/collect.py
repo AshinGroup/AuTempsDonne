@@ -8,6 +8,7 @@ class Collect(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     datetime = db.Column(db.DateTime)
     roadmap = db.Column(db.String(200))
+    pdf = db.Column(db.String(200))
     users = db.relationship(
         'User', secondary='user_collects', back_populates='collects')
     
@@ -24,6 +25,7 @@ class Collect(db.Model):
         return {'id': self.id,
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
+                'pdf': self.pdf,
                 'vehicle' : self.vehicle.json_rest(),
                 'storage': self.storage.json_rest_collect(),
                 'demands': demands,
@@ -38,6 +40,7 @@ class Collect(db.Model):
                 'id': self.id,
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
+                'pdf': self.pdf,
                 'storage': self.storage.json_rest_collect(),
                 'vehicle' : self.vehicle.json_rest(),
                 'demands': demands
@@ -52,6 +55,7 @@ class Collect(db.Model):
                 'id': self.id,
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
+                'pdf': self.pdf,
                 'storage': self.storage.json_rest_collect(),
                 'demands': demands,
                 'user': users
@@ -64,6 +68,7 @@ class Collect(db.Model):
                 'id': self.id,
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
+                'pdf': self.pdf,
                 'storage': self.storage.json_rest_collect(),
                 'vehicle' : self.vehicle.json_rest(),
                 'user': users
@@ -77,6 +82,7 @@ class Collect(db.Model):
                 'id': self.id,
                 'datetime': self.datetime.strftime("%d/%m/%Y"),
                 'roadmap': self.roadmap,
+                'pdf': self.pdf,
                 'vehicle' : self.vehicle.json_rest(),
                 'demands': demands,
                 'user': users

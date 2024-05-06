@@ -1,26 +1,24 @@
 CREATE DATABASE IF NOT EXISTS atd;
 
 USE atd;
-
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : db
--- Généré le : ven. 03 mai 2024 à 16:05
+-- Généré le : lun. 06 mai 2024 à 22:58
 -- Version du serveur : 8.4.0
 -- Version de PHP : 8.2.18
-
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
 
--- /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
--- /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
--- /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
--- /*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données : `atd`
@@ -58,6 +56,7 @@ CREATE TABLE `collect` (
   `id` int NOT NULL,
   `datetime` datetime DEFAULT NULL,
   `roadmap` varchar(200) DEFAULT NULL,
+  `pdf` varchar(200) DEFAULT NULL,
   `vehicle_id` int NOT NULL,
   `storage_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -66,8 +65,8 @@ CREATE TABLE `collect` (
 -- Déchargement des données de la table `collect`
 --
 
-INSERT INTO `collect` (`id`, `datetime`, `roadmap`, `vehicle_id`, `storage_id`) VALUES
-(1, '2023-12-10 10:00:00', NULL, 1, 1);
+INSERT INTO `collect` (`id`, `datetime`, `roadmap`, `pdf`, `vehicle_id`, `storage_id`) VALUES
+(1, '2023-12-10 10:00:00', 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/roadmap/collect/collect_roadmap_2024-05-06_22_54_165729.html', 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/pdf/collect/collect_roadmap_2024-05-06_22_54_771014.pdf', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -120,12 +119,7 @@ INSERT INTO `delivers_to_location` (`location_id`, `delivery_id`) VALUES
 (1, 1),
 (2, 1),
 (3, 1),
-(4, 1),
-(5, 1),
-(1, 2),
-(2, 2),
-(6, 2),
-(7, 2);
+(4, 1);
 
 -- --------------------------------------------------------
 
@@ -137,6 +131,7 @@ CREATE TABLE `delivery` (
   `id` int NOT NULL,
   `datetime` datetime DEFAULT NULL,
   `roadmap` varchar(200) DEFAULT NULL,
+  `pdf` varchar(200) DEFAULT NULL,
   `status` int DEFAULT NULL,
   `vehicle_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -145,9 +140,8 @@ CREATE TABLE `delivery` (
 -- Déchargement des données de la table `delivery`
 --
 
-INSERT INTO `delivery` (`id`, `datetime`, `roadmap`, `status`, `vehicle_id`) VALUES
-(1, '2023-12-10 10:00:00', NULL, 0, 1),
-(2, '2023-12-10 10:00:00', NULL, 0, 1);
+INSERT INTO `delivery` (`id`, `datetime`, `roadmap`, `pdf`, `status`, `vehicle_id`) VALUES
+(1, '2024-12-10 10:00:00', 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/roadmap/delivery/delivery_roadmap_2024-05-06_22_54_313502.html', 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/pdf/delivery/delivery_roadmap_2024-05-06_22_54_931115.pdf', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -163,16 +157,17 @@ CREATE TABLE `demand` (
   `additional` text,
   `collect_id` int DEFAULT NULL,
   `shop_id` int NOT NULL,
-  `qr_code` varchar(200) DEFAULT NULL
+  `qr_code` varchar(200) DEFAULT NULL,
+  `pdf` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `demand`
 --
 
-INSERT INTO `demand` (`id`, `submitted_datetime`, `limit_datetime`, `status`, `additional`, `collect_id`, `shop_id`, `qr_code`) VALUES
-(1, '2024-05-03 15:59:24', '2023-12-10 10:00:00', 0, 'blabla', 1, 1, 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/qrcode/qr-code_2024-05-03_15_59_060478.png'),
-(2, '2024-05-03 15:59:49', '2023-10-10 10:00:00', 0, 'blabla', 1, 2, 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/qrcode/qr-code_2024-05-03_15_59_318559.png');
+INSERT INTO `demand` (`id`, `submitted_datetime`, `limit_datetime`, `status`, `additional`, `collect_id`, `shop_id`, `qr_code`, `pdf`) VALUES
+(1, '2024-05-06 22:52:36', '2023-12-10 10:00:00', 0, 'blabla', 1, 1, 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/qrcode/qr-code_2024-05-06_22_52_090793.png', 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/pdf/demand/demand_2024-05-06_22_52_904659.pdf'),
+(2, '2024-05-06 22:54:42', '2023-12-10 15:00:00', 0, 'blabla', 1, 2, 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/qrcode/qr-code_2024-05-06_22_54_876799.png', 'https://s3.eu-west-2.wasabisys.com/au-temps-donnee/pdf/demand/demand_2024-05-06_22_54_186438.pdf');
 
 -- --------------------------------------------------------
 
@@ -281,19 +276,19 @@ CREATE TABLE `package` (
 --
 
 INSERT INTO `package` (`id`, `weight`, `description`, `expiration_date`, `food_id`, `storage_id`, `delivery_id`) VALUES
-(1, 500, 'Paquet', '2025-10-12 00:00:00', 1, 1, 1),
-(2, 2500, 'Paquet', '2025-10-10 00:00:00', 3, 10, 1),
-(3, 500, 'Paquet', '2025-10-12 00:00:00', 1, 1, 1),
-(4, 500, 'Paquet', '2025-10-12 00:00:00', 1, 1, 1),
-(5, 2500, 'Paquet', '2025-10-12 00:00:00', 2, 2, 2),
-(6, 2500, 'Paquet', '2025-10-12 00:00:00', 2, 2, 2),
-(7, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 2, 2),
-(8, 2500, 'Paquet', '2025-10-12 00:00:00', 5, 2, 2),
+(1, 500, 'Paquet', '2025-10-12 00:00:00', 1, 1, NULL),
+(2, 2500, 'Paquet', '2025-10-10 00:00:00', 3, 10, NULL),
+(3, 500, 'Paquet', '2025-10-12 00:00:00', 1, 1, NULL),
+(4, 500, 'Paquet', '2025-10-12 00:00:00', 1, 1, NULL),
+(5, 2500, 'Paquet', '2025-10-12 00:00:00', 2, 2, NULL),
+(6, 2500, 'Paquet', '2025-10-12 00:00:00', 2, 2, NULL),
+(7, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 2, NULL),
+(8, 2500, 'Paquet', '2025-10-12 00:00:00', 5, 2, NULL),
 (9, 2500, 'Paquet', '2025-10-12 00:00:00', 4, 2, NULL),
-(10, 2500, 'Paquet', '2025-10-12 00:00:00', 4, 3, NULL),
+(10, 2500, 'Paquet', '2025-10-12 00:00:00', 4, 3, 1),
 (11, 2500, 'Paquet', '2025-10-12 00:00:00', 4, 4, NULL),
-(12, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 4, NULL),
-(13, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 5, NULL),
+(12, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 4, 1),
+(13, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 5, 1),
 (14, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 8, NULL),
 (15, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 8, NULL),
 (16, 2500, 'Paquet', '2025-10-12 00:00:00', 3, 8, NULL),
@@ -430,7 +425,7 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `password`, `status`, `shop_id` ) VALUES
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `password`, `status`, `shop_id`) VALUES
 (1, 'Admin', 'Admin', 'admin@atd.com', '00000000', '$5$A5bRoRfHWyvxSSsz$BidD44Qfi3GXV3sEoU5szwHYa4fCh/lPIwX4TVGwEL.', 1, NULL),
 (2, 'Volontaire', 'Volontaire', 'volontaire@atd.com', '00000000', '$5$gljAzkQyhK8lSSXt$6bUjWBIX5GdLtSQ2EJeTI2QROaFrxP9wc5laZaRDCR6', 1, NULL),
 (3, 'Commercant', 'Commercant', 'commercant@atd.com', '00000000', '$5$C7QRhTR4KAgf9mGl$sMp1BumVFRdTeFIZ2jl14lexuIu88i7EYxUoxHZz6P0', 1, NULL),
@@ -666,7 +661,6 @@ ALTER TABLE `ticket`
   ADD KEY `author_id` (`author_id`),
   ADD KEY `admin_id` (`admin_id`);
 
-
 --
 -- Index pour la table `type`
 --
@@ -748,7 +742,7 @@ ALTER TABLE `company`
 -- AUTO_INCREMENT pour la table `delivery`
 --
 ALTER TABLE `delivery`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `demand`
@@ -803,8 +797,6 @@ ALTER TABLE `storage`
 --
 ALTER TABLE `ticket`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
 
 --
 -- AUTO_INCREMENT pour la table `type`
@@ -901,7 +893,6 @@ ALTER TABLE `shop`
 ALTER TABLE `storage`
   ADD CONSTRAINT `storage_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`);
 
-
 --
 -- Contraintes pour la table `ticket`
 --
@@ -909,7 +900,6 @@ ALTER TABLE `ticket`
   ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `user` (`id`);
 
---
 --
 -- Contraintes pour la table `user`
 --

@@ -2,10 +2,12 @@ import qrcode
 from urllib.parse import urlencode
 import os
 from service.wasabi_s3 import WasabiS3
+from service.pdf_file import PdfService
 
 class QrCodeService:
     def __init__(self) -> None:
         self.wasabi_s3_service = WasabiS3()
+        self.pdf_service = PdfService()
 
     def create_qrcode(self, data: dict):
         query = urlencode(data)
@@ -24,18 +26,11 @@ class QrCodeService:
             os.makedirs("tmp")
         img.save("tmp/qrcode.png")
 
-    def delete_qrcode(self):
-        os.remove("tmp/qrcode.png")
 
-
-    def generate_qrcode(self, data: dict):
+    def generate_qrcode(self, data: dict, shop_details: dict):
         print(data)
         self.create_qrcode(data)
-        src = self.wasabi_s3_service.upload_file(folder="qrcode", file_path="tmp/qrcode.png", type="qr-code", extension="png")
-        self.delete_qrcode()
-        return src
+        png_src = self.wasabi_s3_service.upload_file(folder="qrcode", file_path="tmp/qrcode.png", type="qr-code", extension="png")
+        pdf_src = self.pdf_service.generate_demand_pdf(data=data, shop_details=shop_details)
+        return png_src, pdf_src
 
-# a = QrCodeService()
-# a.create_qrcode({"hey": "1"})
-# a.wasabi_s3_service.upload_file(folder="qrcode", file_path="api/tmp/qrcode.png",)
-# a.delete_qrcode()

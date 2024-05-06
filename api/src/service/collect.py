@@ -57,7 +57,8 @@ class CollectService:
                 raise CollectsDemandAlreadyExistsException(demand_id=demand_id)
             locations.append(check_demand.shop.location_id)
         roadmap = self.roadmap_service.generate_roadmap(locations_id=locations, type="collect")
-        new_collect.roadmap = roadmap['src']
+        new_collect.roadmap = roadmap['roadmap_src']
+        new_collect.pdf = roadmap['pdf_src']
         self.collect_repo.insert(new_collect=new_collect, demands=args['demands'])
 
 

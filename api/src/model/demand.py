@@ -13,6 +13,7 @@ class Demand(db.Model):
     collect_id = db.Column(db.Integer, db.ForeignKey('collect.id'))
     shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'), nullable=False)
     qr_code = db.Column(db.String(200))
+    pdf = db.Column(db.String(200))
  
 
     def json(self):
@@ -22,6 +23,7 @@ class Demand(db.Model):
                 'status': self.status,
                 'additional': self.additional,
                 'qr_code': self.qr_code,
+                'pdf': self.pdf,
                 'shop' : self.shop.json_rest_demand(),
                 'collect': self.collect.json_rest_demand() if self.collect else None
                 }
@@ -35,6 +37,7 @@ class Demand(db.Model):
                 'status': self.status,
                 'additional': self.additional,
                 'qr_code': self.qr_code,
+                'pdf': self.pdf,
                 'collect': self.collect.json_rest_demand() if self.collect else None
                 }
     
@@ -48,6 +51,7 @@ class Demand(db.Model):
                 'additional': self.additional,
                 'shop' : self.shop.json_rest_demand(),
                 'qr_code': self.qr_code,
+                'pdf': self.pdf,
                 }
 
 

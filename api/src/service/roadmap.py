@@ -15,12 +15,15 @@ from PIL import Image
 import io
 import selenium
 from service.wasabi_s3 import WasabiS3
+from service.pdf_file import PdfService
+import time
 
 # Traveling Salesman Problem 
 class RoadmapService:
     def __init__(self) -> None:
         self.location_service = LocationService()
         self.wasabi_s3 = WasabiS3()
+        self.pdf_service = PdfService()
 
 
     def distance(self, coord1, coord2):
@@ -182,15 +185,18 @@ class RoadmapService:
             ).add_to(m)
 
         # Line
-        points, distance, distance_units, time = self.get_direction_details(locations=locations)
+        points, distance, distance_units, time_seconds = self.get_direction_details(locations=locations)
         folium.PolyLine(points, weight=5, opacity=1).add_to(m)
         
         sw, ne = self.get_map_zoom(points)
         m.fit_bounds([sw, ne])
-        time = datetime.now()
+        formatted_time = time.strftime("%Hh%M", time.gmtime(time_seconds))
         path = f"tmp/roadmap.html"
+        if not os.path.exists("tmp"):
+            os.makedirs("tmp")
         m.save(path)
-        return path, distance, distance_units, time
+        self.map_to_png(map=m)
+        return path, distance, distance_units, formatted_time
 
     def get_map_html(self, filepath: str):
         f = open(filepath, "r")
@@ -201,8 +207,10 @@ class RoadmapService:
             os.remove(filepath)
 
     def map_to_png(self, map): 
-        img_data = map._to_png(3)
+        img_data = map._to_png(5)
         img = Image.open(io.BytesIO(img_data))
+        if not os.path.exists("tmp"):
+            os.makedirs("tmp")
         img.save('tmp/map.png')
 
 
@@ -213,15 +221,20 @@ class RoadmapService:
         coordinates_array = self.transform_locations(locations)
         optimal_order = self.get_optimal_order_index(locations=coordinates_array)
         ordered_locations = self.get_ordered_locations(locations=locations, optimal_order=optimal_order)
-        path , distance, distance_units, time = self.create_map(locations=ordered_locations)
-        src = self.wasabi_s3.upload_file(folder=f"roadmap/{type}", file_path=path, type=f"{type}_roadmap", extension="html")
+        path , distance, distance_units, total_time = self.create_map(locations=ordered_locations)
+        roadmap_src = self.wasabi_s3.upload_file(folder=f"roadmap/{type}", file_path=path, type=f"{type}_roadmap", extension="html")
         self.delete_map(path)
+        
+
+        pdf_src = self.pdf_service.generate_roadmap_pdf(time=total_time, distance=distance, distance_units=distance_units, locations=ordered_locations, type=type)
+
         response = {
             'locations': [location.json_rest() for location in ordered_locations],
             'distance': distance,
             'distance_units': distance_units,
-            'time': time,
-            'src': src,
+            'time': total_time,
+            'roadmap_src': roadmap_src,
+            'pdf_src': pdf_src
         }
         return response
 
