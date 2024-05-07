@@ -150,6 +150,27 @@ const SupportForm = () => {
               Account Management (deletion request)"
             />
           </option>
+          <option value="feedback">
+            <FormattedMessage
+              id="support.feedback"
+              defaultMessage="Feedback or Suggestions"
+            />
+          </option>
+          <option value="billing">
+            <FormattedMessage
+              id="support.billingIssue"
+              defaultMessage="Billing or Payment Issue"
+            />
+          </option>
+          <option value="feature">
+            <FormattedMessage
+              id="support.featureRequest"
+              defaultMessage="Feature Request"
+            />
+          </option>
+          <option value="other">
+            <FormattedMessage id="support.other" defaultMessage="Other" />
+          </option>
         </select>
         {errors.requestType && (
           <p className="text-red-500 text-sm mt-1">
@@ -226,3 +247,12 @@ const SupportForm = () => {
 };
 
 export default Support;
+
+// 0 "Select a request type:"
+// 1 "Account Recovery"
+// 2 "Technical Issues (crash, error message)"
+// 3 "Account Management (deletion request)"
+// 4 "Feedback or Suggestions"
+// 5 "Billing or Payment Issue"
+// 6 "Feature Request"
+// 7"Other"
