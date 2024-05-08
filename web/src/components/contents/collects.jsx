@@ -7,6 +7,7 @@ import AddCollectModal from "../modals/addCollectModal";
 import handleFetch from "../handleFetch";
 import DeleteModal from "../modals/deleteModal";
 import SlotsCollectModal from "../modals/slotsCollectModal";
+import ShowRoadmapModal from "../modals/showRoadmapModal";
 
 const Collects = () => {
   // Display the collects and Pagination
@@ -22,6 +23,7 @@ const Collects = () => {
     useState(null);
   const [SelectedCollectIdForSlots, setSelectedCollectIdForSlots] =
     useState(null);
+  const [selectedCollectIdForRM, setSelectedCollectIdForRM] = useState(null);
 
   const fetchCollects = async () => {
     try {
@@ -63,6 +65,11 @@ const Collects = () => {
   // Set the user id to delete
   const handleDeleteClick = (CollectId) => {
     setSelectedCollectIdForDelete(CollectId);
+  };
+
+  // Set the user id to show RM
+  const handleRMClick = (CollectId) => {
+    setSelectedCollectIdForRM(CollectId);
   };
 
   // Fetch the users when we change Page
@@ -207,10 +214,15 @@ const Collects = () => {
                     {/*collect.roadmap ? collect.roadmap : "WIP"*/}
                     <button
                       className=" hover:scale-110 text-AshinBlue"
-                      // onClick={() => handleDeleteClick(collect.id)}
+                      onClick={() => handleRMClick(collect.id)}
                     >
                       <Map size={23} />
                     </button>
+                    <ShowRoadmapModal
+                      open={selectedCollectIdForRM === collect.id}
+                      onClose={() => setSelectedCollectIdForRM(null)}
+                      item={collect}
+                    />{" "}
                   </td>
                   {/* day of the collect */}
 

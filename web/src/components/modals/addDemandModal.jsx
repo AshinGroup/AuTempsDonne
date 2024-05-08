@@ -11,6 +11,7 @@ export default function AddDemandModal({
   AddModalOpen,
   AddModalSetOpen,
   fetchUsers,
+  shopData,
 }) {
   const {
     register,
@@ -37,10 +38,6 @@ export default function AddDemandModal({
   const addInfoPlaceholder = intl.formatMessage({
     id: "addDemandModal.addInfoPlaceholder",
     defaultMessage: "Additional Informations ..",
-  });
-  const date_required = intl.formatMessage({
-    id: "addDemandModal.date_required",
-    defaultMessage: "The date is required ..",
   });
 
   // Fetch locations from the API
@@ -145,7 +142,7 @@ export default function AddDemandModal({
           className="flex flex-col gap-4 w-96 mx-auto mt-4"
         >
           {/* Shop Selection */}
-          {ShopSelect(register, errors, shops)}
+          {ShopSelect(register, errors, shops, shopData)}
           {/* Date Selection */}
           <label htmlFor="date" className="text-left">
             <FormattedMessage
@@ -156,7 +153,10 @@ export default function AddDemandModal({
           <input
             type="date"
             {...register("date", {
-              required: { date_required },
+              required: intl.formatMessage({
+                id: "addDemandModal.date_required",
+                defaultMessage: "The date is required.",
+              }),
             })}
             min={(() => {
               const now = new Date();
@@ -211,7 +211,7 @@ export default function AddDemandModal({
   );
 }
 
-function ShopSelect(register, errors, shops) {
+function ShopSelect(register, errors, shops, shopData) {
   return (
     <>
       <select
@@ -226,13 +226,19 @@ function ShopSelect(register, errors, shops) {
             defaultMessage="Select a Shop :"
           />
         </option>
-        {/* For SELECT * FROM shops */}
-        {shops.map((shop) => (
-          <option key={shop.id} value={shop.id}>
-            {shop.name}, {shop.company?.name}, {shop.location?.address},{" "}
-            {shop.location?.zip_code}
+        {shopData ? (
+          <option value={shopData.id}>
+            {shopData.name}, {shopData.company?.name},{" "}
+            {shopData.location?.address}, {shopData.location?.zip_code}
           </option>
-        ))}
+        ) : (
+          shops.map((shop) => (
+            <option key={shop.id} value={shop.id}>
+              {shop.name}, {shop.company?.name}, {shop.location?.address},{" "}
+              {shop.location?.zip_code}
+            </option>
+          ))
+        )}
       </select>
       {errors.shop_id && (
         <span className="text-red-500 mt-1">
