@@ -8,23 +8,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_event_name"
-        android:textSize="22dp"/>
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="2dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_event_datetime"/>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_event_description"/>
+        android:id="@+id/tv_event_datetime"
+        android:layout_marginBottom="2dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_event_capacity"/>
+        android:id="@+id/tv_event_place"
+        android:textStyle="italic"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_type"
+        android:layout_marginBottom="10dp"/>
 
 
 

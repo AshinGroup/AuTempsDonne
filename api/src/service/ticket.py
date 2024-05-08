@@ -44,7 +44,8 @@ class TicketService:
 
     def update(self, ticket_id: int, args: dict):
         update_ticket = Ticket(status=args['status'], admin_id=args['admin_id'])
-        self.user_service.select_one_by_id(user_id=update_ticket.admin_id)
+        if update_ticket.admin_id :
+            self.user_service.select_one_by_id(user_id=update_ticket.admin_id)
 
         ticket = self.ticket_repo.select_one_by_id(ticket_id=ticket_id)
 

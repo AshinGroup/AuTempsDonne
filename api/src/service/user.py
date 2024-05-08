@@ -59,6 +59,7 @@ class UserService:
             phone=args["phone"],
             password=args["password"],
             status=0 if method == "register" else args["status"],
+            shop_id=None
         )
         if self.user_repo.select_one_by_email(email=new_user.email):
             raise UserAlreadyExistsException(new_user.email)

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventActivity"
+    tools:context=".NfcActivity"
     android:orientation="vertical">
 
     <ImageView
@@ -14,20 +14,15 @@
         android:padding="10dp"
         android:id="@+id/button_back"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="My Events"
-        android:textSize="30dp"
-        android:gravity="center"
-        android:id="@+id/event_title"
-        android:textStyle="bold"/>
-
-    <ListView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lv_events"
-        android:layout_margin="20dp"/>
+        android:layout_gravity="center">
 
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_nfc"/>
+    </LinearLayout>
 </LinearLayout>

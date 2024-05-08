@@ -191,6 +191,18 @@ class UserRepo():
         except Exception:
             raise UserAccessDbException(user_id=user_id, method="deleting") 
 
+    def delete_role(self, user_id: int, role_id: int) -> None:
+        try:
+            with app.app_context():
+                user = User.query.filter_by(id=user_id).first()
+                role = Role.query.filter_by(id=role_id).first()
+                user.roles.remove(role)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise UserAccessDbException(user_id=user_id, method="deleting") 
+
+
     def delete_delivery(self, user_id: int, delivery_id: int) -> None:
         try:
             with app.app_context():

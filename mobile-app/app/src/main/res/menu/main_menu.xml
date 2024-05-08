@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:icon="@drawable/menu_icon"
+        android:title=""
+        app:showAsAction="always"
+        app:itemIconSize="2dp">
+        <menu>
+            <item
+                android:title="My Events"
+                android:id="@+id/menu_event"
+
+                />
+            <item
+                android:title="Profile"
+                android:id="@+id/menu_profile"
+                />
+            <item
+                android:title="Logout"
+                android:id="@+id/menu_logout"
+                />
+        </menu>
+    </item>
+</menu>

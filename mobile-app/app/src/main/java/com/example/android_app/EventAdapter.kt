@@ -42,14 +42,14 @@ class EventAdapter: BaseAdapter {
         var current_event = getItem(position) as Event
 
         var tv_event_name = v.findViewById<TextView>(R.id.tv_event_name)
-        var tv_event_capacity = v.findViewById<TextView>(R.id.tv_event_capacity)
+        var tv_event_type = v.findViewById<TextView>(R.id.tv_event_type)
         var tv_event_datetime = v.findViewById<TextView>(R.id.tv_event_datetime)
-        var tv_event_description = v.findViewById<TextView>(R.id.tv_event_description)
+        var tv_event_place = v.findViewById<TextView>(R.id.tv_event_place)
 
         tv_event_name.setText(current_event.name)
-        tv_event_datetime.setText(current_event.datetime)
-        tv_event_capacity.setText(current_event.capacity.toString())
-        tv_event_description.setText(current_event.description)
+        tv_event_datetime.setText("Date : " + current_event.datetime)
+        tv_event_type.setText("Type : " + current_event.type)
+        tv_event_place.setText("Location : " + current_event.place)
 
 
         return v

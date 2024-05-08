@@ -4,23 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".LoginActivity"
     android:orientation="vertical"
     android:padding="20dp">
 
-
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/atd_logo_typo">
         </ImageView>
-
-    </FrameLayout>
 
 
 
@@ -42,8 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Confirm"
-        android:backgroundTint="@android:color/holo_blue_dark"
+        android:backgroundTint="@color/blue"
         android:id="@+id/button_confirm">
     </Button>
-
 </LinearLayout>

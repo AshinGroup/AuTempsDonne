@@ -6,7 +6,7 @@ class Event {
     var description = ""
     var datetime = ""
     var capacity = 0
-    var group = 0
+    var group = ""
     var place = ""
     var type = ""
 
@@ -16,7 +16,7 @@ class Event {
         description: String,
         datetime: String,
         capacity: Int,
-        group: Int,
+        group: String,
         place: String,
         type: String
     ) {
