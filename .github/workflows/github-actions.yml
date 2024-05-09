@@ -61,15 +61,15 @@ jobs:
     # needs: [build-backend, build-web]
 
     steps:
-
+    - uses: actions/checkout@v4
     - name: copy files to target server via scp
-      uses: appleboy/scp-action@v0.1.3
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USERNAME }}
         port: 22
         password: ${{ secrets.DEPLOY_PASSWORD }}
-        source: "../../*"
+        source: "."
         target: "~/home/atd/"
 
     - name: remote docker-compose up via ssh
