@@ -69,7 +69,7 @@ jobs:
         username: ${{ secrets.DEPLOY_USERNAME }}
         port: 22
         password: ${{ secrets.DEPLOY_PASSWORD }}
-        source: "."
+        source: "./*"
         target: "~/home/atd/"
 
     - name: remote docker-compose up via ssh
