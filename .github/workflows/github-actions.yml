@@ -61,6 +61,8 @@ jobs:
       - build-backend
       - build-web
 
+    steps:
+    
     - name: copy files to target server via scp
       uses: appleboy/scp-action@v0.1.3
       with:
