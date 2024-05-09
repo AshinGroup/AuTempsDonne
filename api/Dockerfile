@@ -17,6 +17,8 @@ WORKDIR /app
 
 COPY . .
 
+RUN ls -l
+
 RUN pip install -r src/requirements.txt
 
 EXPOSE ${FLASK_PORT}
