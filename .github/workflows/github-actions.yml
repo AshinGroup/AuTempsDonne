@@ -86,7 +86,7 @@ jobs:
         script: |
           cd /home/atd
           mkdir sql
-          mv init.sql
+          mv init.sql /sql
           docker compose -f docker-compose-prod.yml up --build -d
 
 
