@@ -6,15 +6,6 @@ class FoodIdNotFoundException(Exception):
         return f"Food with id '{self.food_id}' not found."
     
 
-class FoodIdGroupNotFoundException(Exception):
-    def __init__(self, group: int) -> None:
-        self.group = group
-
-    def __str__(self) -> str:
-        return f"Food group with id '{self.group}' not found."
-    
-
-
 class FoodAccessDbException(Exception):
     def __init__(self, food_id: int, method: str) -> None:
         self.food_id = food_id

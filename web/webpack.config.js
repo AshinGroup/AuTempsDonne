@@ -1,5 +1,9 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 module.exports = {
   mode: "development", // 'production'
@@ -39,6 +43,20 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
+    }),
+    new webpack.DefinePlugin({
+      "process.env.REACT_APP_API_WASABI_ENDPOINT": JSON.stringify(
+        process.env.REACT_APP_API_WASABI_ENDPOINT
+      ),
+      "process.env.REACT_APP_API_WASABI_ACCESS_KEY": JSON.stringify(
+        process.env.REACT_APP_API_WASABI_ACCESS_KEY
+      ),
+      "process.env.REACT_APP_API_WASABI_SECRET_KEY": JSON.stringify(
+        process.env.REACT_APP_API_WASABI_SECRET_KEY
+      ),
+      "process.env.REACT_APP_API_WASABI_BUCKET_NAME": JSON.stringify(
+        process.env.REACT_APP_API_WASABI_BUCKET_NAME
+      ),
     }),
   ],
   devServer: {

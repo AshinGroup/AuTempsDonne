@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { format } from "date-fns";
-import { Settings, Trash2, CalendarDays } from "lucide-react";
+import { Settings, Trash2, UserRoundPlus } from "lucide-react";
 
 import DeleteModal from "../modals/deleteModal";
 import AddShopModal from "../modals/addShopModal";
 import UpdateShopModal from "../modals/updateShopModal";
 import handleFetch from "../handleFetch";
+import SlotsUsersModal from "../modals/slotsUsersModal";
+import AddUserShopModal from "../modals/addUserShopModal";
 
 const Shops = () => {
   const [shops, setShops] = useState([]);
@@ -20,6 +22,9 @@ const Shops = () => {
   const [selectedShopIdForDelete, setSelectedShopIdForDelete] = useState(null);
   const [AddModalOpen, AddModalSetOpen] = useState(false);
   const [selectedShopIdForUpdate, setSelectedShopIdForUpdate] = useState(null);
+  const [SelectedShopIdForSlots, setSelectedShopIdForSlots] = useState(null);
+  const [selectedShopIdForAddUser, setSelectedShopIdForAddUser] =
+    useState(null);
 
   const intl = useIntl();
 
@@ -77,12 +82,21 @@ const Shops = () => {
     setSelectedShopIdForUpdate(ShopId);
   };
 
+  const handleAddUserClick = (ShopId) => {
+    setSelectedShopIdForAddUser(ShopId);
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchInput(e.target.value);
     if (e.keyCode == 13) {
       fetchShops();
     }
+  };
+
+  // Set the user id to update
+  const handleSlotsClick = (ShopId) => {
+    setSelectedShopIdForSlots(ShopId);
   };
 
   const handleClickSearch = (e) => {
@@ -186,6 +200,10 @@ const Shops = () => {
                   />
                 </th>
               )}
+              <th className="ps-3">
+                {" "}
+                <FormattedMessage id="shops.users" defaultMessage="Users" />
+              </th>
               <th className="ps-3 ">
                 {" "}
                 <FormattedMessage id="shops.address" defaultMessage="Address" />
@@ -215,14 +233,51 @@ const Shops = () => {
                     </span>
                   </td>
                 )}
+                {/* max_slot */}
+                <td className={` py-4 ps-5 ${!expanded ? "text-sm" : ""}`}>
+                  <button
+                    className={`bg-gradient-to-tr text-white px-2 py-1 rounded hover:opacity-90 transition self-end  ${
+                      shop.users?.length != 0
+                        ? "from-green-300 to-green-600"
+                        : "from-red-300 to-red-600"
+                    } `}
+                    onClick={() => handleSlotsClick(shop.id)}
+                  >
+                    {shop.users?.length}
+                  </button>
+                  {SelectedShopIdForSlots === shop.id && (
+                    <SlotsUsersModal
+                      SlotsModalOpen={SelectedShopIdForSlots === shop.id}
+                      SlotsModalSetOpen={() => setSelectedShopIdForSlots(null)}
+                      event={shop}
+                      fetchUsers={fetchShops}
+                    />
+                  )}
+                </td>
                 {/* address */}
-                <td className=" max-w-xs ps-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                <td className=" ps-3">
                   {shop.location.address} {expanded && shop.location.zip_code}
                 </td>
                 {/* actions */}
                 <td>
                   {shop.name != null && (
                     <>
+                      <button
+                        className="text-blue-600 hover:text-blue-800 mr-2"
+                        onClick={() => handleAddUserClick(shop.id)}
+                      >
+                        {<UserRoundPlus size={20} />}
+                      </button>
+                      {selectedShopIdForAddUser === shop.id && (
+                        <AddUserShopModal
+                          UpdateModalOpen={selectedShopIdForAddUser === shop.id}
+                          UpdateModalSetOpen={() =>
+                            setSelectedShopIdForAddUser(null)
+                          }
+                          shop={shop}
+                          fetchShops={() => fetchShops()}
+                        />
+                      )}
                       <button
                         className="text-blue-600 hover:text-blue-800 mr-2"
                         onClick={() => handleUpdateClick(shop.id)}

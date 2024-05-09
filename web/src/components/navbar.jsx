@@ -37,7 +37,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
   // Render links based on user role
   const renderLinks = () => {
     switch (Rule) {
-      case "commerce":
+      case "4": // Commerçant
         return (
           <>
             <NavbarItem
@@ -55,23 +55,12 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               path="/"
               text={
                 <FormattedMessage
-                  id="navbar.tocollect"
-                  defaultMessage="tocollect"
+                  id="navbar.demandToCollect"
+                  defaultMessage="Demand to Collect"
                 />
               }
-              isActive={activeItem === "tocollect"}
-              onClick={() => setActiveItem("tocollect")}
-            />
-            <NavbarItem
-              path="/"
-              text={
-                <FormattedMessage
-                  id="navbar.genqr"
-                  defaultMessage="Generate QR Code"
-                />
-              }
-              isActive={activeItem === "genqr"}
-              onClick={() => setActiveItem("genqr")}
+              isActive={activeItem === "demandToCollect"}
+              onClick={() => setActiveItem("demandToCollect")}
             />
             <NavbarItem
               path="/"
@@ -100,7 +89,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
             />
           </>
         );
-      case "bénéficiaire":
+      case "3": // Bénéficiaire
         return (
           <>
             <NavbarItem
@@ -163,7 +152,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
             />
           </>
         );
-      case "bénévole":
+      case "2": // Bénévole
         return (
           <>
             <NavbarItem
@@ -237,7 +226,7 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
             />
           </>
         );
-      case "admin":
+      case "1": // Admin
         return (
           <>
             <NavbarItem
@@ -445,12 +434,7 @@ function NavbarButton({ Rule, activeItem, expanded, setActiveItem }) {
   }, []);
 
   let links = [];
-  if (
-    Rule == "commerce" ||
-    Rule == "bénéficiaire" ||
-    Rule == "bénévole" ||
-    Rule == "admin"
-  ) {
+  if (Rule == "1" || Rule == "2" || Rule == "3" || Rule == "4") {
     links = [
       {
         label: profile,

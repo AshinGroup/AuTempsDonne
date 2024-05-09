@@ -20,4 +20,4 @@ class LocationAccessDbException(Exception):
 
 class LocationDetailsException(Exception):
     def __str__(self) -> str:
-        return f"Error getting locations details."
+        return f"Error, please retry with real addresses."

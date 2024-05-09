@@ -1,6 +1,7 @@
 import React from "react";
 import atd_logo_typo from "../../resources/atd_logo_typo.png";
 import { FormattedMessage } from "react-intl";
+import Footer from "../footer1";
 
 const Donation = () => {
   return (
@@ -55,6 +56,7 @@ const Donation = () => {
           </form>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

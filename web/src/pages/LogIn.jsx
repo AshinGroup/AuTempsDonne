@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import atd_logo_typo from "../resources/atd_logo_typo.png";
+import Footer from "../components/footer2";
 
 const LogIn = () => {
   const [expanded, setExpanded] = useState(() => window.innerWidth > 1200);
@@ -20,7 +21,7 @@ const LogIn = () => {
   return (
     <>
       {/* Page Section */}
-      <section className="flex flex-col justify-center h-screen w-screen items-center">
+      <section className="flex flex-col justify-center h-screen w-full items-center">
         {/* Sign In */}
         <div
           className={`flex flex-col ${
@@ -35,12 +36,16 @@ const LogIn = () => {
                 className="max-w-80"
               />
             </Link>
-            <h2 className="font-semibold text-2xl mt-5">Log In</h2>
+            <h2 className="font-semibold text-2xl mt-5">
+              <FormattedMessage id="sign.login" defaultMessage="Log In" />
+            </h2>
             <LogInForm />
             <Link to="/" className="mt-2">
               <span className="text-AshinBlue hover:underline">
-                {" "}
-                Forgot Password ?{" "}
+                <FormattedMessage
+                  id="sign.forgotpwd"
+                  defaultMessage="Forgot Password ?"
+                />
               </span>
             </Link>
           </div>
@@ -51,9 +56,15 @@ const LogIn = () => {
             expanded ? "w-1/4" : "w-3/4"
           } h-24 mt-5  items-center bg-white justify-center border-2 border-gray-300 rounded`}
         >
-          No account yet ? &nbsp;
+          <FormattedMessage
+            id="sign.noaccyet"
+            defaultMessage="No account yet ?"
+          />
+          &nbsp;
           <Link to="/SignUp">
-            <span className="text-AshinBlue hover:underline"> Sign Up </span>
+            <span className="text-AshinBlue hover:underline">
+              <FormattedMessage id="sign.signup" defaultMessage="Sign Up" />
+            </span>
           </Link>
         </div>
         {/* Download Android App */}
@@ -69,11 +80,7 @@ const LogIn = () => {
           ></img>
         </Link>
       </section>
-      {/* Footer */}
-      <div className="flex flex-col w-full h-56 mt-10 items-center bg-white justify-center border-2 border-green-400 bg-green-600">
-        Footer (Different from the homepage (Need to set credits, links to the
-        homepage and Languages modifications))
-      </div>
+      <Footer />
     </>
   );
 };
@@ -90,6 +97,10 @@ const LogInForm = () => {
 
   const intl = useIntl();
 
+  const emailPlaceholder = intl.formatMessage({
+    id: "addUserModal.email",
+    defaultMessage: "Email",
+  });
   const emailRequired = intl.formatMessage({
     id: "addUserModal.emailRequired",
     defaultMessage: "Email is required.",
@@ -97,6 +108,10 @@ const LogInForm = () => {
   const emailValid = intl.formatMessage({
     id: "addUserModal.emailValid",
     defaultMessage: "Please enter a valid email address.",
+  });
+  const passwordPlaceholder = intl.formatMessage({
+    id: "addUserModal.password",
+    defaultMessage: "password",
   });
   const passwordRequired = intl.formatMessage({
     id: "addUserModal.passwordRequired",
@@ -138,6 +153,8 @@ const LogInForm = () => {
           sessionStorage.setItem("refresh_token", data?.refresh_token);
         }
         sessionStorage.setItem("access_token", data?.access_token);
+        sessionStorage.setItem("rule", data?.role_id);
+        sessionStorage.setItem("user_id", data?.user_id);
         navigate("/");
       })
       .catch((error) => {
@@ -161,7 +178,7 @@ const LogInForm = () => {
       {/* email */}
       <input
         id="email"
-        placeholder="E-mail" // A DYNAMISER
+        placeholder={emailPlaceholder}
         {...register("email", {
           required: emailRequired,
           pattern: {
@@ -179,7 +196,7 @@ const LogInForm = () => {
       {/* password */}
       <input
         id="password"
-        placeholder="Password" // A DYNAMISER
+        placeholder={passwordPlaceholder}
         {...register("password", {
           required: passwordRequired,
           minLength: {
@@ -188,7 +205,7 @@ const LogInForm = () => {
           },
           pattern: {
             value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
             message: passwordValidPattern,
           },
         })}
@@ -208,7 +225,10 @@ const LogInForm = () => {
         />
         <label for="keepLogged" className="text-AshinBlue">
           {" "}
-          Maintain connexion
+          <FormattedMessage
+            id="sign.keeplog"
+            defaultMessage="Keep me logged in"
+          />
         </label>
       </div>
       {errors.checkbox && (
@@ -225,7 +245,7 @@ const LogInForm = () => {
         type="submit"
         className="bg-AshinBlue hover:bg-AshinBlue-dark text-white mt-4 w-5/6 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       >
-        <FormattedMessage id="sign.login" defaultMessage="Log In" />
+        <FormattedMessage id="logIn.button" defaultMessage="Log In" />
       </button>
     </form>
   );

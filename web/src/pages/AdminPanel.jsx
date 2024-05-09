@@ -4,8 +4,11 @@ import Sidebar from "../components/sidebar";
 import Users from "../components/contents/users";
 import Events from "../components/contents/events";
 import Stock from "../components/contents/stock";
-import ToCollect from "../components/contents/toCollect";
+
+import Collects from "../components/contents/collects";
 import Shops from "../components/contents/shops";
+import Demands from "../components/contents/demands";
+import Deliveries from "../components/contents/deliveries";
 
 const AdminPanel = () => {
   const [activeItem, setActiveItem] = useState("Users");
@@ -21,8 +24,12 @@ const AdminPanel = () => {
         return <Stock />;
       case "Shops":
         return <Shops />;
-      case "ToCollect":
-        return <ToCollect />;
+      case "Collects":
+        return <Collects />;
+      case "Demands":
+        return <Demands />;
+      case "Deliveries":
+        return <Deliveries />;
       case "Profile":
         navigate("/", { state: { id: "profile" } });
         return;

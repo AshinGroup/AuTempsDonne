@@ -7,7 +7,15 @@ services:
       MYSQL_PASSWORD: atd
       MYSQL_DATABASE: atd
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent" ]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "127.0.0.1",
+          "--silent"
+        ]
       interval: 5s
       timeout: 3s
       retries: 4
@@ -16,23 +24,32 @@ services:
       - ./data:/var/lib/mysql
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-
   api:
     build:
       context: api
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     depends_on:
       db:
         condition: service_healthy
     ports:
       - "5000:5000"
     environment:
-        PORT: 5000
-        DB_HOST: db
-        DB_USER: atd
-        DB_PASSWORD: atd
-        DB_NAME: atd
-        DB_PORT: 3306
+      DB_HOST: db
+      DB_USER: atd
+      DB_PASSWORD: atd
+      DB_PORT: 3306
+      DB_NAME: atd
+      FLASK_PORT: 5000
+      API_PATH: http://127.0.0.1:5000/api
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      GEOCODING_API_KEY: ${GEOCODING_API_KEY}
+      OPRS_API_KEY: ${OPRS_API_KEY}
+      GEOAPIFY_API_KEY: ${GEOAPIFY_API_KEY}
+      WASABI_ENDPOINT: ${WASABI_ENDPOINT}
+      WASABI_ACCESS_KEY: ${WASABI_ACCESS_KEY}
+      WASABI_SECRET_KEY: ${WASABI_SECRET_KEY}
+      WASABI_BUCKET_NAME: ${WASABI_BUCKET_NAME}
+
     # healthcheck:
     #   test: curl --fail http://localhost:5000/api/user || exit 1
     #   interval: 5s
@@ -43,11 +60,26 @@ services:
       - ./api:/app
 
   frontend:
-    build: 
+    build:
       context: web
       dockerfile: Dockerfile
-    # depends_on:
-    #   api:
-    #     condition: service_healthy
+    depends_on:
+      - api
     ports:
       - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - ./web:/app
+    environment:
+      - WATCHPACK_POLLING=true
+
+  phpmyadmin:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: phpmyadmin
+    ports:
+      - "8090:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root

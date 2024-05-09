@@ -40,8 +40,6 @@ class StorageController(Resource):
             return jsonify({'message': f"Storage '{storage_id}' successfully updated."})
         except StorageIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
-        except StorageIdGroupNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
         except TypeIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except StorageAccessDbException as e:
@@ -83,8 +81,6 @@ class StorageListController(Resource):
             return jsonify({'message': f"Storage successfully created."})
         except StorageAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except StorageIdGroupNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
         except TypeIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except TypeAccessDbException as e:

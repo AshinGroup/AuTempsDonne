@@ -1,21 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import handleFetch from "../handleFetch";
+import Footer from "../footer1";
+
+import SlotsTicketsModal from "../modals/slotsTicketsModal";
 
 const Support = () => {
   const navigate = useNavigate();
   const [serverStatus, setServerStatus] = useState(
     "Waiting for server status..."
   );
+  const [tickets, setTickets] = useState([]);
+  const [openModal, setOpenModal] = useState(null);
+
+  const handleShowTickets = () => {
+    setOpenModal(true);
+  };
+
+  const getTickets = async () => {
+    const user_id = sessionStorage.getItem("user_id");
+    try {
+      const response = await handleFetch(
+        `http://127.0.0.1:5000/api/ticket/user/${user_id}`
+      );
+      if (response) {
+        setTickets(response.tickets);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
 
   useEffect(() => {
     const checkServerStatus = async () => {
       try {
         const response = await handleFetch("http://127.0.0.1:5000/api/type/1");
-        //127.0.0.1:5000/api/protected
-        http: if (response) {
+        if (response) {
           setServerStatus("Online");
         } else {
           setServerStatus("Offline");
@@ -28,7 +50,9 @@ const Support = () => {
         setServerStatus("Offline");
       }
     };
+
     checkServerStatus();
+    getTickets();
   }, []);
 
   return (
@@ -79,35 +103,83 @@ const Support = () => {
           </div>
           {/* Mes requêtes */}
           <button
-            onClick={() => navigate("/myTickets")}
+            onClick={() => handleShowTickets()}
             className="mt-8 mb-5 w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             <FormattedMessage
               id="support.mytickets"
               defaultMessage="My Tickets"
             />
+            &nbsp;({tickets?.length != 0 ? tickets?.length : 0})
           </button>
+          {openModal && (
+            <SlotsTicketsModal
+              SlotsModalOpen={openModal}
+              SlotsModalSetOpen={() => setOpenModal(null)}
+              tickets={tickets}
+            />
+          )}
           {/* Formulaire */}
-          <SupportForm />
+          <SupportForm getTickets={getTickets} />
         </div>
       </section>
+      <Footer />
     </>
   );
 };
 
-const SupportForm = () => {
+const SupportForm = ({ getTickets }) => {
+  const [responseMessage, setResponseMessage] = useState("");
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    // user_id from sessionStorage
+    const user_id = sessionStorage.getItem("user_id");
+    try {
+      const newTicket = await handleFetch("http://localhost:5000/api/ticket", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          author_id: user_id,
+          subject: data.subject,
+          description: data.description,
+          type: data.requestType,
+        }),
+      });
+
+      if (!newTicket) {
+        setResponseMessage(newTicket.message);
+        setIsErrorMessage(false);
+      } else {
+        setResponseMessage(newTicket.message);
+        setIsErrorMessage(true);
+      }
+
+      getTickets();
+      reset();
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg mt-8">
+      <p
+        className={` my-2 font-medium ${
+          isErrorMessage ? "text-green-500" : "text-red-500"
+        }`}
+      >
+        {responseMessage}
+      </p>
       <div className="mb-4">
         <label
           htmlFor="requestType"
@@ -129,24 +201,45 @@ const SupportForm = () => {
               defaultMessage="Select a request type:"
             />
           </option>
-          <option value="recovery">
+          <option value="1">
             <FormattedMessage
               id="support.accountRecovery"
               defaultMessage="Account Recovery"
             />
           </option>
-          <option value="technical">
+          <option value="2">
             <FormattedMessage
               id="support.techIssues"
               defaultMessage="Technical Issues (crash, error message)"
             />
           </option>
-          <option value="account">
+          <option value="3">
             <FormattedMessage
               id="support.accountManagement"
               defaultMessage="
               Account Management (deletion request)"
             />
+          </option>
+          <option value="4">
+            <FormattedMessage
+              id="support.feedback"
+              defaultMessage="Feedback or Suggestions"
+            />
+          </option>
+          <option value="5">
+            <FormattedMessage
+              id="support.billingIssue"
+              defaultMessage="Billing or Payment Issue"
+            />
+          </option>
+          <option value="6">
+            <FormattedMessage
+              id="support.featureRequest"
+              defaultMessage="Feature Request"
+            />
+          </option>
+          <option value="7">
+            <FormattedMessage id="support.other" defaultMessage="Other" />
           </option>
         </select>
         {errors.requestType && (

@@ -1,8 +1,11 @@
 from flask_restful import Resource, reqparse, inputs, abort
 from service.user import UserService
 from exception.user import *
-from exception.event import EventIdNotFoundException, EventAccessDbException
-from exception.role import RoleIdNotFoundException, RoleAccessDbException
+from exception.event import *
+from exception.role import *
+from exception.delivery import *
+from exception.collect import *
+from exception.shop import *
 from flask import jsonify
 
 
@@ -29,8 +32,8 @@ class UserCheckArgs:
                                 help="Invalid or missing parameter 'role'")  # Required = True for post
         parser.add_argument('password', type=inputs.regex(self.pattern['password']), required=(
             True if method == "post" else False), help="Invalid or missing parameter 'password'")
-        parser.add_argument('status', type=int, required=(
-            True if method == "register" else False), help="Invalid or missing parameter 'status'")
+        if method != "register":
+            parser.add_argument('status', type=int, required=(True), help="Invalid or missing parameter 'status'")
         args = parser.parse_args(strict=True)
         return args
 
@@ -92,7 +95,7 @@ class UserListController(Resource):
     def post(self):
         try:
             args = self.check_args.get_user_args(method="post")
-            new_user_id = self.user_service.insert(args=args)
+            new_user_id = self.user_service.insert(args=args, method="post")
             return jsonify({'message': f"User {args['email']} successfully created.", 'user_id': new_user_id})
         except UserAlreadyExistsException as e:
             abort(http_status_code=400, message=str(e))
@@ -193,5 +196,98 @@ class UserIsRoleController(Resource):
             abort(http_status_code=404, message=str(e))
         except UserRoleNotEmptyException as e:
             abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+class UserDeliversController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
+    def post(self, user_id: int, delivery_id: int) -> None:
+        try:
+            self.user_service.insert_delivery(user_id=user_id, delivery_id=delivery_id)
+            return jsonify({'message': f"User id '{user_id}' successfully participates delivery id '{delivery_id}'."})
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except DeliveryIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserDeliversAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except DeliveryAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+    def delete(self, user_id: int, delivery_id: int) -> None:
+        try:
+            self.user_service.delete_delivery(user_id=user_id, delivery_id=delivery_id)
+            return jsonify({'message': f"User id '{user_id}' successfully leave delivery id '{delivery_id}'."})
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserDeliversNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+class UserCollectsController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
+    def post(self, user_id: int, collect_id: int) -> None:
+        try:
+            self.user_service.insert_collect(user_id=user_id, collect_id=collect_id)
+            return jsonify({'message': f"User id '{user_id}' successfully participates collect id '{collect_id}'."})
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except CollectIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserCollectsAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except CollectAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+    def delete(self, user_id: int, collect_id: int) -> None:
+        try:
+            self.user_service.delete_collect(user_id=user_id, collect_id=collect_id)
+            return jsonify({'message': f"User id '{user_id}' successfully leave collect id '{collect_id}'."})
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserCollectsNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+
+class UserShopController(Resource):
+    def __init__(self) -> None:
+        self.user_service = UserService()
+
+    def post(self, user_id: int, shop_id: int) -> None:
+        try:
+            self.user_service.insert_shop(user_id=user_id, shop_id=shop_id)
+            return jsonify({'message': f"User id '{user_id}' successfully assigned shop id '{shop_id}'."})
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except ShopIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserShopAlreadyExistsException as e:
+            abort(http_status_code=400, message=str(e))
+        except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except ShopAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+
+    def delete(self, user_id: int, shop_id: int) -> None:
+        try:
+            self.user_service.delete_shop(user_id=user_id, shop_id=shop_id)
+            return jsonify({'message': f"User id '{user_id}' successfully deleted shop id '{shop_id}'."})
+        except UserIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except UserShopsNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))

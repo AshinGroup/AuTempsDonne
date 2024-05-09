@@ -3,11 +3,14 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import Navbar from "../components/navbar";
 import Home from "../components/contents/home";
+import Services from "../components/contents/services";
+import Activities from "../components/contents/activities";
+import Courses from "../components/contents/courses";
+import Planning from "../components/contents/planning";
 import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
-
-import handleFetch from "../components/handleFetch";
+import DemandToCollect from "../components/contents/demandToCollect";
 
 const WelcomePage = () => {
   // Profile Management from Dashboard (ugly code, to be refactored)
@@ -18,50 +21,24 @@ const WelcomePage = () => {
 
   console.log(activeItem);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const rule = sessionStorage.getItem("rule");
-
-    if (rule === null) {
-      handleFetch(`http://127.0.0.1:5000/api/protected`)
-        .then((response) => {
-          if (!response.ok) {
-            return response.json().then((data) => {
-              throw new Error(data.message);
-            });
-          }
-          return response.json();
-        })
-        .then((data) => {
-          sessionStorage.setItem("rule", data?.role);
-          sessionStorage.setItem("user_id", data?.user_id);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-          navigate("/");
-        });
-    }
-  }, []);
-  // const rule = "commerce" || "bénévole" || "admin" || "béneficiaire";
-  // check ici la conversion entre int et string
-  const rule = sessionStorage.getItem("rule") || "";
+  // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
+  const rule = sessionStorage.getItem("rule");
+  // const rule = "1";
 
   const getContent = () => {
     switch (activeItem) {
       case "homepage":
         return <Home />;
       case "services":
-        return <div>Services</div>;
+        return <Services />;
       case "activities":
-        return <div>Activities</div>;
+        return <Activities />;
       case "courses":
-        return <div>Courses</div>;
-      case "tocollect":
-        return <div>To Collect</div>;
-      case "genqr":
-        return <div>Generate QR Code</div>;
+        return <Courses />;
+      case "demandToCollect":
+        return <DemandToCollect />;
       case "planning":
-        return <div>Planning</div>;
+        return <Planning />;
       case "support":
         return <Support />;
       case "donate":
