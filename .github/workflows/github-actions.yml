@@ -84,7 +84,8 @@ jobs:
         port: 22
         envs: APPTOKEN,USERNAME
         script: |
-          cd /home/atd
+          cd ~/home/atd
+          ls -l
           mkdir sql
           mv init.sql /sql
           docker compose -f docker-compose-prod.yml up --build -d
