@@ -69,7 +69,7 @@ jobs:
         username: ${{ secrets.DEPLOY_USERNAME }}
         port: 22
         key: ${{ secrets.DEPLOY_KEY }}
-        source: "./docker-compose.prod.yml,./.env"
+        source: "./docker-compose-prod.yml,./.env"
         target: "/home/atd"
 
     - name: remote docker-compose up via ssh
