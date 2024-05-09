@@ -96,7 +96,7 @@ jobs:
         username: ${{ secrets.DEPLOY_USERNAME }}
         port: 22
         password: ${{ secrets.DEPLOY_PASSWORD }}
-        source: "docker-compose-prod.yaml,sql,.env"
+        source: "docker-compose-prod.yml,sql,.env"
         target: "~/home/project/atdv1/"
 
 
