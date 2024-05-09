@@ -68,7 +68,7 @@ jobs:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USERNAME }}
         port: 22
-        key: ${{ secrets.DEPLOY_KEY }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
         source: "."
         target: "/home/atd"
 
@@ -80,7 +80,7 @@ jobs:
       with:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USERNAME }}
-        key: ${{ secrets.DEPLOY_KEY }}
+        password: ${{ secrets.DEPLOY_PASSWORD }}
         port: 22
         envs: APPTOKEN,USERNAME
         script: |
