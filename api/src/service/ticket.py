@@ -40,6 +40,7 @@ class TicketService:
         self.ticket_repo.insert(new_ticket=new_ticket)
 
     def update(self, ticket_id: int, args: dict):
+
         update_ticket = Ticket(
             status=args['status'], admin_id=args['admin_id'])
         if update_ticket.admin_id:
