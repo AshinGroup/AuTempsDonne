@@ -113,7 +113,7 @@ jobs:
         envs: APPTOKEN,USERNAME
         script: |
           cd ~/home/atd
-          cat .env
+          pwd
           docker compose -f docker-compose-prod.yml up --build 
 
 
