@@ -70,7 +70,7 @@ jobs:
         port: 22
         key: ${{ secrets.DEPLOY_KEY }}
         source: "./docker-compose.prod.yml,./.env"
-        target: "~/.deploy/${{ github.event.repository.name }}/"
+        target: "/home/atd"
 
     - name: remote docker-compose up via ssh
       uses: appleboy/ssh-action@v0.1.5
