@@ -97,7 +97,7 @@ jobs:
         port: 22
         password: ${{ secrets.DEPLOY_PASSWORD }}
         source: "docker-compose-prod.yaml,sql,.env"
-        target: "~/home/project/atd_v1/"
+        target: "~/home/project/atdv1/"
 
 
     - name: remote docker-compose up via ssh
@@ -112,7 +112,7 @@ jobs:
         port: 22
         envs: APPTOKEN,USERNAME
         script: |
-          cd ~/home/project/atd_v1
+          cd ~/home/project/atdv1
           docker compose -f docker-compose-prod.yml up --build 
 
 
