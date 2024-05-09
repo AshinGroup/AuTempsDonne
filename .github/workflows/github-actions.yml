@@ -61,7 +61,8 @@ jobs:
     # needs: [build-backend, build-web]
 
     steps:
-
+    - uses: actions/checkout@v4
+    
     - name: Create .env file
       run: |
         echo "Generating .env file"
@@ -89,7 +90,7 @@ jobs:
         
     
     
-    - uses: actions/checkout@v4
+    
     - name: copy files to target server via scp
       uses: appleboy/scp-action@v0.1.7
       with:
