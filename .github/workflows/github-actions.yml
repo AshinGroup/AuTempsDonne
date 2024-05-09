@@ -67,7 +67,7 @@ jobs:
       with:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USERNAME }}
-        port: 62437
+        port: ${{ secrets.DEPLOY_PORT }}
         key: ${{ secrets.DEPLOY_KEY }}
         source: "./docker-compose-prod.yml,./.env"
         target: "/home/atd"
@@ -81,7 +81,7 @@ jobs:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USERNAME }}
         key: ${{ secrets.DEPLOY_KEY }}
-        port: 62437
+        port: ${{ secrets.DEPLOY_PORT }}
         envs: APPTOKEN,USERNAME
         script: |
           cd /home/atd
