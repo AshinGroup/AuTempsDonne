@@ -55,6 +55,6 @@ services:
       - 9000:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./docker-data/portainer_data:/data
+      - ./portainer_data:/data
     restart: always
 
