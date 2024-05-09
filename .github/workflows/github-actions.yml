@@ -3,7 +3,7 @@ name: Build Docker Container
 on:
   push:
     branches:
-      - release-test
+      - main
 
 jobs:
   build-backend:
