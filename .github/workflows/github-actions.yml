@@ -58,8 +58,8 @@ jobs:
 
   deploy:
     needs:
-    - build-backend
-    - build-web
+      - build-backend
+      - build-web
 
     - name: copy files to target server via scp
       uses: appleboy/scp-action@v0.1.3
