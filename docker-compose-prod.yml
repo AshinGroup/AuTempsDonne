@@ -26,6 +26,8 @@ services:
     volumes:
       - ./data:/var/lib/mysql
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - web
 
   backend:
     image: ashinatd/au-temps-donne:api-flask
@@ -36,6 +38,8 @@ services:
       - .env
     ports:
       - ${FLASK_PORT}:5000
+    networks:
+      - web
 
     
 
@@ -48,6 +52,8 @@ services:
       - backend
     volumes:
       - /app/node_modules
+    networks:
+      - web
 
   portainer:
     image: portainer/portainer-ce
@@ -57,4 +63,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer_data:/data
     restart: always
+    networks:
+      - web
 
+networks:
+  web:
+    driver: bridge
