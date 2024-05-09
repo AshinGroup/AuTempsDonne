@@ -7,6 +7,7 @@ import AddDeliveryModal from "../modals/addDeliveryModal";
 import handleFetch from "../handleFetch";
 import DeleteModal from "../modals/deleteModal";
 import SlotsDeliveryModal from "../modals/slotsDeliveryModal";
+import ShowRoadmapModal from "../modals/showRoadmapModal";
 
 const Deliveries = () => {
   // Display the deliveries and Pagination
@@ -22,6 +23,7 @@ const Deliveries = () => {
     useState(null);
   const [SelectedDeliveryIdForSlots, setSelectedDeliveryIdForSlots] =
     useState(null);
+  const [selectedDeliveryIdForRM, setSelectedDeliveryIdForRM] = useState(null);
 
   const fetchDeliveries = async () => {
     try {
@@ -63,6 +65,11 @@ const Deliveries = () => {
   // Set the user id to delete
   const handleDeleteClick = (DeliveryId) => {
     setSelectedDeliveryIdForDelete(DeliveryId);
+  };
+
+  // Set the user id to show RM
+  const handleRMClick = (DeliveryId) => {
+    setSelectedDeliveryIdForRM(DeliveryId);
   };
 
   // Fetch the users when we change Page
@@ -206,10 +213,15 @@ const Deliveries = () => {
                     {/*delivery.roadmap ? delivery.roadmap : "WIP"*/}
                     <button
                       className=" hover:scale-110 text-AshinBlue"
-                      // onClick={() => handleDeleteClick(delivery.id)}
+                      onClick={() => handleRMClick(delivery.id)}
                     >
                       <Map size={23} />
                     </button>
+                    <ShowRoadmapModal
+                      open={selectedDeliveryIdForRM === delivery.id}
+                      onClose={() => setSelectedDeliveryIdForRM(null)}
+                      item={delivery}
+                    />{" "}
                   </td>
                   {/* day of the delivery */}
 

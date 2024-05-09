@@ -4,18 +4,18 @@ import { Trash2 } from "lucide-react";
 import { Modal } from "../modals/modal";
 import fetchBucket from "../wasabiBucket";
 
-export default function ShowQrModal({ open, onClose, item }) {
-  const [imageUrl, setImageUrl] = useState("");
+export default function ShowRoadmapModal({ open, onClose, item }) {
+  const [htmlUrl, setHtmlUrl] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
 
   useEffect(() => {
     const loadQrUrl = async () => {
       try {
-        const url = await fetchBucket(item.qr_code);
-        setImageUrl(url);
+        const url = await fetchBucket(item.roadmap, true);
+        setHtmlUrl(url);
       } catch (error) {
-        console.error("Failed to fetch image URL:", error);
-        setImageUrl("");
+        console.error("Failed to fetch HTML URL:", error);
+        setHtmlUrl("");
       }
     };
 
@@ -34,18 +34,23 @@ export default function ShowQrModal({ open, onClose, item }) {
   }, []);
   return (
     <Modal open={open} onClose={onClose}>
-      <div className="text-center w-64">
-        <img src={imageUrl} alt="QR Code" />
+      <div className="text-center">
+        {htmlUrl ? (
+          <iframe
+            id="roadmapIframe"
+            src={htmlUrl}
+            title="Roadmap HTML"
+            width="500px"
+            height="500px"
+          />
+        ) : (
+          <p>Loading the iFrame ...</p>
+        )}
         <div className="mx-auto my-4 w-48">
           <h3 className="text-lg font-back text-gray-800">
-            <FormattedMessage
-              id="showQR.scheduledAt"
-              defaultMessage="Scheduled to collect :"
-            />
+            <FormattedMessage id="showRM.Roadmap" defaultMessage="Roadmpap" />
           </h3>
-          <p className="text-sm text-gray-500">
-            {item.collect ? item.collect.datetime : "N/A"}
-          </p>
+          <p className="text-sm text-gray-500">{item.datetime}</p>
         </div>
         <div className="flex flex-col gap-4">
           <button

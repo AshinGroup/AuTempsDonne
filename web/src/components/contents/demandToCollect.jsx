@@ -11,6 +11,7 @@ import ShowQrModal from "../modals/showQrModal";
 const DemandToCollect = () => {
   // Display the events and Pagination
   const [demands, setDemands] = useState([]);
+  const [shopData, setShopData] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
   const pageNumbers = [];
@@ -18,15 +19,16 @@ const DemandToCollect = () => {
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
 
   const [AddModalOpen, AddModalSetOpen] = useState(false);
-  const [slectedDemandIdForDelete, setSelectedDemandIdForDelete] =
-    useState(null);
   const [selectedDemandIdForQR, setSelectedDemandIdForQR] = useState(null);
 
   const fetchDemands = async () => {
+    const user_id = sessionStorage.getItem("user_id");
+    const url = `http://127.0.0.1:5000/api/user/${user_id}`;
     try {
-      const data = await handleFetch("http://127.0.0.1:5000/api/demand");
+      const data = await handleFetch(url);
       if (data) {
-        setDemands(data);
+        setShopData(data.shop);
+        setDemands(data.shop.demands);
         setMaxPages(1);
         // setDemands(data.demands);
         // setMaxPages(data.max_pages);
@@ -34,34 +36,6 @@ const DemandToCollect = () => {
     } catch (error) {
       console.error("Error fetching demands:", error);
     }
-  };
-
-  // Remove a user from the API
-  const deleteDemand = async (demandId) => {
-    try {
-      const response = await handleFetch(
-        `http://127.0.0.1:5000/api/demand/${demandId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response) {
-        // Refresh the users list and quit the modal
-        fetchDemands();
-        setSelectedDemandIdForDelete(null);
-      }
-    } catch (error) {
-      console.error("Error deleting demand:", error);
-    }
-  };
-
-  // Set the user id to delete
-  const handleDeleteClick = (DemandId) => {
-    setSelectedDemandIdForDelete(DemandId);
   };
 
   // Set the user id to show QR
@@ -106,7 +80,10 @@ const DemandToCollect = () => {
             expanded ? "text-3xl" : "text-2xl"
           } font-bold flex-grow`}
         >
-          <FormattedMessage id="demands.demands" defaultMessage="Demands" />
+          {shopData.name}{" "}
+          <span className="text-gray-400">
+            {shopData?.location?.address} {shopData?.location?.zip_code}
+          </span>
         </h1>
         <button
           className={`text-base bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 ${
@@ -125,6 +102,7 @@ const DemandToCollect = () => {
           AddModalOpen={AddModalOpen}
           AddModalSetOpen={() => AddModalSetOpen(false)}
           fetchUsers={() => fetchDemands()}
+          shopData={shopData}
         />
       </div>
       {/* List of Users */}
@@ -164,15 +142,14 @@ const DemandToCollect = () => {
               )}{" "}
               <th className="p-4 w-1/12 max-w-xs text-center">
                 {" "}
-                <FormattedMessage id="demands.shop" defaultMessage="Shop" />
+                <FormattedMessage
+                  id="demands.additional"
+                  defaultMessage="Additional"
+                />
               </th>
               <th className="p-4 w-1/12 max-w-xs text-center">
                 {" "}
                 <FormattedMessage id="demands.status" defaultMessage="Status" />
-              </th>
-              <th className="w-1/12 text-center">
-                {" "}
-                <FormattedMessage id="users.actions" defaultMessage="Actions" />
               </th>
             </tr>
           </thead>
@@ -188,22 +165,14 @@ const DemandToCollect = () => {
                     </span>
                   )}
                 </td>
-                {expanded && (
-                  <td className="p-4 text-center">
-                    {format(new Date(demand.limit_datetime), "dd/MM/yyyy")}
-                    <br />
-                    <span className="text-gray-500 text-sm">
-                      {format(
-                        new Date(demand.submitted_datetime),
-                        "dd/MM/yyyy"
-                      )}
-                    </span>
-                  </td>
-                )}
-                {/* address */}
                 <td className="p-4 text-center">
-                  {demand.shop.location.address}
+                  {format(new Date(demand.limit_datetime), "dd/MM/yyyy")}
+                  <br />
+                  <span className="text-gray-500 text-sm">
+                    {format(new Date(demand.submitted_datetime), "dd/MM/yyyy")}
+                  </span>
                 </td>
+                <td className="p-4 text-center">{demand.additional}</td>
                 {/* QR Code et Status */}
                 <td className={`p-4 text-center`}>
                   <button
@@ -222,19 +191,6 @@ const DemandToCollect = () => {
                     open={selectedDemandIdForQR === demand.id}
                     onClose={() => setSelectedDemandIdForQR(null)}
                     item={demand}
-                  />{" "}
-                </td>
-                <td className="p-4 text-center">
-                  <button
-                    className="transition-transform duration-200 ease-in-out transform hover:scale-110 text-red-500"
-                    onClick={() => handleDeleteClick(demand.id)}
-                  >
-                    <Trash2 size={20} />
-                  </button>
-                  <DeleteModal
-                    open={slectedDemandIdForDelete === demand.id}
-                    onClose={() => setSelectedDemandIdForDelete(null)}
-                    fetchUsers={() => deleteDemand(demand.id)}
                   />{" "}
                 </td>
               </tr>
