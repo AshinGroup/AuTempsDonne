@@ -31,8 +31,7 @@ services:
     image: ashinatd/au-temps-donne:api-flask
     restart: always
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     env_file:
       - .env
     ports:
