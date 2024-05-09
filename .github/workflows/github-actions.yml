@@ -80,7 +80,7 @@ jobs:
       with:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USERNAME }}
-        key: a
+        key: ${{ secrets.DEPLOY_KEY }}
         port: 22
         envs: APPTOKEN,USERNAME
         script: |
