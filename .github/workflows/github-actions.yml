@@ -30,6 +30,5 @@ jobs:
         file: ./api/Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/au-temps-donne
-        cache-from: type=registry, ref=${{ secrets.DOCKERHUB_USERNAME }}/au-temps-donne:cache
-        cache-to: type=registry, ref=${{ secrets.DOCKERHUB_USERNAME }}/au-temps-donne:buildcache, mode=max
+
         
