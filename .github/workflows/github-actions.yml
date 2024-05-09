@@ -114,9 +114,7 @@ jobs:
         envs: APPTOKEN,USERNAME
         script: |
           cd ~/home/atd
-          ls -l
-          mkdir sql
-          mv init.sql /sql
+          cat .env
           docker compose -f docker-compose-prod.yml up --build -d
 
 
