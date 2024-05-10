@@ -9,7 +9,12 @@ module.exports = {
   mode: "development", // 'production'
   devServer: {
     allowedHost: ["localhost", ".au-temps-donne.fr", "au-temps-donne.fr", "0.0.0.0"],
-    public: 'au-temps-donne.fr'
+    public: 'au-temps-donne.fr',
+    disableHostCheck: true,
+    static: path.join(__dirname, "dist"),
+    compress: true,
+    port: 3000,
+
   },
   entry: "./src/index.jsx",
   output: {
@@ -63,9 +68,4 @@ module.exports = {
       ),
     }),
   ],
-  devServer: {
-    static: path.join(__dirname, "dist"),
-    compress: true,
-    port: 3000,
-  },
 };
