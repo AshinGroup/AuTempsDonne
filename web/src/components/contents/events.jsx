@@ -9,6 +9,7 @@ import SlotsEventModal from "../modals/slotsEventModal";
 import handleFetch from "../handleFetch";
 
 const Events = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   // Display the events and Pagination
   const [events, setEvents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,8 +36,8 @@ const Events = () => {
   const fetchEvents = async () => {
     let url =
       searchInput !== ""
-        ? `http://127.0.0.1:5000/api/event/page/${currentPage}/search/${searchInput}`
-        : `http://127.0.0.1:5000/api/event/page/${currentPage}`;
+        ? `${env_path}/event/page/${currentPage}/search/${searchInput}`
+        : `${env_path}/event/page/${currentPage}`;
 
     try {
       const data = await handleFetch(url);
@@ -53,7 +54,7 @@ const Events = () => {
   const deleteEvent = async (eventId) => {
     try {
       const response = await handleFetch(
-        `http://127.0.0.1:5000/api/event/${eventId}`,
+        `${env_path}/event/${eventId}`,
         {
           method: "DELETE",
           headers: {

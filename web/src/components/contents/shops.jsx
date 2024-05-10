@@ -11,6 +11,7 @@ import SlotsUsersModal from "../modals/slotsUsersModal";
 import AddUserShopModal from "../modals/addUserShopModal";
 
 const Shops = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
@@ -37,8 +38,8 @@ const Shops = () => {
   const fetchShops = async () => {
     const url =
       searchInput !== ""
-        ? `http://127.0.0.1:5000/api/shop/page/${currentPage}/search/${searchInput}`
-        : `http://127.0.0.1:5000/api/shop/page/${currentPage}`;
+        ? `${env_path}/shop/page/${currentPage}/search/${searchInput}`
+        : `${env_path}/shop/page/${currentPage}`;
 
     try {
       const data = await handleFetch(url);
@@ -53,7 +54,7 @@ const Shops = () => {
 
   // Remove a shop from the API
   const deleteShop = async (shopId) => {
-    const url = `http://127.0.0.1:5000/api/shop/${shopId}`;
+    const url = `${env_path}/shop/${shopId}`;
 
     try {
       const response = await handleFetch(url, {

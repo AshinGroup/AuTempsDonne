@@ -10,11 +10,12 @@ export default function SlotsEventModal({
   event,
   fetchUsers,
 }) {
+  const env_path = process.env.REACT_APP_API_PATH
   // Remove a user from the Course
   const deleteUserCourse = async (userId) => {
     try {
       const response = await handleFetch(
-        `http://127.0.0.1:5000/api/user/${userId}/collect/${event.id}`,
+        `${env_path}/user/${userId}/collect/${event.id}`,
         {
           method: "DELETE",
           headers: {

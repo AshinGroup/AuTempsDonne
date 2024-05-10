@@ -45,12 +45,13 @@ export default function ActivityModal({
 
     // to subscribe
     const handleRegistry = async (eventId) => {
+        const env_path = process.env.REACT_APP_API_PATH
         try {
             if (isSubscribed) {
                 handleUnsubscribe(eventId);
             } else {
                 const response = await handleFetch(
-                    `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                    `${env_path}/user/${userId}/event/${eventId}`,
                     {
                         method: "POST",
                         headers: {
@@ -71,9 +72,10 @@ export default function ActivityModal({
 
     // to unsubscribe
     const handleUnsubscribe = async (eventId) => {
+        const env_path = process.env.REACT_APP_API_PATH
         try {
             const response = await handleFetch(
-                `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                `${env_path}/user/${userId}/event/${eventId}`,
                 {
                     method: "DELETE",
                 }
@@ -90,7 +92,8 @@ export default function ActivityModal({
 
     // get event list to user participate
     const fetchUserEvents = async (userId) => {
-        const url = `http://127.0.0.1:5000/api/user/${userId}`;
+        const env_path = process.env.REACT_APP_API_PATH
+        const url = `${env_path}/user/${userId}`;
 
         try {
             const data = await handleFetch(url);

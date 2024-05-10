@@ -28,6 +28,7 @@ export default function AddShopModal({
   const [locationSwitch, setLocationSwitch] = useState(true);
 
   const intl = useIntl();
+  const env_path = process.env.REACT_APP_API_PATH
 
   const shopNamePlaceholder = intl.formatMessage({
     id: "addShopModal.shopNamePlaceholder",
@@ -62,7 +63,7 @@ export default function AddShopModal({
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/location");
+        const data = await handleFetch(`${env_path}/location`);
         if (data) {
           setLocations(data);
         }
@@ -78,7 +79,7 @@ export default function AddShopModal({
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/company");
+        const data = await handleFetch(`${env_path}/company`);
         if (data) {
           setCompanies(data);
         }
@@ -94,7 +95,7 @@ export default function AddShopModal({
     try {
       if (!companySwitch) {
         const newCompany = await handleFetch(
-          "http://localhost:5000/api/company",
+          `${env_path}/company`,
           {
             method: "POST",
             headers: {
@@ -116,7 +117,7 @@ export default function AddShopModal({
 
       if (!locationSwitch) {
         const newLocation = await handleFetch(
-          "http://localhost:5000/api/location",
+          `${env_path}/location`,
           {
             method: "POST",
             headers: {
@@ -138,7 +139,7 @@ export default function AddShopModal({
         data.location_id = newLocation.location_id;
       }
 
-      const newEvent = await handleFetch("http://localhost:5000/api/shop", {
+      const newEvent = await handleFetch(`${env_path}/shop`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

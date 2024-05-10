@@ -9,6 +9,7 @@ import UpdateStockModal from "../modals/updateStockModal";
 import handleFetch from "../handleFetch";
 
 const Stock = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   const [stock, setStock] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
@@ -34,8 +35,8 @@ const Stock = () => {
   const fetchStock = async () => {
     const url =
       searchInput !== ""
-        ? `http://127.0.0.1:5000/api/package/page/${currentPage}/search/${searchInput}`
-        : `http://127.0.0.1:5000/api/package/page/${currentPage}`;
+        ? `${env_path}/package/page/${currentPage}/search/${searchInput}`
+        : `${env_path}/package/page/${currentPage}`;
 
     try {
       const data = await handleFetch(url);
@@ -50,7 +51,7 @@ const Stock = () => {
 
   // Remove a stock item from the API
   const deleteStock = async (stockId) => {
-    const url = `http://127.0.0.1:5000/api/package/${stockId}`;
+    const url = `${env_path}/package/${stockId}`;
 
     try {
       const response = await handleFetch(url, {

@@ -9,6 +9,7 @@ import DeleteModal from "../modals/deleteModal";
 import ShowQrModal from "../modals/showQrModal";
 
 const Demands = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   // Display the events and Pagination
   const [demands, setDemands] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,7 +25,7 @@ const Demands = () => {
 
   const fetchDemands = async () => {
     try {
-      const data = await handleFetch("http://127.0.0.1:5000/api/demand");
+      const data = await handleFetch(`${env_path}/demand`);
       if (data) {
         setDemands(data);
         setMaxPages(1);
@@ -40,7 +41,7 @@ const Demands = () => {
   const deleteDemand = async (demandId) => {
     try {
       const response = await handleFetch(
-        `http://127.0.0.1:5000/api/demand/${demandId}`,
+        `${env_path}/demand/${demandId}`,
         {
           method: "DELETE",
           headers: {

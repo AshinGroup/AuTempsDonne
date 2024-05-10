@@ -15,6 +15,7 @@ export default function CourseModal({
     const [isErrorMessage, setIsErrorMessage] = useState(false);
     const [isSubscribed, setIsSubscribed] = useState(false);
     const intl = useIntl();
+    const env_path = process.env.REACT_APP_API_PATH
 
     const titlePlaceholder = intl.formatMessage({
         id: "courseModal.title",
@@ -50,7 +51,7 @@ export default function CourseModal({
                 handleUnsubscribe(eventId);
             } else {
                 const response = await handleFetch(
-                    `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                    `${env_path}/user/${userId}/event/${eventId}`,
                     {
                         method: "POST",
                         headers: {
@@ -73,7 +74,7 @@ export default function CourseModal({
     const handleUnsubscribe = async (eventId) => {
         try {
             const response = await handleFetch(
-                `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                `${env_path}/user/${userId}/event/${eventId}`,
                 {
                     method: "DELETE",
                 }
@@ -90,7 +91,8 @@ export default function CourseModal({
 
     // get event list to user participate
     const fetchUserEvents = async (userId) => {
-        const url = `http://127.0.0.1:5000/api/user/${userId}`;
+        const env_path = process.env.REACT_APP_API_PATH
+        const url = `${env_path}/user/${userId}`;
 
         try {
             const data = await handleFetch(url);

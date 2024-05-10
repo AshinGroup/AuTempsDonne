@@ -6,6 +6,7 @@ import ServiceModal from "../modals/serviceModal";
 import Footer from "../footer1";
 
 const Services = () => {
+    const env_path = process.env.REACT_APP_API_PATH
     const [services, setServices] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPages, setMaxPages] = useState(0);
@@ -26,8 +27,8 @@ const Services = () => {
     const fetchServices = async () => {
         let url =
             searchInput !== ""
-                ? `http://127.0.0.1:5000/api/event/page/${currentPage}/search/${searchInput}`
-                : `http://127.0.0.1:5000/api/event/page/${currentPage}`;
+                ? `${env_path}/event/page/${currentPage}/search/${searchInput}`
+                : `${env_path}/event/page/${currentPage}`;
 
         try {
             const data = await handleFetch(url);

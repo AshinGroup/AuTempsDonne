@@ -36,6 +36,7 @@ export default function UpdateCourseModal({
   const [isErrorMessage, setIsErrorMessage] = useState(false);
 
   const intl = useIntl();
+  const env_path = process.env.REACT_APP_API_PATH
 
   const titlePlaceholder = intl.formatMessage({
     id: "EventModal.titlePlaceholder",
@@ -102,7 +103,7 @@ export default function UpdateCourseModal({
     const fetchTypes = async () => {
       try {
         const fetchedTypes = await handleFetch(
-          "http://127.0.0.1:5000/api/type"
+          `${env_path}/type`
         );
         if (fetchedTypes) {
           setTypes(fetchedTypes);
@@ -155,7 +156,7 @@ export default function UpdateCourseModal({
       data.type_id = selectedTypes[0];
       data.group = group;
       const response = await handleFetch(
-        `http://localhost:5000/api/event/${event.id}`,
+        `${env_path}/event/${event.id}`,
         {
           method: "PUT",
           headers: {

@@ -16,6 +16,8 @@ export default function ServicesModal({
     const [isSubscribed, setIsSubscribed] = useState(false);
     const intl = useIntl();
 
+    const env_path = process.env.REACT_APP_API_PATH
+
     const titlePlaceholder = intl.formatMessage({
         id: "serviceModal.title",
         defaultMessage: "Title of the Service",
@@ -50,7 +52,7 @@ export default function ServicesModal({
                 handleUnsubscribe(eventId);
             } else {
                 const response = await handleFetch(
-                    `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                    `${env_path}/user/${userId}/event/${eventId}`,
                     {
                         method: "POST",
                         headers: {
@@ -73,7 +75,7 @@ export default function ServicesModal({
     const handleUnsubscribe = async (eventId) => {
         try {
             const response = await handleFetch(
-                `http://127.0.0.1:5000/api/user/${userId}/event/${eventId}`,
+                `${env_path}/user/${userId}/event/${eventId}`,
                 {
                     method: "DELETE",
                 }
@@ -90,7 +92,7 @@ export default function ServicesModal({
 
     // get event list to user participate
     const fetchUserEvents = async (userId) => {
-        const url = `http://127.0.0.1:5000/api/user/${userId}`;
+        const url = `${env_path}/user/${userId}`;
 
         try {
             const data = await handleFetch(url);

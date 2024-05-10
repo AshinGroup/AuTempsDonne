@@ -9,7 +9,9 @@ import DeleteModal from "../modals/deleteModal";
 import SlotsDeliveryModal from "../modals/slotsDeliveryModal";
 import ShowRoadmapModal from "../modals/showRoadmapModal";
 
+
 const Deliveries = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   // Display the deliveries and Pagination
   const [deliveries, setDeliveries] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +29,7 @@ const Deliveries = () => {
 
   const fetchDeliveries = async () => {
     try {
-      const data = await handleFetch("http://127.0.0.1:5000/api/delivery");
+      const data = await handleFetch(`${env_path}/delivery`);
       if (data) {
         setDeliveries(data);
         setMaxPages(1);
@@ -43,7 +45,7 @@ const Deliveries = () => {
   const deleteDelivery = async (deliveryId) => {
     try {
       const response = await handleFetch(
-        `http://127.0.0.1:5000/api/delivery/${deliveryId}`,
+        `${env_path}/delivery/${deliveryId}`,
         {
           method: "DELETE",
           headers: {

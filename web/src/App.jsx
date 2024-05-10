@@ -12,6 +12,7 @@ import SignUp from "./pages/SignUp";
 import ErrorPage from "./pages/ErrorPage";
 
 import handleFetch from "./components/handleFetch";
+import path from "path-browserify";
 
 const App = () => {
   const { locale } = useLanguage();
@@ -22,7 +23,8 @@ const App = () => {
     const refreshToken = localStorage.getItem("refresh_token");
     if (refreshToken) {
       sessionStorage.setItem("refresh_token", refreshToken);
-      handleFetch(`http://127.0.0.1:5000/api/protected`)
+      const env_path = process.env.REACT_APP_API_PATH
+      handleFetch(`${env_path}/protected`)
         .then((response) => {
           if (!response) {
             throw new Error(response.message);

@@ -113,9 +113,10 @@ export default function AddUserModal({
 
   // Get the roles for the pills and set default role
   useEffect(() => {
+    const env_path = process.env.REACT_APP_API_PATH
     const fetchRoles = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/role");
+        const data = await handleFetch(`${env_path}/role`);
         if (data && data.length > 0) {
           setRoles(data);
           setSelectedRoles([data[0].id]);
@@ -169,7 +170,7 @@ export default function AddUserModal({
     try {
       // First Request
       const newUserResponse = await handleFetch(
-        "http://localhost:5000/api/user",
+        `${env_path}/user`,
         {
           method: "POST",
           headers: {
@@ -194,7 +195,7 @@ export default function AddUserModal({
       // Request for each role
       for (const roleId of additionalRoleIds) {
         const response = await handleFetch(
-          `http://localhost:5000/api/user/${newUser.user_id}/role/${roleId}`,
+          `${env_path}/user/${newUser.user_id}/role/${roleId}`,
           {
             method: "POST",
             headers: {

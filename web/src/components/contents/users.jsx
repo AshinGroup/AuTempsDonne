@@ -15,6 +15,7 @@ import PlanningUserModal from "../modals/planningUserModal";
 import handleFetch from "../handleFetch";
 
 const Users = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   // Display the users and Pagination
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,8 +43,8 @@ const Users = () => {
   const fetchUsers = async () => {
     const url =
       searchInput !== ""
-        ? `http://127.0.0.1:5000/api/user/page/${currentPage}/search/${searchInput}`
-        : `http://127.0.0.1:5000/api/user/page/${currentPage}`;
+        ? `${env_path}/user/page/${currentPage}/search/${searchInput}`
+        : `${env_path}/user/page/${currentPage}`;
 
     try {
       const data = await handleFetch(url);
@@ -69,7 +70,7 @@ const Users = () => {
 
   // Remove a user from the API
   const deleteUser = async (userId) => {
-    const url = `http://127.0.0.1:5000/api/user/${userId}`;
+    const url = `${env_path}/user/${userId}`;
 
     try {
       const response = await handleFetch(url, {

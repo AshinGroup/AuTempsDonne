@@ -8,6 +8,7 @@ import Footer from "../footer1";
 import SlotsTicketsModal from "../modals/slotsTicketsModal";
 
 const Support = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   const navigate = useNavigate();
   const [serverStatus, setServerStatus] = useState(
     "Waiting for server status..."
@@ -23,7 +24,7 @@ const Support = () => {
     const user_id = sessionStorage.getItem("user_id");
     try {
       const response = await handleFetch(
-        `http://127.0.0.1:5000/api/ticket/user/${user_id}`
+        `${env_path}/ticket/user/${user_id}`
       );
       if (response) {
         setTickets(response.tickets);
@@ -36,7 +37,7 @@ const Support = () => {
   useEffect(() => {
     const checkServerStatus = async () => {
       try {
-        const response = await handleFetch("http://127.0.0.1:5000/api/type/1");
+        const response = await handleFetch(`${env_path}/type/1`);
         if (response) {
           setServerStatus("Online");
         } else {
@@ -139,11 +140,13 @@ const SupportForm = ({ getTickets }) => {
     reset,
   } = useForm();
 
+  const env_path = process.env.REACT_APP_API_PATH
+
   const onSubmit = async (data) => {
     // user_id from sessionStorage
     const user_id = sessionStorage.getItem("user_id");
     try {
-      const newTicket = await handleFetch("http://localhost:5000/api/ticket", {
+      const newTicket = await handleFetch(`${env_path}/ticket`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
