@@ -11,9 +11,6 @@ module.exports = {
     host: '0.0.0.0',
     disableHostCheck: true,
   },
-  devServer: {
-    allowedHosts: 'all',
-  },
   entry: "./src/index.jsx",
   output: {
     path: path.resolve(__dirname, "dist"),
