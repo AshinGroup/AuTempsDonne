@@ -3,7 +3,7 @@ name: Build Docker Container
 on:
   push:
     branches:
-      - test-https
+      - main
 
 jobs:
   build-backend:
@@ -77,6 +77,7 @@ jobs:
         echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
         echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env
         echo "API_PATH=${{ secrets.API_PATH }}" >> .env
+        echo "REACT_APP_API_PATH=${{ secrets.API_PATH }}" >> .env
         echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
         echo "FLASK_PORT=${{ secrets.FLASK_PORT }}" >> .env
         echo "REACT_PORT=${{ secrets.REACT_PORT }}" >> .env
