@@ -18,6 +18,7 @@ const App = () => {
   const { locale } = useLanguage();
   const messages = translations[locale];
   const navigate = useNavigate();
+  const url = window.location.pathname;
 
   useEffect(() => {
     const refreshToken = localStorage.getItem("refresh_token");
@@ -40,6 +41,13 @@ const App = () => {
           navigate("/");
         });
     }
+
+    // get the browser url path
+    // console.log("url:",url);
+    if(url != "/") {
+      handleRoute(url, navigate);
+    }
+    
     console.log(
       "localStorage refresh token : ",
       localStorage.getItem("refresh_token")
@@ -66,11 +74,31 @@ const App = () => {
         {/* à voir mais, ptet ajouter les routes pour tout les contents de la navbar, pour pouvoir y accéderr */}
         {/* <Route path="/" element={<AdminPanel />} /> */}
         <Route path="/" element={<HomePage />} />
+        {/* HomePage Routes and their direct props */}
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/services" element={<HomePage direct="services"/>} />
+        <Route path="/activities" element={<HomePage direct="activities"/>} />
+        <Route path="/courses" element={<HomePage direct="courses"/>} />
+        <Route path="/demandToCollect" element={<HomePage direct="demandToCollect"/>} />
+        <Route path="/planning" element={<HomePage direct="planning"/>} />
+        <Route path="/support" element={<HomePage direct="support"/>} />
+        <Route path="/donate" element={<HomePage direct="donate"/>} />
+        <Route path="/profile" element={<HomePage direct="profile"/>} />
+        {/* AdminPanel Routes and their direct props */}
         <Route path="/admin-panel" element={<AdminPanel />} />
+        <Route path="/admin-panel/users" element={<AdminPanel direct="users"/>} />
+        <Route path="/admin-panel/events" element={<AdminPanel direct="events"/>} />
+        <Route path="/admin-panel/stock" element={<AdminPanel direct="stock"/>} />
+        <Route path="/admin-panel/shops" element={<AdminPanel direct="shops"/>} />
+        <Route path="/admin-panel/collects" element={<AdminPanel direct="collects"/>} />
+        <Route path="/admin-panel/demands" element={<AdminPanel direct="demands"/>} />
+        <Route path="/admin-panel/deliveries" element={<AdminPanel direct="deliveries"/>} />
+        {/* Auth Routes */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/logout" element={<LogOut />} />
         <Route path="/error" element={<ErrorPage />} />
+
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </IntlProvider>
@@ -78,3 +106,29 @@ const App = () => {
 };
 
 export default App;
+
+function handleRoute(url, navigate) {
+  switch (url) {
+    case "/admin-panel":
+      navigate("/admin-panel");
+      break;
+    case "/admin-panel/deliveries":
+      navigate("/admin-panel/deliveries");
+      break;
+    case "/support":
+      navigate("/support");
+      break;
+    case "/signup":
+      navigate("/signup");
+      break;
+    case "/login":
+      navigate("/login");
+      break;
+    case "/logout":
+      navigate("/logout");
+      break;
+    default:
+      // navigate("/");
+      break;
+  }
+}

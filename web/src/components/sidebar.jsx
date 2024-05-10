@@ -76,8 +76,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               text={
                 <FormattedMessage id="sidebar.users" defaultMessage="Users" />
               }
-              active={activeItem === "Users"}
-              onClick={() => handleItemClick("Users")}
+              active={activeItem === "users"}
+              onClick={() => handleItemClick("users")}
             />
             <SidebarItem
               key={"Events"}
@@ -85,8 +85,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               text={
                 <FormattedMessage id="sidebar.events" defaultMessage="Events" />
               }
-              active={activeItem === "Events"}
-              onClick={() => handleItemClick("Events")}
+              active={activeItem === "events"}
+              onClick={() => handleItemClick("events")}
             />
             <SidebarItem
               key={"Shops"}
@@ -94,8 +94,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               text={
                 <FormattedMessage id="sidebar.Shops" defaultMessage="Shops" />
               }
-              active={activeItem === "Shops"}
-              onClick={() => handleItemClick("Shops")}
+              active={activeItem === "shops"}
+              onClick={() => handleItemClick("shops")}
             />
             <SidebarItem
               key={"Stock"}
@@ -103,8 +103,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
               text={
                 <FormattedMessage id="sidebar.Stock" defaultMessage="Stock" />
               }
-              active={activeItem === "Stock"}
-              onClick={() => handleItemClick("Stock")}
+              active={activeItem === "stock"}
+              onClick={() => handleItemClick("stock")}
             />
             <SidebarItem
               key={"Collects"}
@@ -115,8 +115,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                   defaultMessage="Collects"
                 />
               }
-              active={activeItem === "Collects"}
-              onClick={() => handleItemClick("Collects")}
+              active={activeItem === "collects"}
+              onClick={() => handleItemClick("collects")}
             />
             <SidebarItem
               key={"Demands"}
@@ -127,8 +127,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                   defaultMessage="Demands"
                 />
               }
-              active={activeItem === "Demands"}
-              onClick={() => handleItemClick("Demands")}
+              active={activeItem === "demands"}
+              onClick={() => handleItemClick("demands")}
             />
             <SidebarItem
               key={"Deliveries"}
@@ -139,8 +139,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                   defaultMessage="Deliveries"
                 />
               }
-              active={activeItem === "Deliveries"}
-              onClick={() => handleItemClick("Deliveries")}
+              active={activeItem === "deliveries"}
+              onClick={() => handleItemClick("deliveries")}
             />
           </ul>
         </SidebarContext.Provider>
@@ -188,8 +188,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                     defaultMessage="Profile"
                   />
                 }
-                active={activeItem === "Profile"}
-                onClick={() => handleItemClick("Profile")}
+                active={activeItem === "profile"}
+                onClick={() => handleItemClick("profile")}
               />
               <SidebarItem
                 key={"Logout"}
@@ -200,8 +200,8 @@ export default function Sidebar({ activeItem, setActiveItem }) {
                     defaultMessage="Logout"
                   />
                 }
-                active={activeItem === "Logout"}
-                onClick={() => handleItemClick("Logout")}
+                active={activeItem === "logout"}
+                onClick={() => handleItemClick("logout")}
               />
               {/* International */}
               <div

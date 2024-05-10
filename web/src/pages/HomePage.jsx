@@ -12,18 +12,21 @@ import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
 import DemandToCollect from "../components/contents/demandToCollect";
 
-const WelcomePage = () => {
+const WelcomePage = ({direct}) => {
   // Profile Management from Dashboard (ugly code, to be refactored)
-  const location = useLocation();
   const [activeItem, setActiveItem] = useState(
-    location.hash.substring(1) ? location.hash.substring(1) : "homepage"
+    direct || "homepage"
   );
-
-  console.log(activeItem);
   const navigate = useNavigate();
   // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
   const rule = sessionStorage.getItem("rule");
   // const rule = "1";
+
+  useEffect(() => {
+    if (activeItem){
+      navigate(`/${activeItem}`)
+    }
+  }, [activeItem]);
 
   const getContent = () => {
     switch (activeItem) {
@@ -43,7 +46,7 @@ const WelcomePage = () => {
         return <Support />;
       case "donate":
         return <Donation />;
-      case "adminpanel":
+      case "admin-panel":
         navigate("/admin-panel");
         return;
       case "login":

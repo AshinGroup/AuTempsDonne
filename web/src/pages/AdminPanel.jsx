@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import Users from "../components/contents/users";
@@ -10,30 +10,36 @@ import Shops from "../components/contents/shops";
 import Demands from "../components/contents/demands";
 import Deliveries from "../components/contents/deliveries";
 
-const AdminPanel = () => {
-  const [activeItem, setActiveItem] = useState("Users");
+const AdminPanel = ({direct}) => {
+  const [activeItem, setActiveItem] = useState(direct || "Users");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (activeItem){
+      navigate(`/admin-panel/${activeItem}`)
+    }
+  }, [activeItem]);
 
   const getContent = () => {
     switch (activeItem) {
-      case "Users":
+      case "users":
         return <Users />;
-      case "Events":
+      case "events":
         return <Events />;
-      case "Stock":
+      case "stock":
         return <Stock />;
-      case "Shops":
+      case "shops":
         return <Shops />;
-      case "Collects":
+      case "collects":
         return <Collects />;
-      case "Demands":
+      case "demands":
         return <Demands />;
-      case "Deliveries":
+      case "deliveries":
         return <Deliveries />;
-      case "Profile":
-        navigate("/", { state: { id: "profile" } });
+      case "profile":
+        navigate("/profile");
         return;
-      case "Logout":
+      case "logout":
         navigate("/logout");
         return;
       default:
