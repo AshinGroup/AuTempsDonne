@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.jsx",
   "scripts": {
-    "start": "webpack serve --open --host 0.0.0.0 --disable-host-check",
+    "start": "webpack serve --open",
     "build": "webpack --mode production"
   },
   "keywords": [],
