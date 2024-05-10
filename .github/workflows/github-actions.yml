@@ -77,6 +77,7 @@ jobs:
         echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
         echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env
         echo "API_PATH=${{ secrets.API_PATH }}" >> .env
+        echo "REACT_APP_API_PATH=${{ secrets.API_PATH }}" >> .env
         echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
         echo "FLASK_PORT=${{ secrets.FLASK_PORT }}" >> .env
         echo "REACT_PORT=${{ secrets.REACT_PORT }}" >> .env
@@ -113,6 +114,7 @@ jobs:
         envs: APPTOKEN,USERNAME
         script: |
           cd ~/home/project/atdv1
+          docker compose -f docker-compose-prod.yml down -v
           docker compose -f docker-compose-prod.yml up --build -d
 
 
