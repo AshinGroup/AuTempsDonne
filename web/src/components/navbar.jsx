@@ -248,8 +248,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
                   defaultMessage="AdminPanel"
                 />
               }
-              isActive={activeItem === "adminpanel"}
-              onClick={() => setActiveItem("adminpanel")}
+              isActive={activeItem === "admin-panel"}
+              onClick={() => setActiveItem("admin-panel")}
             />
             <NavbarItem
               text={

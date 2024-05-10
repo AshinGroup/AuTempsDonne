@@ -20,6 +20,14 @@ module.exports = {
     filename: "bundle.js",
     publicPath: "/",
   },
+  devServer: {
+    historyApiFallback: {
+      index: "/",
+    }, // Redirige toutes les requêtes 404 vers index.html
+    static: path.join(__dirname, "dist"),
+    compress: true,
+    port: 3000,
+  },
   resolve: {
     extensions: [".js", ".jsx"],
   },
