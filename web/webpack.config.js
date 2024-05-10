@@ -47,6 +47,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    new dotenv({
+      path: '../.env'
+    }),
     new webpack.DefinePlugin({
       "process.env.REACT_APP_API_WASABI_ENDPOINT": JSON.stringify(
         process.env.REACT_APP_API_WASABI_ENDPOINT
