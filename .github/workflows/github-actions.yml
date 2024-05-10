@@ -117,6 +117,7 @@ jobs:
           docker compose -f docker-compose-prod.yml down -v
           docker compose -f docker-compose.prod.yml pull
           docker compose -f docker-compose-prod.yml up --no-deps --build -d
+          sudo systemctl restart nginx
 
 
 
