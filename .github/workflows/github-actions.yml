@@ -76,7 +76,9 @@ jobs:
         echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
         echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
         echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env
+        echo "HOST=${{ secrets.HOST }}" >> .env
         echo "API_PATH=${{ secrets.API_PATH }}" >> .env
+        echo "REACT_APP_API_PATH=${{ secrets.API_PATH }}" >> .env
         echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
         echo "FLASK_PORT=${{ secrets.FLASK_PORT }}" >> .env
         echo "REACT_PORT=${{ secrets.REACT_PORT }}" >> .env
@@ -87,6 +89,11 @@ jobs:
         echo "WASABI_ACCESS_KEY=${{ secrets.WASABI_ACCESS_KEY }}" >> .env
         echo "WASABI_SECRET_KEY=${{ secrets.WASABI_SECRET_KEY }}" >> .env
         echo "WASABI_BUCKET_NAME=${{ secrets.WASABI_BUCKET_NAME }}" >> .env
+        echo "REACT_APP_API_WASABI_ENDPOINT=${{ secrets.WASABI_ENDPOINT }}" >> .env
+        echo "REACT_APP_API_WASABI_ACCESS_KEY=${{ secrets.WASABI_ACCESS_KEY }}" >> .env
+        echo "REACT_APP_API_WASABI_SECRET_KEY=${{ secrets.WASABI_SECRET_KEY }}" >> .env
+        echo "REACT_APP_API_WASABI_BUCKET_NAME=${{ secrets.WASABI_BUCKET_NAME }}" >> .env
+        echo "DANGEROUSLY_DISABLE_HOST_CHECK=${{ secrets.DANGEROUSLY_DISABLE_HOST_CHECK }}" >> .env
 
     
     - name: copy files to target server via scp
@@ -113,7 +120,10 @@ jobs:
         envs: APPTOKEN,USERNAME
         script: |
           cd ~/home/project/atdv1
-          docker compose -f docker-compose-prod.yml up --build -d
+          docker compose -f docker-compose-prod.yml down -v
+          docker compose -f docker-compose-prod.yml pull
+          docker compose -f docker-compose-prod.yml up --no-deps --build -d
+          sudo systemctl restart nginx
 
 
 
