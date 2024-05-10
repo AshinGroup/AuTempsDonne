@@ -93,6 +93,7 @@ jobs:
         echo "REACT_APP_API_WASABI_ACCESS_KEY=${{ secrets.WASABI_ACCESS_KEY }}" >> .env
         echo "REACT_APP_API_WASABI_SECRET_KEY=${{ secrets.WASABI_SECRET_KEY }}" >> .env
         echo "REACT_APP_API_WASABI_BUCKET_NAME=${{ secrets.WASABI_BUCKET_NAME }}" >> .env
+        echo "DANGEROUSLY_DISABLE_HOST_CHECK=${{ secrets.DANGEROUSLY_DISABLE_HOST_CHECK }}" >> .env
 
     
     - name: copy files to target server via scp
