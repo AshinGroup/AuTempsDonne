@@ -8,8 +8,7 @@ dotenv.config();
 module.exports = {
   mode: "development", // 'production'
   devServer: {
-    host: '0.0.0.0',
-    disableHostCheck: true,
+    allowedHost: ["localhost", "au-temps-donne.fr"]
   },
   entry: "./src/index.jsx",
   output: {
