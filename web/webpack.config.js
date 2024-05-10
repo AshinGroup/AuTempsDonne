@@ -8,9 +8,8 @@ const Dotenv = require("dotenv-webpack");
 module.exports = {
   mode: "development", // 'production'
   devServer: {
-    allowedHost: ["localhost", ".au-temps-donne.fr", "au-temps-donne.fr", "0.0.0.0"],
+    allowedHost: 'all',
     public: 'au-temps-donne.fr',
-    disableHostCheck: true,
     static: path.join(__dirname, "dist"),
     compress: true,
     port: 3000,
