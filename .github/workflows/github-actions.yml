@@ -113,6 +113,7 @@ jobs:
         envs: APPTOKEN,USERNAME
         script: |
           cd ~/home/project/atdv1
+          docker compose -f docker-compose-prod.yml down -v
           docker compose -f docker-compose-prod.yml up --build -d
 
 
