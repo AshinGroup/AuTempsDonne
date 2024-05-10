@@ -10,6 +10,7 @@ import SlotsCollectModal from "../modals/slotsCollectModal";
 import ShowRoadmapModal from "../modals/showRoadmapModal";
 
 const Collects = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   // Display the collects and Pagination
   const [collects, setCollects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +28,7 @@ const Collects = () => {
 
   const fetchCollects = async () => {
     try {
-      const data = await handleFetch("http://127.0.0.1:5000/api/collect");
+      const data = await handleFetch(`${env_path}/collect`);
       if (data) {
         setCollects(data);
         setMaxPages(1);
@@ -43,7 +44,7 @@ const Collects = () => {
   const deleteCollect = async (collectId) => {
     try {
       const response = await handleFetch(
-        `http://127.0.0.1:5000/api/collect/${collectId}`,
+        `${env_path}/collect/${collectId}`,
         {
           method: "DELETE",
           headers: {

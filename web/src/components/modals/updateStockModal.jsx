@@ -40,6 +40,7 @@ export default function UpdateStockModal({
   const [foodSwitch, setFoodSwitch] = useState(true);
 
   const intl = useIntl();
+  const env_path = process.env.REACT_APP_API_PATH
 
   const submit = intl.formatMessage({
     id: "updateStockModal.submit",
@@ -79,7 +80,7 @@ export default function UpdateStockModal({
     const fetchStorages = async () => {
       try {
         const storageResponse = await handleFetch(
-          "http://127.0.0.1:5000/api/storage"
+          `${env_path}/storage`
         );
         if (storageResponse) {
           setStorages(storageResponse);
@@ -97,7 +98,7 @@ export default function UpdateStockModal({
     const fetchFoods = async () => {
       try {
         const foodResponse = await handleFetch(
-          "http://127.0.0.1:5000/api/food"
+          `${env_path}/food`
         );
         if (foodResponse) {
           setFoods(foodResponse);
@@ -115,7 +116,7 @@ export default function UpdateStockModal({
     const fetchCategories = async () => {
       try {
         const categoryResponse = await handleFetch(
-          "http://127.0.0.1:5000/api/category"
+          `${env_path}/category`
         );
         if (categoryResponse) {
           setCategories(categoryResponse);
@@ -133,7 +134,7 @@ export default function UpdateStockModal({
       // Check if food switch is off
       if (!foodSwitch) {
         const newFoodResponse = await handleFetch(
-          "http://localhost:5000/api/food",
+          `${env_path}/food`,
           {
             method: "POST",
             headers: {
@@ -161,7 +162,7 @@ export default function UpdateStockModal({
       );
 
       const response = await handleFetch(
-        `http://localhost:5000/api/package/${stock.id}`,
+        `${env_path}/package/${stock.id}`,
         {
           method: "PUT",
           headers: {

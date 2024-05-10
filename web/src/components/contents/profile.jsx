@@ -10,6 +10,7 @@ import handleFetch from "../handleFetch";
 import Footer from "../footer1";
 
 const Profile = () => {
+  const env_path = process.env.REACT_APP_API_PATH
   const [user, setUser] = useState([]);
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
@@ -28,7 +29,7 @@ const Profile = () => {
 
   // Fetch the user from the API
   const fetchUser = async () => {
-    const url = `http://127.0.0.1:5000/api/user/${userId}`;
+    const url = `${env_path}/user/${userId}`;
 
     try {
       const data = await handleFetch(url);
@@ -42,7 +43,7 @@ const Profile = () => {
 
   // Delete an event
   const deleteEvent = async (eventId) => {
-    const url = `http://127.0.0.1:5000/api/user/${user.id}/event/${eventId}`;
+    const url = `${env_path}/user/${user.id}/event/${eventId}`;
 
     try {
       const response = await handleFetch(url, {

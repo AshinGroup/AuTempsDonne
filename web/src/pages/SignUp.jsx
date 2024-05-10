@@ -91,11 +91,12 @@ const SignUpForm = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
   const [roleMessage, setRoleMessage] = useState("");
+  const env_path = process.env.REACT_APP_API_PATH
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await handleFetch("http://127.0.0.1:5000/api/role");
+        const response = await handleFetch(`${env_path}/role`);
         if (response) {
           const filteredRoles = response.filter((role, index) => index !== 0);
           setRoles(filteredRoles);
@@ -171,7 +172,7 @@ const SignUpForm = () => {
     try {
       // First Request
       const newUserResponse = await handleFetch(
-        "http://localhost:5000/api/user",
+        `${env_path}/user`,
         {
           method: "POST",
           headers: {
@@ -196,7 +197,7 @@ const SignUpForm = () => {
       // Request for each role
       for (const roleId of additionalRoleIds) {
         const response = await handleFetch(
-          `http://localhost:5000/api/user/${newUser.user_id}/role/${roleId}`,
+          `${env_path}/user/${newUser.user_id}/role/${roleId}`,
           {
             method: "POST",
             headers: {

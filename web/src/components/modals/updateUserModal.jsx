@@ -40,6 +40,7 @@ export default function UpdateProfileModal({
   const [isErrorMessage, setIsErrorMessage] = useState(false);
 
   const intl = useIntl();
+  const env_path = process.env.REACT_APP_API_PATH
 
   const firstNamePlaceholder = intl.formatMessage({
     id: "addUserModal.firstName",
@@ -108,7 +109,7 @@ export default function UpdateProfileModal({
     const fetchUserRoles = async () => {
       try {
         const rolesResponse = await handleFetch(
-          "http://127.0.0.1:5000/api/role"
+          `${env_path}/role`
         );
         if (rolesResponse) {
           setRoles(rolesResponse);
@@ -166,7 +167,7 @@ export default function UpdateProfileModal({
       data["status"] = status;
 
       const response = await handleFetch(
-        `http://localhost:5000/api/user/${user.id}`,
+        `${env_path}/user/${user.id}`,
         {
           method: "PUT",
           headers: {
@@ -198,7 +199,7 @@ export default function UpdateProfileModal({
       // Add new roles
       for (const roleId of rolesToAdd) {
         await handleFetch(
-          `http://localhost:5000/api/user/${user.id}/role/${roleId}`,
+          `${env_path}/user/${user.id}/role/${roleId}`,
           {
             method: "POST",
             headers: {
@@ -211,7 +212,7 @@ export default function UpdateProfileModal({
       // Remove old roles
       for (const roleId of rolesToRemove) {
         await handleFetch(
-          `http://localhost:5000/api/user/${user.id}/role/${roleId}`,
+          `${env_path}/user/${user.id}/role/${roleId}`,
           {
             method: "DELETE",
             headers: {

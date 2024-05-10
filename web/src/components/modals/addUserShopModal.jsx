@@ -39,9 +39,10 @@ export default function addUserShopModal({
 
   // Fetch locations from the API
   useEffect(() => {
+    const env_path = process.env.REACT_APP_API_PATH
     const fetchShops = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/user");
+        const data = await handleFetch(`${env_path}/user`);
         if (data) {
           const filteredUsers = data.filter(
             (user) => !shop.users.some((shopUser) => shopUser.id === user.id)
@@ -58,7 +59,7 @@ export default function addUserShopModal({
 
   const onPostSubmit = async (data) => {
     try {
-      const url = `http://localhost:5000/api/user/${data.user_id}/shop/${shop.id}`;
+      const url = `${env_path}/user/${data.user_id}/shop/${shop.id}`;
       const response = await handleFetch(url, {
         method: "POST",
         headers: {

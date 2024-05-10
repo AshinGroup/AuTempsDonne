@@ -20,7 +20,8 @@ export default function PlanningUserModal({
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
   const [Events, setEvents] = useState([]);
   const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
-
+  const env_path = process.env.REACT_APP_API_PATH
+  
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   const daysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
@@ -60,7 +61,7 @@ export default function PlanningUserModal({
       // Fetch each event individually
       for (const event of user.events) {
         const eventData = await handleFetch(
-          `http://127.0.0.1:5000/api/event/${event.id}`
+          `${env_path}/event/${event.id}`
         );
         if (eventData) {
           eventsData.push(eventData);
@@ -93,7 +94,7 @@ export default function PlanningUserModal({
   const deleteUserEvent = async (eventId) => {
     try {
       const response = await handleFetch(
-        `http://127.0.0.1:5000/api/user/${user.id}/event/${eventId}`,
+        `${env_path}/user/${user.id}/event/${eventId}`,
         {
           method: "DELETE",
           headers: {

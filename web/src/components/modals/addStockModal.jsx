@@ -29,6 +29,8 @@ export default function AddPackageModal({
 
   const intl = useIntl();
 
+  const env_path = process.env.REACT_APP_API_PATH
+
   const submit = intl.formatMessage({
     id: "addStockModal.submit",
     defaultMessage: "Add a Package",
@@ -66,7 +68,7 @@ export default function AddPackageModal({
   useEffect(() => {
     const fetchStorages = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/storage");
+        const data = await handleFetch(`${env_path}/storage`);
         if (data) {
           setStorages(data);
         }
@@ -82,7 +84,7 @@ export default function AddPackageModal({
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/food");
+        const data = await handleFetch(`${env_path}/food`);
         if (data) {
           setFoods(data);
         }
@@ -98,7 +100,7 @@ export default function AddPackageModal({
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/category");
+        const data = await handleFetch(`${env_path}/category`);
         if (data) {
           setCategories(data);
         }
@@ -114,7 +116,7 @@ export default function AddPackageModal({
   const onPostSubmit = async (data) => {
     try {
       if (!foodSwitch) {
-        const newFood = await handleFetch("http://localhost:5000/api/food", {
+        const newFood = await handleFetch(`${env_path}/food`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -139,7 +141,7 @@ export default function AddPackageModal({
       );
 
       const newPackage = await handleFetch(
-        "http://localhost:5000/api/package",
+        `${env_path}/package`,
         {
           method: "POST",
           headers: {

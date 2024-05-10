@@ -52,6 +52,9 @@ module.exports = {
       template: "./public/index.html",
     }),
     new webpack.DefinePlugin({
+      "process.env.REACT_APP_API_PATH": JSON.stringify(
+        process.env.REACT_APP_API_PATH
+      ),
       "process.env.REACT_APP_API_WASABI_ENDPOINT": JSON.stringify(
         process.env.REACT_APP_API_WASABI_ENDPOINT
       ),

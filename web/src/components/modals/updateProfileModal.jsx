@@ -30,6 +30,7 @@ export default function UpdateUserModal({
 
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const intl = useIntl();
 
@@ -94,7 +95,7 @@ export default function UpdateUserModal({
       delete data.role_id;
 
       const response = await handleFetch(
-        `http://localhost:5000/api/user/${user.id}`,
+        `${env_path}/user/${user.id}`,
         {
           method: "PUT",
           headers: {

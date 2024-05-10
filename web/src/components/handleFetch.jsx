@@ -32,7 +32,8 @@ export default handleFetch;
 
 async function refreshFetch(refreshToken) {
   try {
-    const response = await fetch(`http://127.0.0.1:5000/api/token/refresh`, {
+    const env_path = process.env.REACT_APP_API_PATH
+    const response = await fetch(`${env_path}/token/refresh`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

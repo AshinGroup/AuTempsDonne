@@ -24,10 +24,11 @@ const Courses = () => {
     });
 
     const fetchCourses = async () => {
+        const env_path = process.env.REACT_APP_API_PATH
         let url =
             searchInput !== ""
-                ? `http://127.0.0.1:5000/api/event/page/${currentPage}/search/${searchInput}`
-                : `http://127.0.0.1:5000/api/event/page/${currentPage}`;
+                ? `${env_path}/event/page/${currentPage}/search/${searchInput}`
+                : `${env_path}/event/page/${currentPage}`;
 
         try {
             const data = await handleFetch(url);

@@ -31,6 +31,8 @@ export default function AddDemandModal({
 
   const intl = useIntl();
 
+  const env_path = process.env.REACT_APP_API_PATH
+
   const submit = intl.formatMessage({
     id: "addDemandModal.submit",
     defaultMessage: "Add a Demand",
@@ -44,7 +46,7 @@ export default function AddDemandModal({
   useEffect(() => {
     const fetchShops = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/shop");
+        const data = await handleFetch(`${env_path}/shop`);
         if (data) {
           setShops(data);
         }
@@ -60,7 +62,7 @@ export default function AddDemandModal({
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/food");
+        const data = await handleFetch(`${env_path}/food`);
         if (data) {
           setFoods(data);
         }
@@ -89,7 +91,7 @@ export default function AddDemandModal({
       return;
     }
     try {
-      const newEvent = await handleFetch("http://localhost:5000/api/demand", {
+      const newEvent = await handleFetch(`${env_path}/demand`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -282,7 +284,7 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
       foodName = selectedFoodObject?.name;
     } else {
       // Créer un nouvel aliment via API en mode entrée manuelle
-      const data = await handleFetch("http://127.0.0.1:5000/api/food", {
+      const data = await handleFetch(`${env_path}/food`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

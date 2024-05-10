@@ -22,8 +22,9 @@ const DemandToCollect = () => {
   const [selectedDemandIdForQR, setSelectedDemandIdForQR] = useState(null);
 
   const fetchDemands = async () => {
+    const env_path = process.env.REACT_APP_API_PATH
     const user_id = sessionStorage.getItem("user_id");
-    const url = `http://127.0.0.1:5000/api/user/${user_id}`;
+    const url = `${env_path}/user/${user_id}`;
     try {
       const data = await handleFetch(url);
       if (data) {

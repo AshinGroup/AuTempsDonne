@@ -34,6 +34,7 @@ export default function UpdateShopModal({
   const [locationSwitch, setLocationSwitch] = useState(true);
 
   const intl = useIntl();
+  const env_path = process.env.REACT_APP_API_PATH
 
   const shopNamePlaceholder = intl.formatMessage({
     id: "addShopModal.shopNamePlaceholder",
@@ -69,10 +70,10 @@ export default function UpdateShopModal({
     const fetchLocationsAndCompanies = async () => {
       try {
         const locationResponse = await handleFetch(
-          "http://127.0.0.1:5000/api/location"
+          `${env_path}/location`
         );
         const companyResponse = await handleFetch(
-          "http://127.0.0.1:5000/api/company"
+          `${env_path}/company`
         );
 
         if (locationResponse && companyResponse) {
@@ -94,7 +95,7 @@ export default function UpdateShopModal({
       // Check if company switch is on
       if (!companySwitch) {
         const newCompanyResponse = await handleFetch(
-          "http://localhost:5000/api/company",
+          `${env_path}/company`,
           {
             method: "POST",
             headers: {
@@ -118,7 +119,7 @@ export default function UpdateShopModal({
       // Check if location switch is on
       if (!locationSwitch) {
         const newLocationResponse = await handleFetch(
-          "http://localhost:5000/api/location",
+          `${env_path}/location`,
           {
             method: "POST",
             headers: {
@@ -143,7 +144,7 @@ export default function UpdateShopModal({
 
       // PUT request for updating shop
       const response = await handleFetch(
-        `http://localhost:5000/api/shop/${shop.id}`,
+        `${env_path}/shop/${shop.id}`,
         {
           method: "PUT",
           headers: {

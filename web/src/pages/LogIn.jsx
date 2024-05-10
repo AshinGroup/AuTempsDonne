@@ -96,6 +96,7 @@ const LogInForm = () => {
   const navigate = useNavigate();
 
   const intl = useIntl();
+  const env_path = process.env.REACT_APP_API_PATH
 
   const emailPlaceholder = intl.formatMessage({
     id: "addUserModal.email",
@@ -128,7 +129,7 @@ const LogInForm = () => {
   });
 
   const onSubmit = (adata) => {
-    fetch(`http://127.0.0.1:5000/api/login`, {
+    fetch(`${env_path}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

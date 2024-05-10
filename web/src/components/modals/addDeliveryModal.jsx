@@ -42,11 +42,13 @@ export default function AddDeliveryModal({
     defaultMessage: "The date is required ..",
   });
 
+  const env_path = process.env.REACT_APP_API_PATH
+
   // Fetch locations from the API
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/vehicle");
+        const data = await handleFetch(`${env_path}/vehicle`);
         if (data) {
           setVehicles(data);
         }
@@ -62,7 +64,7 @@ export default function AddDeliveryModal({
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/package");
+        const data = await handleFetch(`${env_path}/package`);
         if (data) {
           setPackages(data);
         }
@@ -78,7 +80,7 @@ export default function AddDeliveryModal({
   useEffect(() => {
     const fetchStorages = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/storage");
+        const data = await handleFetch(`${env_path}/storage`);
         if (data) {
           setStorages(data);
         }
@@ -94,7 +96,7 @@ export default function AddDeliveryModal({
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/location");
+        const data = await handleFetch(`${env_path}/location`);
         if (data) {
           setLocations(data);
         }
@@ -130,9 +132,9 @@ export default function AddDeliveryModal({
       );
       setIsErrorMessage(false);
       return;
-    }
+    }  
     try {
-      const newEvent = await handleFetch("http://localhost:5000/api/delivery", {
+      const newEvent = await handleFetch(`${env_path}/delivery`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

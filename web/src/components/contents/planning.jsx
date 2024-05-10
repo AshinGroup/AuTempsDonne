@@ -8,6 +8,7 @@ import handleFetch from "../handleFetch";
 import Footer from "../footer1";
 
 const Planning = () => {
+    const env_path = process.env.REACT_APP_API_PATH
     const [user, setUser] = useState([]);
     const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
     const [selectedUserIdForPlanning, setSelectedUserIdForPlanning] = useState(null);
@@ -17,7 +18,7 @@ const Planning = () => {
     const userId = sessionStorage.getItem("user_id") || "";
 
     const fetchUser = async () => {
-        const url = `http://127.0.0.1:5000/api/user/${userId}`;
+        const url = `${env_path}/user/${userId}`;
 
         try {
             const data = await handleFetch(url);
@@ -30,7 +31,7 @@ const Planning = () => {
     };
 
     const deleteEvent = async (eventId) => {
-        const url = `http://127.0.0.1:5000/api/user/${user.id}/event/${eventId}`;
+        const url = `${env_path}/user/${user.id}/event/${eventId}`;
 
         try {
             const response = await handleFetch(url, {

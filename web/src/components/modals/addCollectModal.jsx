@@ -20,6 +20,8 @@ export default function AddDemandModal({
     reset,
   } = useForm();
 
+  const env_path = process.env.REACT_APP_API_PATH
+
   const [storages, setStorages] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [demands, setDemands] = useState([]);
@@ -40,7 +42,7 @@ export default function AddDemandModal({
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/vehicle");
+        const data = await handleFetch(`${env_path}/vehicle`);
         if (data) {
           setVehicles(data);
         }
@@ -56,7 +58,7 @@ export default function AddDemandModal({
   useEffect(() => {
     const fetchStorages = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/storage");
+        const data = await handleFetch(`${env_path}/storage`);
         if (data) {
           setStorages(data);
         }
@@ -72,7 +74,7 @@ export default function AddDemandModal({
   useEffect(() => {
     const fetchDemands = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/demand");
+        const data = await handleFetch(`${env_path}/demand`);
         if (data) {
           setDemands(data);
         }
@@ -104,7 +106,7 @@ export default function AddDemandModal({
       return;
     }
     try {
-      const newEvent = await handleFetch("http://localhost:5000/api/collect", {
+      const newEvent = await handleFetch(`${env_path}/collect`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

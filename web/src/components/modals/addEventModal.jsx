@@ -89,9 +89,10 @@ export default function AddEventModal({
 
   // Get the types for the pills and set default types
   useEffect(() => {
+    const env_path = process.env.REACT_APP_API_PATH
     const fetchTypes = async () => {
       try {
-        const data = await handleFetch("http://127.0.0.1:5000/api/type");
+        const data = await handleFetch(`${env_path}/type`);
         if (data && data.length > 0) {
           setTypes(data);
           setSelectedTypes([data[0].id]);
@@ -146,7 +147,7 @@ export default function AddEventModal({
       data.type_id = selectedTypes[0];
       data.group = group;
 
-      const response = await handleFetch("http://localhost:5000/api/event", {
+      const response = await handleFetch(`${env_path}/event`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
