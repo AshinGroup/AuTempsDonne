@@ -7,6 +7,9 @@ dotenv.config();
 
 module.exports = {
   mode: "development", // 'production'
+  devServer: {
+    allowedHosts: 'all',
+  },
   entry: "./src/index.jsx",
   output: {
     path: path.resolve(__dirname, "dist"),

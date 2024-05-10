@@ -28,7 +28,7 @@ class EventActivity : AppCompatActivity() {
             var queue = Volley.newRequestQueue(this)
             var apiRequest = StringRequest(
                 Request.Method.GET,
-                "http://10.0.2.2:5000/api/user/" + userId,
+                "https://au-temps-donne.fr/api/user/" + userId,
                 Response.Listener<String> { content ->
                     Log.d("Response", content.toString())
                     var eventList = mutableListOf<Event>()
