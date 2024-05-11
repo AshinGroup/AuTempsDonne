@@ -3,7 +3,6 @@ import { get, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import handleFetch from "../handleFetch";
-import Footer from "../footer1";
 
 import SlotsTicketsModal from "../modals/slotsTicketsModal";
 
@@ -124,7 +123,6 @@ const Support = () => {
           <SupportForm getTickets={getTickets} />
         </div>
       </section>
-      <Footer />
     </>
   );
 };

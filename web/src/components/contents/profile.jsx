@@ -7,7 +7,6 @@ import { FormattedMessage } from "react-intl";
 import DeleteModal from "../modals/deleteModal";
 import UpdateProfileModal from "../modals/updateProfileModal";
 import handleFetch from "../handleFetch";
-import Footer from "../footer1";
 
 const Profile = () => {
   const env_path = process.env.REACT_APP_API_PATH
@@ -81,39 +80,12 @@ const Profile = () => {
     <>
       <div className="flex justify-center w-full bg-gradient-to-t from-AshinBlue-light to-AshinBlue-dark">
         <main className={`${expanded ? "w-4/6" : "w-full"} bg-white`}>
-          {/* Return Button */}
-          {/* <div className="flex justify-between mt-5 ps-5 ">
-            {" "}
-            <Link to="/admin-panel" className="flex items-center">
-              <ArrowLeft
-                size={40}
-                className="bg-AshinBlue border-0 p-1 rounded-full"
-              />
-              <span className="ms-2 font-semibold text-xl">
-                <FormattedMessage
-                  id="updateProfileModal.returnHome"
-                  defaultMessage=" Return to HomePage"
-                />
-              </span>{" "}
-            </Link>
-            {!expanded ? (
-              <img src={atd_logo_} alt="ATD Logo" className="w-10 me-5" />
-            ) : (
-              <img
-                src={atd_logo_typo}
-                alt="ATD Logo Typo"
-                className="max-w-64 me-5"
-              />
-            )}{" "}
-          </div> */}
           {/* Profile */}
           <section>
             {/* Profile Image and Name */}
             <div className="flex items-center justify-center flex-col mt-5 pb-10 mx-32 border-b-4 border-AshinBlue">
               <img
-                src={
-                  "https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg"
-                }
+                src={`https://ui-avatars.com/api/?name=${user.last_name}+${user.first_name}&background=40A1DD&color=FFFFFF&bold=true`}
                 className="w-40 rounded-full border-2 border-AshinBlue-light shadow-lg"
               />
               <span className="mt-3 font-bold text-2xl">
@@ -190,6 +162,16 @@ const Profile = () => {
                     <p>No roles found</p>
                   )}
                 </li>
+                {user.shop && (                
+                <li className="py-2 border-y-2 border-gray-300 mx-5">
+                  <span className="font-semibold text-AshinBlue-dark ms-3 ">
+                    <FormattedMessage
+                      id="shops.shopName"
+                      defaultMessage="Shop"
+                    />&nbsp;:&nbsp;
+                  </span>
+                  {user.shop.name}, {user.shop.address} {user.shop.zip_code}
+                </li>)}
               </ul>
               <line className="border-AshinBlue border-b-4 mx-32 mt-10"></line>
             </div>
@@ -311,7 +293,6 @@ const Profile = () => {
           />
         )}
       </div>      
-      <Footer />
     </>
   );
 };

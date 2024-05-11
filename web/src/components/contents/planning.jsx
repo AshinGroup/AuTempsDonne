@@ -5,7 +5,6 @@ import { FormattedMessage } from "react-intl";
 import DeleteModal from "../modals/deleteModal";
 import PlanningUserModal from "../modals/planningUserModal";
 import handleFetch from "../handleFetch";
-import Footer from "../footer1";
 
 const Planning = () => {
     const env_path = process.env.REACT_APP_API_PATH
@@ -220,7 +219,6 @@ const Planning = () => {
                     />
                 )}
             </div>
-            <Footer />
         </>
     );
 };

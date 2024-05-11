@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import Footer from "../footer1";
 import welcome from "../../resources/homePage1.jpg";
 import maps from "../../resources/maps.png";
 import carousel1 from "../../resources/carousel1.jpg";
@@ -96,7 +95,6 @@ const HomePage = () => {
           </Link>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
