@@ -87,7 +87,6 @@ export default function UpdateShopModal({
   // POST
   const onPostSubmit = async (data) => {
     try {
-      console.log(data);
       // Check if company switch is on
       if (!companySwitch) {
         const newCompanyResponse = await handleFetch(`${env_path}/company`, {
@@ -158,6 +157,8 @@ export default function UpdateShopModal({
       }
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred, please contact a dev.");
+      setIsErrorMessage(true);
     }
   };
   return (

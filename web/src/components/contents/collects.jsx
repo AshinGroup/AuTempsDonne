@@ -10,7 +10,7 @@ import SlotsCollectModal from "../modals/slotsCollectModal";
 import ShowRoadmapModal from "../modals/showRoadmapModal";
 
 const Collects = () => {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   // Display the collects and Pagination
   const [collects, setCollects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,12 +28,10 @@ const Collects = () => {
 
   const fetchCollects = async () => {
     try {
-      const data = await handleFetch(`${env_path}/collect`);
+      const data = await handleFetch(`${env_path}/collect/page/${currentPage}`);
       if (data) {
-        setCollects(data);
-        setMaxPages(1);
-        // setCollects(data.collects);
-        // setMaxPages(data.max_pages);
+        setCollects(data.collects);
+        setMaxPages(data.max_pages);
       }
     } catch (error) {
       console.error("Error fetching collects:", error);
@@ -43,15 +41,12 @@ const Collects = () => {
   // Remove a user from the API
   const deleteCollect = async (collectId) => {
     try {
-      const response = await handleFetch(
-        `${env_path}/collect/${collectId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await handleFetch(`${env_path}/collect/${collectId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response) {
         // Refresh the users list and quit the modal

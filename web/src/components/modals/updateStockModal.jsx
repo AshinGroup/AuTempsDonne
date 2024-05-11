@@ -180,6 +180,8 @@ export default function UpdateStockModal({
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred, please ask a dev.");
+      setIsErrorMessage(true);
     }
   };
 

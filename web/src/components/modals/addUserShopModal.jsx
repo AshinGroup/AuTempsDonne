@@ -74,6 +74,8 @@ export default function addUserShopModal({
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred.");
+      setIsErrorMessage(true);
     }
   };
 

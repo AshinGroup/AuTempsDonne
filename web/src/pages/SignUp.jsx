@@ -156,7 +156,6 @@ const SignUpForm = () => {
 
   // POST
   const onSubmit = async (data) => {
-    console.log(data);
     const firstRoleId = selectedRoles[0];
     const additionalRoleIds = selectedRoles.slice(1);
 
@@ -215,6 +214,8 @@ const SignUpForm = () => {
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred, please contact a dev");
+      setIsErrorMessage(true);
     }
   };
 

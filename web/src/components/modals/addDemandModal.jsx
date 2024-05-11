@@ -114,7 +114,6 @@ export default function AddDemandModal({
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {
-        console.log("DATATATATA:", data);
         const putEvent = await handleFetch(
           `${env_path}/demand/${newEvent.demand_id}`,
           {
@@ -148,6 +147,8 @@ export default function AddDemandModal({
       }
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred while submitting the demand.");
+      setIsErrorMessage(false);
     }
   };
 
@@ -348,7 +349,6 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
       setFoodWeight("");
       setExpirationDate("");
       setMessage("");
-      console.log(selectedFood);
     } else {
       setMessage(
         <FormattedMessage

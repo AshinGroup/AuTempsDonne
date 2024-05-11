@@ -34,8 +34,8 @@ export default function AddDemandModal({
   const intl = useIntl();
 
   const submit = intl.formatMessage({
-    id: "addDemandModal.submit",
-    defaultMessage: "Add a Demand",
+    id: "addCollectModal.submit",
+    defaultMessage: "Add a Collect",
   });
 
   // Fetch locations from the API
@@ -70,23 +70,23 @@ export default function AddDemandModal({
     fetchStorages();
   }, []);
 
+  const fetchDemands = async () => {
+    try {
+      const data = await handleFetch(`${env_path}/demand`);
+      if (data) {
+        setDemands(data);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
+
   // Fetch demands from the API
   useEffect(() => {
-    const fetchDemands = async () => {
-      try {
-        const data = await handleFetch(`${env_path}/demand`);
-        if (data) {
-          setDemands(data);
-        }
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
     fetchDemands();
   }, []);
 
-  const handleRemoveFood = (demandId) => {
+  const handleRemoveDemand = (demandId) => {
     const updatedFoods = selectedDemand.filter(
       (demand) => demand.id !== demandId
     );
@@ -94,6 +94,8 @@ export default function AddDemandModal({
   };
 
   const onPostSubmit = async (data) => {
+    setResponseMessage("En cours de traitement...veuillez patienter");
+    setIsErrorMessage(true);
     const [storage_id, storage_location_id] = data.storage.split("|");
     if (selectedDemand.length === 0) {
       setResponseMessage(
@@ -114,9 +116,7 @@ export default function AddDemandModal({
         body: JSON.stringify({
           datetime: `${data.date} 23:59:59`,
           status: 0,
-          demands: [
-            ...selectedDemand.map((demand) => parseInt(demand.id)),
-          ],
+          demands: [...selectedDemand.map((demand) => parseInt(demand.id))],
           vehicle_id: data.vehicle_id,
           storage_id: storage_id,
         }),
@@ -131,6 +131,7 @@ export default function AddDemandModal({
       }
 
       fetchUsers();
+      fetchDemands();
       setSelectedDemand([]);
       reset();
     } catch (error) {
@@ -206,7 +207,7 @@ export default function AddDemandModal({
                 <span>{demand.expirationDate}</span>
                 <button
                   className="hover:scale-110"
-                  onClick={() => handleRemoveFood(demand.id)}
+                  onClick={() => handleRemoveDemand(demand.id)}
                 >
                   <Trash2 size={20} />
                 </button>

@@ -166,6 +166,8 @@ export default function AddPackageModal({
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred while adding the package.");
+      setIsErrorMessage(true);
     }
   };
 

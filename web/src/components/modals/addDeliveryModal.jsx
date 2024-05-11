@@ -60,51 +60,53 @@ export default function AddDeliveryModal({
     fetchVehicles();
   }, []);
 
+  const fetchPackages = async () => {
+    try {
+      const data = await handleFetch(`${env_path}/package`);
+      if (data) {
+        const packagesWithNoDelivery = data.filter(
+          (pack) => pack.delivery === null
+        );
+        setPackages(packagesWithNoDelivery);
+      }
+    } catch (error) {
+      console.error("Error fetching packages:", error);
+    }
+  };
+
   // Fetch packages from the API
   useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const data = await handleFetch(`${env_path}/package`);
-        if (data) {
-          setPackages(data);
-        }
-      } catch (error) {
-        console.error("Error fetching packages:", error);
-      }
-    };
-
     fetchPackages();
   }, []);
 
+  const fetchStorages = async () => {
+    try {
+      const data = await handleFetch(`${env_path}/storage`);
+      if (data) {
+        setStorages(data);
+      }
+    } catch (error) {
+      console.error("Error fetching storages:", error);
+    }
+  };
+
   // Fetch storages from the API
   useEffect(() => {
-    const fetchStorages = async () => {
-      try {
-        const data = await handleFetch(`${env_path}/storage`);
-        if (data) {
-          setStorages(data);
-        }
-      } catch (error) {
-        console.error("Error fetching storages:", error);
-      }
-    };
-
     fetchStorages();
   }, []);
 
+  const fetchLocations = async () => {
+    try {
+      const data = await handleFetch(`${env_path}/location`);
+      if (data) {
+        setLocations(data);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
   // Fetch locations from the API
   useEffect(() => {
-    const fetchLocations = async () => {
-      try {
-        const data = await handleFetch(`${env_path}/location`);
-        if (data) {
-          setLocations(data);
-        }
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
     fetchLocations();
   }, []);
 
@@ -123,6 +125,8 @@ export default function AddDeliveryModal({
   };
 
   const onPostSubmit = async (data) => {
+    setResponseMessage("In process, please wait ..");
+    setIsErrorMessage(true);
     if (selectedLocation.length === 0) {
       setResponseMessage(
         <FormattedMessage
@@ -170,17 +174,23 @@ export default function AddDeliveryModal({
       }
 
       fetchUsers();
+      fetchLocations();
+      fetchPackages();
       setSelectedLocation([]);
       setSelectedPackages([]);
       reset();
     } catch (error) {
+      setResponseMessage(
+        "An error occurred, please try again or contact a dev .."
+      );
+      setIsErrorMessage(false);
       console.error("An error occurred:", error);
     }
   };
 
   return (
     <Modal open={AddModalOpen} onClose={AddModalSetOpen}>
-      <div className="text-center mt-5 w-full ">
+      <div className="text-center mt-5 ">
         <PackageOpen size={40} className="mx-auto text-AshinBlue" />
         <p
           className={` my-2 font-medium ${
@@ -234,11 +244,10 @@ export default function AddDeliveryModal({
             {selectedLocation.map((location) => (
               <div
                 key={location.id}
-                className="flex justify-between p-2 text-white font-semibold"
+                className="flex justify-between items-center p-1 text-xs text-white"
               >
                 <span>
-                  {location.id} - {location.address}, {location.zip_code}{" "}
-                  {location.city}
+                  {location.id} - {location.address} {location.zip_code}{" "}
                 </span>
                 <span>{location.expiration_date}</span>
                 <button
@@ -255,9 +264,9 @@ export default function AddDeliveryModal({
             {selectedPackages.map((pack) => (
               <div
                 key={pack.id}
-                className="flex justify-between p-2 text-white font-semibold"
+                className="flex justify-between items-center p-1 text-xs text-white"
               >
-                {pack.id} - {pack.food_name}, {pack.weight}kg{" expires - "}
+                {pack.id} - {pack.food_name}, {pack.weight}g - expires at{" "}
                 {pack.expiration_date}
                 <button
                   className="hover:scale-110"

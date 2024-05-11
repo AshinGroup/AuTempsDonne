@@ -174,6 +174,8 @@ export default function UpdateCourseModal({
       fetchUsers();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred, please contact a dev.");
+      setIsErrorMessage(true);
     }
   };
 

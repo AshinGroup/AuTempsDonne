@@ -8,6 +8,7 @@ import {
 import { Modal } from "../modals/modal";
 import DeleteModal from "../modals/deleteModal";
 import handleFetch from "../handleFetch";
+import { set } from "date-fns";
 
 export default function PlanningUserModal({
   PlanningModalOpen,
@@ -20,8 +21,8 @@ export default function PlanningUserModal({
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
   const [Events, setEvents] = useState([]);
   const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
-  const env_path = process.env.REACT_APP_API_PATH
-  
+  const env_path = process.env.REACT_APP_API_PATH;
+
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   const daysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
@@ -60,9 +61,7 @@ export default function PlanningUserModal({
       const eventsData = [];
       // Fetch each event individually
       for (const event of user.events) {
-        const eventData = await handleFetch(
-          `${env_path}/event/${event.id}`
-        );
+        const eventData = await handleFetch(`${env_path}/event/${event.id}`);
         if (eventData) {
           eventsData.push(eventData);
         }
@@ -113,6 +112,8 @@ export default function PlanningUserModal({
       );
     } catch (error) {
       console.error("Error deleting event:", error);
+      setResponseMessage("An error occurred while deleting the event.");
+      setIsErrorMessage(true);
     } finally {
       // Close the delete modal
       setSelectedEventIdForDelete(null);
@@ -123,7 +124,7 @@ export default function PlanningUserModal({
   const handleDeleteClick = (eventId) => {
     setSelectedEventIdForDelete(eventId);
   };
-  
+
   return (
     <Modal open={PlanningModalOpen} onClose={PlanningModalSetOpen}>
       {/* Main Div */}

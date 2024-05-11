@@ -4,38 +4,38 @@ from database.db import db
 from app import app
 from exception.package import PackageAccessDbException
 
-class PackageRepo():    
+
+class PackageRepo():
 
     def select_one_by_id(self, package_id: int) -> Package:
         try:
             package = Package.query.filter_by(id=package_id).first()
             return package
         except Exception:
-            raise PackageAccessDbException(package_id=package_id, method="getting")
-        
+            raise PackageAccessDbException(
+                package_id=package_id, method="getting")
 
     def select_per_page(self, page: int) -> list[Package]:
         try:
             packages = Package.query.paginate(page=page, per_page=7)
             if not packages:
                 return None
-            
-            return {'max_pages' : packages.pages, 'packages': packages}
+
+            return {'max_pages': packages.pages, 'packages': packages}
         except Exception:
             raise PackageAccessDbException(package_id=None, method="getting")
-    
 
     def select_by_search(self, page: int, search: str) -> list[Package]:
         try:
-            packages = Package.query.join(Food).filter(Food.name.like(f'%{search}%')).paginate(page=page, per_page=7)
+            packages = Package.query.join(Food).filter(
+                Food.name.like(f'%{search}%')).paginate(page=page, per_page=7)
             if not packages:
                 return None
-            
-            return {'max_pages' : packages.pages, 'packages': packages}
+
+            return {'max_pages': packages.pages, 'packages': packages}
         except Exception:
             raise PackageAccessDbException(user_id=None, method="getting")
-    
-    
+
     def select_all(self) -> list[Package]:
         try:
             packages = Package.query.all()
@@ -45,7 +45,6 @@ class PackageRepo():
         except Exception:
             raise PackageAccessDbException(package_id=None, method="getting")
 
-
     def insert(self, new_package: Package) -> None:
         try:
             with app.app_context():
@@ -54,8 +53,7 @@ class PackageRepo():
                 db.session.close()
         except Exception:
             raise PackageAccessDbException(package_id=None, method="creating")
-        
-    
+
     def insert_packages(self, packages: list[Package]) -> None:
         try:
             with app.app_context():
@@ -65,8 +63,6 @@ class PackageRepo():
                 db.session.close()
         except Exception:
             raise PackageAccessDbException(package_id=None, method="creating")
-    
-    
 
     def update(self, package_id: int, update_package: Package) -> None:
         try:
@@ -80,8 +76,8 @@ class PackageRepo():
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise PackageAccessDbException(package_id=package_id, method="updating")
-
+            raise PackageAccessDbException(
+                package_id=package_id, method="updating")
 
     def delete(self, package_id: int) -> None:
         try:
@@ -91,4 +87,5 @@ class PackageRepo():
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise PackageAccessDbException(package_id=package_id, method="deleting")
+            raise PackageAccessDbException(
+                package_id=package_id, method="deleting")
