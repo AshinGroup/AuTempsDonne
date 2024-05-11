@@ -70,6 +70,10 @@ export default function addUserShopModal({
         setIsErrorMessage(false);
       }
 
+      setResponseMessage(response.message);
+      setIsErrorMessage(true);
+
+      fetchShops();
       fetchUserShops();
       reset();
     } catch (error) {
