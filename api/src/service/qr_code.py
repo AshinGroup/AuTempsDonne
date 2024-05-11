@@ -19,7 +19,7 @@ class QrCodeService:
             box_size=10,
             border=4,
         )
-        qr.add_data(f"https://au-temps-donne.fr/receiptQrCode?={query}")
+        qr.add_data(f"https://au-temps-donne.fr/receiptQrCode?{query}")
         qr.make(fit=True)
 
         img = qr.make_image(fill_color="black", back_color="white")

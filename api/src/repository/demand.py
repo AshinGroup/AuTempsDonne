@@ -73,12 +73,22 @@ class DemandRepo():
         except Exception:
             raise DemandAccessDbException(demand_id=demand_id, method="updating")
 
+    def update_status(self, demand_id: int, status: int):
+        try:
+            with app.app_context():
+                demand = Demand.query.filter_by(id=demand_id).first()
+                demand.status = status
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise DemandAccessDbException(demand_id=demand_id, method="updating")
+
     def update_qr_code(self, demand_id: int, png_src: str, pdf_src: str) -> None:
         try:
             with app.app_context():
                 demand = Demand.query.filter_by(id=demand_id).first()
-                demand.png_src = update_demand.png_src
-                demand.pdf_src = update_demand.pdf_src
+                demand.png_src = png_src
+                demand.pdf_src = pdf_src
                 db.session.commit()
                 db.session.close()
         except Exception:

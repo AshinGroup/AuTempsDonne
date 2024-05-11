@@ -3,6 +3,7 @@ from service.package import PackageService
 from exception.package import *
 from exception.food import *
 from exception.storage import *
+from exception.demand import *
 from flask import jsonify
 
 class PackageCheckArgs:
@@ -138,3 +139,34 @@ class PackageSearchController(Resource):
             abort(http_status_code=500, message=str(e))
         
         
+
+class PackageQrCodeController(Resource):
+    def __init__(self) -> None:
+        self.package_service = PackageService()
+    
+
+    def post(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('packages', type=dict, required=True, action='append', help="Invalid or missing parameter 'packages'.")
+            parser.add_argument('demand_id', type=int, required=True, help="Invalid or missing parameter 'demand_id'.")
+            parser.add_argument('storage_id', type=int, required=True, help="Invalid or missing parameter 'storage_id'.")
+            args = parser.parse_args(strict=True)
+            self.package_service.insert_qrcode_packages(args=args)
+            return jsonify({'message': f"Package(s) successfully created."})
+        except PackageAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except PackageIdGroupNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except FoodIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except FoodAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except StorageIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except StorageAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except DemandIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except DemandAccessDbException as e:
+            abort(http_status_code=500, message=str(e))

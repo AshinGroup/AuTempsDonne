@@ -58,14 +58,10 @@ class DemandService:
 
         
     def update_qr_code(self, demand_id: int, packages: list, shop_details: dict):
-        demand = self.service.select_one_by_id(demand_id=demand_id)
         data = {
             "packages": [eval(package) for package in packages],
             "demand_id": demand_id
         }
-
-        for package in data["packages"]:
-            package["demand_description"] = demand.description
         png_src, pdf_src = self.qrcode_service.generate_qrcode(data, shop_details)
         self.demand_repo.update_qr_code(demand_id=demand_id, png_src=png_src, pdf_src=pdf_src)
 
@@ -88,6 +84,12 @@ class DemandService:
         self.shop_service.select_one_by_id(shop_id=update_demand.shop_id)
 
         self.demand_repo.update(demand_id=demand_id, update_demand=update_demand)
+
+
+    def update_status(self, demand_id: int, status: int):
+        self.select_one_by_id(demand_id=demand_id)
+        self.demand_repo.update_status(demand_id=demand_id, status=status)
+
 
     def delete(self, demand_id: str):
         demand = self.select_one_by_id(demand_id=demand_id)
