@@ -54,6 +54,18 @@ class PackageRepo():
                 db.session.close()
         except Exception:
             raise PackageAccessDbException(package_id=None, method="creating")
+        
+    
+    def insert_packages(self, packages: list[Package]) -> None:
+        try:
+            with app.app_context():
+                for package in packages:
+                    db.session.add(package)
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise PackageAccessDbException(package_id=None, method="creating")
+    
     
 
     def update(self, package_id: int, update_package: Package) -> None:

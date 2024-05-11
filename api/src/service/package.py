@@ -56,10 +56,11 @@ class PackageService:
         self.demand_service.select_one_by_id(demand_id=args['demand_id'])
         for package in args['packages']:
             self.food_service.select_one_by_id(package['food_id'])
-            packages.append(Package(weight=args['weight'], 
-                                    description=args['description'],
-                                    expiration_date=args['expiration_date'],
-                                    storage_id=args['storage_id']))
+            packages.append(Package(weight=package['weight'], 
+                                    description=package['description'],
+                                    expiration_date=package['expiration_date'],
+                                    storage_id=args['storage_id'],
+                                    food_id=package['food_id']))
 
         self.package_repo.insert_packages(packages=packages)
         self.demand_service.update_status(demand_id=args['demand_id'], status=1)
