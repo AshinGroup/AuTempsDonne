@@ -25,6 +25,7 @@ export default function AddUserModal({
   const [isErrorMessage, setIsErrorMessage] = useState(false);
 
   const intl = useIntl();
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const emailPlaceholder = intl.formatMessage({
     id: "addUserModal.email",
@@ -113,7 +114,7 @@ export default function AddUserModal({
 
   // Get the roles for the pills and set default role
   useEffect(() => {
-    const env_path = process.env.REACT_APP_API_PATH
+    const env_path = process.env.REACT_APP_API_PATH;
     const fetchRoles = async () => {
       try {
         const data = await handleFetch(`${env_path}/role`);
@@ -169,20 +170,17 @@ export default function AddUserModal({
 
     try {
       // First Request
-      const newUserResponse = await handleFetch(
-        `${env_path}/user`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...data,
-            role_id: firstRoleId,
-            status: status,
-          }),
-        }
-      );
+      const newUserResponse = await handleFetch(`${env_path}/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          role_id: firstRoleId,
+          status: status,
+        }),
+      });
 
       if (!newUserResponse.ok) {
         setResponseMessage(newUserResponse.message);
@@ -215,6 +213,8 @@ export default function AddUserModal({
       fetchUsers();
       reset();
     } catch (error) {
+      setResponseMessage("An error occurred:", error);
+      setIsErrorMessage(false);
       console.error("An error occurred:", error);
     }
   };
