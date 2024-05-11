@@ -9,14 +9,13 @@ export default function SlotsEventModal({
   SlotsModalSetOpen,
   event,
   fetchUsers,
-}) {  
-  const userId = sessionStorage.getItem("user_id") || "";
-  const env_path = process.env.REACT_APP_API_PATH
+}) {
+  const env_path = process.env.REACT_APP_API_PATH;
   // Remove a user from the Course
-  const deleteUserCourse = async (eventId) => {
+  const deleteUserCourse = async (userID) => {
     try {
       const response = await handleFetch(
-        `${env_path}/user/${userId}/event/${eventId}`,
+        `${env_path}/user/${userID}/event/${event.id}`,
         {
           method: "DELETE",
           headers: {
@@ -60,7 +59,7 @@ export default function SlotsEventModal({
                   <td className="px-4 py-3">
                     <button
                       className="text-red-600 hover:text-red-800 mr-2"
-                      onClick={() => deleteUserCourse(event.id)}
+                      onClick={() => deleteUserCourse(user.id)}
                     >
                       {<Trash2 size={20} />}
                     </button>

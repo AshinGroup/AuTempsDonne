@@ -11,7 +11,7 @@ import SlotsUsersModal from "../modals/slotsUsersModal";
 import AddUserShopModal from "../modals/addUserShopModal";
 
 const Shops = () => {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   const [shops, setShops] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
@@ -136,16 +136,17 @@ const Shops = () => {
   return (
     <div className={`h-screen p-8 pt-8 ${expanded ? "mx-6" : "mx-1"}`}>
       <div className="flex mb-6 items-center">
-        <h1
-          className={`${
-            expanded ? "text-3xl" : "text-2xl"
-          } font-bold flex-grow`}
-        >
-          <FormattedMessage
-            id="shops.shopsManagement"
-            defaultMessage="Shops Management"
-          />
-        </h1>
+        <div className="flex-grow">
+          <h1 className={`${expanded ? "text-3xl" : "text-2xl"} font-bold`}>
+            <FormattedMessage
+              id="shops.shopsManagement"
+              defaultMessage="Shops Management"
+            />
+          </h1>
+          <span className="text-gray-400 text-xm">
+            Only shops with no demands can be deleted.{" "}
+          </span>
+        </div>
         <button
           className={`text-base bg-gradient-to-tr from-AshinBlue-light to-AshinBlue-dark text-white px-4 ${
             expanded ? "py-3" : "py-2"
@@ -295,12 +296,14 @@ const Shops = () => {
                           fetchShops={() => fetchShops()}
                         />
                       )}
-                      <button
-                        className="text-red-600 hover:text-red-800 mr-2"
-                        onClick={() => handleDeleteClick(shop.id)}
-                      >
-                        {<Trash2 size={20} />}
-                      </button>
+                      {shop.demands.length == 0 && (
+                        <button
+                          className="text-red-600 hover:text-red-800 mr-2"
+                          onClick={() => handleDeleteClick(shop.id)}
+                        >
+                          {<Trash2 size={20} />}
+                        </button>
+                      )}
                       <DeleteModal
                         open={selectedShopIdForDelete === shop.id}
                         onClose={() => setSelectedShopIdForDelete(null)}

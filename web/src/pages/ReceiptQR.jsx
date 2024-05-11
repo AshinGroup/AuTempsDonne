@@ -115,7 +115,7 @@ const ReceiptQR = () => {
             </p>
             <p>
               <b>Additional informations :</b>{" "}
-              {demand.additional == null
+              {demand.additional
                 ? demand.additional
                 : "No additional informations"}
             </p>
@@ -133,7 +133,7 @@ const ReceiptQR = () => {
             <ul className="border-2 border-AshinBlue ">
               {packagesJson.map((packageItem, index) => {
                 const foodItem = foods.find(
-                  (food) => food.id === packageItem.food_id
+                  (food) => food.id == packageItem.food_id
                 );
                 return (
                   <li
@@ -141,7 +141,8 @@ const ReceiptQR = () => {
                     className="pt-1 pb-2 ps-2 border-b-2 border-t-2 border-AshinBlue border-collapse"
                   >
                     <p>
-                      <b>Food :</b> {foodItem ? foodItem.name : "Loading..."}
+                      <b>Food :</b>{" "}
+                      {foodItem ? foodItem.name : "Couldn't Load Food Name"}
                     </p>
                     <p>
                       <b>Weight :</b> {packageItem.weight} Kg
