@@ -22,6 +22,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
+    "react-favicon": "^2.0.3",
     "react-flagkit": "^2.0.4",
     "react-hook-form": "^7.50.1",
     "react-intl": "^6.6.2",

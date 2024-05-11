@@ -11,7 +11,7 @@ import Demands from "../components/contents/demands";
 import Deliveries from "../components/contents/deliveries";
 
 const AdminPanel = ({direct}) => {
-  const [activeItem, setActiveItem] = useState(direct || "Users");
+  const [activeItem, setActiveItem] = useState(direct || "users");
   const navigate = useNavigate();
 
   useEffect(() => {
