@@ -48,7 +48,8 @@ export default function ShowRoadmapModal({ open, onClose, item }) {
         )}
         <div className="mx-auto my-4 w-48">
           <h3 className="text-lg font-back text-gray-800">
-            <FormattedMessage id="showRM.Roadmap" defaultMessage="Roadmpap" />
+            <FormattedMessage id="showRM.Roadmap" defaultMessage="Roadmap" /> ID{" "}
+            {item.id}
           </h3>
           <p className="text-sm text-gray-500">{item.datetime}</p>
         </div>
@@ -57,7 +58,7 @@ export default function ShowRoadmapModal({ open, onClose, item }) {
             onClick={() => {
               window.open(pdfUrl, "_blank");
             }}
-            className="w-full py-2 border border-red-500 bg-red-500 text-white rounded transition-all hover:scale-105"
+            className="w-full py-2 border border-AshinBlue bg-AshinBlue text-white rounded transition-all hover:scale-105"
           >
             <FormattedMessage
               id="showQR.downloadPDF"
@@ -66,7 +67,7 @@ export default function ShowRoadmapModal({ open, onClose, item }) {
           </button>
           <button
             onClick={onClose}
-            className="w-full py-2 border border-AshinBlue rounded transition-all hover:text-AshinBlue"
+            className="w-full py-2 border border-red-500 rounded transition-all hover:text-red-500"
           >
             <FormattedMessage id="deleteModal.cancel" defaultMessage="Cancel" />
           </button>

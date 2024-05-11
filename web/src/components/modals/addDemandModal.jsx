@@ -114,13 +114,38 @@ export default function AddDemandModal({
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {
-        setResponseMessage(newEvent.message);
-        setIsErrorMessage(true);
-      }
+        console.log("DATATATATA:", data);
+        const putEvent = await handleFetch(
+          `${env_path}/demand/${newEvent.demand_id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              submitted_datetime: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+              limit_datetime: `${data.date} 23:59:59`,
+              status: 0,
+              shop_id: data.shop_id,
+              additional: data.additional_info,
+              qr_code: newEvent.qr_code,
+              pdf: newEvent.pdf,
+            }),
+          }
+        );
 
-      fetchUsers();
-      setSelectedFood([]);
-      reset();
+        if (!putEvent) {
+          setResponseMessage(putEvent.message);
+          setIsErrorMessage(false);
+        } else {
+          setResponseMessage(putEvent.message);
+          setIsErrorMessage(true);
+        }
+
+        fetchUsers();
+        setSelectedFood([]);
+        reset();
+      }
     } catch (error) {
       console.error("An error occurred:", error);
     }
