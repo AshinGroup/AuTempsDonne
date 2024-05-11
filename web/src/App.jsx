@@ -9,7 +9,8 @@ import AdminPanel from "./pages/AdminPanel";
 import LogOut from "./pages/LogOut";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
-import ErrorPage from "./pages/ErrorPage";
+
+import ReceiptQR from "./pages/ReceiptQR";
 
 import handleFetch from "./components/handleFetch";
 import path from "path-browserify";
@@ -18,7 +19,6 @@ const App = () => {
   const { locale } = useLanguage();
   const messages = translations[locale];
   const navigate = useNavigate();
-  const url = window.location.pathname;
 
   useEffect(() => {
     const refreshToken = localStorage.getItem("refresh_token");
@@ -40,12 +40,6 @@ const App = () => {
           console.error("Error fetching data:", error);
           navigate("/");
         });
-    }
-
-    // get the browser url path
-    // console.log("url:",url);
-    if(url != "/") {
-      handleRoute(url, navigate);
     }
     
     console.log(
@@ -97,38 +91,14 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/logout" element={<LogOut />} />
-        <Route path="/error" element={<ErrorPage />} />
-
-        <Route path="*" element={<h1>Not Found</h1>} />
+        {/* Error Routes */}
+        <Route path="/error" element={<HomePage direct="error" />} />
+        <Route path="*" element={<HomePage direct="error" />} />
+        {/* Other Routes */}
+        <Route path="/receiptQrCode" element={<ReceiptQR />} />
       </Routes>
     </IntlProvider>
   );
 };
 
 export default App;
-
-function handleRoute(url, navigate) {
-  switch (url) {
-    case "/admin-panel":
-      navigate("/admin-panel");
-      break;
-    case "/admin-panel/deliveries":
-      navigate("/admin-panel/deliveries");
-      break;
-    case "/support":
-      navigate("/support");
-      break;
-    case "/signup":
-      navigate("/signup");
-      break;
-    case "/login":
-      navigate("/login");
-      break;
-    case "/logout":
-      navigate("/logout");
-      break;
-    default:
-      // navigate("/");
-      break;
-  }
-}

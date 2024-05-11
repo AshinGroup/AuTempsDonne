@@ -51,6 +51,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
+      favicon: "./public/favicon.ico",
     }),
     new webpack.DefinePlugin({
       "process.env.REACT_APP_API_PATH": JSON.stringify(

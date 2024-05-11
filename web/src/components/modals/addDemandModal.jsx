@@ -255,6 +255,7 @@ function ShopSelect(register, errors, shops, shopData) {
 }
 
 function FoodManager({ foods, selectedFood, setSelectedFood }) {
+  const env_path = process.env.REACT_APP_API_PATH
   const [selectedFoodId, setSelectedFoodId] = useState("");
   const [foodWeight, setFoodWeight] = useState("");
   const [expirationDate, setExpirationDate] = useState("");

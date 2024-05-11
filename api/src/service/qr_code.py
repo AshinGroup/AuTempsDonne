@@ -4,6 +4,7 @@ import os
 from service.wasabi_s3 import WasabiS3
 from service.pdf_file import PdfService
 
+
 class QrCodeService:
     def __init__(self) -> None:
         self.wasabi_s3_service = WasabiS3()
@@ -26,11 +27,12 @@ class QrCodeService:
             os.makedirs("tmp")
         img.save("tmp/qrcode.png")
 
-
     def generate_qrcode(self, data: dict, shop_details: dict):
-        print(data)
         self.create_qrcode(data)
-        png_src = self.wasabi_s3_service.upload_file(folder="qrcode", file_path="tmp/qrcode.png", type="qr-code", extension="png")
-        pdf_src = self.pdf_service.generate_demand_pdf(data=data, shop_details=shop_details)
+        png_src = self.wasabi_s3_service.upload_file(
+            folder="qrcode", file_path="tmp/qrcode.png", type="qr-code", extension="png"
+        )
+        pdf_src = self.pdf_service.generate_demand_pdf(
+            data=data, shop_details=shop_details
+        )
         return png_src, pdf_src
-

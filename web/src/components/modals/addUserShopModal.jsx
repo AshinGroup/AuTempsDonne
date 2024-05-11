@@ -21,6 +21,7 @@ export default function addUserShopModal({
     formState: { errors },
     reset,
   } = useForm();
+  const env_path = process.env.REACT_APP_API_PATH
 
   const [users, setUsers] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
@@ -45,7 +46,7 @@ export default function addUserShopModal({
         const data = await handleFetch(`${env_path}/user`);
         if (data) {
           const filteredUsers = data.filter(
-            (user) => !shop.users.some((shopUser) => shopUser.id === user.id)
+            (user) => user.shop === null
           );
           setUsers(filteredUsers);
         }
