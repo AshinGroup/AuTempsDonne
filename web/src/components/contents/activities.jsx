@@ -3,8 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { format } from "date-fns";
 import handleFetch from "../handleFetch";
 import ActivityModal from "../modals/activityModal";
-import Footer from "../footer1";
-
 const Activities = () => {
     const [activities, setActivities] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -177,7 +175,6 @@ const Activities = () => {
                     />
                 )}
             </div>
-            <Footer />
         </>
     );
 };
