@@ -68,6 +68,8 @@ class DemandRepo():
                 demand.status = update_demand.status
                 demand.additional = update_demand.additional
                 demand.shop_id = update_demand.shop_id
+                demand.qr_code= update_demand.qr_code
+                demand.pdf = update_demand.pdf
                 db.session.commit()
                 db.session.close()
         except Exception:
@@ -83,17 +85,6 @@ class DemandRepo():
         except Exception:
             raise DemandAccessDbException(demand_id=demand_id, method="updating")
 
-    def update_qr_code(self, demand_id: int, png_src: str, pdf_src: str) -> None:
-        try:
-            with app.app_context():
-                demand = Demand.query.filter_by(id=demand_id).first()
-                demand.png_src = png_src
-                demand.pdf_src = pdf_src
-                db.session.commit()
-                db.session.close()
-        except Exception:
-            raise DemandAccessDbException(demand_id=demand_id, method="updating")
-    
 
     def delete(self, demand_id: int) -> None:
         try:

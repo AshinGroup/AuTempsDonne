@@ -54,24 +54,29 @@ class DemandService:
 
         self.shop_service.select_one_by_id(shop_id=new_demand.shop_id)
         new_demand_id = self.demand_repo.insert(new_demand=new_demand)
-        self.update_qr_code(demand_id=new_demand_id, packages=args['packages'], shop_details=shop_details)
+        png_src, pdf_src = self.get_qr_code(demand_id=new_demand_id, packages=args['packages'], shop_details=shop_details)
+        return {"demand_id": new_demand_id, "qr_code": png_src, "pdf": pdf_src}
 
         
-    def update_qr_code(self, demand_id: int, packages: list, shop_details: dict):
+    def get_qr_code(self, demand_id: int, packages: list, shop_details: dict):
         data = {
             "packages": [eval(package) for package in packages],
             "demand_id": demand_id
         }
         png_src, pdf_src = self.qrcode_service.generate_qrcode(data, shop_details)
-        self.demand_repo.update_qr_code(demand_id=demand_id, png_src=png_src, pdf_src=pdf_src)
-
+        return png_src, pdf_src
+    
+   
 
     def update(self, demand_id: int, args: dict):
         update_demand = Demand(
+            submitted_datetime=args['submitted_datetime'],
             limit_datetime=args["limit_datetime"],
             status=args["status"],
             additional=args["additional"],
             shop_id=args["shop_id"],
+            qr_code=args["qr_code"],
+            pdf=args["pdf"]
         )
         demand = self.demand_repo.select_one_by_id(demand_id=demand_id)
 
