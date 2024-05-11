@@ -38,25 +38,37 @@ class DemandService:
     def insert(self, args: dict):
         time = datetime.now()
         formatted_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        data = {"packages": [eval(package) for package in args["packages"]]}
-        for a in data:
-            print(type(a))
+        
         shop = self.shop_service.select_one_by_id(args["shop_id"])
         shop_details = {"name": shop.name, "location": shop.location.description}
 
-        png_src, pdf_src = self.qrcode_service.generate_qrcode(data, shop_details)
         new_demand = Demand(
             submitted_datetime=formatted_time,
             limit_datetime=args["limit_datetime"],
             status=args["status"],
             additional=args["additional"],
             shop_id=args["shop_id"],
-            qr_code=png_src,
-            pdf=pdf_src,
+            qr_code=None,
+            pdf=None,
         )
 
         self.shop_service.select_one_by_id(shop_id=new_demand.shop_id)
-        self.demand_repo.insert(new_demand=new_demand)
+        new_demand_id = self.demand_repo.insert(new_demand=new_demand)
+        self.update_qr_code(demand_id=new_demand_id, packages=args['packages'], shop_details=shop_details)
+
+        
+    def update_qr_code(self, demand_id: int, packages: list, shop_details: dict):
+        demand = self.service.select_one_by_id(demand_id=demand_id)
+        data = {
+            "packages": [eval(package) for package in packages],
+            "demand_id": demand_id
+        }
+
+        for package in data["packages"]:
+            package["demand_description"] = demand.description
+        png_src, pdf_src = self.qrcode_service.generate_qrcode(data, shop_details)
+        self.demand_repo.update_qr_code(demand_id=demand_id, png_src=png_src, pdf_src=pdf_src)
+
 
     def update(self, demand_id: int, args: dict):
         update_demand = Demand(

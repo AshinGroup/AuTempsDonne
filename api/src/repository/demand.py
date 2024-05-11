@@ -50,8 +50,11 @@ class DemandRepo():
         try:
             with app.app_context():
                 db.session.add(new_demand)
+                db.session.flush()
+                new_demand_id = new_demand.id
                 db.session.commit()
                 db.session.close()
+                return new_demand_id
         except Exception:
             raise DemandAccessDbException(demand_id=None, method="creating")
 
@@ -65,6 +68,17 @@ class DemandRepo():
                 demand.status = update_demand.status
                 demand.additional = update_demand.additional
                 demand.shop_id = update_demand.shop_id
+                db.session.commit()
+                db.session.close()
+        except Exception:
+            raise DemandAccessDbException(demand_id=demand_id, method="updating")
+
+    def update_qr_code(self, demand_id: int, png_src: str, pdf_src: str) -> None:
+        try:
+            with app.app_context():
+                demand = Demand.query.filter_by(id=demand_id).first()
+                demand.png_src = update_demand.png_src
+                demand.pdf_src = update_demand.pdf_src
                 db.session.commit()
                 db.session.close()
         except Exception:
