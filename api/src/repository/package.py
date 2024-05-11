@@ -16,7 +16,7 @@ class PackageRepo():
 
     def select_per_page(self, page: int) -> list[Package]:
         try:
-            packages = Package.query.paginate(page=page, per_page=10)
+            packages = Package.query.paginate(page=page, per_page=7)
             if not packages:
                 return None
             
@@ -27,7 +27,7 @@ class PackageRepo():
 
     def select_by_search(self, page: int, search: str) -> list[Package]:
         try:
-            packages = Package.query.join(Food).filter(Food.name.like(f'%{search}%')).paginate(page=page, per_page=10)
+            packages = Package.query.join(Food).filter(Food.name.like(f'%{search}%')).paginate(page=page, per_page=7)
             if not packages:
                 return None
             

@@ -16,7 +16,7 @@ class ShopRepo:
 
     def select_per_page(self, page: int) -> list[Shop]:
         try:
-            shops = Shop.query.paginate(page=page, per_page=10)
+            shops = Shop.query.paginate(page=page, per_page=9)
             if not shops:
                 return None
 
@@ -37,7 +37,7 @@ class ShopRepo:
 
     def select_by_search(self, page: int, search: str) -> list[Shop]:
         try:
-            shops = Shop.query.join(Company).filter(Company.name.like(f'%{search}%')).paginate(page=page, per_page=10)
+            shops = Shop.query.join(Company).filter(Company.name.like(f'%{search}%') | Shop.name.like(f'%{search}%')).paginate(page=page, per_page=9)
             if not shops:
                 return None
             

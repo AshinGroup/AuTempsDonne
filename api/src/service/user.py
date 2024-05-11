@@ -30,11 +30,11 @@ class UserService:
             raise UserIdNotFoundException(user_id=user_id)
 
     def select_one_by_email(self, email: str) -> User:
-        user = self.user_repo.select_one_by_email(email=email)
+        user = self.user_repo.select_one_by_email(email=email.lower())
         if user:
             return user
         else:
-            raise UserEmailNotFoundException(email=email)
+            raise UserEmailNotFoundException(email=email.lower())
 
     def select_per_page(self, page: int) -> list[User]:
         users = self.user_repo.select_per_page(page=page)
@@ -55,14 +55,14 @@ class UserService:
         new_user = User(
             first_name=args["first_name"],
             last_name=args["last_name"],
-            email=args["email"],
+            email=args["email"].lower(),
             phone=args["phone"],
             password=args["password"],
             status=0 if method == "register" else args["status"],
             shop_id=None,
         )
-        if self.user_repo.select_one_by_email(email=new_user.email):
-            raise UserAlreadyExistsException(new_user.email)
+        if self.user_repo.select_one_by_email(email=new_user.email.lower()):
+            raise UserAlreadyExistsException(new_user.email.lower())
         if not self.role_service.select_one_by_id(args["role_id"]):
             raise RoleIdNotFoundException(args["role_id"])
         new_user_id = self.user_repo.insert(new_user=new_user, role_id=args["role_id"])
@@ -136,7 +136,7 @@ class UserService:
         update_user = User(
             first_name=args["first_name"],
             last_name=args["last_name"],
-            email=args["email"],
+            email=args["email"].lower(),
             phone=args["phone"],
             password=args["password"] if args["password"] else None,
             status=args["status"],
@@ -145,10 +145,10 @@ class UserService:
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
 
-        users_with_email = self.user_repo.select_by_email(email=update_user.email)
+        users_with_email = self.user_repo.select_by_email(email=update_user.email.lower())
 
         if len(users_with_email) == 2 or users_with_email[0].id != user_id:
-            raise UserAlreadyExistsException(email=update_user.email)
+            raise UserAlreadyExistsException(email=update_user.email.lower())
 
         self.user_repo.update(user_id=user_id, update_user=update_user)
 

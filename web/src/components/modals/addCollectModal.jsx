@@ -115,7 +115,6 @@ export default function AddDemandModal({
           datetime: `${data.date} 23:59:59`,
           status: 0,
           demands: [
-            parseInt(storage_location_id),
             ...selectedDemand.map((demand) => parseInt(demand.id)),
           ],
           vehicle_id: data.vehicle_id,

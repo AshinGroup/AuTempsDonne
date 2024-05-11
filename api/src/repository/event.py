@@ -16,7 +16,7 @@ class EventRepo():
 
     def select_per_page(self, page: int) -> list[Event]:
         try:
-            events = Event.query.paginate(page=page, per_page=9)
+            events = Event.query.paginate(page=page, per_page=8)
             if not events:
                 return None
 
@@ -27,7 +27,7 @@ class EventRepo():
 
     def select_by_search(self, page: int, search: str) -> list[Event]:
         try:
-            events = Event.query.filter(Event.name.like(f'%{search}%')).paginate(page=page, per_page=10)
+            events = Event.query.filter(Event.name.like(f'%{search}%')).paginate(page=page, per_page=8)
             if not events:
                 return None
             
