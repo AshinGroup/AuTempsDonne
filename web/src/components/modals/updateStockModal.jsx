@@ -40,7 +40,7 @@ export default function UpdateStockModal({
   const [foodSwitch, setFoodSwitch] = useState(true);
 
   const intl = useIntl();
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const submit = intl.formatMessage({
     id: "updateStockModal.submit",
@@ -79,9 +79,7 @@ export default function UpdateStockModal({
   useEffect(() => {
     const fetchStorages = async () => {
       try {
-        const storageResponse = await handleFetch(
-          `${env_path}/storage`
-        );
+        const storageResponse = await handleFetch(`${env_path}/storage`);
         if (storageResponse) {
           setStorages(storageResponse);
         }
@@ -97,9 +95,7 @@ export default function UpdateStockModal({
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const foodResponse = await handleFetch(
-          `${env_path}/food`
-        );
+        const foodResponse = await handleFetch(`${env_path}/food`);
         if (foodResponse) {
           setFoods(foodResponse);
         }
@@ -115,9 +111,7 @@ export default function UpdateStockModal({
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoryResponse = await handleFetch(
-          `${env_path}/category`
-        );
+        const categoryResponse = await handleFetch(`${env_path}/category`);
         if (categoryResponse) {
           setCategories(categoryResponse);
         }
@@ -133,22 +127,19 @@ export default function UpdateStockModal({
     try {
       // Check if food switch is off
       if (!foodSwitch) {
-        const newFoodResponse = await handleFetch(
-          `${env_path}/food`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: data.company_name,
-              description: data.company_description,
-              category_id: data.category_id,
-            }),
-          }
-        );
+        const newFoodResponse = await handleFetch(`${env_path}/food`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: data.company_name,
+            description: data.company_description,
+            category_id: data.category_id,
+          }),
+        });
 
-        if (!newFoodResponse.ok) {
+        if (!newFoodResponse) {
           setResponseMessage(newFoodResponse.message);
           setIsErrorMessage(false);
         } else {
@@ -161,34 +152,32 @@ export default function UpdateStockModal({
         "yyyy-MM-dd HH:mm:ss"
       );
 
-      const response = await handleFetch(
-        `${env_path}/package/${stock.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            weight: data.weight,
-            description: data.description,
-            expiration_date: data.expiration_date,
-            storage_id: data.storage_id,
-            food_id: data.food_id,
-          }),
-        }
-      );
+      const response = await handleFetch(`${env_path}/package/${stock.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          weight: data.weight,
+          description: data.description,
+          expiration_date: data.expiration_date,
+          storage_id: data.storage_id,
+          food_id: data.food_id,
+        }),
+      });
 
-      const newPackage = await response.json();
+      const newPackage = await response;
 
-      if (!response.ok) {
+      if (!response) {
         setResponseMessage(newPackage.message);
         setIsErrorMessage(false);
       } else {
         setResponseMessage(newPackage.message);
         setIsErrorMessage(true);
-        fetchUsers();
-        reset();
       }
+
+      fetchUsers();
+      reset();
     } catch (error) {
       console.error("An error occurred:", error);
     }

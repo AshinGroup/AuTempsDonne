@@ -94,22 +94,19 @@ export default function UpdateUserModal({
       }
       delete data.role_id;
 
-      const response = await handleFetch(
-        `${env_path}/user/${user.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...data,
-          }),
-        }
-      );
+      const response = await handleFetch(`${env_path}/user/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+        }),
+      });
 
-      const req = await response.json();
+      const req = await response;
 
-      if (!response.ok) {
+      if (!response) {
         setResponseMessage(req.message);
         setIsErrorMessage(false);
       } else {

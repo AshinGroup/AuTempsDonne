@@ -18,7 +18,7 @@ export default function AddEventModal({
     formState: { errors },
     reset,
   } = useForm();
-
+  const env_path = process.env.REACT_APP_API_PATH;
   const [types, setTypes] = useState([]);
   const [group, setGroup] = useState(1);
   const [selectedTypes, setSelectedTypes] = useState([]);
@@ -89,7 +89,7 @@ export default function AddEventModal({
 
   // Get the types for the pills and set default types
   useEffect(() => {
-    const env_path = process.env.REACT_APP_API_PATH
+    const env_path = process.env.REACT_APP_API_PATH;
     const fetchTypes = async () => {
       try {
         const data = await handleFetch(`${env_path}/type`);
@@ -155,18 +155,16 @@ export default function AddEventModal({
         body: JSON.stringify({ ...data }),
       });
 
-      if (response) {
-        if (!response.ok) {
-          setResponseMessage(response.message);
-          setIsErrorMessage(false);
-        } else {
-          setResponseMessage(response.message);
-          setIsErrorMessage(true);
-        }
-
-        fetchUsers();
-        reset();
+      if (!response) {
+        setResponseMessage(response.message);
+        setIsErrorMessage(false);
+      } else {
+        setResponseMessage(response.message);
+        setIsErrorMessage(true);
       }
+
+      fetchUsers();
+      reset();
     } catch (error) {
       console.error("An error occurred:", error);
     }

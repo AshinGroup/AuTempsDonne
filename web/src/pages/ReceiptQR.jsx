@@ -208,7 +208,7 @@ const ReceiptQR = () => {
               <b>Packages :</b>
             </p>
             <ul className="border-2 border-AshinBlue ">
-              {packagesJson.map((packageItem, index) => {
+              {packagesJson?.map((packageItem, index) => {
                 const foodItem = foods.find(
                   (food) => food.id === packageItem.food_id
                 );

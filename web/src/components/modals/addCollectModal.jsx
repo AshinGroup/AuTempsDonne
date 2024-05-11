@@ -20,7 +20,7 @@ export default function AddDemandModal({
     reset,
   } = useForm();
 
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const [storages, setStorages] = useState([]);
   const [vehicles, setVehicles] = useState([]);
@@ -115,8 +115,8 @@ export default function AddDemandModal({
           datetime: `${data.date} 23:59:59`,
           status: 0,
           demands: [
-            storage_location_id,
-            selectedDemand.map((demand) => parseInt(demand.id)),
+            parseInt(storage_location_id),
+            ...selectedDemand.map((demand) => parseInt(demand.id)),
           ],
           vehicle_id: data.vehicle_id,
           storage_id: storage_id,
@@ -124,7 +124,6 @@ export default function AddDemandModal({
       });
 
       if (!newEvent) {
-        console.log("FAIL");
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {
@@ -137,6 +136,13 @@ export default function AddDemandModal({
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage(
+        <FormattedMessage
+          id="addCollectModal.error"
+          defaultMessage="An error occurred, please contact a dev."
+        />
+      );
+      setIsErrorMessage(false);
     }
   };
 

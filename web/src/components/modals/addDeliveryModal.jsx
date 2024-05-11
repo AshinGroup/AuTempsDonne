@@ -42,7 +42,7 @@ export default function AddDeliveryModal({
     defaultMessage: "The date is required ..",
   });
 
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   // Fetch locations from the API
   useEffect(() => {
@@ -126,13 +126,23 @@ export default function AddDeliveryModal({
     if (selectedLocation.length === 0) {
       setResponseMessage(
         <FormattedMessage
+          id="addCollectModal.oneLocation"
+          defaultMessage="Please select at least one Location"
+        />
+      );
+      setIsErrorMessage(false);
+      return;
+    }
+    if (selectedPackages.length === 0) {
+      setResponseMessage(
+        <FormattedMessage
           id="addCollectModal.onePackage"
           defaultMessage="Please select at least one Package"
         />
       );
       setIsErrorMessage(false);
       return;
-    }  
+    }
     try {
       const newEvent = await handleFetch(`${env_path}/delivery`, {
         method: "POST",
@@ -143,16 +153,15 @@ export default function AddDeliveryModal({
           datetime: `${data.date} 23:59:59`,
           status: 0,
           locations: [
-            data.storage_location_id,
-            selectedLocation.map((location) => parseInt(location.id)),
+            parseInt(data.storage_location_id),
+            ...selectedLocation.map((location) => parseInt(location.id)),
           ],
-          // packages: selectedPackages.map((pack) => parseInt(pack.id)),
+          packages: selectedPackages.map((pack) => parseInt(pack.id)),
           vehicle_id: data.vehicle_id,
         }),
       });
 
       if (!newEvent) {
-        console.log("FAIL");
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {
@@ -204,7 +213,7 @@ export default function AddDeliveryModal({
           <input
             type="date"
             {...register("date", {
-              required: { date_required },
+              required: "date_is_required ...",
             })}
             min={(() => {
               const now = new Date();

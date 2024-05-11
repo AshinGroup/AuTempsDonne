@@ -91,7 +91,7 @@ const SignUpForm = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [isErrorMessage, setIsErrorMessage] = useState(false);
   const [roleMessage, setRoleMessage] = useState("");
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -171,22 +171,19 @@ const SignUpForm = () => {
 
     try {
       // First Request
-      const newUserResponse = await handleFetch(
-        `${env_path}/user`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...data,
-            role_id: firstRoleId,
-            status: 0,
-          }),
-        }
-      );
+      const newUserResponse = await handleFetch(`${env_path}/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          role_id: firstRoleId,
+          status: 0,
+        }),
+      });
 
-      if (!newUserResponse.ok) {
+      if (!newUserResponse) {
         setResponseMessage(newUserResponse.message);
         setIsErrorMessage(false);
         return;
@@ -406,8 +403,11 @@ const SignUpForm = () => {
         <p className="text-red-500">{errors.password.message}</p>
       )}
       {/* confirmPassword Selection */}
-      <FormattedMessage id="signUp.confirmPasswd" defaultMessage="Confirm Password">
-        {placeholderText => (
+      <FormattedMessage
+        id="signUp.confirmPasswd"
+        defaultMessage="Confirm Password"
+      >
+        {(placeholderText) => (
           <input
             type="password"
             placeholder={placeholderText}

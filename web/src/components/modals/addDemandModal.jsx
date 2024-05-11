@@ -31,7 +31,7 @@ export default function AddDemandModal({
 
   const intl = useIntl();
 
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const submit = intl.formatMessage({
     id: "addDemandModal.submit",
@@ -119,6 +119,7 @@ export default function AddDemandModal({
       }
 
       fetchUsers();
+      setSelectedFood([]);
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
@@ -255,7 +256,7 @@ function ShopSelect(register, errors, shops, shopData) {
 }
 
 function FoodManager({ foods, selectedFood, setSelectedFood }) {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   const [selectedFoodId, setSelectedFoodId] = useState("");
   const [foodWeight, setFoodWeight] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
@@ -277,6 +278,7 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
 
   const handleAddFood = async () => {
     let foodName = manualFoodName;
+    let food_id = selectedFoodId;
 
     if (!manualEntry) {
       const selectedFoodObject = foods.find(
@@ -302,12 +304,12 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
         return;
       }
 
-      setSelectedFoodId(data.food_id);
+      food_id = data.food_id;
     }
 
     if (foodName && foodWeight && expirationDate) {
       const newFood = {
-        id: selectedFoodId,
+        id: food_id,
         name: foodName,
         weight: foodWeight,
         expirationDate: expirationDate,
@@ -321,6 +323,7 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
       setFoodWeight("");
       setExpirationDate("");
       setMessage("");
+      console.log(selectedFood);
     } else {
       setMessage(
         <FormattedMessage

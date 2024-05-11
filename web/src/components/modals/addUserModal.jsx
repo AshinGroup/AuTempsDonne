@@ -207,15 +207,14 @@ export default function AddUserModal({
         }
       }
 
-      setResponseMessage(newUserResponse.message);
-      setIsErrorMessage(true);
-
       fetchUsers();
       reset();
+
+      setResponseMessage(newUserResponse.message);
+      setIsErrorMessage(true);
     } catch (error) {
-      setResponseMessage("An error occurred:", error);
+      setResponseMessage("The user already exist.");
       setIsErrorMessage(false);
-      console.error("An error occurred:", error);
     }
   };
 
