@@ -8,7 +8,7 @@ class AuthService:
 
 
     def login(self, email: str, password: str):
-        user = self.user_service.select_one_by_email(email=email)
+        user = self.user_service.select_one_by_email(email=email.lower())
         if not verify_hash(password=password, hashed=user.password):
             raise LoginException
         return user
