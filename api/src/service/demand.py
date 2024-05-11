@@ -38,25 +38,33 @@ class DemandService:
     def insert(self, args: dict):
         time = datetime.now()
         formatted_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        data = {"packages": [eval(package) for package in args["packages"]]}
-        for a in data:
-            print(type(a))
+        
         shop = self.shop_service.select_one_by_id(args["shop_id"])
         shop_details = {"name": shop.name, "location": shop.location.description}
 
-        png_src, pdf_src = self.qrcode_service.generate_qrcode(data, shop_details)
         new_demand = Demand(
             submitted_datetime=formatted_time,
             limit_datetime=args["limit_datetime"],
             status=args["status"],
             additional=args["additional"],
             shop_id=args["shop_id"],
-            qr_code=png_src,
-            pdf=pdf_src,
+            qr_code=None,
+            pdf=None,
         )
 
         self.shop_service.select_one_by_id(shop_id=new_demand.shop_id)
-        self.demand_repo.insert(new_demand=new_demand)
+        new_demand_id = self.demand_repo.insert(new_demand=new_demand)
+        self.update_qr_code(demand_id=new_demand_id, packages=args['packages'], shop_details=shop_details)
+
+        
+    def update_qr_code(self, demand_id: int, packages: list, shop_details: dict):
+        data = {
+            "packages": [eval(package) for package in packages],
+            "demand_id": demand_id
+        }
+        png_src, pdf_src = self.qrcode_service.generate_qrcode(data, shop_details)
+        self.demand_repo.update_qr_code(demand_id=demand_id, png_src=png_src, pdf_src=pdf_src)
+
 
     def update(self, demand_id: int, args: dict):
         update_demand = Demand(
@@ -76,6 +84,12 @@ class DemandService:
         self.shop_service.select_one_by_id(shop_id=update_demand.shop_id)
 
         self.demand_repo.update(demand_id=demand_id, update_demand=update_demand)
+
+
+    def update_status(self, demand_id: int, status: int):
+        self.select_one_by_id(demand_id=demand_id)
+        self.demand_repo.update_status(demand_id=demand_id, status=status)
+
 
     def delete(self, demand_id: str):
         demand = self.select_one_by_id(demand_id=demand_id)

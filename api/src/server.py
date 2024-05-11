@@ -97,6 +97,8 @@ api.add_resource(PackageListController, f'{prefix}/package')
 api.add_resource(PackagePageController, f'{prefix}/package/page/<int:page>')
 api.add_resource(PackageSearchController,
                  f'{prefix}/package/page/<int:page>/search/<string:search>')
+api.add_resource(PackageQrCodeController,
+                 f'{prefix}/package/qrcode')
 
 api.add_resource(StorageController, f'{prefix}/storage/<int:storage_id>')
 api.add_resource(StorageListController, f'{prefix}/storage')
