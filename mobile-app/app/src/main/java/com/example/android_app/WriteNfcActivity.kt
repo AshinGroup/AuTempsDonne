@@ -26,7 +26,7 @@ class WriteNfcActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
             }
 
             if (!nfcAdapter!!.isEnabled) {
-                var message = "Error: Activate NFC in your device settings."
+                val message = "Error: Activate NFC in your device settings."
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
             }
@@ -35,7 +35,7 @@ class WriteNfcActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
         } catch (e: Exception) {
             Log.e("TagException", e.toString(), e)
             runOnUiThread {
-                var message = "Error while scanning NFC : " + e.toString()
+                val message = "Error while scanning NFC : " + e.toString()
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         }
@@ -70,28 +70,28 @@ class WriteNfcActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
                 val ndef = Ndef.get(tag)
                 if (ndef != null) {
                     ndef.connect()
-                    ndef.writeNdefMessage(message) // Écriture du message NDEF sur le tag NFC
+                    ndef.writeNdefMessage(message)
                     ndef.close()
                     runOnUiThread {
-                        var message = "NFC écrit avec succès !"
+                        val message = "NFC successfully written! "
                         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
                     }
 
                 } else {
                     runOnUiThread {
-                        var message =
-                            "Erreur: La puce NFC n'est pas compatible avec l'écriture de données."
+                        val message =
+                            "Error: The NFC chip is not compatible with data writing."
                         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         } catch (e: Exception) {
             runOnUiThread {
-                var message = e.toString()
+                val message = e.toString()
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
-            Log.e("ErrorWrite", e.toString())
+            Log.e("ErrorTagWrite", e.toString())
         }
     }
 }

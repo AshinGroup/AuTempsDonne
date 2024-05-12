@@ -1,22 +1,13 @@
 package com.example.android_app
 
-import android.Manifest
-import android.app.PendingIntent
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.nfc.NfcAdapter
 import android.nfc.Tag
-import android.nfc.tech.IsoDep
 import android.nfc.tech.Ndef
-import android.nfc.tech.NfcA
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import java.io.IOException
 
 class NfcActivity : AppCompatActivity(), NfcAdapter.ReaderCallback {
     private var nfcAdapter: NfcAdapter? = null
