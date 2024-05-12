@@ -28,8 +28,24 @@ const Courses = () => {
     try {
       const data = await handleFetch(url);
       if (data) {
-        setCourses(data.events.filter((event) => event.group === 2));
-        setMaxPages(data.max_pages);
+        const currentDateTime = new Date().getTime(); // Get current timestamp
+        if (searchInput !== "") {
+          setCourses(
+            data.events.filter(
+              (event) =>
+                event.group === 1 &&
+                new Date(event.datetime).getTime() > currentDateTime
+            )
+          );
+        } else {
+          setCourses(
+            data.filter(
+              (event) =>
+                event.group === 1 &&
+                new Date(event.datetime).getTime() > currentDateTime
+            )
+          );
+        }
       }
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -151,9 +167,3 @@ const Courses = () => {
 };
 
 export default Courses;
-
-/*
-
-        -> search by 'type' ?
-
-*/

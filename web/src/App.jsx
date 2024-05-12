@@ -71,6 +71,10 @@ const App = () => {
         {/* HomePage Routes and their direct props */}
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/services" element={<HomePage direct="services" />} />
+        <Route
+          path="/collectsAndDeliveries"
+          element={<HomePage direct="collectsAndDeliveries" />}
+        />
         <Route path="/activities" element={<HomePage direct="activities" />} />
         <Route path="/courses" element={<HomePage direct="courses" />} />
         <Route

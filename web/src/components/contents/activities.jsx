@@ -27,7 +27,24 @@ const Activities = () => {
     try {
       const data = await handleFetch(url);
       if (data) {
-        setActivities(data.filter((event) => event.group === 1));
+        const currentDateTime = new Date().getTime(); // Get current timestamp
+        if (searchInput !== "") {
+          setActivities(
+            data.events.filter(
+              (event) =>
+                event.group === 1 &&
+                new Date(event.datetime).getTime() > currentDateTime
+            )
+          );
+        } else {
+          setActivities(
+            data.filter(
+              (event) =>
+                event.group === 1 &&
+                new Date(event.datetime).getTime() > currentDateTime
+            )
+          );
+        }
       }
     } catch (error) {
       console.error("Error fetching activities:", error);
@@ -149,9 +166,3 @@ const Activities = () => {
 };
 
 export default Activities;
-
-/*
-
-        -> search by 'type' ?
-
-*/
