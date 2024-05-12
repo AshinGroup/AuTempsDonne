@@ -19,8 +19,8 @@ export default function CollectsAndDeliveriesModal({
   const env_path = process.env.REACT_APP_API_PATH;
 
   const titlePlaceholder = intl.formatMessage({
-    id: "serviceModal.title",
-    defaultMessage: "Title of the Service",
+    id: "collects.id",
+    defaultMessage: "ID",
   });
 
   const dateTimeFormat = intl.formatMessage({

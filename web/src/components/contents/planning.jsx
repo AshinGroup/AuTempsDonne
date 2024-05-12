@@ -156,7 +156,10 @@ const Planning = () => {
               {user.deliveries ? (
                 <ul className="flex flex-col text-xl">
                   <h3 className="my-2 mx-5 font-semibold text-xl text-AshinBlue border-b-2 border-AshinBlue">
-                    Delivery
+                    <FormattedMessage
+                      id="deliveries.deliveries"
+                      defaultMessage="Deliveries"
+                    />
                   </h3>
                   {user.deliveries.map((item, index) => (
                     <li
@@ -168,7 +171,13 @@ const Planning = () => {
                       }`}
                     >
                       <div className="font-bold text-xl pb-2 mb-2 border-b-2 border-white flex items-center justify-between text-white">
-                        <span>Delivery #{item.id}</span>
+                        <span>
+                          <FormattedMessage
+                            id="cad.Delivery"
+                            defaultMessage="Delivery"
+                          />{" "}
+                          #{item.id}
+                        </span>
                         <div>
                           <button
                             className="me-2"
@@ -246,7 +255,10 @@ const Planning = () => {
               {user.collects ? (
                 <ul className="flex flex-col text-xl">
                   <h3 className="my-2 mx-5 font-semibold text-xl text-AshinBlue border-b-2 border-AshinBlue">
-                    Collects
+                    <FormattedMessage
+                      id="collects.collects"
+                      defaultMessage="Collects"
+                    />
                   </h3>
                   {user.collects.map((item, index) => (
                     <li
@@ -258,7 +270,13 @@ const Planning = () => {
                       }`}
                     >
                       <div className="font-bold text-xl pb-2 mb-2 border-b-2 border-white flex items-center justify-between text-white">
-                        <span>Collect #{item.id}</span>
+                        <span>
+                          <FormattedMessage
+                            id="cad.collect"
+                            defaultMessage="collect"
+                          />{" "}
+                          #{item.id}
+                        </span>
                         <div>
                           <button
                             className="me-2"
@@ -333,7 +351,10 @@ const Planning = () => {
               {user.events ? (
                 <ul className="flex flex-col text-xl">
                   <h3 className="my-2 mx-5 font-semibold text-xl text-AshinBlue border-b-2 border-AshinBlue">
-                    Events
+                    <FormattedMessage
+                      id="planning.Events"
+                      defaultMessage="Events"
+                    />
                   </h3>
                   {user.events.map((event, index) => (
                     <li

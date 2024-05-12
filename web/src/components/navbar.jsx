@@ -159,8 +159,8 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               path="/"
               text={
                 <FormattedMessage
-                  id="navbar.collectsAndDeliveries"
-                  defaultMessage="collectsAndDeliveries"
+                  id="cad.title"
+                  defaultMessage="Collects and Deliveries"
                 />
               }
               isActive={activeItem === "collectsAndDeliveries"}

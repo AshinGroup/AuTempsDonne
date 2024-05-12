@@ -88,7 +88,7 @@ const CollectsAndDeliveries = () => {
             <thead className="bg-gray-100">
               <tr>
                 <th className="p-4 w-1/5">
-                  <FormattedMessage id="event.id" defaultMessage="ID" />
+                  <FormattedMessage id="collects.id" defaultMessage="ID" />
                 </th>
                 <th className="p-4 w-1/5">
                   <FormattedMessage id="event.type" defaultMessage="Type" />
@@ -116,7 +116,10 @@ const CollectsAndDeliveries = () => {
                   <td className="p-4">{delivery.id}</td>
                   <td className="p-4 ">
                     <p className="bg-blue-500 text-white rounded p-2 w-fit">
-                      Delivery
+                      <FormattedMessage
+                        id="cad.Delivery"
+                        defaultMessage="Delivery"
+                      />
                     </p>
                   </td>
                   <td className="p-4">
@@ -141,7 +144,10 @@ const CollectsAndDeliveries = () => {
                   <td className="p-4">{collect.id}</td>
                   <td className="p-4">
                     <p className="bg-orange-500 text-white rounded p-2 w-fit">
-                      Collect
+                      <FormattedMessage
+                        id="cad.collect"
+                        defaultMessage="collect"
+                      />
                     </p>
                   </td>
                   <td className="p-4">{collect.datetime}</td>
