@@ -14,7 +14,7 @@ const Footer = () => {
           <img src={logo} alt="Logo" className="h-8" />
         </div>
 
-        <div className={`text-center ml-8 lg:text-left ${isChinese ? 'lg:pl-56' : 'lg:pl-40'}`}>
+        <div className={`text-center ml-6 lg:text-left ${isChinese ? 'lg:pl-32' : 'lg:pl-40'}`}>
           <p>© 2024 - Au Temps Donné. <FormattedMessage id="footer.credits" defaultMessage="All rights reserved." /></p>
         </div>
 

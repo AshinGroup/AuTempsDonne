@@ -298,6 +298,30 @@
   "event.registryButton": "注册",
 
   "planning.title": "查看我的计划",
-  "planning.bubleTitle": "要查看您的计划，就在这里..."
+  "planning.bubleTitle": "要查看您的计划，就在这里...",
+
+  "sign.alreadyacc": "已经有账号了吗？",
+  "support.needToBeLogged": "您必须登录才能提交请求。",
+  "profile.noEvent": "未找到活动",
+  "profile.noRole": "未找到角色",
+  "event.capacitys": "空位",
+  "shops.users": "用户",
+  "Event.type": "类型",
+  "addUserShopModal.selectUser": "选择用户：",
+  "addUserShopModal.submit": "将用户添加到商店",
+  "showQR.downloadPDF": "下载PDF",
+  "showRM.Roadmap": "路线图",
+  "showRM.load": "正在加载iFrame...",
+  "showQR.scheduledAt": "计划收集时间：",
+  "serviceses.title": "可用服务",
+  "navbar.demandToCollect": "收集需求",
+  "demands.additional": "额外的",
+  "activityModal.successfullyRegistry": "您已成功报名参加此活动！",
+  "activityModal.successfullyUnsuscribe": "您已成功取消订阅此活动！",
+  "serviceModal.successfullySubsribe": "您已成功订阅此服务！",
+  "serviceModal.successfullyUnsubscribe": "您已成功取消订阅此服务！",
+  "courseModal.successfullySubscribe": "您已成功订阅此课程！",
+  "courseModal.successfullyUnsubscribe": "您已成功取消订阅此课程！",
+  "courses.title": "可用课程"
   
 }

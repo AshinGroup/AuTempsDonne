@@ -44,7 +44,7 @@ export default function ShowRoadmapModal({ open, onClose, item }) {
             height="500px"
           />
         ) : (
-          <p>Loading the iFrame ...</p>
+          <p><FormattedMessage id="showRM.load" defaultMessage="Loading the iFrame ..." /></p>
         )}
         <div className="mx-auto my-4 w-48">
           <h3 className="text-lg font-back text-gray-800">

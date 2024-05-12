@@ -61,7 +61,7 @@ export default function ServicesModal({
                     }
                 );
 
-                setResponseMessage("You have successfully signed up for this service!");
+                setResponseMessage(<FormattedMessage id="serviceModal.successfullySubsribe" defaultMessage="You have successfully signed up for this service!" />);
                 setIsSubscribed(true);
             }
         } catch (error) {
@@ -81,7 +81,7 @@ export default function ServicesModal({
                 }
             );
 
-            setResponseMessage("You have successfully unsubscribed from this service!");
+            setResponseMessage(<FormattedMessage id="serviceModal.successfullyUnsubscribe" defaultMessage="You have successfully unsubscribed from this service!" />);
             setIsSubscribed(false);
         } catch (error) {
             console.error("An error occurred while unsubscribing:", error);
