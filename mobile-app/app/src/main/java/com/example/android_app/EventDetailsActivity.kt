@@ -30,7 +30,7 @@ class EventDetailsActivity : AppCompatActivity() {
             var queue = Volley.newRequestQueue(this)
             var apiRequest = StringRequest(
                 Request.Method.GET,
-                "http://10.0.2.2:5000/api/event/" + eventId,
+                "https://au-temps-donne.fr/api/event/" + eventId,
                 Response.Listener<String> { content ->
                     Log.d("Response", content.toString())
                     var event = JSONObject(content)

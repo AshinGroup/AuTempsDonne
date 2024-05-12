@@ -46,6 +46,7 @@ class DemandRepo():
             raise DemandAccessDbException(demand_id=None, method="getting")
 
 
+
     def insert(self, new_demand: Demand) -> None:
         try:
             with app.app_context():

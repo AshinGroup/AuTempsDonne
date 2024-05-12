@@ -29,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
             jsonBody.put("password", findViewById<EditText>(R.id.password).text.toString())
 
             var jsonObjectRequest = JsonObjectRequest(Request.Method.POST,
-                "http://10.0.2.2:5000/api/login",
+                "https://au-temps-donne.fr/api/login",
                 jsonBody,
                 Response.Listener<JSONObject>() { content ->
                     var role_id = content.getInt("role_id")
