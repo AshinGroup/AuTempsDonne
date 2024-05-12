@@ -14,30 +14,29 @@ class DeliveryRepo():
             delivery = Delivery.query.filter_by(id=delivery_id).first()
             return delivery
         except Exception:
-            raise DeliveryAccessDbException(delivery_id=delivery_id, method="getting")
-
+            raise DeliveryAccessDbException(
+                delivery_id=delivery_id, method="getting")
 
     def select_per_page(self, page: int) -> list[Delivery]:
         try:
-            deliveries = Delivery.query.paginate(page=page, per_page=9)
+            deliveries = Delivery.query.paginate(page=page, per_page=10)
             if not deliveries:
                 return None
 
             return {'max_pages': deliveries.pages, 'deliveries': deliveries}
         except Exception:
             raise DeliveryAccessDbException(delivery_id=None, method="getting")
-        
 
     def select_by_search(self, page: int, search: str) -> list[Delivery]:
         try:
-            deliveries = Delivery.query.filter(Delivery.datetime.like(f'%{search}%')).paginate(page=page, per_page=10)
+            deliveries = Delivery.query.filter(Delivery.datetime.like(
+                f'%{search}%')).paginate(page=page, per_page=10)
             if not deliveries:
                 return None
-            
+
             return {'max_pages': deliveries.pages, 'deliveries': deliveries}
         except Exception:
             raise DeliveryAccessDbException(delivery_id=None, method="getting")
-        
 
     def select_all(self) -> list[Delivery]:
         try:
@@ -48,15 +47,16 @@ class DeliveryRepo():
         except Exception:
             raise DeliveryAccessDbException(delivery_id=None, method="getting")
 
-
     def insert(self, new_delivery: Delivery, locations: list[int], packages: list[int]) -> None:
         try:
             with app.app_context():
                 db.session.add(new_delivery)
-                to_add_locations = Location.query.filter(Location.id.in_(locations)).all()
+                to_add_locations = Location.query.filter(
+                    Location.id.in_(locations)).all()
                 for location in to_add_locations:
                     new_delivery.locations.append(location)
-                to_add_packages = Package.query.filter(Package.id.in_(packages)).all()
+                to_add_packages = Package.query.filter(
+                    Package.id.in_(packages)).all()
                 for package in to_add_packages:
                     new_delivery.packages.append(package)
                 db.session.flush()
@@ -65,8 +65,8 @@ class DeliveryRepo():
                 db.session.close()
                 return new_delivery_id
         except Exception:
-            raise DeliveryAccessDbException(delivery_id=None, method="creating")
-        
+            raise DeliveryAccessDbException(
+                delivery_id=None, method="creating")
 
     def insert_location(self, delivery_id: int, location_id: int):
         try:
@@ -77,7 +77,8 @@ class DeliveryRepo():
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise DeliveryAccessDbException(delivery_id=delivery_id, method="inserting")
+            raise DeliveryAccessDbException(
+                delivery_id=delivery_id, method="inserting")
 
     def update(self, delivery_id: int, update_delivery: Delivery) -> None:
         try:
@@ -89,8 +90,8 @@ class DeliveryRepo():
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise DeliveryAccessDbException(delivery_id=delivery_id, method="updating")
-
+            raise DeliveryAccessDbException(
+                delivery_id=delivery_id, method="updating")
 
     def delete(self, delivery_id: int) -> None:
         try:
@@ -100,8 +101,8 @@ class DeliveryRepo():
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise DeliveryAccessDbException(delivery_id=delivery_id, method="deleting")
-
+            raise DeliveryAccessDbException(
+                delivery_id=delivery_id, method="deleting")
 
     def delete_location(self, delivery_id: int, location_id: int):
         try:
@@ -112,4 +113,5 @@ class DeliveryRepo():
                 db.session.commit()
                 db.session.close()
         except Exception:
-            raise DeliveryAccessDbException(delivery_id=delivery_id, method="deleting")
+            raise DeliveryAccessDbException(
+                delivery_id=delivery_id, method="deleting")

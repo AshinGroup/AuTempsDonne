@@ -13,10 +13,9 @@ class EventRepo():
         except Exception:
             raise EventAccessDbException(event_id=event_id, method="getting")
 
-
     def select_per_page(self, page: int) -> list[Event]:
         try:
-            events = Event.query.paginate(page=page, per_page=9)
+            events = Event.query.paginate(page=page, per_page=8)
             if not events:
                 return None
 
@@ -24,17 +23,27 @@ class EventRepo():
         except Exception:
             raise EventAccessDbException(event_id=None, method="getting")
         
-
-    def select_by_search(self, page: int, search: str) -> list[Event]:
+    def select_by_search(self, search: str) -> list[Event]:
         try:
-            events = Event.query.filter(Event.name.like(f'%{search}%')).paginate(page=page, per_page=10)
+            events = Event.query.filter(Event.name.like(
+                f'%{search}%')).all()
             if not events:
                 return None
-            
+
+            return {'events': events}
+        except Exception:
+            raise EventAccessDbException(user_id=None, method="getting")
+
+    def select_by_search_page(self, page: int, search: str) -> list[Event]:
+        try:
+            events = Event.query.filter(Event.name.like(
+                f'%{search}%')).paginate(page=page, per_page=8)
+            if not events:
+                return None
+
             return {'max_pages': events.pages, 'events': events}
         except Exception:
             raise EventAccessDbException(user_id=None, method="getting")
-        
 
     def select_all(self) -> list[Event]:
         try:
@@ -45,7 +54,6 @@ class EventRepo():
         except Exception:
             raise EventAccessDbException(event_id=None, method="getting")
 
-
     def insert(self, new_event: Event) -> None:
         try:
             with app.app_context():
@@ -54,7 +62,6 @@ class EventRepo():
                 db.session.close()
         except Exception:
             raise EventAccessDbException(event_id=None, method="creating")
-
 
     def update(self, event_id: int, update_event: Event) -> None:
         try:
@@ -71,7 +78,6 @@ class EventRepo():
                 db.session.close()
         except Exception:
             raise EventAccessDbException(event_id=event_id, method="updating")
-
 
     def delete(self, event_id: int) -> None:
         try:

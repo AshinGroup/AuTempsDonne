@@ -31,7 +31,7 @@ export default function AddDemandModal({
 
   const intl = useIntl();
 
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const submit = intl.formatMessage({
     id: "addDemandModal.submit",
@@ -114,14 +114,41 @@ export default function AddDemandModal({
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {
-        setResponseMessage(newEvent.message);
-        setIsErrorMessage(true);
-      }
+        const putEvent = await handleFetch(
+          `${env_path}/demand/${newEvent.demand_id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              submitted_datetime: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+              limit_datetime: `${data.date} 23:59:59`,
+              status: 0,
+              shop_id: data.shop_id,
+              additional: data.additional_info,
+              qr_code: newEvent.qr_code,
+              pdf: newEvent.pdf,
+            }),
+          }
+        );
 
-      fetchUsers();
-      reset();
+        if (!putEvent) {
+          setResponseMessage(putEvent.message);
+          setIsErrorMessage(false);
+        } else {
+          setResponseMessage(putEvent.message);
+          setIsErrorMessage(true);
+        }
+
+        fetchUsers();
+        setSelectedFood([]);
+        reset();
+      }
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred while submitting the demand.");
+      setIsErrorMessage(false);
     }
   };
 
@@ -255,7 +282,7 @@ function ShopSelect(register, errors, shops, shopData) {
 }
 
 function FoodManager({ foods, selectedFood, setSelectedFood }) {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   const [selectedFoodId, setSelectedFoodId] = useState("");
   const [foodWeight, setFoodWeight] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
@@ -277,6 +304,7 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
 
   const handleAddFood = async () => {
     let foodName = manualFoodName;
+    let food_id = selectedFoodId;
 
     if (!manualEntry) {
       const selectedFoodObject = foods.find(
@@ -302,12 +330,12 @@ function FoodManager({ foods, selectedFood, setSelectedFood }) {
         return;
       }
 
-      setSelectedFoodId(data.food_id);
+      food_id = data.food_id;
     }
 
     if (foodName && foodWeight && expirationDate) {
       const newFood = {
-        id: selectedFoodId,
+        id: food_id,
         name: foodName,
         weight: foodWeight,
         expirationDate: expirationDate,

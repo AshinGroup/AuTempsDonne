@@ -40,15 +40,14 @@ export default function Sidebar({ activeItem, setActiveItem }) {
         const data = await handleFetch(url);
         if (data) {
           setUser(data);
-          console.log("User fetched:", data)
         }
       } catch (error) {
         console.error("Error fetching user:", error);
       }
     };
 
-    fetchUser()
-  }, []);  
+    fetchUser();
+  }, []);
 
   // Function to handle window resize
   useEffect(() => {
@@ -182,10 +181,10 @@ export default function Sidebar({ activeItem, setActiveItem }) {
             }`}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">{user.last_name} {user.first_name}</h4> 
-              <span className="text-xs text-gray-600">
-                {user.email}
-              </span>
+              <h4 className="font-semibold">
+                {user.last_name} {user.first_name}
+              </h4>
+              <span className="text-xs text-gray-600">{user.email}</span>
             </div>
             <button
               onClick={toggleDropdown}

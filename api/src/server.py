@@ -73,8 +73,10 @@ api.add_resource(UserShopController,
 api.add_resource(EventController, f'{prefix}/event/<int:event_id>')
 api.add_resource(EventListController, f'{prefix}/event')
 api.add_resource(EventPageController, f'{prefix}/event/page/<int:page>')
-api.add_resource(EventSearchController,
+api.add_resource(EventSearchPageController,
                  f'{prefix}/event/page/<int:page>/search/<string:search>')
+api.add_resource(EventSearchController,
+                 f'{prefix}/event/search/<string:search>')
 
 api.add_resource(TypeListController, f'{prefix}/type')
 api.add_resource(TypeController, f'{prefix}/type/<int:type_id>')
@@ -97,6 +99,8 @@ api.add_resource(PackageListController, f'{prefix}/package')
 api.add_resource(PackagePageController, f'{prefix}/package/page/<int:page>')
 api.add_resource(PackageSearchController,
                  f'{prefix}/package/page/<int:page>/search/<string:search>')
+api.add_resource(PackageQrCodeController,
+                 f'{prefix}/package/qrcode')
 
 api.add_resource(StorageController, f'{prefix}/storage/<int:storage_id>')
 api.add_resource(StorageListController, f'{prefix}/storage')

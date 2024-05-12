@@ -9,7 +9,7 @@ import DeleteModal from "../modals/deleteModal";
 import ShowQrModal from "../modals/showQrModal";
 
 const Demands = () => {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   // Display the events and Pagination
   const [demands, setDemands] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,12 +25,10 @@ const Demands = () => {
 
   const fetchDemands = async () => {
     try {
-      const data = await handleFetch(`${env_path}/demand`);
+      const data = await handleFetch(`${env_path}/demand/page/${currentPage}`);
       if (data) {
-        setDemands(data);
-        setMaxPages(1);
-        // setDemands(data.demands);
-        // setMaxPages(data.max_pages);
+        setDemands(data.demands);
+        setMaxPages(data.max_pages);
       }
     } catch (error) {
       console.error("Error fetching demands:", error);
@@ -40,15 +38,12 @@ const Demands = () => {
   // Remove a user from the API
   const deleteDemand = async (demandId) => {
     try {
-      const response = await handleFetch(
-        `${env_path}/demand/${demandId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await handleFetch(`${env_path}/demand/${demandId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response) {
         // Refresh the users list and quit the modal

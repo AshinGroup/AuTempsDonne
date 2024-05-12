@@ -10,6 +10,7 @@ from service.event import EventService
 from service.delivery import DeliveryService
 from service.collect import CollectService
 from service.shop import ShopService
+from repository.ticket import TicketRepo
 
 
 class UserService:
@@ -21,6 +22,7 @@ class UserService:
         self.delivery_service = DeliveryService()
         self.collect_service = CollectService()
         self.shop_service = ShopService()
+        self.ticket_repo = TicketRepo()
 
     def select_one_by_id(self, user_id: int) -> User:
         user = self.user_repo.select_one_by_id(user_id=user_id)
@@ -30,11 +32,11 @@ class UserService:
             raise UserIdNotFoundException(user_id=user_id)
 
     def select_one_by_email(self, email: str) -> User:
-        user = self.user_repo.select_one_by_email(email=email)
+        user = self.user_repo.select_one_by_email(email=email.lower())
         if user:
             return user
         else:
-            raise UserEmailNotFoundException(email=email)
+            raise UserEmailNotFoundException(email=email.lower())
 
     def select_per_page(self, page: int) -> list[User]:
         users = self.user_repo.select_per_page(page=page)
@@ -55,14 +57,14 @@ class UserService:
         new_user = User(
             first_name=args["first_name"],
             last_name=args["last_name"],
-            email=args["email"],
+            email=args["email"].lower(),
             phone=args["phone"],
             password=args["password"],
             status=0 if method == "register" else args["status"],
             shop_id=None,
         )
-        if self.user_repo.select_one_by_email(email=new_user.email):
-            raise UserAlreadyExistsException(new_user.email)
+        if self.user_repo.select_one_by_email(email=new_user.email.lower()):
+            raise UserAlreadyExistsException(new_user.email.lower())
         if not self.role_service.select_one_by_id(args["role_id"]):
             raise RoleIdNotFoundException(args["role_id"])
         new_user_id = self.user_repo.insert(new_user=new_user, role_id=args["role_id"])
@@ -136,7 +138,7 @@ class UserService:
         update_user = User(
             first_name=args["first_name"],
             last_name=args["last_name"],
-            email=args["email"],
+            email=args["email"].lower(),
             phone=args["phone"],
             password=args["password"] if args["password"] else None,
             status=args["status"],
@@ -145,16 +147,20 @@ class UserService:
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
 
-        users_with_email = self.user_repo.select_by_email(email=update_user.email)
+        users_with_email = self.user_repo.select_by_email(email=update_user.email.lower())
 
         if len(users_with_email) == 2 or users_with_email[0].id != user_id:
-            raise UserAlreadyExistsException(email=update_user.email)
+            raise UserAlreadyExistsException(email=update_user.email.lower())
 
         self.user_repo.update(user_id=user_id, update_user=update_user)
 
     def delete(self, user_id: int) -> None:
-        if not self.user_repo.select_one_by_id(user_id=user_id):
-            raise UserIdNotFoundException(user_id=user_id)
+        self.select_one_by_id(user_id=user_id)
+        tickets = self.ticket_repo.select_all_by_user_id(user_id=user_id)
+        if tickets:
+            for ticket in tickets['tickets']:
+                if ticket.author_id == user_id:
+                    self.ticket_repo.delete(ticket_id=ticket.id)
         self.user_repo.delete(user_id=user_id)
 
     def delete_event(self, user_id: int, event_id: int) -> None:

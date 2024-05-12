@@ -36,7 +36,7 @@ export default function UpdateCourseModal({
   const [isErrorMessage, setIsErrorMessage] = useState(false);
 
   const intl = useIntl();
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const titlePlaceholder = intl.formatMessage({
     id: "EventModal.titlePlaceholder",
@@ -102,9 +102,7 @@ export default function UpdateCourseModal({
   useEffect(() => {
     const fetchTypes = async () => {
       try {
-        const fetchedTypes = await handleFetch(
-          `${env_path}/type`
-        );
+        const fetchedTypes = await handleFetch(`${env_path}/type`);
         if (fetchedTypes) {
           setTypes(fetchedTypes);
           setSelectedTypes([event.type.id]);
@@ -155,20 +153,17 @@ export default function UpdateCourseModal({
       data.datetime = format(new Date(data.datetime), "yyyy-MM-dd HH:mm:ss");
       data.type_id = selectedTypes[0];
       data.group = group;
-      const response = await handleFetch(
-        `${env_path}/event/${event.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...data }),
-        }
-      );
+      const response = await handleFetch(`${env_path}/event/${event.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
+      });
 
-      const newEvent = await response.json();
+      const newEvent = await response;
 
-      if (!response.ok) {
+      if (!response) {
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {
@@ -179,6 +174,8 @@ export default function UpdateCourseModal({
       fetchUsers();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred, please contact a dev.");
+      setIsErrorMessage(true);
     }
   };
 

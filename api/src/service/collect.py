@@ -68,7 +68,7 @@ class CollectService:
         self.select_one_by_id(collect_id=collect_id)
        
         if not self.vehicle_service.select_one_by_id(update_collect.vehicle_id):
-            raise VehicleIdNotFoundException
+            raise VehicleIdNotFoundException(vehicle_id=update_collect.vehicle_id)
 
         self.vehicle_service.select_one_by_id(vehicle_id=update_collect.vehicle_id)
 

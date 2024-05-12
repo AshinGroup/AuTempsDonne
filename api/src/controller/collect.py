@@ -4,6 +4,7 @@ from exception.collect import *
 from exception.vehicle import *
 from exception.demand import *
 from exception.storage import StorageIdNotFoundException
+from exception.demand import CollectsDemandAlreadyExistsException
 from flask import jsonify
 
 class CollectCheckArgs:
@@ -102,6 +103,7 @@ class CollectListController(Resource):
             abort(http_status_code=500, message=str(e))
         except StorageIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
+
 
 
 class CollectPageController(Resource):

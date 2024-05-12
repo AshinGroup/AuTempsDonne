@@ -13,21 +13,20 @@ import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
 import DemandToCollect from "../components/contents/demandToCollect";
+import CollectAndDeliveries from "../components/contents/collectsAndDeliveries";
 import Error from "../components/contents/error";
 
-const WelcomePage = ({direct}) => {
+const WelcomePage = ({ direct }) => {
   // Profile Management from Dashboard (ugly code, to be refactored)
-  const [activeItem, setActiveItem] = useState(
-    direct || "homepage"
-  );
+  const [activeItem, setActiveItem] = useState(direct || "homepage");
   const navigate = useNavigate();
   // const rule = 1: Admin, 2: Volontaire, 3: Bénéficiaire, 4: Commerçant
   const rule = sessionStorage.getItem("rule");
   // const rule = "1";
 
   useEffect(() => {
-    if (activeItem){
-      navigate(`/${activeItem}`)
+    if (activeItem) {
+      navigate(`/${activeItem}`);
     }
   }, [activeItem]);
 
@@ -49,6 +48,8 @@ const WelcomePage = ({direct}) => {
         return <Support />;
       case "donate":
         return <Donation />;
+      case "collectsAndDeliveries":
+        return <CollectAndDeliveries />;
       case "admin-panel":
         navigate("/admin-panel");
         return;
