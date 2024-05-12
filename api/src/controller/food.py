@@ -26,7 +26,6 @@ class FoodController(Resource):
         self.check_args = FoodCheckArgs()
         self.food_service = FoodService()
 
-    @jwt_required()
     def get(self, food_id: int):
         try:
             food = self.food_service.select_one_by_id(food_id=food_id)
