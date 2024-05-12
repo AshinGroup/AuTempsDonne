@@ -29,7 +29,7 @@ export default function AddPackageModal({
 
   const intl = useIntl();
 
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const submit = intl.formatMessage({
     id: "addStockModal.submit",
@@ -128,7 +128,7 @@ export default function AddPackageModal({
           }),
         });
 
-        if (!newFood.ok) {
+        if (!newFood) {
           setResponseMessage(newFood.message);
           setIsErrorMessage(false);
         }
@@ -140,24 +140,21 @@ export default function AddPackageModal({
         "yyyy-MM-dd HH:mm:ss"
       );
 
-      const newPackage = await handleFetch(
-        `${env_path}/package`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            weight: data.weight,
-            description: data.description,
-            expiration_date: data.expiration_date,
-            storage_id: data.storage_id,
-            food_id: data.food_id,
-          }),
-        }
-      );
+      const newPackage = await handleFetch(`${env_path}/package`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          weight: data.weight,
+          description: data.description,
+          expiration_date: data.expiration_date,
+          storage_id: data.storage_id,
+          food_id: data.food_id,
+        }),
+      });
 
-      if (!newPackage.ok) {
+      if (!newPackage) {
         setResponseMessage(newPackage.message);
         setIsErrorMessage(false);
       } else {
@@ -169,6 +166,8 @@ export default function AddPackageModal({
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred while adding the package.");
+      setIsErrorMessage(true);
     }
   };
 

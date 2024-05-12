@@ -24,16 +24,16 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-800 text-white p-4">
-      <div className="flex items-center">
-        <div className="ml-4 mr-80">
+      <div className="flex flex-col md:flex-row items-center md:justify-between">
+        <div className="mb-4 md:mb-0">
           <img src={logo} alt="Logo" className="h-8" />
         </div>
 
-        <div className={`${isChinese ? 'pl-56' : 'pl-40'} ${isChinese ? 'mr-80' : 'mr-72'}`}>
+        <div className={`${isChinese ? 'md:pl-8' : 'md:pl-16'} md:pr-40 text-center md:text-left`}>
           <p>© 2024 - Au Temps Donné. <FormattedMessage id="footer.credits" defaultMessage="All rights reserved." /></p>
         </div>
 
-        <div className="ml-auto mr-4">
+        <div className="mt-4 md:mt-0">
           <LanguageButton country="gb" />
           <LanguageButton country="fr" />
           <LanguageButton country="es" />
@@ -45,5 +45,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-// Faire le responsive

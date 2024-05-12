@@ -23,15 +23,17 @@ class User(db.Model):
     events = db.relationship(
         'Event', secondary='user_participates_event', back_populates='users')
 
-
     def json(self):
         roles = [role.json_rest() for role in self.roles]
 
-        events = [event.json_rest() for event in self.events] if self.events else []
+        events = [event.json_rest()
+                  for event in self.events] if self.events else []
 
-        deliveries = [delivery.json_rest_user() for delivery in self.deliveries] if self.deliveries else []
+        deliveries = [delivery.json_rest_user()
+                      for delivery in self.deliveries] if self.deliveries else []
 
-        collects = [collect.json_rest() for collect in self.collects] if self.collects else []
+        collects = [collect.json_rest_user()
+                    for collect in self.collects] if self.collects else []
 
         return {'id': self.id,
                 'first_name': self.first_name,
@@ -44,7 +46,6 @@ class User(db.Model):
                 'events': events,
                 'deliveries': deliveries,
                 'collects': collects}
-
 
     def json_rest(self):
         return {'url': f"{os.getenv('API_PATH')}/user/{self.id}",

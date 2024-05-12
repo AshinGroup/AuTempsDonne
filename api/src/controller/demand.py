@@ -18,6 +18,10 @@ class DemandCheckArgs:
         parser.add_argument('additional', type=inputs.regex(self.pattern['description']), required=True, help="Invalid or missing parameter 'additional'.")
         if method == "post":
             parser.add_argument('packages', action='append', help="Invalid or missing parameter 'packages'.")
+        if method == "update":
+            parser.add_argument('submitted_datetime', type=inputs.regex(self.pattern['datetime']), required=True, help="Invalid or missing parameter 'submitted_datetime'.")
+            parser.add_argument('pdf', type=str, required=True, help="Invalid or missing parameter 'pdf'.")
+            parser.add_argument('qr_code', type=str, required=True, help="Invalid or missing parameter 'qr_code'.")
         args = parser.parse_args(strict=True)
         return args
 
@@ -43,7 +47,7 @@ class DemandController(Resource):
 
     def put(self, demand_id: int):
         try:
-            args = self.check_args.get_demand_args()
+            args = self.check_args.get_demand_args(method="update")
             self.demand_service.update(demand_id=demand_id, args=args)
             return jsonify({'message': f"Demand '{demand_id}' successfully updated."})
         except DemandIdNotFoundException as e:
@@ -85,8 +89,9 @@ class DemandListController(Resource):
     def post(self):
         try:
             args = self.check_args.get_demand_args(method="post")
-            self.demand_service.insert(args=args)
-            return jsonify({'message': f"Demand successfully created."})
+            response = self.demand_service.insert(args=args)
+            response['message'] = "Demand successfully created."
+            return jsonify(response)
         except DemandAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         except ShopIdNotFoundException as e:

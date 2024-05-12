@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { PlusSquare } from "lucide-react";
 import handleFetch from "../handleFetch";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { Modal } from "./modal";
 
-export default function ActivityModal({
-  activity,
+export default function CollectsAndDeliveriesModal({
+  service,
   modalOpen,
   setModalOpen,
   userId,
@@ -16,13 +16,15 @@ export default function ActivityModal({
   const [isSubscribed, setIsSubscribed] = useState(false);
   const intl = useIntl();
 
+  const env_path = process.env.REACT_APP_API_PATH;
+
   const titlePlaceholder = intl.formatMessage({
-    id: "activityModal.title",
-    defaultMessage: "Title of the Activity",
+    id: "collects.id",
+    defaultMessage: "ID",
   });
 
   const dateTimeFormat = intl.formatMessage({
-    id: "activityModal.date",
+    id: "serviceModal.date",
     defaultMessage: "dd/MM/yy HH:mm",
   });
 
@@ -42,13 +44,13 @@ export default function ActivityModal({
 
   // to subscribe
   const handleRegistry = async (eventId) => {
-    const env_path = process.env.REACT_APP_API_PATH;
+    const url = service.storage ? "collect" : "delivery";
     try {
       if (isSubscribed) {
         handleUnsubscribe(eventId);
       } else {
         const response = await handleFetch(
-          `${env_path}/user/${userId}/event/${eventId}`,
+          `${env_path}/user/${userId}/${url}/${eventId}`,
           {
             method: "POST",
             headers: {
@@ -57,7 +59,7 @@ export default function ActivityModal({
           }
         );
 
-        setResponseMessage(<FormattedMessage id="activityModal.successfullyRegistry" defaultMessage="You have successfully signed up for this activity!" />);
+        setResponseMessage("You have successfully signed up for this service!");
         setIsSubscribed(true);
       }
     } catch (error) {
@@ -69,16 +71,18 @@ export default function ActivityModal({
 
   // to unsubscribe
   const handleUnsubscribe = async (eventId) => {
-    const env_path = process.env.REACT_APP_API_PATH;
+    const url = service.storage ? "collect" : "delivery";
     try {
       const response = await handleFetch(
-        `${env_path}/user/${userId}/event/${eventId}`,
+        `${env_path}/user/${userId}/${url}/${eventId}`,
         {
           method: "DELETE",
         }
       );
 
-      setResponseMessage(<FormattedMessage id="activityModal.successfullyUnsuscribe" defaultMessage="You have successfully unsubscribed from this activity!" />);
+      setResponseMessage(
+        "You have successfully unsubscribed from this service!"
+      );
       setIsSubscribed(false);
     } catch (error) {
       console.error("An error occurred while unsubscribing:", error);
@@ -89,16 +93,17 @@ export default function ActivityModal({
 
   // get event list to user participate
   const fetchUserEvents = async (userId) => {
-    const env_path = process.env.REACT_APP_API_PATH;
     const url = `${env_path}/user/${userId}`;
 
     try {
       const data = await handleFetch(url);
-      return data.events;
+      if (service.storage) {
+        return data.collects;
+      } else {
+        return data.deliveries;
+      }
     } catch (error) {
       console.error("Error fetching user events:", error);
-      setResponseMessage("Error fetching user events.");
-      setIsErrorMessage(true);
       return [];
     }
   };
@@ -110,12 +115,10 @@ export default function ActivityModal({
 
   const checkSubscription = async () => {
     try {
-      const isSubscribed = await isUserSubscribedToEvent(userId, activity.id);
+      const isSubscribed = await isUserSubscribedToEvent(userId, service.id);
       setIsSubscribed(isSubscribed);
     } catch (error) {
       console.error("An error occurred while checking subscription:", error);
-      setResponseMessage("An error occurred while checking subscription.");
-      setIsErrorMessage(true);
     }
   };
 
@@ -140,12 +143,14 @@ export default function ActivityModal({
         </p>
         <div className="flex flex-col gap-4 w-96 mx-auto mt-4">
           <p className="font-bold text-gray-500">{titlePlaceholder}:</p>
-          <p className="text-gray-800">{activity.name}</p>
+          <p className="text-gray-800">{service.id}</p>
 
           <p className="font-bold text-gray-500">
             <FormattedMessage id="modal.type" defaultMessage="Type" />:
           </p>
-          <p className="text-gray-800">{activity.type.name}</p>
+          <p className="text-gray-800">
+            {service.storage ? "Collect" : "Delirery"}
+          </p>
 
           <p className="font-bold text-gray-500">
             <FormattedMessage
@@ -155,24 +160,27 @@ export default function ActivityModal({
             :
           </p>
           <p className="text-gray-800">
-            {format(new Date(activity.datetime), dateTimeFormat)}
+            {service.storage
+              ? service.datetime
+              : format(new Date(service.datetime), dateTimeFormat)}
           </p>
 
           <p className="font-bold text-gray-500">{locationPlaceholder}:</p>
-          <p className="text-gray-800">{activity.place}</p>
-
-          <p className="font-bold text-gray-500">
-            <FormattedMessage
-              id="modal.description"
-              defaultMessage="Description"
-            />
-            :
+          <p className="text-gray-800">
+            {service.storage ? (
+              <span>
+                {service.storage.warehouse.location.address}{" "}
+                {service.storage.warehouse.location.zip_code}
+              </span>
+            ) : (
+              <span>
+                {service.locations[0].address} {service.locations[0].zip_code}
+              </span>
+            )}
           </p>
-          <p className="text-gray-800">{activity.description}</p>
-
           <button
             className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
-            onClick={() => handleRegistry(activity.id)}
+            onClick={() => handleRegistry(service.id)}
           >
             {registryButton}
           </button>

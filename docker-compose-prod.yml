@@ -48,6 +48,8 @@ services:
     ports:
       - ${REACT_PORT}:3000
     restart: always
+    env_file:
+      - .env
     depends_on:
       - backend
     volumes:

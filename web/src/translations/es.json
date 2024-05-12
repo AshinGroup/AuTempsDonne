@@ -63,7 +63,7 @@
   "event.service": "Servicio",
   "event.type": "Tipo",
   "event.event": "Evento",
-  
+
   "EventModal.titlePlaceholder": "Título del evento",
   "EventModal.titleRequired": "El título es obligatorio.",
   "EventModal.descriptionPlaceholder": "Descripción de mi evento",
@@ -194,13 +194,13 @@
 
   "home.principalTitle": "Te Necesitamos",
   "home.missions": "Nuestras Misiones",
-  "home.paragraph1": "Bla Bla Bla",
-  "home.paragraph2": "Bla Bla Bla",
-  "home.paragraph3": "Bla Bla Bla",
+  "home.paragraph1": "Informar y sensibilizar a la sociedad sobre los problemas sociales y ambientales a través de campañas y eventos dedicados.",
+  "home.paragraph2": "Brindar ayuda concreta a las personas necesitadas ofreciéndoles comidas y apoyo social.",
+  "home.paragraph3": "Trabajar para fortalecer los lazos sociales mediante la organización de actividades y programas destinados a mejorar la calidad de vida dentro de la sociedad.",
   "home.services": "Nuestros Servicios",
-  "home.paragraph4": "Bla Bla Bla",
-  "home.paragraph5": "Bla Bla Bla",
-  "home.paragraph6": "Bla Bla Bla",
+  "home.paragraph4": "Reunirse para acumular alimentos",
+  "home.paragraph5": "Marañas dirigidas a distribuir alimentos",
+  "home.paragraph6": "Recaudar donaciones de particulares",
   "home.help": "Tu Ayuda es Esencial ...",
   "home.donate": "Hacer una Donación",
   "home.joinUs": "Únete a nosotros, ¡contamos contigo!",
@@ -281,12 +281,12 @@
   "addDemandModal.enterFoodName": "Introduzca el nombre del alimento",
   "addDemandModal.addFood": "Añadir un alimento",
   "addCollectModal.addDemand": "Añadir una demanda",
-  
+
   "activities.title": "Actividades disponibles",
   "activityModal.title": "Título de la Actividad",
   "serviceModal.title": "Título del Servicio",
   "courseModal.title": "Título del Curso",
-  
+
   "modal.type": "Tipo",
   "modal.dateTime": "Fecha y Hora",
   "modal.location": "Ubicación",
@@ -297,6 +297,47 @@
   "event.registryButton": "Registro",
 
   "planning.title": "Ver Mi Planificación",
-  "planning.bubleTitle": "Para ver su planificación, está justo aquí ..."
-  
+  "planning.bubleTitle": "Para ver su planificación, está justo aquí ...",
+
+  "sign.alreadyacc": "¿Ya tienes una cuenta? ",
+  "support.needToBeLogged": "Debes estar conectado para enviar una solicitud.",
+  "profile.noEvent": "No se encontraron eventos",
+  "profile.noRole": "No se encontraron roles",
+  "event.capacitys": "Plazas",
+  "shops.users": "Usuarios",
+  "Event.type": "Tipo",
+  "addUserShopModal.selectUser": "Seleccionar un usuario:",
+  "addUserShopModal.submit": "Agregar un usuario a la tienda",
+  "showQR.downloadPDF": "Descargar PDF",
+  "showRM.Roadmap": "Plan de ruta",
+  "showRM.load": "Cargando el iFrame ...",
+  "showQR.scheduledAt": "Programado para recoger:",
+  "serviceses.title": "Servicios disponibles",
+  "navbar.demandToCollect": "Demanda de recogida",
+  "demands.additional": "Adicional",
+  "activityModal.successfullyRegistry": "¡Te has registrado con éxito para esta actividad!",
+  "activityModal.successfullyUnsuscribe": "¡Te has dado de baja con éxito de esta actividad!",
+  "serviceModal.successfullySubsribe": "¡Te has registrado con éxito para este servicio!",
+  "serviceModal.successfullyUnsubscribe": "¡Te has dado de baja con éxito de este servicio!",
+  "courseModal.successfullySubscribe": "¡Te has registrado con éxito para este curso!",
+  "courseModal.successfullyUnsubscribe": "¡Te has dado de baja con éxito de este curso!",
+  "courses.title": "Cursos disponibles",
+
+  "cad.title": "Recogidas y Entregas",
+  "cad.date": "Fecha",
+  "cad.location": "lugar de inicio",
+  "cad.Delivery": "Entrega",
+  "cad.collect": "recogida",
+  "planning.departLocation": "Lugar de Salida :",
+  "planning.Events": "Eventos",
+  "slotsTickets.MyTickets": "Mis Boletos",
+  "tickets.id": "ID",
+  "tickets.subject": "Asunto",
+  "tickets.inCharge": "Administrador a Cargo",
+  "tickets.status": "Estado",
+  "tickets.notAssigned": "No Asignado",
+  "tickets.inProgress": "En progreso",
+  "tickets.closed": "Cerrado",
+  "tickets.new": "Nuevo",
+  "tickets.contactAdmin": "Por favor, contacte a un administrador o al administrador a cargo si no hay respuesta en 48 horas (es una broma, somos desarrolladores, nadie está aquí)"
 }

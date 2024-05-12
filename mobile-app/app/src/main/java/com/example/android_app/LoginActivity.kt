@@ -39,7 +39,6 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         var shp = getSharedPreferences("save", MODE_PRIVATE)
                         shp.edit().putString("accessToken", content.getString("access_token")).apply()
-                        shp.edit().putString("refreshToken", content.getString("refresh_token")).apply()
                         shp.edit().putString("userId", content.getInt("user_id").toString()).apply()
                         findViewById<EditText>(R.id.email).setText("")
                         findViewById<EditText>(R.id.password).setText("")

@@ -42,7 +42,7 @@ export default function AddDeliveryModal({
     defaultMessage: "The date is required ..",
   });
 
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   // Fetch locations from the API
   useEffect(() => {
@@ -60,51 +60,53 @@ export default function AddDeliveryModal({
     fetchVehicles();
   }, []);
 
+  const fetchPackages = async () => {
+    try {
+      const data = await handleFetch(`${env_path}/package`);
+      if (data) {
+        const packagesWithNoDelivery = data.filter(
+          (pack) => pack.delivery === null
+        );
+        setPackages(packagesWithNoDelivery);
+      }
+    } catch (error) {
+      console.error("Error fetching packages:", error);
+    }
+  };
+
   // Fetch packages from the API
   useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const data = await handleFetch(`${env_path}/package`);
-        if (data) {
-          setPackages(data);
-        }
-      } catch (error) {
-        console.error("Error fetching packages:", error);
-      }
-    };
-
     fetchPackages();
   }, []);
 
+  const fetchStorages = async () => {
+    try {
+      const data = await handleFetch(`${env_path}/storage`);
+      if (data) {
+        setStorages(data);
+      }
+    } catch (error) {
+      console.error("Error fetching storages:", error);
+    }
+  };
+
   // Fetch storages from the API
   useEffect(() => {
-    const fetchStorages = async () => {
-      try {
-        const data = await handleFetch(`${env_path}/storage`);
-        if (data) {
-          setStorages(data);
-        }
-      } catch (error) {
-        console.error("Error fetching storages:", error);
-      }
-    };
-
     fetchStorages();
   }, []);
 
+  const fetchLocations = async () => {
+    try {
+      const data = await handleFetch(`${env_path}/location`);
+      if (data) {
+        setLocations(data);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
   // Fetch locations from the API
   useEffect(() => {
-    const fetchLocations = async () => {
-      try {
-        const data = await handleFetch(`${env_path}/location`);
-        if (data) {
-          setLocations(data);
-        }
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
     fetchLocations();
   }, []);
 
@@ -123,7 +125,19 @@ export default function AddDeliveryModal({
   };
 
   const onPostSubmit = async (data) => {
+    setResponseMessage("In process, please wait ..");
+    setIsErrorMessage(true);
     if (selectedLocation.length === 0) {
+      setResponseMessage(
+        <FormattedMessage
+          id="addCollectModal.oneLocation"
+          defaultMessage="Please select at least one Location"
+        />
+      );
+      setIsErrorMessage(false);
+      return;
+    }
+    if (selectedPackages.length === 0) {
       setResponseMessage(
         <FormattedMessage
           id="addCollectModal.onePackage"
@@ -132,7 +146,7 @@ export default function AddDeliveryModal({
       );
       setIsErrorMessage(false);
       return;
-    }  
+    }
     try {
       const newEvent = await handleFetch(`${env_path}/delivery`, {
         method: "POST",
@@ -143,16 +157,15 @@ export default function AddDeliveryModal({
           datetime: `${data.date} 23:59:59`,
           status: 0,
           locations: [
-            data.storage_location_id,
-            selectedLocation.map((location) => parseInt(location.id)),
+            parseInt(data.storage_location_id),
+            ...selectedLocation.map((location) => parseInt(location.id)),
           ],
-          // packages: selectedPackages.map((pack) => parseInt(pack.id)),
+          packages: selectedPackages.map((pack) => parseInt(pack.id)),
           vehicle_id: data.vehicle_id,
         }),
       });
 
       if (!newEvent) {
-        console.log("FAIL");
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {
@@ -161,17 +174,23 @@ export default function AddDeliveryModal({
       }
 
       fetchUsers();
+      fetchLocations();
+      fetchPackages();
       setSelectedLocation([]);
       setSelectedPackages([]);
       reset();
     } catch (error) {
+      setResponseMessage(
+        "An error occurred, please try again or contact a dev .."
+      );
+      setIsErrorMessage(false);
       console.error("An error occurred:", error);
     }
   };
 
   return (
     <Modal open={AddModalOpen} onClose={AddModalSetOpen}>
-      <div className="text-center mt-5 w-full ">
+      <div className="text-center mt-5 ">
         <PackageOpen size={40} className="mx-auto text-AshinBlue" />
         <p
           className={` my-2 font-medium ${
@@ -204,7 +223,7 @@ export default function AddDeliveryModal({
           <input
             type="date"
             {...register("date", {
-              required: { date_required },
+              required: "date_is_required ...",
             })}
             min={(() => {
               const now = new Date();
@@ -225,11 +244,10 @@ export default function AddDeliveryModal({
             {selectedLocation.map((location) => (
               <div
                 key={location.id}
-                className="flex justify-between p-2 text-white font-semibold"
+                className="flex justify-between items-center p-1 text-xs text-white"
               >
                 <span>
-                  {location.id} - {location.address}, {location.zip_code}{" "}
-                  {location.city}
+                  {location.id} - {location.address} {location.zip_code}{" "}
                 </span>
                 <span>{location.expiration_date}</span>
                 <button
@@ -246,9 +264,9 @@ export default function AddDeliveryModal({
             {selectedPackages.map((pack) => (
               <div
                 key={pack.id}
-                className="flex justify-between p-2 text-white font-semibold"
+                className="flex justify-between items-center p-1 text-xs text-white"
               >
-                {pack.id} - {pack.food_name}, {pack.weight}kg{" expires - "}
+                {pack.id} - {pack.food_name}, {pack.weight}g - expires at{" "}
                 {pack.expiration_date}
                 <button
                   className="hover:scale-110"

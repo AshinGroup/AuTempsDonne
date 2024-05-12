@@ -7,24 +7,22 @@ import handleFetch from "../handleFetch";
 import SlotsTicketsModal from "../modals/slotsTicketsModal";
 
 const Support = () => {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   const navigate = useNavigate();
   const [serverStatus, setServerStatus] = useState(
     "Waiting for server status..."
   );
   const [tickets, setTickets] = useState([]);
   const [openModal, setOpenModal] = useState(null);
+  const user_id = sessionStorage.getItem("user_id");
 
   const handleShowTickets = () => {
     setOpenModal(true);
   };
 
   const getTickets = async () => {
-    const user_id = sessionStorage.getItem("user_id");
     try {
-      const response = await handleFetch(
-        `${env_path}/ticket/user/${user_id}`
-      );
+      const response = await handleFetch(`${env_path}/ticket/user/${user_id}`);
       if (response) {
         setTickets(response.tickets);
       }
@@ -58,7 +56,9 @@ const Support = () => {
   return (
     <>
       <section className="flex justify-center items-center h-screen bg-cover bg-no-repeat bg-center bg-[url('https://media.istockphoto.com/id/656898392/fr/photo/amis-amiti%C3%A9-fist-togetherness-concept.jpg?s=1024x1024&w=is&k=20&c=tCERIp7922ElulLsmSxuKq9i7Arpg1AUBsAfRjSdsWw=')]">
-        <div className="flex flex-col w-4/6 items-center bg-white justify-center h-screen ">
+        <div
+          className={`flex flex-col w-4/6 items-center bg-white justify-center h-screen `}
+        >
           <h1 className="text-4xl mb-6 font-bold text-AshinBlue underline decoration-4">
             <FormattedMessage
               id="support.supportAuTempsDonne"
@@ -102,16 +102,18 @@ const Support = () => {
             </p>
           </div>
           {/* Mes requêtes */}
-          <button
-            onClick={() => handleShowTickets()}
-            className="mt-8 mb-5 w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            <FormattedMessage
-              id="support.mytickets"
-              defaultMessage="My Tickets"
-            />
-            &nbsp;({tickets?.length != 0 ? tickets?.length : 0})
-          </button>
+          {user_id && (
+            <button
+              onClick={() => handleShowTickets()}
+              className="mt-8 mb-5 w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              <FormattedMessage
+                id="support.mytickets"
+                defaultMessage="My Tickets"
+              />
+              &nbsp;({tickets ? tickets.length : 0})
+            </button>
+          )}
           {openModal && (
             <SlotsTicketsModal
               SlotsModalOpen={openModal}
@@ -138,7 +140,8 @@ const SupportForm = ({ getTickets }) => {
     reset,
   } = useForm();
 
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
+  const user_id = sessionStorage.getItem("user_id");
 
   const onSubmit = async (data) => {
     // user_id from sessionStorage
@@ -302,17 +305,32 @@ const SupportForm = ({ getTickets }) => {
       </div>
 
       {/* Bouton de soumission */}
-      <div className="flex justify-center">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white  w-2/6  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          <FormattedMessage
-            id="support.submitRequest"
-            defaultMessage="Submit Request"
-          />
-        </button>
-      </div>
+      {user_id ? (
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white  w-2/6  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            <FormattedMessage
+              id="support.submitRequest"
+              defaultMessage="Submit Request"
+            />
+          </button>
+        </div>
+      ) : (
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="bg-gray-500 text-white  w-1/2  font-semibold py-2 px-4 rounded cursor-not-allowed"
+            disabled
+          >
+            <FormattedMessage
+              id="support.needToBeLogged"
+              defaultMessage="You have to be logged to submit a request."
+            />
+          </button>
+        </div>
+      )}
     </form>
   );
 };

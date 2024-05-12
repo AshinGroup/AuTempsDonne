@@ -1,9 +1,9 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
-const dotenv = require("dotenv");
+const Dotenv = require("dotenv-webpack");
 
-dotenv.config();
+// Dotenv.config();
 
 module.exports = {
   mode: "development", // 'production'
@@ -14,6 +14,7 @@ module.exports = {
     publicPath: "/",
   },
   devServer: {
+    allowedHosts: "all",
     historyApiFallback: {
       index: "/",
     }, // Redirige toutes les requêtes 404 vers index.html

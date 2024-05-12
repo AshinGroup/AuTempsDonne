@@ -72,6 +72,8 @@ services:
       - ./web:/app
     environment:
       - WATCHPACK_POLLING=true
+    env_file:
+      - .env
 
   phpmyadmin:
     depends_on:

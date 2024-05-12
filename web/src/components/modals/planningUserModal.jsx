@@ -4,24 +4,31 @@ import {
   ChevronRight,
   MessageCircleWarning,
   Trash2,
+  Map,
 } from "lucide-react";
 import { Modal } from "../modals/modal";
 import DeleteModal from "../modals/deleteModal";
 import handleFetch from "../handleFetch";
+import { set } from "date-fns";
+import ShowRoadmapModal from "../modals/showRoadmapModal";
 
 export default function PlanningUserModal({
   PlanningModalOpen,
   PlanningModalSetOpen,
   user,
   expanded,
+  fetchUser,
 }) {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
-  const [Events, setEvents] = useState([]);
   const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
-  const env_path = process.env.REACT_APP_API_PATH
-  
+  const env_path = process.env.REACT_APP_API_PATH;
+  const [responseMessage, setResponseMessage] = useState("");
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
+  const [selectedRMId, setSelectedRMId] = useState(null);
+  const [selectedRMId2, setSelectedRMId2] = useState(null);
+
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   const daysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
@@ -53,34 +60,9 @@ export default function PlanningUserModal({
   const handleDayClick = (day) => {
     setCurrentDay(day);
   };
-
-  // Fetch the events from the API
-  const fetchUserEvents = async () => {
-    try {
-      const eventsData = [];
-      // Fetch each event individually
-      for (const event of user.events) {
-        const eventData = await handleFetch(
-          `${env_path}/event/${event.id}`
-        );
-        if (eventData) {
-          eventsData.push(eventData);
-        }
-      }
-      setEvents(eventsData);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    }
-  };
-
-  // Fetch the users when we change Page
-  useEffect(() => {
-    fetchUserEvents();
-  }, []);
-
   // Check if there are events for the day
   const eventsForDay = (day) => {
-    return Events.filter((event) => {
+    return user.events.filter((event) => {
       const eventDate = new Date(event.datetime);
       return (
         eventDate.getDate() === day &&
@@ -89,12 +71,48 @@ export default function PlanningUserModal({
       );
     });
   };
+  // Check if there are collects for the day
+  const collectsForDay = (day) => {
+    return user.collects.filter((collect) => {
+      const parts = collect.datetime.split("/");
+      const collectDay = parseInt(parts[0]);
+      const collectMonth = parseInt(parts[1]) - 1;
+      const collectYear = parseInt(parts[2]);
+
+      const collectDate = new Date(collectYear, collectMonth, collectDay);
+
+      return (
+        collectDate.getDate() == day &&
+        collectDate.getMonth() == currentMonth &&
+        collectDate.getFullYear() == currentYear
+      );
+    });
+  };
+  // Check if there are deliveries for the day
+  const deliveriesForDay = (day) => {
+    return user.deliveries.filter((delivery) => {
+      const deliveryDate = new Date(delivery.datetime);
+
+      return (
+        deliveryDate.getDate() == day &&
+        deliveryDate.getMonth() == currentMonth &&
+        deliveryDate.getFullYear() == currentYear
+      );
+    });
+  };
+
+  const handleRMClick = (itemId) => {
+    setSelectedRMId(itemId);
+  };
+  const handleRMClick2 = (itemId) => {
+    setSelectedRMId2(itemId);
+  };
 
   // Remove an event for an user
-  const deleteUserEvent = async (eventId) => {
+  const deleteUserEvent = async (eventId, event = "event") => {
     try {
       const response = await handleFetch(
-        `${env_path}/user/${user.id}/event/${eventId}`,
+        `${env_path}/user/${user.id}/${event}/${eventId}`,
         {
           method: "DELETE",
           headers: {
@@ -103,16 +121,16 @@ export default function PlanningUserModal({
         }
       );
 
-      if (!response.ok) {
+      if (!response) {
         throw new Error("Network response was not ok");
       }
 
-      // Refresh the users list and quit the modal
-      setEvents((prevEvents) =>
-        prevEvents.filter((event) => event.id !== eventId)
-      );
+      // Refresh the users list
+      fetchUser();
     } catch (error) {
-      console.error("Error deleting event:", error);
+      console.error("Error deleting :", error);
+      setResponseMessage("An error occurred while deleting.");
+      setIsErrorMessage(true);
     } finally {
       // Close the delete modal
       setSelectedEventIdForDelete(null);
@@ -123,7 +141,13 @@ export default function PlanningUserModal({
   const handleDeleteClick = (eventId) => {
     setSelectedEventIdForDelete(eventId);
   };
-  
+
+  const isDatePassed = (datetime) => {
+    const itemDate = new Date(datetime);
+    const today = new Date();
+    return itemDate < today;
+  };
+
   return (
     <Modal open={PlanningModalOpen} onClose={PlanningModalSetOpen}>
       {/* Main Div */}
@@ -179,7 +203,9 @@ export default function PlanningUserModal({
                   onClick={() => handleDayClick(day + 1)}
                 >
                   {day + 1}
-                  {eventsForDay(day + 1).length > 0 && (
+                  {(collectsForDay(day + 1).length > 0 ||
+                    eventsForDay(day + 1).length > 0 ||
+                    deliveriesForDay(day + 1).length > 0) && (
                     <MessageCircleWarning
                       className="text-yellow-600"
                       size={15}
@@ -202,10 +228,23 @@ export default function PlanningUserModal({
             </h2>
             {/* Display a list of events for the selected day */}
             <ul>
+              {responseMessage && (
+                <li
+                  className={`mb-2 flex bg-white border-2 p-2 ${
+                    isErrorMessage ? "border-red-500" : "border-green-500"
+                  } rounded shadow-md`}
+                >
+                  <span>{responseMessage}</span>
+                </li>
+              )}
               {eventsForDay(currentDay).map((event, index) => (
                 <li
                   key={index}
-                  className="mb-2 flex bg-white border-2 p-2 border-AshinBlue rounded shadow-md"
+                  className={`mb-2 flex bg-white border-2 p-2 ${
+                    !isDatePassed(event.datetime)
+                      ? "border-AshinBlue"
+                      : "border-gray-500"
+                  } rounded shadow-md`}
                 >
                   <div className=" flex flex-col w-5/6">
                     <span className="font-bold">{event.name}</span>
@@ -219,16 +258,115 @@ export default function PlanningUserModal({
                     </span>
                   </div>
                   <div className=" flex justify-center align-center w-1/6">
-                    <button
-                      className="text-red-600 hover:text-red-800"
-                      onClick={() => handleDeleteClick(event.id)}
-                    >
-                      {<Trash2 size={22} />}
-                    </button>
+                    {!isDatePassed(event.datetime) && (
+                      <button
+                        className="text-red-600 hover:text-red-800"
+                        onClick={() => handleDeleteClick(`e-${event.id}`)}
+                      >
+                        {<Trash2 size={22} />}
+                      </button>
+                    )}
                     <DeleteModal
-                      open={slectedEventIdForDelete === event.id}
+                      open={slectedEventIdForDelete === `e-${event.id}`}
                       onClose={() => setSelectedEventIdForDelete(null)}
-                      fetchUsers={() => deleteUserEvent(event.id)}
+                      fetchUsers={() => deleteUserEvent(event.id, "event")}
+                    />{" "}
+                  </div>
+                </li>
+              ))}
+              {collectsForDay(currentDay).map((collect, index) => (
+                <li
+                  key={`COLLECT_${index}`}
+                  className={`mb-2 flex bg-white border-2 p-2 ${
+                    !isDatePassed(collect.datetime)
+                      ? "border-AshinBlue"
+                      : "border-gray-500"
+                  } rounded shadow-md`}
+                >
+                  <div className=" flex flex-col w-5/6">
+                    <span className="font-bold">Collect #{collect.id}</span>
+                    <span>
+                      {collect.storage.warehouse.location.address}{" "}
+                      {collect.storage.warehouse.location.zip_code} -{" "}
+                      {collect.datetime}
+                    </span>
+                  </div>
+                  <div className=" flex justify-center align-center w-1/6">
+                    <button
+                      className="me-2"
+                      onClick={() => handleRMClick(collect.id)}
+                    >
+                      <Map
+                        size={25}
+                        className="hover:scale-110 text-AshinBlue"
+                      />
+                    </button>
+                    {!isDatePassed(collect.datetime) && (
+                      <button
+                        className="text-red-600 hover:text-red-800"
+                        onClick={() => handleDeleteClick(`c-${collect.id}`)}
+                      >
+                        {<Trash2 size={22} />}
+                      </button>
+                    )}
+                    <ShowRoadmapModal
+                      open={selectedRMId === collect.id}
+                      onClose={() => setSelectedRMId(null)}
+                      item={collect}
+                    />{" "}
+                    <DeleteModal
+                      open={slectedEventIdForDelete === `c-${collect.id}`}
+                      onClose={() => setSelectedEventIdForDelete(null)}
+                      fetchUsers={() => deleteUserEvent(collect.id, "collect")}
+                    />{" "}
+                  </div>
+                </li>
+              ))}
+              {deliveriesForDay(currentDay).map((delivery, index) => (
+                <li
+                  key={`COLLECT_${index}`}
+                  className={`mb-2 flex bg-white border-2 p-2 ${
+                    !isDatePassed(delivery.datetime)
+                      ? "border-AshinBlue"
+                      : "border-gray-500"
+                  } rounded shadow-md`}
+                >
+                  <div className=" flex flex-col w-5/6">
+                    <span className="font-bold">Delivery #{delivery.id}</span>
+                    <span>
+                      {delivery.locations[0].address}{" "}
+                      {delivery.locations[0].zip_code} - {delivery.datetime}
+                    </span>
+                  </div>
+                  <div className=" flex justify-center align-center w-1/6">
+                    <button
+                      className="me-2"
+                      onClick={() => handleRMClick2(delivery.id)}
+                    >
+                      <Map
+                        size={25}
+                        className="hover:scale-110 text-AshinBlue"
+                      />
+                    </button>
+                    {!isDatePassed(delivery.datetime) && (
+                      <button
+                        className="text-red-600 hover:text-red-800"
+                        onClick={() => handleDeleteClick(`d-${delivery.id}`)}
+                      >
+                        {<Trash2 size={22} />}
+                      </button>
+                    )}
+                    <ShowRoadmapModal
+                      open={selectedRMId2 === delivery.id}
+                      onClose={() => setSelectedRMId2(null)}
+                      item={delivery}
+                    />{" "}
+                    <DeleteModal
+                      open={slectedEventIdForDelete === `d-${delivery.id}`}
+                      onClose={() => setSelectedEventIdForDelete(null)}
+                      fetchUsers={() =>
+                        deleteUserEvent(delivery.id, "delivery")
+                      }
                     />{" "}
                   </div>
                 </li>

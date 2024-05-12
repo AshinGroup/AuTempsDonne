@@ -13,7 +13,11 @@ export default function SlotsTicketsModal({
     <Modal open={SlotsModalOpen} onClose={SlotsModalSetOpen}>
       <div className="text-center">
         <p className="font-bold text-lg py-2 px-5 mt-3 mb-8 mx-24 border border-[4px] border-AshinBlue rounded">
-          My Tickets ({tickets.length})
+          <FormattedMessage
+            id="slotsTickets.MyTickets"
+            defaultMessage="MyTickets"
+          />{" "}
+          ({tickets.length})
         </p>
         <div className="overflow-auto max-h-[400px]">
           <table className="w-full">
@@ -52,7 +56,14 @@ export default function SlotsTicketsModal({
                       ticket.admin ? "" : "text-gray-400"
                     }`}
                   >
-                    {ticket.admin ? ticket.admin?.email : "Not Assigned"}
+                    {ticket.admin ? (
+                      ticket.admin?.email
+                    ) : (
+                      <FormattedMessage
+                        id="tickets.notAssigned"
+                        defaultMessage="Not Assigned"
+                      />
+                    )}
                   </td>
                   <td
                     className={`ps-4 pe-8 py-3 flex justify-center items-center ${
@@ -64,19 +75,32 @@ export default function SlotsTicketsModal({
                     }`}
                   >
                     <Loader size="20" /> &nbsp;
-                    {ticket.status
-                      ? ticket.status == 1
-                        ? "In Progress"
-                        : "Closed"
-                      : "New"}
+                    {ticket.status ? (
+                      ticket.status == 1 ? (
+                        <FormattedMessage
+                          id="tickets.inProgress"
+                          defaultMessage="inProgress"
+                        />
+                      ) : (
+                        <FormattedMessage
+                          id="tickets.closed"
+                          defaultMessage="Closed"
+                        />
+                      )
+                    ) : (
+                      <FormattedMessage id="tickets.new" defaultMessage="New" />
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
           <p className="text-gray-400 font-semibold pt-5">
-            Please contact an admin or the admin in charge if no response in 48
-            hours (just joking, we are dev, no one is here)
+            <FormattedMessage
+              id="tickets.contactAdmin"
+              defaultMessage="Please contact an admin or the admin in charge if no response in 48
+                        hours (just joking, we are dev, no one is here)"
+            />
           </p>
         </div>
       </div>
