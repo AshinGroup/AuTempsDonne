@@ -22,8 +22,19 @@ class EventRepo():
             return {'max_pages': events.pages, 'events': events}
         except Exception:
             raise EventAccessDbException(event_id=None, method="getting")
+        
+    def select_by_search(self, search: str) -> list[Event]:
+        try:
+            events = Event.query.filter(Event.name.like(
+                f'%{search}%')).all()
+            if not events:
+                return None
 
-    def select_by_search(self, page: int, search: str) -> list[Event]:
+            return {'events': events}
+        except Exception:
+            raise EventAccessDbException(user_id=None, method="getting")
+
+    def select_by_search_page(self, page: int, search: str) -> list[Event]:
         try:
             events = Event.query.filter(Event.name.like(
                 f'%{search}%')).paginate(page=page, per_page=8)
