@@ -2,6 +2,8 @@ from flask_restful import Resource, reqparse, inputs, abort
 from service.vehicle import VehicleService
 from exception.vehicle import VehicleIdNotFoundException, VehicleAccessDbException
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class VehicleCheckArgs:
     
@@ -21,7 +23,7 @@ class VehicleController(Resource):
         self.check_args = VehicleCheckArgs()
         self.vehicle_service = VehicleService()
 
-
+    @jwt_required()
     def get(self, vehicle_id: int):
         try:
             vehicle = self.vehicle_service.select_one_by_id(vehicle_id=vehicle_id)
@@ -31,7 +33,8 @@ class VehicleController(Resource):
         except VehicleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, vehicle_id: int):
         try:
             args = self.check_args.get_vehicle_args()
@@ -42,7 +45,8 @@ class VehicleController(Resource):
         except VehicleAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, vehicle_id: int):
         try:
             self.vehicle_service.delete(vehicle_id=vehicle_id)
@@ -59,7 +63,7 @@ class VehicleListController(Resource):
         self.check_args = VehicleCheckArgs()
         self.vehicle_service = VehicleService()
     
-
+    @jwt_required()
     def get(self):
         try:
             events = self.vehicle_service.select_all()
@@ -70,7 +74,8 @@ class VehicleListController(Resource):
         except VehicleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_vehicle_args()

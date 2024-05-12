@@ -6,6 +6,8 @@ from exception.demand import *
 from exception.storage import StorageIdNotFoundException
 from exception.demand import CollectsDemandAlreadyExistsException
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class CollectCheckArgs:
 
@@ -30,7 +32,7 @@ class CollectController(Resource):
         self.check_args = CollectCheckArgs()
         self.collect_service = CollectService()
 
-
+    @jwt_required()
     def get(self, collect_id: int):
         try:
             collect = self.collect_service.select_one_by_id(collect_id=collect_id)
@@ -42,7 +44,8 @@ class CollectController(Resource):
         except VehicleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, collect_id: int):
         try:
             args = self.check_args.get_collect_args()
@@ -57,7 +60,8 @@ class CollectController(Resource):
         except StorageIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))       
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, collect_id: int):
         try:
             self.collect_service.delete(collect_id=collect_id)
@@ -74,7 +78,7 @@ class CollectListController(Resource):
         self.check_args = CollectCheckArgs()
         self.collect_service = CollectService()
     
-
+    @jwt_required()
     def get(self):
         try:
             collects = self.collect_service.select_all()
@@ -85,7 +89,8 @@ class CollectListController(Resource):
         except CollectAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_collect_args()
@@ -110,7 +115,7 @@ class CollectPageController(Resource):
     def __init__(self) -> None:
         self.collect_service = CollectService()
     
-
+    @jwt_required()
     def get(self, page: int):
         try:
             collects = self.collect_service.select_per_page(page=page)
@@ -126,6 +131,7 @@ class CollectSearchController(Resource):
     def __init__(self) -> None:
         self.collect_service = CollectService()
 
+    @jwt_required()
     def get(self, page: int, search: str):
         try:
             collects = self.collect_service.select_by_search(page=page, search=search)

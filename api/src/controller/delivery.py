@@ -7,6 +7,8 @@ from exception.vehicle import *
 from exception.location import *
 from exception.package import PackageDeliveryAlreadyExistsException, PackageIdNotFoundException
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class DeliveryCheckArgs:
 
@@ -31,7 +33,7 @@ class DeliveryController(Resource):
         self.check_args = DeliveryCheckArgs()
         self.delivery_service = DeliveryService()
 
-
+    @jwt_required()
     def get(self, delivery_id: int):
         try:
             delivery = self.delivery_service.select_one_by_id(delivery_id=delivery_id)
@@ -44,7 +46,8 @@ class DeliveryController(Resource):
             abort(http_status_code=500, message=str(e))
 
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, delivery_id: int):
         try:
             args = self.check_args.get_delivery_args()
@@ -57,7 +60,8 @@ class DeliveryController(Resource):
         except VehicleIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))   
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, delivery_id: int):
         try:
             self.delivery_service.delete(delivery_id=delivery_id)
@@ -74,7 +78,7 @@ class DeliveryListController(Resource):
         self.check_args = DeliveryCheckArgs()
         self.delivery_service = DeliveryService()
     
-
+    @jwt_required()
     def get(self):
         try:
             deliveries = self.delivery_service.select_all()
@@ -85,7 +89,8 @@ class DeliveryListController(Resource):
         except DeliveryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_delivery_args(method="post")
@@ -111,7 +116,7 @@ class DeliveryPageController(Resource):
     def __init__(self) -> None:
         self.delivery_service = DeliveryService()
     
-
+    @jwt_required()
     def get(self, page: int):
         try:
             deliveries = self.delivery_service.select_per_page(page=page)
@@ -127,6 +132,7 @@ class DeliverySearchController(Resource):
     def __init__(self) -> None:
         self.delivery_service = DeliveryService()
 
+    @jwt_required()
     def get(self, page: int, search: str):
         try:
             deliveries = self.delivery_service.select_by_search(page=page, search=search)
@@ -142,7 +148,8 @@ class DeliversToLocationController(Resource):
     def __init__(self) -> None:
         self.delivery_service = DeliveryService()
 
-
+    @jwt_required()
+    @roles_required([1])
     def post(self, delivery_id: int, location_id: int) -> None:
         try:
             self.delivery_service.insert_location(delivery_id=delivery_id, location_id=location_id)
@@ -158,7 +165,8 @@ class DeliversToLocationController(Resource):
         except DeliveryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, delivery_id: int, location_id: int) -> None:
         try: 
             self.delivery_service.delete_location(location_id=location_id, delivery_id=delivery_id)

@@ -8,7 +8,8 @@ from exception.collect import *
 from exception.shop import *
 from exception.ticket import *
 from flask import jsonify
-
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+from function.roles_required import roles_required
 
 class UserCheckArgs:
     pattern = {'name': r'\b[A-Za-zÀ-ÖØ-öø-ÿ\-]{1,30}\b',  # Validates names with letters and hyphens, 1 to 30 characters.
@@ -45,6 +46,7 @@ class UserController(Resource):
         self.check_args = UserCheckArgs()
         self.user_service = UserService()
 
+    @jwt_required()
     def get(self, user_id: int):
         try:
             user = self.user_service.select_one_by_id(user_id=user_id)
@@ -54,8 +56,14 @@ class UserController(Resource):
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
     def put(self, user_id: int):
         try:
+            current_user = get_jwt_identity()
+            claims = get_jwt()
+            user_roles = claims['roles']
+            if not 1 in user_roles and current_user != user_id:
+                abort(http_status_code=401, message="Unathorized request")
             args = self.check_args.get_user_args(method="put")
             self.user_service.update(user_id=user_id, args=args)
             return jsonify({'message': f"User '{user_id}' successfully updated."})
@@ -68,8 +76,14 @@ class UserController(Resource):
         except UserAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
     def delete(self, user_id: int):
         try:
+            current_user = get_jwt_identity()
+            claims = get_jwt()
+            user_roles = claims['roles']
+            if not 1 in user_roles and current_user != user_id:
+                abort(http_status_code=401, message="Unauthorized request")
             self.user_service.delete(user_id=user_id)
             return jsonify({'message': f"User '{user_id}' successfully deleted."})
         except UserIdNotFoundException as e:
@@ -87,6 +101,7 @@ class UserListController(Resource):
         self.check_args = UserCheckArgs()
         self.user_service = UserService()
 
+    @jwt_required()
     def get(self):
         try:
             users = self.user_service.select_all()
@@ -114,6 +129,7 @@ class UserPageController(Resource):
     def __init__(self) -> None:
         self.user_service = UserService()
 
+    @jwt_required()
     def get(self, page: int):
         try:
             users = self.user_service.select_per_page(page=page)
@@ -129,6 +145,7 @@ class UserSearchController(Resource):
     def __init__(self) -> None:
         self.user_service = UserService()
 
+    @jwt_required()
     def get(self, page: int, search: str):
         try:
             users = self.user_service.select_by_search(
@@ -145,8 +162,14 @@ class UserParticipatesEventController(Resource):
     def __init__(self) -> None:
         self.user_service = UserService()
 
+    @jwt_required()
     def post(self, user_id: int, event_id: int) -> None:
         try:
+            current_user = get_jwt_identity()
+            claims = get_jwt()
+            user_roles = claims['roles']
+            if not 1 in user_roles and current_user != user_id:
+                abort(http_status_code=401, message="Unauthorized request")
             self.user_service.insert_event(user_id=user_id, event_id=event_id)
             return jsonify({'message': f"User id '{user_id}' successfully participates event id '{event_id}'."})
         except UserIdNotFoundException as e:
@@ -160,8 +183,14 @@ class UserParticipatesEventController(Resource):
         except EventAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
     def delete(self, user_id: int, event_id: int) -> None:
         try:
+            current_user = get_jwt_identity()
+            claims = get_jwt()
+            user_roles = claims['roles']
+            if not 1 in user_roles and current_user != user_id:
+                abort(http_status_code=401, message="Unauthorized request")
             self.user_service.delete_event(user_id=user_id, event_id=event_id)
             return jsonify({'message': f"User id '{user_id}' successfully leave event id '{event_id}'."})
         except UserIdNotFoundException as e:
@@ -176,6 +205,8 @@ class UserIsRoleController(Resource):
     def __init__(self) -> None:
         self.user_service = UserService()
 
+    @jwt_required()
+    @roles_required([1])
     def post(self, user_id: int, role_id: int) -> None:
         try:
             self.user_service.insert_role(user_id=user_id, role_id=role_id)
@@ -191,6 +222,8 @@ class UserIsRoleController(Resource):
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
+    @roles_required([1])
     def delete(self, user_id: int, role_id: int) -> None:
         try:
             self.user_service.delete_role(user_id=user_id, role_id=role_id)
@@ -209,8 +242,14 @@ class UserDeliversController(Resource):
     def __init__(self) -> None:
         self.user_service = UserService()
 
+    @jwt_required()
     def post(self, user_id: int, delivery_id: int) -> None:
         try:
+            current_user = get_jwt_identity()
+            claims = get_jwt()
+            user_roles = claims['roles']
+            if not 1 in user_roles and current_user != user_id:
+                abort(http_status_code=401, message="Unauthorized request")
             self.user_service.insert_delivery(user_id=user_id, delivery_id=delivery_id)
             return jsonify({'message': f"User id '{user_id}' successfully participates delivery id '{delivery_id}'."})
         except UserIdNotFoundException as e:
@@ -224,8 +263,14 @@ class UserDeliversController(Resource):
         except DeliveryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
     def delete(self, user_id: int, delivery_id: int) -> None:
         try:
+            current_user = get_jwt_identity()
+            claims = get_jwt()
+            user_roles = claims['roles']
+            if not 1 in user_roles and current_user != user_id:
+                abort(http_status_code=401, message="Unathorized request")
             self.user_service.delete_delivery(user_id=user_id, delivery_id=delivery_id)
             return jsonify({'message': f"User id '{user_id}' successfully leave delivery id '{delivery_id}'."})
         except UserIdNotFoundException as e:
@@ -240,8 +285,14 @@ class UserCollectsController(Resource):
     def __init__(self) -> None:
         self.user_service = UserService()
 
+    @jwt_required()
     def post(self, user_id: int, collect_id: int) -> None:
         try:
+            current_user = get_jwt_identity()
+            claims = get_jwt()
+            user_roles = claims['roles']
+            if not 1 in user_roles and current_user != user_id:
+                abort(http_status_code=401, message="Unathorized request")
             self.user_service.insert_collect(user_id=user_id, collect_id=collect_id)
             return jsonify({'message': f"User id '{user_id}' successfully participates collect id '{collect_id}'."})
         except UserIdNotFoundException as e:
@@ -255,8 +306,14 @@ class UserCollectsController(Resource):
         except CollectAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
     def delete(self, user_id: int, collect_id: int) -> None:
         try:
+            current_user = get_jwt_identity()
+            claims = get_jwt()
+            user_roles = claims['roles']
+            if not 1 in user_roles and current_user != user_id:
+                abort(http_status_code=401, message="Unathorized request")
             self.user_service.delete_collect(user_id=user_id, collect_id=collect_id)
             return jsonify({'message': f"User id '{user_id}' successfully leave collect id '{collect_id}'."})
         except UserIdNotFoundException as e:
@@ -271,6 +328,8 @@ class UserShopController(Resource):
     def __init__(self) -> None:
         self.user_service = UserService()
 
+    @jwt_required()
+    @roles_required([1])
     def post(self, user_id: int, shop_id: int) -> None:
         try:
             self.user_service.insert_shop(user_id=user_id, shop_id=shop_id)
@@ -286,6 +345,8 @@ class UserShopController(Resource):
         except ShopAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
+    @roles_required([1])
     def delete(self, user_id: int, shop_id: int) -> None:
         try:
             self.user_service.delete_shop(user_id=user_id, shop_id=shop_id)

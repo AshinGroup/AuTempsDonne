@@ -59,7 +59,7 @@ const DemandToCollect = () => {
             expanded ? "text-3xl" : "text-2xl"
           } font-bold flex-grow`}
         >
-          {shopData?.name}{" "}
+          {shopData?.name ? shopData?.name : "No Shop"}{" "}
           <span className="text-gray-400">
             {shopData?.location?.address} {shopData?.location?.zip_code}
           </span>

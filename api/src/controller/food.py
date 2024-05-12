@@ -3,6 +3,8 @@ from service.food import FoodService
 from exception.food import *
 from exception.category import *
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class FoodCheckArgs:
 
@@ -24,7 +26,7 @@ class FoodController(Resource):
         self.check_args = FoodCheckArgs()
         self.food_service = FoodService()
 
-
+    @jwt_required()
     def get(self, food_id: int):
         try:
             food = self.food_service.select_one_by_id(food_id=food_id)
@@ -36,7 +38,8 @@ class FoodController(Resource):
         except CategoryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, food_id: int):
         try:
             args = self.check_args.get_food_args()
@@ -49,7 +52,8 @@ class FoodController(Resource):
         except FoodAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, food_id: int):
         try:
             self.food_service.delete(food_id=food_id)
@@ -66,7 +70,7 @@ class FoodListController(Resource):
         self.check_args = FoodCheckArgs()
         self.food_service = FoodService()
     
-
+    @jwt_required()
     def get(self):
         try:
             foods = self.food_service.select_all()
@@ -77,7 +81,8 @@ class FoodListController(Resource):
         except FoodAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1, 4])
     def post(self):
         try:
             args = self.check_args.get_food_args()
@@ -85,8 +90,6 @@ class FoodListController(Resource):
             return jsonify({'message': f"Food '{args['name']}' successfully created.", 'food_id': new_food_id})
         except FoodAccessDbException as e:
             abort(http_status_code=500, message=str(e))
-        except FoodIdGroupNotFoundException as e:
-            abort(http_status_code=404, message=str(e))
         except CategoryIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except CategoryAccessDbException as e:
@@ -97,7 +100,7 @@ class FoodPageController(Resource):
     def __init__(self) -> None:
         self.food_service = FoodService()
     
-
+    @jwt_required()
     def get(self, page: int):
         try:
             foods = self.food_service.select_per_page(page=page)

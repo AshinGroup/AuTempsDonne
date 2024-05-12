@@ -2,7 +2,8 @@ from flask_restful import Resource, reqparse, inputs, abort
 from service.role import RoleService
 from exception.role import RoleIdNotFoundException, RoleAccessDbException
 from flask import jsonify
-
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class RoleCheckArgs:
     # lettres, chiffres, espaces et caractères spéciaux courants, jusqu'à 15 caractères.
@@ -22,6 +23,7 @@ class RoleController(Resource):
         self.check_args = RoleCheckArgs()
         self.role_service = RoleService()
 
+    @jwt_required()
     def get(self, role_id: int):
         try:
             role = self.role_service.select_one_by_id(role_id=role_id)
@@ -31,6 +33,8 @@ class RoleController(Resource):
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
+    @roles_required([1])
     def put(self, role_id: int):
         try:
             args = self.check_args.get_role_args()
@@ -41,6 +45,8 @@ class RoleController(Resource):
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
+    @roles_required([1])
     def delete(self, role_id: int):
         try:
             self.role_service.delete(role_id=role_id)
@@ -66,6 +72,8 @@ class RoleListController(Resource):
         except RoleAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_role_args()

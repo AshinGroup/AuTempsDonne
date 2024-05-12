@@ -2,6 +2,8 @@ from flask_restful import Resource, reqparse, inputs, abort
 from service.type import TypeService
 from exception.type import TypeIdNotFoundException, TypeAccessDbException
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class TypeCheckArgs:
 
@@ -20,7 +22,7 @@ class TypeController(Resource):
         self.check_args = TypeCheckArgs()
         self.type_service = TypeService()
 
-
+    @jwt_required()
     def get(self, type_id: int):
         try:
             type = self.type_service.select_one_by_id(type_id=type_id)
@@ -30,7 +32,8 @@ class TypeController(Resource):
         except TypeAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, type_id: int):
         try:
             args = self.check_args.get_type_args()
@@ -41,7 +44,8 @@ class TypeController(Resource):
         except TypeAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, type_id: int):
         try:
             self.type_service.delete(type_id=type_id)
@@ -58,7 +62,7 @@ class TypeListController(Resource):
         self.check_args = TypeCheckArgs()
         self.type_service = TypeService()
     
-
+    @jwt_required()
     def get(self):
         try:
             events = self.type_service.select_all()
@@ -69,7 +73,8 @@ class TypeListController(Resource):
         except TypeAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_type_args()
