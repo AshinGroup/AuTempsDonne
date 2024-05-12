@@ -3,29 +3,26 @@ import { get, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import handleFetch from "../handleFetch";
-import Footer from "../footer1";
 
 import SlotsTicketsModal from "../modals/slotsTicketsModal";
 
 const Support = () => {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   const navigate = useNavigate();
   const [serverStatus, setServerStatus] = useState(
     "Waiting for server status..."
   );
   const [tickets, setTickets] = useState([]);
   const [openModal, setOpenModal] = useState(null);
+  const user_id = sessionStorage.getItem("user_id");
 
   const handleShowTickets = () => {
     setOpenModal(true);
   };
 
   const getTickets = async () => {
-    const user_id = sessionStorage.getItem("user_id");
     try {
-      const response = await handleFetch(
-        `${env_path}/ticket/user/${user_id}`
-      );
+      const response = await handleFetch(`${env_path}/ticket/user/${user_id}`);
       if (response) {
         setTickets(response.tickets);
       }
@@ -103,16 +100,18 @@ const Support = () => {
             </p>
           </div>
           {/* Mes requêtes */}
-          <button
-            onClick={() => handleShowTickets()}
-            className="mt-8 mb-5 w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            <FormattedMessage
-              id="support.mytickets"
-              defaultMessage="My Tickets"
-            />
-            &nbsp;({tickets?.length != 0 ? tickets?.length : 0})
-          </button>
+          {user_id && (
+            <button
+              onClick={() => handleShowTickets()}
+              className="mt-8 mb-5 w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              <FormattedMessage
+                id="support.mytickets"
+                defaultMessage="My Tickets"
+              />
+              &nbsp;({tickets ? tickets.length : 0})
+            </button>
+          )}
           {openModal && (
             <SlotsTicketsModal
               SlotsModalOpen={openModal}
@@ -124,7 +123,6 @@ const Support = () => {
           <SupportForm getTickets={getTickets} />
         </div>
       </section>
-      <Footer />
     </>
   );
 };
@@ -140,7 +138,8 @@ const SupportForm = ({ getTickets }) => {
     reset,
   } = useForm();
 
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
+  const user_id = sessionStorage.getItem("user_id");
 
   const onSubmit = async (data) => {
     // user_id from sessionStorage
@@ -304,17 +303,32 @@ const SupportForm = ({ getTickets }) => {
       </div>
 
       {/* Bouton de soumission */}
-      <div className="flex justify-center">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white  w-2/6  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          <FormattedMessage
-            id="support.submitRequest"
-            defaultMessage="Submit Request"
-          />
-        </button>
-      </div>
+      {user_id ? (
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white  w-2/6  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            <FormattedMessage
+              id="support.submitRequest"
+              defaultMessage="Submit Request"
+            />
+          </button>
+        </div>
+      ) : (
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="bg-gray-500 text-white  w-1/2  font-semibold py-2 px-4 rounded cursor-not-allowed"
+            disabled
+          >
+            <FormattedMessage
+              id="support.needToBeLogged"
+              defaultMessage="You have to be logged to submit a request."
+            />
+          </button>
+        </div>
+      )}
     </form>
   );
 };

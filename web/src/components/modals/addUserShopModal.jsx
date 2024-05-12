@@ -21,6 +21,7 @@ export default function addUserShopModal({
     formState: { errors },
     reset,
   } = useForm();
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const [users, setUsers] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
@@ -37,24 +38,21 @@ export default function addUserShopModal({
     defaultMessage: "Add a User to the Shop",
   });
 
+  const fetchUserShops = async () => {
+    try {
+      const data = await handleFetch(`${env_path}/user`);
+      if (data) {
+        const filteredUsers = data.filter((user) => user.shop == null);
+        setUsers(filteredUsers);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+  };
+
   // Fetch locations from the API
   useEffect(() => {
-    const env_path = process.env.REACT_APP_API_PATH
-    const fetchShops = async () => {
-      try {
-        const data = await handleFetch(`${env_path}/user`);
-        if (data) {
-          const filteredUsers = data.filter(
-            (user) => !shop.users.some((shopUser) => shopUser.id === user.id)
-          );
-          setUsers(filteredUsers);
-        }
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-
-    fetchShops();
+    fetchUserShops();
   }, []);
 
   const onPostSubmit = async (data) => {
@@ -67,15 +65,21 @@ export default function addUserShopModal({
         },
       });
 
-      if (!response.ok) {
+      if (!response) {
         setResponseMessage(response.message);
         setIsErrorMessage(false);
-      } else {
-        fetchShops();
-        reset();
       }
+
+      setResponseMessage(response.message);
+      setIsErrorMessage(true);
+
+      fetchShops();
+      fetchUserShops();
+      reset();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred.");
+      setIsErrorMessage(true);
     }
   };
 

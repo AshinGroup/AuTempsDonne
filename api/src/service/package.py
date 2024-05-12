@@ -5,6 +5,7 @@ from exception.food import FoodIdNotFoundException
 from exception.storage import StorageIdNotFoundException
 from service.food import FoodService
 from service.storage import StorageService
+from service.demand import DemandService
 
 
 class PackageService:
@@ -13,6 +14,8 @@ class PackageService:
         self.package_repo = PackageRepo()
         self.food_service = FoodService()
         self.storage_service = StorageService()
+        self.demand_service = DemandService()
+    
 
     def select_one_by_id(self, package_id: int):
         package = self.package_repo.select_one_by_id(package_id=package_id)
@@ -44,8 +47,23 @@ class PackageService:
         if not self.storage_service.select_one_by_id(new_package.storage_id):
             raise StorageIdNotFoundException
         
-      
         self.package_repo.insert(new_package=new_package)
+
+
+    def insert_qrcode_packages(self, args: dict):
+        packages = list()
+        self.storage_service.select_one_by_id(storage_id=args['storage_id'])
+        self.demand_service.select_one_by_id(demand_id=args['demand_id'])
+        for package in args['packages']:
+            self.food_service.select_one_by_id(package['food_id'])
+            packages.append(Package(weight=package['weight'], 
+                                    description=package['description'],
+                                    expiration_date=package['expiration_date'],
+                                    storage_id=args['storage_id'],
+                                    food_id=package['food_id']))
+
+        self.package_repo.insert_packages(packages=packages)
+        self.demand_service.update_status(demand_id=args['demand_id'], status=1)
 
     def update(self, package_id: int, args: dict):
         update_package = Package(weight=args['weight'], description=args['description'], expiration_date=args['expiration_date'], food_id=args['food_id'], storage_id=args['storage_id'])

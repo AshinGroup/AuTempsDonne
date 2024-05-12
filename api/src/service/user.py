@@ -30,11 +30,11 @@ class UserService:
             raise UserIdNotFoundException(user_id=user_id)
 
     def select_one_by_email(self, email: str) -> User:
-        user = self.user_repo.select_one_by_email(email=email)
+        user = self.user_repo.select_one_by_email(email=email.lower())
         if user:
             return user
         else:
-            raise UserEmailNotFoundException(email=email)
+            raise UserEmailNotFoundException(email=email.lower())
 
     def select_per_page(self, page: int) -> list[User]:
         users = self.user_repo.select_per_page(page=page)
@@ -55,18 +55,17 @@ class UserService:
         new_user = User(
             first_name=args["first_name"],
             last_name=args["last_name"],
-            email=args["email"],
+            email=args["email"].lower(),
             phone=args["phone"],
             password=args["password"],
             status=0 if method == "register" else args["status"],
-            shop_id=None
+            shop_id=None,
         )
-        if self.user_repo.select_one_by_email(email=new_user.email):
-            raise UserAlreadyExistsException(new_user.email)
+        if self.user_repo.select_one_by_email(email=new_user.email.lower()):
+            raise UserAlreadyExistsException(new_user.email.lower())
         if not self.role_service.select_one_by_id(args["role_id"]):
             raise RoleIdNotFoundException(args["role_id"])
-        new_user_id = self.user_repo.insert(
-            new_user=new_user, role_id=args["role_id"])
+        new_user_id = self.user_repo.insert(new_user=new_user, role_id=args["role_id"])
         return new_user_id
 
     def insert_event(self, user_id: int, event_id: int) -> None:
@@ -109,8 +108,7 @@ class UserService:
                     )
         if not self.delivery_service.select_one_by_id(delivery_id=delivery_id):
             raise DeliveryIdNotFoundException
-        self.user_repo.insert_delivery(
-            user_id=user_id, delivery_id=delivery_id)
+        self.user_repo.insert_delivery(user_id=user_id, delivery_id=delivery_id)
 
     def insert_collect(self, user_id: int, collect_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)
@@ -126,22 +124,19 @@ class UserService:
             raise CollectIdNotFoundException
         self.user_repo.insert_collect(user_id=user_id, collect_id=collect_id)
 
-
     def insert_shop(self, user_id: int, shop_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)
         if user.shop_id:
             raise UserShopAlreadyExistsException(user_id=user_id)
-        
+
         self.shop_service.select_one_by_id(shop_id=shop_id)
         self.user_repo.insert_shop(user_id=user_id, shop_id=shop_id)
-
-
 
     def update(self, user_id: int, args: dict) -> None:
         update_user = User(
             first_name=args["first_name"],
             last_name=args["last_name"],
-            email=args["email"],
+            email=args["email"].lower(),
             phone=args["phone"],
             password=args["password"] if args["password"] else None,
             status=args["status"],
@@ -150,11 +145,10 @@ class UserService:
         if not user:
             raise UserIdNotFoundException(user_id=user_id)
 
-        users_with_email = self.user_repo.select_by_email(
-            email=update_user.email)
+        users_with_email = self.user_repo.select_by_email(email=update_user.email.lower())
 
         if len(users_with_email) == 2 or users_with_email[0].id != user_id:
-            raise UserAlreadyExistsException(email=update_user.email)
+            raise UserAlreadyExistsException(email=update_user.email.lower())
 
         self.user_repo.update(user_id=user_id, update_user=update_user)
 
@@ -204,9 +198,9 @@ class UserService:
                     delivery_exist = True
         if not delivery_exist:
             raise UserDeliversNotFoundException(
-                user_id=user_id, delivery_id=delivery_id)
-        self.user_repo.delete_delivery(
-            user_id=user_id, delivery_id=delivery_id)
+                user_id=user_id, delivery_id=delivery_id
+            )
+        self.user_repo.delete_delivery(user_id=user_id, delivery_id=delivery_id)
 
     def delete_collect(self, user_id: int, collect_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)
@@ -218,14 +212,12 @@ class UserService:
                 if collect.id == collect_id:
                     collect_exist = True
         if not collect_exist:
-            raise UserCollectsNotFoundException(
-                user_id=user_id, collect_id=collect_id)
+            raise UserCollectsNotFoundException(user_id=user_id, collect_id=collect_id)
         self.user_repo.delete_collect(user_id=user_id, collect_id=collect_id)
-
 
     def delete_shop(self, user_id: int, shop_id: int) -> None:
         user = self.select_one_by_id(user_id=user_id)
         if not user.shop_id or user.shop_id != shop_id:
             raise UserShopsNotFoundException(user_id=user_id, shop_id=shop_id)
-        
+
         self.user_repo.delete_shop(user_id=user_id)

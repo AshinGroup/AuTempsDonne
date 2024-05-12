@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { format } from "date-fns";
 import handleFetch from "../handleFetch";
 import CourseModal from "../modals/courseModal";
-import Footer from "../footer1";
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
@@ -177,7 +176,6 @@ const Courses = () => {
                     />
                 )}
             </div>
-            <Footer />
         </>
     );
 };

@@ -12,6 +12,7 @@ class Package(db.Model):
     storage_id = db.Column(db.Integer, db.ForeignKey('storage.id'), nullable=False)
     delivery_id = db.Column(db.Integer, db.ForeignKey('delivery.id'))
     
+    
 
     def json(self):
 

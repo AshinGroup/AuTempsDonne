@@ -28,7 +28,7 @@ export default function AddShopModal({
   const [locationSwitch, setLocationSwitch] = useState(true);
 
   const intl = useIntl();
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const shopNamePlaceholder = intl.formatMessage({
     id: "addShopModal.shopNamePlaceholder",
@@ -94,21 +94,18 @@ export default function AddShopModal({
   const onPostSubmit = async (data) => {
     try {
       if (!companySwitch) {
-        const newCompany = await handleFetch(
-          `${env_path}/company`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: data.company_name,
-              description: data.company_description,
-            }),
-          }
-        );
+        const newCompany = await handleFetch(`${env_path}/company`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: data.company_name,
+            description: data.company_description,
+          }),
+        });
 
-        if (!newCompany.ok) {
+        if (!newCompany) {
           setResponseMessage(newCompany.message);
           setIsErrorMessage(false);
         }
@@ -116,24 +113,21 @@ export default function AddShopModal({
       }
 
       if (!locationSwitch) {
-        const newLocation = await handleFetch(
-          `${env_path}/location`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              address: data.location_address,
-              zip_code: data.location_zip,
-              city: data.location_city,
-              country: data.location_country,
-            }),
-          }
-        );
+        const newLocation = await handleFetch(`${env_path}/location`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            address: data.location_address,
+            zip_code: data.location_zip,
+            city: data.location_city,
+            country: data.location_country,
+          }),
+        });
 
-        if (!newLocation.ok) {
-          setResponseMessage(newLocation.message);
+        if (!newLocation) {
+          setResponseMessage("newLocation.message");
           setIsErrorMessage(false);
         }
         data.location_id = newLocation.location_id;
@@ -151,7 +145,7 @@ export default function AddShopModal({
         }),
       });
 
-      if (!newEvent.ok) {
+      if (!newEvent) {
         setResponseMessage(newEvent.message);
         setIsErrorMessage(false);
       } else {
@@ -163,6 +157,10 @@ export default function AddShopModal({
       reset();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage(
+        "Error fetching the demand, please verify if the location exist"
+      );
+      setIsErrorMessage(false);
     }
   };
 
@@ -435,6 +433,10 @@ function LocationForm(register, errors) {
           placeholder={LocationNamePlaceholder}
           {...register("location_address", {
             required: LocationNameRequired,
+            pattern: {
+              value: /^[a-zA-Z0-9\s,.'-]{3,}$/,
+              message: "Invalid address format",
+            },
           })}
           className="p-2 mx-1 border w-4/6 border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
         />
@@ -444,22 +446,31 @@ function LocationForm(register, errors) {
           placeholder={LocationZipPlaceholder}
           {...register("location_zip", {
             required: LocationZipRequired,
+            pattern: {
+              value: /^\d{5}(-\d{4})?$/,
+              message: "Invalid zip code format",
+            },
           })}
           className="p-2 mx-1 border w-2/6 border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
         />
       </div>
-      {errors.location_address && errors.location_zip && (
-        <p className="text-red-500">
-          {errors.location_address.message} <br></br>
-          {errors.location_zip.message}
-        </p>
+      {errors.location_address && (
+        <p className="text-red-500">{errors.location_address.message}</p>
       )}
+      {errors.location_zip && (
+        <p className="text-red-500">{errors.location_zip.message}</p>
+      )}
+
       <div className="flex justify-around">
         <input
           type="text"
           placeholder={LocationCityPlaceholder}
           {...register("location_city", {
             required: LocationCityRequired,
+            pattern: {
+              value: /^[a-zA-Z\s]{2,}$/,
+              message: "Invalid city format",
+            },
           })}
           className="p-2 mx-1 w-3/6 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
         />
@@ -469,15 +480,19 @@ function LocationForm(register, errors) {
           placeholder={LocationCountryPlaceholder}
           {...register("location_country", {
             required: LocationCountryRequired,
+            pattern: {
+              value: /^[a-zA-Z\s]{2,}$/,
+              message: "Invalid country format",
+            },
           })}
           className="p-2 mx-1 w-3/6 border border-gray-300 rounded focus:outline-none focus:border-AshinBlue transition"
         />
       </div>
-      {errors.location_country && errors.location_city && (
-        <p className="text-red-500">
-          {errors.location_country.message} <br></br>{" "}
-          {errors.location_city.message}
-        </p>
+      {errors.location_city && (
+        <p className="text-red-500">{errors.location_city.message}</p>
+      )}
+      {errors.location_country && (
+        <p className="text-red-500">{errors.location_country.message}</p>
       )}
     </>
   );

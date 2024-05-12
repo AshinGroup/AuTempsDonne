@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { format } from "date-fns";
 import handleFetch from "../handleFetch";
 import ServiceModal from "../modals/serviceModal";
-import Footer from "../footer1";
 
 const Services = () => {
     const env_path = process.env.REACT_APP_API_PATH
@@ -177,7 +176,6 @@ const Services = () => {
                     />
                 )}
             </div>
-            <Footer />
         </>
     );
 };

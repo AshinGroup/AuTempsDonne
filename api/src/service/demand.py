@@ -15,7 +15,6 @@ class DemandService:
         self.shop_service = ShopService()
         self.qrcode_service = QrCodeService()
         self.wasabi_service = WasabiS3()
-       
 
     def select_one_by_id(self, demand_id: int):
         demand = self.demand_repo.select_one_by_id(demand_id=demand_id)
@@ -23,42 +22,62 @@ class DemandService:
             return demand
         else:
             raise DemandIdNotFoundException(demand_id=demand_id)
-        
 
     def select_per_page(self, page: int) -> list[Demand]:
         demands = self.demand_repo.select_per_page(page=page)
         return demands
 
-
     def select_by_search(self, page: int, search: str) -> list[Demand]:
         demands = self.demand_repo.select_by_search(page=page, search=search)
         return demands
-
 
     def select_all(self):
         demands = self.demand_repo.select_all()
         return demands
 
-
     def insert(self, args: dict):
         time = datetime.now()
-        formatted_time = time.strftime('%Y-%m-%d %H:%M:%S')
-        data = {'packages' : args['packages']}
-        shop = self.shop_service.select_one_by_id(args['shop_id'])
-        shop_details = {"name": shop.name, "location": shop.location.description} 
+        formatted_time = time.strftime("%Y-%m-%d %H:%M:%S")
         
-        png_src, pdf_src = self.qrcode_service.generate_qrcode(data, shop_details)
-        new_demand = Demand(submitted_datetime=formatted_time, limit_datetime=args['limit_datetime'], status=args['status'],
-                          additional=args['additional'], shop_id=args['shop_id'], qr_code=png_src, pdf=pdf_src)
+        shop = self.shop_service.select_one_by_id(args["shop_id"])
+        shop_details = {"name": shop.name, "location": shop.location.description}
 
-        
+        new_demand = Demand(
+            submitted_datetime=formatted_time,
+            limit_datetime=args["limit_datetime"],
+            status=args["status"],
+            additional=args["additional"],
+            shop_id=args["shop_id"],
+            qr_code=None,
+            pdf=None,
+        )
+
         self.shop_service.select_one_by_id(shop_id=new_demand.shop_id)
-        self.demand_repo.insert(new_demand=new_demand)
+        new_demand_id = self.demand_repo.insert(new_demand=new_demand)
+        png_src, pdf_src = self.get_qr_code(demand_id=new_demand_id, packages=args['packages'], shop_details=shop_details)
+        return {"demand_id": new_demand_id, "qr_code": png_src, "pdf": pdf_src}
 
+        
+    def get_qr_code(self, demand_id: int, packages: list, shop_details: dict):
+        data = {
+            "packages": [eval(package) for package in packages],
+            "demand_id": demand_id
+        }
+        png_src, pdf_src = self.qrcode_service.generate_qrcode(data, shop_details)
+        return png_src, pdf_src
+    
+   
 
     def update(self, demand_id: int, args: dict):
-        update_demand = Demand(limit_datetime=args['limit_datetime'], status=args['status'],
-                          additional=args['additional'], shop_id=args['shop_id'])
+        update_demand = Demand(
+            submitted_datetime=args['submitted_datetime'],
+            limit_datetime=args["limit_datetime"],
+            status=args["status"],
+            additional=args["additional"],
+            shop_id=args["shop_id"],
+            qr_code=args["qr_code"],
+            pdf=args["pdf"]
+        )
         demand = self.demand_repo.select_one_by_id(demand_id=demand_id)
 
         if not demand:
@@ -70,6 +89,11 @@ class DemandService:
         self.shop_service.select_one_by_id(shop_id=update_demand.shop_id)
 
         self.demand_repo.update(demand_id=demand_id, update_demand=update_demand)
+
+
+    def update_status(self, demand_id: int, status: int):
+        self.select_one_by_id(demand_id=demand_id)
+        self.demand_repo.update_status(demand_id=demand_id, status=status)
 
 
     def delete(self, demand_id: str):

@@ -9,7 +9,7 @@ import UpdateStockModal from "../modals/updateStockModal";
 import handleFetch from "../handleFetch";
 
 const Stock = () => {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   const [stock, setStock] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(0);
@@ -214,21 +214,33 @@ const Stock = () => {
                 {/* food name & wright */}
                 {expanded && (
                   <td className="flex flex-col py-4 max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span className="font-normal">{sto.food.name}</span>
+                    <span
+                      className={`font-normal ${
+                        sto.delivery ? "text-gray-400" : ""
+                      }`}
+                    >
+                      {sto.food.name}
+                    </span>
                     <span className="font-light text-gray-400">
                       {sto.food.category.name}
                     </span>
                   </td>
                 )}{" "}
                 {expanded && (
-                  <td className="">
+                  <td className={`${sto.delivery ? "text-gray-400" : ""}`}>
                     {sto.weight}{" "}
                     <FormattedMessage id="stock.kg" defaultMessage="Kg" />
                   </td>
                 )}
                 {!expanded && (
                   <td className="flex flex-col py-4">
-                    <span className="font-normal">{sto.food.name}</span>
+                    <span
+                      className={`font-normal ${
+                        sto.delivery ? "text-gray-400" : ""
+                      }`}
+                    >
+                      {sto.food.name}
+                    </span>
                     <span className="font-light text-gray-400">
                       {sto.weight}{" "}
                       <FormattedMessage id="stock.kg" defaultMessage="Kg" />
@@ -236,15 +248,21 @@ const Stock = () => {
                   </td>
                 )}
                 <td
-                  className={`max-w-xs whitespace-nowrap overflow-hidden text-ellipsis ${isExpired(
-                    sto.expiration_date
-                  )}`}
+                  className={`max-w-xs whitespace-nowrap overflow-hidden text-ellipsis ${
+                    sto.delivery
+                      ? "text-gray-400"
+                      : isExpired(sto.expiration_date)
+                  }`}
                 >
                   {new Date(sto.expiration_date).toLocaleDateString("en-US")}
                 </td>
                 {/* storage location */}
                 <td className=" max-w-xs  flex flex-col whitespace-nowrap overflow-hidden text-ellipsis">
-                  <span className="font-normal">
+                  <span
+                    className={`font-normal ${
+                      sto.delivery ? "text-gray-400" : ""
+                    }`}
+                  >
                     {" "}
                     {sto.storage.name} {sto.storage.warehouse.name}{" "}
                   </span>

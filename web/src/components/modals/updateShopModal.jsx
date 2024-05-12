@@ -34,7 +34,7 @@ export default function UpdateShopModal({
   const [locationSwitch, setLocationSwitch] = useState(true);
 
   const intl = useIntl();
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const shopNamePlaceholder = intl.formatMessage({
     id: "addShopModal.shopNamePlaceholder",
@@ -69,12 +69,8 @@ export default function UpdateShopModal({
   useEffect(() => {
     const fetchLocationsAndCompanies = async () => {
       try {
-        const locationResponse = await handleFetch(
-          `${env_path}/location`
-        );
-        const companyResponse = await handleFetch(
-          `${env_path}/company`
-        );
+        const locationResponse = await handleFetch(`${env_path}/location`);
+        const companyResponse = await handleFetch(`${env_path}/company`);
 
         if (locationResponse && companyResponse) {
           setLocations(locationResponse);
@@ -91,24 +87,20 @@ export default function UpdateShopModal({
   // POST
   const onPostSubmit = async (data) => {
     try {
-      console.log(data);
       // Check if company switch is on
       if (!companySwitch) {
-        const newCompanyResponse = await handleFetch(
-          `${env_path}/company`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: data.company_name,
-              description: data.company_description,
-            }),
-          }
-        );
+        const newCompanyResponse = await handleFetch(`${env_path}/company`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: data.company_name,
+            description: data.company_description,
+          }),
+        });
 
-        if (!newCompanyResponse.ok) {
+        if (!newCompanyResponse) {
           setResponseMessage(newCompanyResponse.message);
           setIsErrorMessage(false);
         } else {
@@ -118,23 +110,20 @@ export default function UpdateShopModal({
 
       // Check if location switch is on
       if (!locationSwitch) {
-        const newLocationResponse = await handleFetch(
-          `${env_path}/location`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              address: data.location_address,
-              zip_code: data.location_zip,
-              city: data.location_city,
-              country: data.location_country,
-            }),
-          }
-        );
+        const newLocationResponse = await handleFetch(`${env_path}/location`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            address: data.location_address,
+            zip_code: data.location_zip,
+            city: data.location_city,
+            country: data.location_country,
+          }),
+        });
 
-        if (!newLocationResponse.ok) {
+        if (!newLocationResponse) {
           setResponseMessage(newLocationResponse.message);
           setIsErrorMessage(false);
         } else {
@@ -143,24 +132,21 @@ export default function UpdateShopModal({
       }
 
       // PUT request for updating shop
-      const response = await handleFetch(
-        `${env_path}/shop/${shop.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: data.name,
-            company_id: data.company_id,
-            location_id: data.location_id,
-          }),
-        }
-      );
+      const response = await handleFetch(`${env_path}/shop/${shop.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          company_id: data.company_id,
+          location_id: data.location_id,
+        }),
+      });
 
-      const newShop = await response.json();
+      const newShop = await response;
 
-      if (!response.ok) {
+      if (!response) {
         setResponseMessage(newShop.message);
         setIsErrorMessage(false);
       } else {
@@ -171,6 +157,8 @@ export default function UpdateShopModal({
       }
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred, please contact a dev.");
+      setIsErrorMessage(true);
     }
   };
   return (

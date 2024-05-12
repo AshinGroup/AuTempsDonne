@@ -7,10 +7,9 @@ import { FormattedMessage } from "react-intl";
 import DeleteModal from "../modals/deleteModal";
 import UpdateProfileModal from "../modals/updateProfileModal";
 import handleFetch from "../handleFetch";
-import Footer from "../footer1";
 
 const Profile = () => {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
   const [user, setUser] = useState([]);
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [slectedEventIdForDelete, setSelectedEventIdForDelete] = useState(null);
@@ -81,39 +80,12 @@ const Profile = () => {
     <>
       <div className="flex justify-center w-full bg-gradient-to-t from-AshinBlue-light to-AshinBlue-dark">
         <main className={`${expanded ? "w-4/6" : "w-full"} bg-white`}>
-          {/* Return Button */}
-          {/* <div className="flex justify-between mt-5 ps-5 ">
-            {" "}
-            <Link to="/admin-panel" className="flex items-center">
-              <ArrowLeft
-                size={40}
-                className="bg-AshinBlue border-0 p-1 rounded-full"
-              />
-              <span className="ms-2 font-semibold text-xl">
-                <FormattedMessage
-                  id="updateProfileModal.returnHome"
-                  defaultMessage=" Return to HomePage"
-                />
-              </span>{" "}
-            </Link>
-            {!expanded ? (
-              <img src={atd_logo_} alt="ATD Logo" className="w-10 me-5" />
-            ) : (
-              <img
-                src={atd_logo_typo}
-                alt="ATD Logo Typo"
-                className="max-w-64 me-5"
-              />
-            )}{" "}
-          </div> */}
           {/* Profile */}
           <section>
             {/* Profile Image and Name */}
-            <div className="flex items-center justify-center flex-col mt-5 pb-10 mx-32 border-b-4 border-AshinBlue">
+            <div className="flex items-center justify-center flex-col mt-5 pb-10 mx-32 border-b-4 border-AshinBlue  pb-40">
               <img
-                src={
-                  "https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg"
-                }
+                src={`https://ui-avatars.com/api/?name=${user.last_name}+${user.first_name}&background=40A1DD&color=FFFFFF&bold=true`}
                 className="w-40 rounded-full border-2 border-AshinBlue-light shadow-lg"
               />
               <span className="mt-3 font-bold text-2xl">
@@ -187,9 +159,21 @@ const Profile = () => {
                       ))}
                     </span>
                   ) : (
-                    <p>No roles found</p>
+                    <p><FormattedMessage id="profile.noRole" defaultMessage="No roles found" /></p>
                   )}
                 </li>
+                {user.shop && (
+                  <li className="py-2 border-y-2 border-gray-300 mx-5">
+                    <span className="font-semibold text-AshinBlue-dark ms-3 ">
+                      <FormattedMessage
+                        id="shops.shopName"
+                        defaultMessage="Shop"
+                      />
+                      &nbsp;:&nbsp;
+                    </span>
+                    {user.shop.name}, {user.shop.address} {user.shop.zip_code}
+                  </li>
+                )}
               </ul>
               <line className="border-AshinBlue border-b-4 mx-32 mt-10"></line>
             </div>
@@ -203,102 +187,102 @@ const Profile = () => {
               />
             </h3>
             <div className="flex flex-col mt-5 border-b-4">
-              <ul className="flex flex-col text-xl">
-                <li className="py-2 mx-5">
-                  {user.events ? (
-                    <ul>
-                      {user.events.map((event, index) => (
-                        <li
-                          key={index}
-                          className="bg-AshinBlue p-2 border-0 rounded mb-4"
+              {user.events ? (
+                <ul className="flex flex-col text-xl py-y mx-5">
+                  {/* <li className="py-2 mx-5">
+                  <ul> */}
+                  {user.events.map((event, index) => (
+                    <li
+                      key={index}
+                      className="bg-AshinBlue p-2 border-0 rounded mb-4"
+                    >
+                      <div className="font-bold text-xl pb-2 mb-2 border-b-2 border-white flex items-center justify-between text-white">
+                        <span>{event.name}</span>
+                        <button
+                          className="me-5"
+                          onClick={() => handleDeleteClick(event.id)}
                         >
-                          <div className="font-bold text-xl pb-2 mb-2 border-b-2 border-white flex items-center justify-between text-white">
-                            <span>{event.name}</span>
-                            <button
-                              className="me-5"
-                              onClick={() => handleDeleteClick(event.id)}
-                            >
-                              <Trash2 size={30} className="hover:scale-110" />
-                            </button>{" "}
-                          </div>
-                          <DeleteModal
-                            open={slectedEventIdForDelete === event.id}
-                            onClose={() => setSelectedEventIdForDelete(null)}
-                            fetchUsers={() => deleteEvent(event.id)}
-                          />{" "}
-                          <p className="text-white">
-                            <span className="font-semibold">
-                              {" "}
-                              <FormattedMessage
-                                id="updateProfileModal.place"
-                                defaultMessage="Place :"
-                              />
-                            </span>{" "}
-                            <span className="italic"> {event.place}</span>
-                          </p>
-                          <p className="text-white">
-                            <span className="font-semibold">
-                              {" "}
-                              <FormattedMessage
-                                id="updateProfileModal.datetime"
-                                defaultMessage="DateTime :"
-                              />
-                            </span>{" "}
-                            <span className="italic"> {event.datetime}</span>
-                          </p>
-                          <p className="text-white">
-                            <span className="font-semibold">
-                              <FormattedMessage
-                                id="updateProfileModal.description"
-                                defaultMessage="Description :"
-                              />
-                            </span>{" "}
-                            <span className="italic"> {event.description}</span>
-                          </p>
-                          <p className="text-white">
-                            <span className="font-semibold">
-                              <FormattedMessage
-                                id="updateProfileModal.group"
-                                defaultMessage="group :"
-                              />
-                            </span>{" "}
-                            <span className="italic">
-                              {" "}
-                              {event.group === 1 ? (
-                                <FormattedMessage
-                                  id="event.activity"
-                                  defaultMessage="Activity"
-                                />
-                              ) : event.group === 2 ? (
-                                <FormattedMessage
-                                  id="event.course"
-                                  defaultMessage="Course"
-                                />
-                              ) : (
-                                <FormattedMessage
-                                  id="event.service"
-                                  defaultMessage="Service"
-                                />
-                              )}
-                            </span>
-                          </p>
-                          <p className="text-white">
-                            <span className="font-semibold">
-                              <FormattedMessage
-                                id="updateProfileModal.type"
-                                defaultMessage="type :"
-                              />
-                            </span>{" "}
-                            <span className="italic"> {event.type.name}</span>
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No events found</p>
-                  )}
-                </li>
-              </ul>
+                          <Trash2 size={30} className="hover:scale-110" />
+                        </button>{" "}
+                      </div>
+                      <DeleteModal
+                        open={slectedEventIdForDelete === event.id}
+                        onClose={() => setSelectedEventIdForDelete(null)}
+                        fetchUsers={() => deleteEvent(event.id)}
+                      />{" "}
+                      <p className="text-white">
+                        <span className="font-semibold">
+                          {" "}
+                          <FormattedMessage
+                            id="updateProfileModal.place"
+                            defaultMessage="Place :"
+                          />
+                        </span>{" "}
+                        <span className="italic"> {event.place}</span>
+                      </p>
+                      <p className="text-white">
+                        <span className="font-semibold">
+                          {" "}
+                          <FormattedMessage
+                            id="updateProfileModal.datetime"
+                            defaultMessage="DateTime :"
+                          />
+                        </span>{" "}
+                        <span className="italic"> {event.datetime}</span>
+                      </p>
+                      <p className="text-white">
+                        <span className="font-semibold">
+                          <FormattedMessage
+                            id="updateProfileModal.description"
+                            defaultMessage="Description :"
+                          />
+                        </span>{" "}
+                        <span className="italic"> {event.description}</span>
+                      </p>
+                      <p className="text-white">
+                        <span className="font-semibold">
+                          <FormattedMessage
+                            id="updateProfileModal.group"
+                            defaultMessage="group :"
+                          />
+                        </span>{" "}
+                        <span className="italic">
+                          {" "}
+                          {event.group === 1 ? (
+                            <FormattedMessage
+                              id="event.activity"
+                              defaultMessage="Activity"
+                            />
+                          ) : event.group === 2 ? (
+                            <FormattedMessage
+                              id="event.course"
+                              defaultMessage="Course"
+                            />
+                          ) : (
+                            <FormattedMessage
+                              id="event.service"
+                              defaultMessage="Service"
+                            />
+                          )}
+                        </span>
+                      </p>
+                      <p className="text-white">
+                        <span className="font-semibold">
+                          <FormattedMessage
+                            id="updateProfileModal.type"
+                            defaultMessage="type :"
+                          />
+                        </span>{" "}
+                        <span className="italic"> {event.type.name}</span>
+                      </p>
+                    </li>
+                  ))}
+                  {/* </ul> */}
+                  {/* </li> */}
+                </ul>
+              ) : (
+                <p><FormattedMessage id="profile.noEvent" defaultMessage="No events found" /></p>
+              )}
             </div>
           </section>
         </main>
@@ -310,8 +294,7 @@ const Profile = () => {
             fetchUsers={() => fetchUser()}
           />
         )}
-      </div>      
-      <Footer />
+      </div>
     </>
   );
 };

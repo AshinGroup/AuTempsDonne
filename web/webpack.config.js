@@ -7,13 +7,6 @@ const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   mode: "development", // 'production'
-  devServer: {
-    allowedHosts: "all",
-    static: path.join(__dirname, "dist"),
-    compress: true,
-    port: 3000,
-
-  },
   entry: "./src/index.jsx",
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -21,6 +14,7 @@ module.exports = {
     publicPath: "/",
   },
   devServer: {
+    allowedHosts: "all",
     historyApiFallback: {
       index: "/",
     }, // Redirige toutes les requêtes 404 vers index.html
@@ -58,6 +52,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
+      favicon: "./public/favicon.ico",
     }),
     new webpack.DefinePlugin({
       "process.env.REACT_APP_API_PATH": JSON.stringify(

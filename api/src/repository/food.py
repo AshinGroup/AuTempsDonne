@@ -3,7 +3,8 @@ from database.db import db
 from app import app
 from exception.food import FoodAccessDbException
 
-class FoodRepo():    
+
+class FoodRepo():
 
     def select_one_by_id(self, food_id: int) -> Food:
         try:
@@ -11,19 +12,17 @@ class FoodRepo():
             return food
         except Exception:
             raise FoodAccessDbException(food_id=food_id, method="getting")
-        
 
     def select_per_page(self, page: int) -> list[Food]:
         try:
             food = Food.query.paginate(page=page, per_page=10)
             if not food:
                 return None
-            
-            return {'max_pages' : food.pages, 'food': food}
+
+            return {'max_pages': food.pages, 'food': food}
         except Exception:
             raise FoodAccessDbException(food_id=None, method="getting")
 
-    
     def select_all(self) -> list[Food]:
         try:
             foods = Food.query.all()
@@ -32,7 +31,6 @@ class FoodRepo():
             return foods
         except Exception:
             raise FoodAccessDbException(food_id=None, method="getting")
-
 
     def insert(self, new_food: Food) -> None:
         try:
@@ -45,7 +43,6 @@ class FoodRepo():
                 return new_food_id
         except Exception:
             raise FoodAccessDbException(food_id=None, method="creating")
-    
 
     def update(self, food_id: int, update_food: Food) -> None:
         try:
@@ -58,7 +55,6 @@ class FoodRepo():
                 db.session.close()
         except Exception:
             raise FoodAccessDbException(food_id=food_id, method="updating")
-
 
     def delete(self, food_id: int) -> None:
         try:

@@ -52,7 +52,7 @@ export default function ShowQrModal({ open, onClose, item }) {
             onClick={() => {
               window.open(pdfUrl, "_blank");
             }}
-            className="w-full py-2 border border-red-500 bg-red-500 text-white rounded transition-all hover:scale-105"
+            className="w-full py-2 border border-AshinBlue bg-AshinBlue text-white rounded transition-all hover:scale-105"
           >
             <FormattedMessage
               id="showQR.downloadPDF"
@@ -61,7 +61,7 @@ export default function ShowQrModal({ open, onClose, item }) {
           </button>
           <button
             onClick={onClose}
-            className="w-full py-2 border border-AshinBlue rounded transition-all hover:text-AshinBlue"
+            className="w-full py-2 border border-red-500 rounded transition-all hover:text-red-500"
           >
             <FormattedMessage id="deleteModal.cancel" defaultMessage="Cancel" />
           </button>

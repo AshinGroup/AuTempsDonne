@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import atd_logo_ from "../resources/atd_logo_.png";
 import atd_logo_typo from "../resources/atd_logo_typo.png";
+import handleFetch from "./handleFetch";
 
 const SidebarContext = createContext();
 
@@ -26,6 +27,27 @@ export default function Sidebar({ activeItem, setActiveItem }) {
   const [expanded, setExpanded] = useState(() => window.innerWidth > 980);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { locale, changeLocale } = useLanguage();
+  const [user, setUser] = useState({});
+
+  const env_path = process.env.REACT_APP_API_PATH;
+  const userId = sessionStorage.getItem("user_id");
+
+  useEffect(() => {
+    // Fetch the user from the API
+    const fetchUser = async () => {
+      const url = `${env_path}/user/${userId}`;
+      try {
+        const data = await handleFetch(url);
+        if (data) {
+          setUser(data);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   // Function to handle window resize
   useEffect(() => {
@@ -148,7 +170,7 @@ export default function Sidebar({ activeItem, setActiveItem }) {
         <div className="border-t flex p-3">
           <button onClick={toggleDropdown}>
             <img
-              src="https://ui-avatars.com/api/?name=Huang+Frederic&background=40A1DD&color=FFFFFF&bold=true"
+              src={`https://ui-avatars.com/api/?name=${user.last_name}+${user.first_name}&background=40A1DD&color=FFFFFF&bold=true`}
               alt="User"
               className="w-10 h-10 rounded-md"
             />{" "}
@@ -159,10 +181,10 @@ export default function Sidebar({ activeItem, setActiveItem }) {
             }`}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">Huang Frédéric</h4>
-              <span className="text-xs text-gray-600">
-                huangfrederic@xyz.com
-              </span>
+              <h4 className="font-semibold">
+                {user.last_name} {user.first_name}
+              </h4>
+              <span className="text-xs text-gray-600">{user.email}</span>
             </div>
             <button
               onClick={toggleDropdown}

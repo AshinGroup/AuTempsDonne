@@ -40,6 +40,9 @@ class RoadmapService:
 
 
     def improve_reversal_turn(self, locations: list, perm=None):
+        if len(locations) == 2:
+            return 0, 0, [0,1]
+        
         perm = (perm.copy() if perm is not None
                 else list(range(locations.shape[0])))
         dist_min = self.turn_distance(locations, perm)
@@ -223,11 +226,8 @@ class RoadmapService:
         ordered_locations = self.get_ordered_locations(locations=locations, optimal_order=optimal_order)
         path , distance, distance_units, total_time = self.create_map(locations=ordered_locations)
         roadmap_src = self.wasabi_s3.upload_file(folder=f"roadmap/{type}", file_path=path, type=f"{type}_roadmap", extension="html")
-        self.delete_map(path)
-        
-
         pdf_src = self.pdf_service.generate_roadmap_pdf(time=total_time, distance=distance, distance_units=distance_units, locations=ordered_locations, type=type)
-
+        self.delete_map(path)
         response = {
             'locations': [location.json_rest() for location in ordered_locations],
             'distance': distance,

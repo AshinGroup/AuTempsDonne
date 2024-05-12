@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import Navbar from "../components/navbar";
+import Footer from "../components/footer1";
+
 import Home from "../components/contents/home";
 import Services from "../components/contents/services";
 import Activities from "../components/contents/activities";
@@ -11,6 +13,7 @@ import Donation from "../components/contents/donation";
 import Support from "../components/contents/support";
 import Profile from "../components/contents/profile";
 import DemandToCollect from "../components/contents/demandToCollect";
+import Error from "../components/contents/error";
 
 const WelcomePage = ({direct}) => {
   // Profile Management from Dashboard (ugly code, to be refactored)
@@ -60,6 +63,8 @@ const WelcomePage = ({direct}) => {
       case "logout":
         navigate("/logout");
         return;
+      case "error":
+        return <Error />;
       default:
         return <div>Select an item</div>;
     }
@@ -73,6 +78,7 @@ const WelcomePage = ({direct}) => {
         Rule={rule}
       />
       <main className="flex-1">{getContent()}</main>
+      <Footer />
     </div>
   );
 };

@@ -40,7 +40,7 @@ export default function UpdateProfileModal({
   const [isErrorMessage, setIsErrorMessage] = useState(false);
 
   const intl = useIntl();
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
 
   const firstNamePlaceholder = intl.formatMessage({
     id: "addUserModal.firstName",
@@ -108,9 +108,7 @@ export default function UpdateProfileModal({
   useEffect(() => {
     const fetchUserRoles = async () => {
       try {
-        const rolesResponse = await handleFetch(
-          `${env_path}/role`
-        );
+        const rolesResponse = await handleFetch(`${env_path}/role`);
         if (rolesResponse) {
           setRoles(rolesResponse);
           const defaultSelectedRoles = user.roles
@@ -166,18 +164,15 @@ export default function UpdateProfileModal({
 
       data["status"] = status;
 
-      const response = await handleFetch(
-        `${env_path}/user/${user.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...data,
-          }),
-        }
-      );
+      const response = await handleFetch(`${env_path}/user/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+        }),
+      });
 
       if (!response) {
         setResponseMessage("An error occurred.");
@@ -198,33 +193,29 @@ export default function UpdateProfileModal({
 
       // Add new roles
       for (const roleId of rolesToAdd) {
-        await handleFetch(
-          `${env_path}/user/${user.id}/role/${roleId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        await handleFetch(`${env_path}/user/${user.id}/role/${roleId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
       }
 
       // Remove old roles
       for (const roleId of rolesToRemove) {
-        await handleFetch(
-          `${env_path}/user/${user.id}/role/${roleId}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        await handleFetch(`${env_path}/user/${user.id}/role/${roleId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
       }
 
       fetchUsers();
     } catch (error) {
       console.error("An error occurred:", error);
+      setResponseMessage("An error occurred, please ask a dev.");
+      setIsErrorMessage(true);
     }
   };
   return (

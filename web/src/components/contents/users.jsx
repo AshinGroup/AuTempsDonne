@@ -15,7 +15,8 @@ import PlanningUserModal from "../modals/planningUserModal";
 import handleFetch from "../handleFetch";
 
 const Users = () => {
-  const env_path = process.env.REACT_APP_API_PATH
+  const env_path = process.env.REACT_APP_API_PATH;
+  const my_user_id = sessionStorage.getItem("user_id");
   // Display the users and Pagination
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -315,12 +316,14 @@ const Users = () => {
                           fetchUsers={fetchUsers}
                         />
                       )}
-                      <button
-                        className="text-red-600 hover:text-red-800 mr-2"
-                        onClick={() => handleDeleteClick(user.id)}
-                      >
-                        {<Trash2 size={20} />}
-                      </button>
+                      {user.id != my_user_id && (
+                        <button
+                          className="text-red-600 hover:text-red-800 mr-2"
+                          onClick={() => handleDeleteClick(user.id)}
+                        >
+                          {<Trash2 size={20} />}
+                        </button>
+                      )}
                       <DeleteModal
                         open={slectedUserIdForDelete === user.id}
                         onClose={() => setSelectedUserIdForDelete(null)}

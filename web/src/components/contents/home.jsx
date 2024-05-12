@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import Footer from "../footer1";
 import welcome from "../../resources/homePage1.jpg";
 import maps from "../../resources/maps.png";
 import carousel1 from "../../resources/carousel1.jpg";
@@ -31,72 +30,60 @@ const HomePage = () => {
       </div>
 
       <div className="flex mb-64">
-        <div className="bg-gray-200 w-1/3 h-96 p-4 flex flex-col justify-center items-center rounded-xl mr-8 ml-8 shadow-md">
-          <p><FormattedMessage id="home.paragraph1" defaultMessage="Bla Bla Bla" /></p>
+        <div className="bg-gray-200 w-1/3 h-72 p-4 flex flex-col justify-center items-center rounded-xl mr-8 ml-8 shadow-md">
+          <p className="text-center text-lg font-medium"><FormattedMessage id="home.paragraph1" defaultMessage="Inform and raise awareness in society about social and environmental issues through dedicated campaigns and events." /></p>
         </div>
-        <div className="bg-gray-200 w-1/3 h-96 p-4 flex flex-col justify-center items-center rounded-xl mr-8 ml-8 shadow-md">
-          <p><FormattedMessage id="home.paragraph2" defaultMessage="Bla Bla Bla" /></p>
+        <div className="bg-gray-200 w-1/3 h-72 p-4 flex flex-col justify-center items-center rounded-xl mr-8 ml-8 shadow-md">
+          <p className="text-center text-lg font-medium"><FormattedMessage id="home.paragraph2" defaultMessage="Provide concrete help to people in need by offering them meals and social support." /></p>
         </div>
-        <div className="bg-gray-200 w-1/3 h-96 p-4 flex flex-col justify-center items-center rounded-xl mr-8 ml-8 shadow-md">
-          <p><FormattedMessage id="home.paragraph3" defaultMessage="Bla Bla Bla" /></p>
+        <div className="bg-gray-200 w-1/3 h-72 p-4 flex flex-col justify-center items-center rounded-xl mr-8 ml-8 shadow-md">
+          <p className="text-center text-lg font-medium"><FormattedMessage id="home.paragraph3" defaultMessage="Work to strengthen social ties by organizing activities and programs aimed at improving the quality of life within society." /></p>
         </div>
       </div>
-
-      {/* <div className="bg-gray-200 flex justify-between pt-16 pb-16 pr-16 pl-16 mb-80">
-              <div className="ml-24 mt-12">
-                <h2 className="text-3xl font-bold mb-1 ml-48">Rejoignez nous, on compte sur vous !</h2>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-16 ml-96">M'inscrire</button>
-              </div>
-              <Carousel />
-            </div> */}
 
       <div className="text-black text-center mt-24 mb-40">
         <h1 className="text-4xl font-bold mb-4"><FormattedMessage id="home.services" defaultMessage="Our Services" /></h1>
         <div className="w-24 h-0.5 bg-black mx-auto mb-8"></div>
       </div>
 
-      <div className="bg-gray-200 h-screen flex justify-between pr-16 pl-16 mb-40">
-        <div className="w-1/3 flex items-center">
-          <img src={maps} alt="Carte de nos locaux." className="ml-16 w-8/10 h-8/10" />
+      <div className="bg-gray-200 h-2/3 flex flex-col lg:flex-row justify-between pr-8 lg:pr-16 pl-8 lg:pl-16 mb-40 pb-24">
+        <div className="hidden lg:block w-full lg:w-1/3 flex items-center justify-center lg:mt-32">
+          <img src={maps} alt="Carte de nos locaux." className="w-10/12 lg:w-8/10 h-auto max-h-full" />
         </div>
 
-        <div className="w-2/3 flex flex-col justify-between">
-          <div className="ml-16">
-            <div className="bg-white mt-48 w-1/2 h-32 mb-16 ml-96 shadow-md rounded-xl flex flex-col justify-center items-center"><p><FormattedMessage id="home.paragraph4" defaultMessage="Bla Bla Bla" /></p></div>
-            <div className="bg-white w-1/2 h-32 mb-16 ml-96 shadow-md rounded-xl flex flex-col justify-center items-center"><p><FormattedMessage id="home.paragraph5" defaultMessage="Bla Bla Bla" /></p></div>
-            <div className="bg-white w-1/2 h-32 ml-96 shadow-md rounded-xl flex flex-col justify-center items-center"><p><FormattedMessage id="home.paragraph6" defaultMessage="Bla Bla Bla" /></p></div>
+        <div className="w-full lg:w-2/3 flex flex-col justify-between">
+          <div className="ml-0 lg:ml-16 lg:mt-32">
+            <div className="bg-white mt-8 lg:mt-16 lg:ml-8 xl:ml-96 shadow-md rounded-xl flex flex-col justify-center items-center p-4 lg:p-8">
+              <p className="text-base lg:text-lg xl:text-xl"><FormattedMessage id="home.paragraph4" defaultMessage="Gathering together to accumulate food" /></p>
+            </div>
+            <div className="bg-white mt-8 lg:mt-8 lg:ml-8 xl:ml-96 shadow-md rounded-xl flex flex-col justify-center items-center p-4 lg:p-8">
+              <p className="text-base lg:text-lg xl:text-xl"><FormattedMessage id="home.paragraph5" defaultMessage="Maraudes aimed at distributing food" /></p>
+            </div>
+            <div className="bg-white mt-8 lg:mt-8 lg:ml-8 xl:ml-96 shadow-md rounded-xl flex flex-col justify-center items-center p-4 lg:p-8">
+              <p className="text-base lg:text-lg xl:text-xl"><FormattedMessage id="home.paragraph6" defaultMessage="Collecting donations from individuals" /></p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="text-black text-center mt-24 mb-16">
-        <h1 className="text-3xl font-bold mb-4"><FormattedMessage id="home.help" defaultMessage="Your Help is Essential ..." /></h1>
-        <div className="w-64 h-0.5 bg-black mx-auto mb-8"></div>
-      </div>
+      <div class="flex justify-center flex-col md:flex-row items-center mb-24">
+        <div class="text-black text-center mt-24 mb-16 md:mr-72 md:mb-0">
+          <h1 class="text-3xl font-bold mb-4"><FormattedMessage id="home.help" defaultMessage="Your Help is Essential ..." /></h1>
+          <div class="w-64 h-0.5 bg-black mx-auto mb-8"></div>
+          <a href="/donate">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"><FormattedMessage id="home.donate" defaultMessage="Make a Donation" /></button>
+          </a>
+        </div>
 
-      <div className="text-center mb-40">
-        <Link
-          to={{
-            pathname: "/",
-            // search: "?sort=name",
-            // hash: "#the-hash",
-            state: { id: "donate" },
-          }}>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"><FormattedMessage id="home.donate" defaultMessage="Make a Donation" /></button>
-        </Link>
-      </div>
-
-      <div className="bg-gray-200 flex flex-col justify-center items-center pt-16 pb-16 pr-16 pl-16">
-        <div className="mt-12 ml-8 text-center">
-          <h2 className="text-3xl font-bold mb-8"><FormattedMessage id="home.joinUs" defaultMessage="Join us, we're counting on you!" /></h2>
+        <div class="text-center ml-0 md:ml-72">
+          <h2 class="text-3xl font-bold mb-8"><FormattedMessage id="home.joinUs" defaultMessage="Join us, we're counting on you!" /></h2>
           <Carousel />
-          <div className="w-96 h-0.5 bg-black mt-8 mx-auto mb-8"></div>
-          <Link to="/toujours-coucou">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"><FormattedMessage id="home.signUp" defaultMessage="Sign Up" /></button>
+          <Link to="/signup">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-8"><FormattedMessage id="home.signUp" defaultMessage="Sign Up" /></button>
           </Link>
         </div>
       </div>
-      <Footer />
+
     </>
   );
 };

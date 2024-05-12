@@ -5,7 +5,6 @@ import { FormattedMessage } from "react-intl";
 import DeleteModal from "../modals/deleteModal";
 import PlanningUserModal from "../modals/planningUserModal";
 import handleFetch from "../handleFetch";
-import Footer from "../footer1";
 
 const Planning = () => {
     const env_path = process.env.REACT_APP_API_PATH
@@ -72,7 +71,7 @@ const Planning = () => {
 
     return (
         <>
-            <div className="flex justify-center w-full bg-gradient-to-t from-AshinBlue-light to-AshinBlue-dark mb-24">
+            <div className="flex justify-center w-full bg-gradient-to-t from-AshinBlue-light to-AshinBlue-dark mb-56">
                 <main className="w-full bg-white">
                     <h1 className="text-3xl flex items-center justify-center my-2 mt-24 mb-4">
                         <FormattedMessage
@@ -201,7 +200,7 @@ const Planning = () => {
                                             ))}
                                         </ul>
                                     ) : (
-                                        <p>No events found</p>
+                                        <p><FormattedMessage id="profile.noEvent" defaultMessage="No events found" /></p>
                                     )}
                                 </li>
                             </ul>
@@ -220,7 +219,6 @@ const Planning = () => {
                     />
                 )}
             </div>
-            <Footer />
         </>
     );
 };
