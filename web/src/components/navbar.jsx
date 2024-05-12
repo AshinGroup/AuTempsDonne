@@ -96,17 +96,6 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
               path="/"
               text={
                 <FormattedMessage
-                  id="navbar.services"
-                  defaultMessage="services"
-                />
-              }
-              isActive={activeItem === "services"}
-              onClick={() => setActiveItem("services")}
-            />
-            <NavbarItem
-              path="/"
-              text={
-                <FormattedMessage
                   id="navbar.activities"
                   defaultMessage="activities"
                 />
@@ -155,17 +144,6 @@ export default function Navbar({ activeItem, setActiveItem, Rule }) {
       case "2": // Bénévole
         return (
           <>
-            <NavbarItem
-              path="/"
-              text={
-                <FormattedMessage
-                  id="navbar.activities"
-                  defaultMessage="activities"
-                />
-              }
-              isActive={activeItem === "activities"}
-              onClick={() => setActiveItem("activities")}
-            />
             <NavbarItem
               path="/"
               text={

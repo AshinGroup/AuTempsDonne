@@ -298,6 +298,7 @@ const Users = () => {
                           }
                           user={user}
                           expanded={expanded}
+                          fetchUser={fetchUsers}
                         />
                       )}
                       <button
