@@ -4,7 +4,8 @@ from exception.shop import *
 from exception.company import *
 from exception.location import *
 from flask import jsonify
-
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class ShopCheckArgs:
 
@@ -35,6 +36,7 @@ class ShopController(Resource):
         self.check_args = ShopCheckArgs()
         self.shop_service = ShopService()
 
+    @jwt_required()
     def get(self, shop_id: int):
         try:
             shop = self.shop_service.select_one_by_id(shop_id=shop_id)
@@ -46,6 +48,8 @@ class ShopController(Resource):
         except CompanyAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
+    @roles_required([1])
     def put(self, shop_id: int):
         try:
             args = self.check_args.get_shop_args()
@@ -62,6 +66,8 @@ class ShopController(Resource):
         except LocationAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
+    @roles_required([1])
     def delete(self, shop_id: int):
         try:
             self.shop_service.delete(shop_id=shop_id)
@@ -77,6 +83,7 @@ class ShopListController(Resource):
         self.check_args = ShopCheckArgs()
         self.shop_service = ShopService()
 
+    @jwt_required()
     def get(self):
         try:
             shops = self.shop_service.select_all()
@@ -87,6 +94,8 @@ class ShopListController(Resource):
         except ShopAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_shop_args()
@@ -108,6 +117,7 @@ class ShopPageController(Resource):
     def __init__(self) -> None:
         self.shop_service = ShopService()
 
+    @jwt_required()
     def get(self, page: int):
         try:
             shops = self.shop_service.select_per_page(page=page)
@@ -127,6 +137,7 @@ class ShopSearchController(Resource):
     def __init__(self) -> None:
         self.shop_service = ShopService()
 
+    @jwt_required()
     def get(self, page: int, search: str):
         try:
             shops = self.shop_service.select_by_search(page=page, search=search)

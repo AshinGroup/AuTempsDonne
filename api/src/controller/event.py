@@ -3,6 +3,8 @@ from service.event import EventService
 from exception.event import *
 from exception.type import *
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class EventCheckArgs:
 
@@ -29,7 +31,7 @@ class EventController(Resource):
         self.check_args = EventCheckArgs()
         self.event_service = EventService()
 
-
+    @jwt_required()
     def get(self, event_id: int):
         try:
             event = self.event_service.select_one_by_id(event_id=event_id)
@@ -41,7 +43,8 @@ class EventController(Resource):
         except TypeAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, event_id: int):
         try:
             args = self.check_args.get_event_args()
@@ -56,7 +59,8 @@ class EventController(Resource):
         except EventAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, event_id: int):
         try:
             self.event_service.delete(event_id=event_id)
@@ -73,7 +77,7 @@ class EventListController(Resource):
         self.check_args = EventCheckArgs()
         self.event_service = EventService()
     
-
+    @jwt_required()
     def get(self):
         try:
             events = self.event_service.select_all()
@@ -84,7 +88,8 @@ class EventListController(Resource):
         except EventAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_event_args()
@@ -104,7 +109,8 @@ class EventPageController(Resource):
     def __init__(self) -> None:
         self.event_service = EventService()
     
-
+    @jwt_required()
+    @roles_required([1])
     def get(self, page: int):
         try:
             events = self.event_service.select_per_page(page=page)
@@ -120,6 +126,8 @@ class EventSearchPageController(Resource):
     def __init__(self) -> None:
         self.event_service = EventService()
 
+    @jwt_required()
+    @roles_required([1])
     def get(self, page: int, search: str):
         try:
             events = self.event_service.select_by_search_page(page=page, search=search)
@@ -135,6 +143,8 @@ class EventSearchController(Resource):
     def __init__(self) -> None:
         self.event_service = EventService()
 
+    @jwt_required()
+    @roles_required([1])
     def get(self, search: str):
         try:
             events = self.event_service.select_by_search(search=search)

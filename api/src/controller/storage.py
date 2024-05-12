@@ -3,6 +3,8 @@ from service.storage import StorageService
 from exception.storage import *
 from exception.type import *
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class StorageCheckArgs:
         
@@ -20,7 +22,7 @@ class StorageController(Resource):
         self.check_args = StorageCheckArgs()
         self.storage_service = StorageService()
 
-
+    @jwt_required()
     def get(self, storage_id: int):
         try:
             storage = self.storage_service.select_one_by_id(storage_id=storage_id)
@@ -32,7 +34,8 @@ class StorageController(Resource):
         except TypeAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, storage_id: int):
         try:
             args = self.check_args.get_storage_args()
@@ -45,7 +48,8 @@ class StorageController(Resource):
         except StorageAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, storage_id: int):
         try:
             self.storage_service.delete(storage_id=storage_id)
@@ -62,7 +66,7 @@ class StorageListController(Resource):
         self.check_args = StorageCheckArgs()
         self.storage_service = StorageService()
     
-
+    @jwt_required()
     def get(self):
         try:
             storages = self.storage_service.select_all()
@@ -73,7 +77,8 @@ class StorageListController(Resource):
         except StorageAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_storage_args()
@@ -91,7 +96,7 @@ class StoragePageController(Resource):
     def __init__(self) -> None:
         self.storage_service = StorageService()
     
-
+    @jwt_required()
     def get(self, page: int):
         try:
             storages = self.storage_service.select_per_page(page=page)

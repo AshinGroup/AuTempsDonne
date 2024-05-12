@@ -170,6 +170,8 @@ const SignUpForm = () => {
 
     try {
       // First Request
+      console.log(data)
+      console.log(firstRoleId)
       const newUserResponse = await handleFetch(`${env_path}/user`, {
         method: "POST",
         headers: {
@@ -202,7 +204,7 @@ const SignUpForm = () => {
           }
         );
 
-        if (!response.ok) {
+        if (!response) {
           throw new Error(`Problem assigning role ${roleId} to user`);
         }
       }
@@ -394,7 +396,7 @@ const SignUpForm = () => {
           },
           pattern: {
             value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
             message: passwordValidPattern,
           },
         })}

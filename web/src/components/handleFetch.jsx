@@ -19,7 +19,7 @@ async function handleFetch(url, options = {}, retry = 1) {
           throw new Error("Failed to refresh token");
         }
       }
-      throw new Error("Network response was not ok");
+      // throw new Error("Network response was not ok");
     }
     return await response.json();
   } catch (error) {

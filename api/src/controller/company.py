@@ -2,6 +2,8 @@ from flask_restful import Resource, reqparse, inputs, abort
 from service.company import CompanyService
 from exception.company import CompanyIdNotFoundException, CompanyAccessDbException
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class CompanyCheckArgs:
 
@@ -21,7 +23,7 @@ class CompanyController(Resource):
         self.check_args = CompanyCheckArgs()
         self.company_service = CompanyService()
 
-
+    @jwt_required()
     def get(self, company_id: int):
         try:
             company = self.company_service.select_one_by_id(company_id=company_id)
@@ -31,7 +33,8 @@ class CompanyController(Resource):
         except CompanyAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, company_id: int):
         try:
             args = self.check_args.get_company_args()
@@ -42,7 +45,8 @@ class CompanyController(Resource):
         except CompanyAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, company_id: int):
         try:
             self.company_service.delete(company_id=company_id)
@@ -59,7 +63,7 @@ class CompanyListController(Resource):
         self.check_args = CompanyCheckArgs()
         self.company_service = CompanyService()
     
-
+    @jwt_required()
     def get(self):
         try:
             categories = self.company_service.select_all()
@@ -70,7 +74,8 @@ class CompanyListController(Resource):
         except CompanyAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_company_args()

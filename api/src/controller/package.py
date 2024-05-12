@@ -5,6 +5,8 @@ from exception.food import *
 from exception.storage import *
 from exception.demand import *
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class PackageCheckArgs:
 
@@ -29,7 +31,7 @@ class PackageController(Resource):
         self.check_args = PackageCheckArgs()
         self.package_service = PackageService()
 
-
+    @jwt_required()
     def get(self, package_id: int):
         try:
             package = self.package_service.select_one_by_id(package_id=package_id)
@@ -41,7 +43,8 @@ class PackageController(Resource):
         except FoodAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, package_id: int):
         try:
             args = self.check_args.get_package_args()
@@ -60,7 +63,8 @@ class PackageController(Resource):
         except StorageAccessDbException as e:
             abort(http_status_code=500, message=str(e)) 
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, package_id: int):
         try:
             self.package_service.delete(package_id=package_id)
@@ -77,7 +81,7 @@ class PackageListController(Resource):
         self.check_args = PackageCheckArgs()
         self.package_service = PackageService()
     
-
+    @jwt_required()
     def get(self):
         try:
             packages = self.package_service.select_all()
@@ -88,7 +92,8 @@ class PackageListController(Resource):
         except PackageAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1, 4])
     def post(self):
         try:
             args = self.check_args.get_package_args()
@@ -112,7 +117,7 @@ class PackagePageController(Resource):
     def __init__(self) -> None:
         self.package_service = PackageService()
     
-
+    @jwt_required()
     def get(self, page: int):
         try:
             packages = self.package_service.select_per_page(page=page)
@@ -128,6 +133,7 @@ class PackageSearchController(Resource):
     def __init__(self) -> None:
         self.package_service = PackageService()
 
+    @jwt_required()
     def get(self, page: int, search: str):
         try:
             packages = self.package_service.select_by_search(page=page, search=search)
@@ -144,7 +150,7 @@ class PackageQrCodeController(Resource):
     def __init__(self) -> None:
         self.package_service = PackageService()
     
-
+    
     def post(self):
         try:
             parser = reqparse.RequestParser()

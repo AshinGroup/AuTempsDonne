@@ -58,7 +58,11 @@ export default function CollectsAndDeliveriesModal({
             },
           }
         );
-
+        if (!response) {
+          setResponseMessage(response.message);
+          setIsErrorMessage(true);
+          return;
+        }
         setResponseMessage("You have successfully signed up for this service!");
         setIsSubscribed(true);
       }

@@ -2,7 +2,8 @@ from flask_restful import Resource, reqparse, abort
 from service.roadmap import RoadmapService
 from exception.location import LocationAccessDbException, LocationIdNotFoundException
 from flask import jsonify
-
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class RoadmapCheckArgs:
     def get_roadmap_args(self) -> dict:
@@ -16,7 +17,7 @@ class RoadmapController(Resource):
         self.roadmap_service = RoadmapService()
         self.check_args = RoadmapCheckArgs()
 
-
+    @jwt_required()
     def get(self):
         try:
             args = self.check_args.get_roadmap_args()

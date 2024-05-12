@@ -17,7 +17,7 @@ export default function SlotsTicketsModal({
             id="slotsTickets.MyTickets"
             defaultMessage="MyTickets"
           />{" "}
-          ({tickets.length})
+          ({tickets ? tickets.length : 0})
         </p>
         <div className="overflow-auto max-h-[400px]">
           <table className="w-full">
