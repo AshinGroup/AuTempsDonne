@@ -41,7 +41,7 @@ class DemandService:
         
         shop = self.shop_service.select_one_by_id(args["shop_id"])
         shop_details = {"name": shop.name, "location": shop.location.description}
-
+        
         new_demand = Demand(
             submitted_datetime=formatted_time,
             limit_datetime=args["limit_datetime"],
@@ -58,6 +58,7 @@ class DemandService:
         return {"demand_id": new_demand_id, "qr_code": png_src, "pdf": pdf_src}
 
         
+
     def get_qr_code(self, demand_id: int, packages: list, shop_details: dict):
         data = {
             "packages": [eval(package) for package in packages],
