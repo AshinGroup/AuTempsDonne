@@ -30,7 +30,6 @@ class EventActivity : AppCompatActivity() {
                 Request.Method.GET,
                 "https://au-temps-donne.fr/api/user/" + userId,
                 Response.Listener<String> { content ->
-                    Log.d("Response", content.toString())
                     var eventList = mutableListOf<Event>()
                     var user = JSONObject(content)
                     var events = user.getJSONArray("events")
