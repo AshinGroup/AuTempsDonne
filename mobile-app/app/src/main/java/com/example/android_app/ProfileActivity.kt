@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.AuthFailureError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
@@ -18,23 +19,22 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        var shp = getSharedPreferences("save", MODE_PRIVATE)
-        // var accessToken = shp.getString("accessToken", "")
-        var userId = shp.getString("userId", "")
+        val shp = getSharedPreferences("save", MODE_PRIVATE)
+        val userId = shp.getString("userId", "")
 
         try {
-            var queue = Volley.newRequestQueue(this)
-            var apiRequest = StringRequest(
+            val queue = Volley.newRequestQueue(this)
+            val apiRequest = object : StringRequest(
                 Request.Method.GET,
-                "https://au-temps-donne.fr/api/user/" + userId,
+                "https://au-temps-donne.fr/api/user/$userId",
                 Response.Listener<String> { content ->
                     Log.d("Response", content.toString())
-                    var user = JSONObject(content)
+                    val user = JSONObject(content)
 
-                    findViewById<TextView>(R.id.user_first_name).setText("First Name : " + user.getString("first_name"))
-                    findViewById<TextView>(R.id.user_last_name).setText("Last Name : " + user.getString("last_name"))
-                    findViewById<TextView>(R.id.user_email).setText("Email : " + user.getString("email"))
-                    findViewById<TextView>(R.id.user_phone).setText("Phone : " + user.getString("phone"))
+                    findViewById<TextView>(R.id.user_first_name).text = "First Name : " + user.getString("first_name")
+                    findViewById<TextView>(R.id.user_last_name).text = "Last Name : " + user.getString("last_name")
+                    findViewById<TextView>(R.id.user_email).text = "Email : " + user.getString("email")
+                    findViewById<TextView>(R.id.user_phone).text = "Phone : " + user.getString("phone")
 
                 },
                 Response.ErrorListener { error ->
@@ -54,7 +54,14 @@ class ProfileActivity : AppCompatActivity() {
                         Log.e("Error", "Network error occurred.")
                     }
                 }
-            )
+            ) {
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    val token = shp.getString("accessToken", "")
+                    headers["Authorization"] = "Bearer " + token.toString()
+                    return headers
+                }
+            }
             queue.add(apiRequest)
         } catch (e: Exception) {
             Log.e("Error", "Error sending request: ${e.message}")

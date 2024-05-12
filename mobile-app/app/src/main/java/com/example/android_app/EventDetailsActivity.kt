@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.AuthFailureError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
@@ -21,19 +21,17 @@ class EventDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_details)
 
-        var shp = getSharedPreferences("save", MODE_PRIVATE)
-        // var accessToken = shp.getString("accessToken", "")
-        var eventId = intent.getStringExtra("eventId")
+        val eventId = intent.getStringExtra("eventId")
         Log.d("eventID", eventId.toString())
 
         try {
-            var queue = Volley.newRequestQueue(this)
-            var apiRequest = StringRequest(
+            val queue = Volley.newRequestQueue(this)
+            val apiRequest = object : StringRequest(
                 Request.Method.GET,
-                "https://au-temps-donne.fr/api/event/" + eventId,
+                "https://au-temps-donne.fr/api/event/$eventId",
                 Response.Listener<String> { content ->
                     Log.d("Response", content.toString())
-                    var event = JSONObject(content)
+                    val event = JSONObject(content)
 
                     var objGroup: String
                     when(event.getInt("group")) {
@@ -44,13 +42,13 @@ class EventDetailsActivity : AppCompatActivity() {
                             objGroup = "Not defined"
                         }
                     }
-                    findViewById<TextView>(R.id.event_name).setText(event.getString("name"))
-                    findViewById<TextView>(R.id.event_description).setText("Description : " + event.getString("description"))
-                    findViewById<TextView>(R.id.event_datetime).setText("Date : " + event.getString("datetime"))
-                    findViewById<TextView>(R.id.event_capacity).setText("Capacity : " + event.getInt("capacity").toString())
-                    findViewById<TextView>(R.id.event_group).setText(objGroup)
-                    findViewById<TextView>(R.id.event_place).setText("Location : " + event.getString("place"))
-                    findViewById<TextView>(R.id.event_type).setText("Type : " + event.getJSONObject("type").getString("name"))
+                    findViewById<TextView>(R.id.event_name).text = event.getString("name")
+                    findViewById<TextView>(R.id.event_description).text = "Description : " + event.getString("description")
+                    findViewById<TextView>(R.id.event_datetime).text = "Date : " + event.getString("datetime")
+                    findViewById<TextView>(R.id.event_capacity).text = "Capacity : " + event.getInt("capacity").toString()
+                    findViewById<TextView>(R.id.event_group).text = objGroup
+                    findViewById<TextView>(R.id.event_place).text = "Location : " + event.getString("place")
+                    findViewById<TextView>(R.id.event_type).text = "Type : " + event.getJSONObject("type").getString("name")
 
                 },
                 Response.ErrorListener { error ->
@@ -62,7 +60,7 @@ class EventDetailsActivity : AppCompatActivity() {
                             val errorMessage = errorJsonObject.getString("message")
                             Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
 
-                            // Display the error message to the user or handle it as needed.
+                            // Afficher le message d'erreur à l'utilisateur ou le gérer selon les besoins.
                         } catch (e: JSONException) {
                             Log.e("Error", "Error parsing JSON error response: ${e.message}")
                         }
@@ -70,11 +68,19 @@ class EventDetailsActivity : AppCompatActivity() {
                         Log.e("Error", "Network error occurred.")
                     }
                 }
-            )
+            ) {
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    var shp = getSharedPreferences("save", MODE_PRIVATE)
+                    val token = shp.getString("accessToken", "")
+                    headers["Authorization"] = "Bearer " + token.toString()
+                    return headers
+                }
+            }
+
             queue.add(apiRequest)
         } catch (e: Exception) {
             Log.e("Error", "Error sending request: ${e.message}")
-
         }
 
         findViewById<Button>(R.id.button_nfc).setOnClickListener {
@@ -87,6 +93,4 @@ class EventDetailsActivity : AppCompatActivity() {
             finish()
         }
     }
-
-
 }
