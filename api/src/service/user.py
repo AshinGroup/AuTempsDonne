@@ -10,6 +10,7 @@ from service.event import EventService
 from service.delivery import DeliveryService
 from service.collect import CollectService
 from service.shop import ShopService
+from repository.ticket import TicketRepo
 
 
 class UserService:
@@ -21,6 +22,7 @@ class UserService:
         self.delivery_service = DeliveryService()
         self.collect_service = CollectService()
         self.shop_service = ShopService()
+        self.ticket_repo = TicketRepo()
 
     def select_one_by_id(self, user_id: int) -> User:
         user = self.user_repo.select_one_by_id(user_id=user_id)
@@ -153,8 +155,12 @@ class UserService:
         self.user_repo.update(user_id=user_id, update_user=update_user)
 
     def delete(self, user_id: int) -> None:
-        if not self.user_repo.select_one_by_id(user_id=user_id):
-            raise UserIdNotFoundException(user_id=user_id)
+        self.select_one_by_id(user_id=user_id)
+        tickets = self.ticket_repo.select_all_by_user_id(user_id=user_id)
+        if tickets:
+            for ticket in tickets['tickets']:
+                if ticket.author_id == user_id:
+                    self.ticket_repo.delete(ticket_id=ticket.id)
         self.user_repo.delete(user_id=user_id)
 
     def delete_event(self, user_id: int, event_id: int) -> None:

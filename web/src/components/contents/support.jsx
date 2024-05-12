@@ -56,7 +56,9 @@ const Support = () => {
   return (
     <>
       <section className="flex justify-center items-center h-screen bg-cover bg-no-repeat bg-center bg-[url('https://media.istockphoto.com/id/656898392/fr/photo/amis-amiti%C3%A9-fist-togetherness-concept.jpg?s=1024x1024&w=is&k=20&c=tCERIp7922ElulLsmSxuKq9i7Arpg1AUBsAfRjSdsWw=')]">
-        <div className="flex flex-col w-4/6 items-center bg-white justify-center h-screen ">
+        <div
+          className={`flex flex-col w-4/6 items-center bg-white justify-center h-screen `}
+        >
           <h1 className="text-4xl mb-6 font-bold text-AshinBlue underline decoration-4">
             <FormattedMessage
               id="support.supportAuTempsDonne"

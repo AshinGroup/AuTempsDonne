@@ -6,6 +6,7 @@ from exception.role import *
 from exception.delivery import *
 from exception.collect import *
 from exception.shop import *
+from exception.ticket import *
 from flask import jsonify
 
 
@@ -74,6 +75,10 @@ class UserController(Resource):
         except UserIdNotFoundException as e:
             abort(http_status_code=404, message=str(e))
         except UserAccessDbException as e:
+            abort(http_status_code=500, message=str(e))
+        except TicketIdNotFoundException as e:
+            abort(http_status_code=404, message=str(e))
+        except TicketAccessDbException as e:
             abort(http_status_code=500, message=str(e))
 
 
