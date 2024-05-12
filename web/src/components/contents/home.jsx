@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import welcome from "../../resources/homePage1.jpg";
 import maps from "../../resources/maps.png";
-import carousel1 from "../../resources/carousel1.jpg";
+import carousel1 from "../../resources/carousel6.jpg";
 import carousel2 from "../../resources/carousel2.jpg";
 import carousel3 from "../../resources/carousel3.jpg";
 import carousel4 from "../../resources/carousel4.jpg";
+import carousel5 from "../../resources/carousel5.jpg";
+import carousel6 from "../../resources/carousel1.jpg";
 import { FormattedMessage } from 'react-intl';
 
 const HomePage = () => {
@@ -67,7 +69,7 @@ const HomePage = () => {
       </div>
 
       <div class="flex justify-center flex-col md:flex-row items-center mb-24">
-        <div class="text-black text-center mt-24 mb-16 md:mr-72 md:mb-0">
+        <div class="text-black text-center mb-16 md:mr-72 md:mb-0">
           <h1 class="text-3xl font-bold mb-4"><FormattedMessage id="home.help" defaultMessage="Your Help is Essential ..." /></h1>
           <div class="w-64 h-0.5 bg-black mx-auto mb-8"></div>
           <a href="/donate">
@@ -97,6 +99,8 @@ const Carousel = () => {
     carousel2,
     carousel3,
     carousel4,
+    carousel5,
+    carousel6,
   ];
 
   useEffect(() => {
@@ -108,16 +112,17 @@ const Carousel = () => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[600px] h-64 max-h-[400px] mr-24 rounded-xl overflow-hidden">
+    <div className="relative w-full max-w-[1024px] h-96 max-h-[1024px] mr-24 rounded-xl overflow-hidden">
       {pictures.map((picture, index) => (
         <img
           key={index}
           src={picture}
           alt={`Photo ${index + 1}`}
-          className="absolute top-0 left-0 w-full h-full transition-opacity duration-1000"
+          className="absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000"
           style={{ opacity: index === currentIndex ? 1 : 0 }}
         />
       ))}
     </div>
   );
 };
+
