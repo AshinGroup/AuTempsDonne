@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.AuthFailureError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android_app.R
@@ -21,32 +22,32 @@ class EventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event)
 
-        var shp = getSharedPreferences("save", MODE_PRIVATE)
-        var userId = shp.getString("userId", "")
+        val shp = getSharedPreferences("save", MODE_PRIVATE)
+        val userId = shp.getString("userId", "")
 
         try {
-            var queue = Volley.newRequestQueue(this)
-            var apiRequest = StringRequest(
+            val queue = Volley.newRequestQueue(this)
+            val apiRequest = object : StringRequest(
                 Request.Method.GET,
-                "https://au-temps-donne.fr/api/user/" + userId,
+                "https://au-temps-donne.fr/api/user/$userId",
                 Response.Listener<String> { content ->
-                    var eventList = mutableListOf<Event>()
-                    var user = JSONObject(content)
-                    var events = user.getJSONArray("events")
+                    val eventList = mutableListOf<Event>()
+                    val user = JSONObject(content)
+                    val events = user.getJSONArray("events")
                     if (events.length() != 0) {
-                        for (cpt in 0 .. events.length()-1) {
+                        for (cpt in 0 until events.length()) {
                             var objGroup: String
-                            var currentJsonObj = events.getJSONObject(cpt)
-                            when(currentJsonObj.getInt("group")) {
-                                1-> objGroup = "Activity"
-                                2-> objGroup = "Course"
-                                3-> objGroup = "Service"
+                            val currentJsonObj = events.getJSONObject(cpt)
+                            when (currentJsonObj.getInt("group")) {
+                                1 -> objGroup = "Activity"
+                                2 -> objGroup = "Course"
+                                3 -> objGroup = "Service"
                                 else -> {
                                     objGroup = "Not defined"
                                 }
                             }
 
-                            var e = Event(
+                            val e = Event(
                                 currentJsonObj.getInt("id"),
                                 currentJsonObj.getString("name"),
                                 currentJsonObj.getString("description"),
@@ -59,18 +60,17 @@ class EventActivity : AppCompatActivity() {
                             eventList.add(e)
                         }
 
-                        var lv = findViewById<ListView>(R.id.lv_events)
-                        var adap = EventAdapter(this, eventList)
+                        val lv = findViewById<ListView>(R.id.lv_events)
+                        val adap = EventAdapter(this, eventList)
                         lv.adapter = adap
 
-                        lv.setOnItemClickListener {parent, view, position, id ->
+                        lv.setOnItemClickListener { parent, view, position, id ->
                             val i = Intent(this, EventDetailsActivity::class.java)
-                            var currentEventId = eventList.get(position).id
+                            val currentEventId = eventList[position].id
                             i.putExtra("eventId", currentEventId.toString())
                             startActivity(i)
                         }
-                    }
-                    else {
+                    } else {
                         findViewById<TextView>(R.id.event_title).setText("No Event Found")
                     }
                 },
@@ -91,7 +91,14 @@ class EventActivity : AppCompatActivity() {
                         Log.e("Error", "Network error occurred.")
                     }
                 }
-            )
+            ) {
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    val token = shp.getString("accessToken", "")
+                    headers["Authorization"] = "Bearer " + token.toString()
+                    return headers
+                }
+            }
             queue.add(apiRequest)
         } catch (e: Exception) {
             Log.e("Error", "Error sending request: ${e.message}")
