@@ -297,6 +297,30 @@
   "event.registryButton": "Registro",
 
   "planning.title": "Ver Mi Planificación",
-  "planning.bubleTitle": "Para ver su planificación, está justo aquí ..."
+  "planning.bubleTitle": "Para ver su planificación, está justo aquí ...",
+
+  "sign.alreadyacc": "¿Ya tienes una cuenta? ",
+  "support.needToBeLogged": "Debes estar conectado para enviar una solicitud.",
+  "profile.noEvent": "No se encontraron eventos",
+  "profile.noRole": "No se encontraron roles",
+  "event.capacitys": "Plazas",
+  "shops.users": "Usuarios",
+  "Event.type": "Tipo",
+  "addUserShopModal.selectUser": "Seleccionar un usuario:",
+  "addUserShopModal.submit": "Agregar un usuario a la tienda",
+  "showQR.downloadPDF": "Descargar PDF",
+  "showRM.Roadmap": "Plan de ruta",
+  "showRM.load": "Cargando el iFrame ...",
+  "showQR.scheduledAt": "Programado para recoger:",
+  "serviceses.title": "Servicios disponibles",
+  "navbar.demandToCollect": "Demanda de recogida",
+  "demands.additional": "Adicional",
+  "activityModal.successfullyRegistry": "¡Te has registrado con éxito para esta actividad!",
+  "activityModal.successfullyUnsuscribe": "¡Te has dado de baja con éxito de esta actividad!",
+  "serviceModal.successfullySubsribe": "¡Te has registrado con éxito para este servicio!",
+  "serviceModal.successfullyUnsubscribe": "¡Te has dado de baja con éxito de este servicio!",
+  "courseModal.successfullySubscribe": "¡Te has registrado con éxito para este curso!",
+  "courseModal.successfullyUnsubscribe": "¡Te has dado de baja con éxito de este curso!",
+  "courses.title": "Cursos disponibles"
   
 }

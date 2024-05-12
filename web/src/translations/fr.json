@@ -298,6 +298,30 @@
   "event.registryButton": "S'inscrire",
 
   "planning.title": "Voir Mon Planning",
-  "planning.bubleTitle": "Pour voir votre planning, c'est juste ici ..."
+  "planning.bubleTitle": "Pour voir votre planning, c'est juste ici ...",
+
+  "sign.alreadyacc": "Vous avez déjà un compte ? ",
+  "support.needToBeLogged": "Vous devez être connecté pour soumettre une demande.",
+  "profile.noEvent": "Aucun événement trouvé",
+  "profile.noRole": "Aucun rôle trouvé",
+  "event.capacitys": "Places",
+  "shops.users": "Utilisateurs",
+  "Event.type": "Type",
+  "addUserShopModal.selectUser": "Sélectionnez un utilisateur :",
+  "addUserShopModal.submit": "Ajouter un utilisateur au magasin",
+  "showQR.downloadPDF": "Télécharger le PDF",
+  "showRM.Roadmap": "Feuille de route",
+  "showRM.load": "Chargement de l'iFrame ...",
+  "showQR.scheduledAt": "Prévu pour collecter :",
+  "serviceses.title": "Services disponibles",
+  "navbar.demandToCollect": "Demande de collecte",
+  "demands.additional": "Supplémentaire",
+  "activityModal.successfullyRegistry": "Vous vous êtes inscrit avec succès à cette activité !",
+  "activityModal.successfullyUnsuscribe": "Vous vous êtes désinscrit avec succès de cette activité !",
+  "serviceModal.successfullySubsribe": "Vous vous êtes inscrit avec succès à ce service !",
+  "serviceModal.successfullyUnsubscribe": "Vous vous êtes désinscrit avec succès de ce service !",
+  "courseModal.successfullySubscribe": "Vous vous êtes inscrit avec succès à ce cours !",
+  "courseModal.successfullyUnsubscribe": "Vous vous êtes désinscrit avec succès de ce cours !",
+  "courses.title": "Cours disponibles"
   
 }

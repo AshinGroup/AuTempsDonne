@@ -57,7 +57,7 @@ export default function CourseModal({
           }
         );
 
-        setResponseMessage("You have successfully signed up for this course!");
+        setResponseMessage(<FormattedMessage id="courseModal.successfullySubscribe" defaultMessage="You have successfully signed up for this course!" />);
         setIsSubscribed(true);
       }
     } catch (error) {
@@ -77,9 +77,7 @@ export default function CourseModal({
         }
       );
 
-      setResponseMessage(
-        "You have successfully unsubscribed from this course!"
-      );
+      setResponseMessage(<FormattedMessage id="courseModal.successfullyUnsubscribe" defaultMessage="You have successfully unsubscribed from this course!" />);
       setIsSubscribed(false);
     } catch (error) {
       console.error("An error occurred while unsubscribing:", error);
