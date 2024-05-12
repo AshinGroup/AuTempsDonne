@@ -2,6 +2,8 @@ from flask_restful import Resource, reqparse, inputs, abort
 from service.location import LocationService
 from exception.location import *
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class LocationCheckArgs:
 
@@ -25,7 +27,7 @@ class LocationController(Resource):
         self.check_args = LocationCheckArgs()
         self.location_service = LocationService()
 
-
+    @jwt_required()
     def get(self, location_id: int):
         try:
             location = self.location_service.select_one_by_id(location_id=location_id)
@@ -35,7 +37,8 @@ class LocationController(Resource):
         except LocationAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, location_id: int):
         try:
             args = self.check_args.get_location_args()
@@ -48,7 +51,8 @@ class LocationController(Resource):
         except LocationDetailsException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, location_id: int):
         try:
             self.location_service.delete(location_id=location_id)
@@ -65,7 +69,7 @@ class LocationListController(Resource):
         self.check_args = LocationCheckArgs()
         self.location_service = LocationService()
     
-
+    @jwt_required()
     def get(self):
         try:
             events = self.location_service.select_all()
@@ -76,7 +80,8 @@ class LocationListController(Resource):
         except LocationAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1])
     def post(self):
         try:
             args = self.check_args.get_location_args()

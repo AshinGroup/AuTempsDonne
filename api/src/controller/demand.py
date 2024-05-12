@@ -3,6 +3,8 @@ from service.demand import DemandService
 from exception.demand import *
 from exception.shop import *
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class DemandCheckArgs:
 
@@ -32,7 +34,8 @@ class DemandController(Resource):
         self.check_args = DemandCheckArgs()
         self.demand_service = DemandService()
 
-
+    @jwt_required()
+    @roles_required([1, 4])
     def get(self, demand_id: int):
         try:
             demand = self.demand_service.select_one_by_id(demand_id=demand_id)
@@ -44,7 +47,8 @@ class DemandController(Resource):
         except ShopAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1, 4])
     def put(self, demand_id: int):
         try:
             args = self.check_args.get_demand_args(method="update")
@@ -57,7 +61,8 @@ class DemandController(Resource):
         except DemandAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1, 4])
     def delete(self, demand_id: int):
         try:
             self.demand_service.delete(demand_id=demand_id)
@@ -74,7 +79,8 @@ class DemandListController(Resource):
         self.check_args = DemandCheckArgs()
         self.demand_service = DemandService()
     
-
+    @jwt_required()
+    @roles_required([1, 4])
     def get(self):
         try:
             demands = self.demand_service.select_all()
@@ -85,7 +91,8 @@ class DemandListController(Resource):
         except DemandAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
+    @roles_required([1, 4])
     def post(self):
         try:
             args = self.check_args.get_demand_args(method="post")
@@ -104,7 +111,8 @@ class DemandPageController(Resource):
     def __init__(self) -> None:
         self.demand_service = DemandService()
     
-
+    @jwt_required()
+    @roles_required([1, 4])
     def get(self, page: int):
         try:
             demands = self.demand_service.select_per_page(page=page)
@@ -120,6 +128,8 @@ class DemandSearchController(Resource):
     def __init__(self) -> None:
         self.demand_service = DemandService()
 
+    @jwt_required()
+    @roles_required([1, 4])
     def get(self, page: int, search: str):
         try:
             demands = self.demand_service.select_by_search(page=page, search=search)

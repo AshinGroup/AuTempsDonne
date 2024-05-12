@@ -2,6 +2,8 @@ from flask_restful import Resource, reqparse, inputs, abort
 from service.category import CategoryService
 from exception.category import CategoryIdNotFoundException, CategoryAccessDbException
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class CategoryCheckArgs:
 
@@ -21,7 +23,7 @@ class CategoryController(Resource):
         self.check_args = CategoryCheckArgs()
         self.category_service = CategoryService()
 
-
+    @jwt_required()
     def get(self, category_id: int):
         try:
             category = self.category_service.select_one_by_id(category_id=category_id)
@@ -31,7 +33,8 @@ class CategoryController(Resource):
         except CategoryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
    
-
+    @jwt_required()
+    @roles_required([1])
     def put(self, category_id: int):
         try:
             args = self.check_args.get_category_args()
@@ -42,7 +45,8 @@ class CategoryController(Resource):
         except CategoryAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
+    @roles_required([1])
     def delete(self, category_id: int):
         try:
             self.category_service.delete(category_id=category_id)
@@ -59,7 +63,7 @@ class CategoryListController(Resource):
         self.check_args = CategoryCheckArgs()
         self.category_service = CategoryService()
     
-
+    @jwt_required()
     def get(self):
         try:
             categories = self.category_service.select_all()
@@ -70,7 +74,7 @@ class CategoryListController(Resource):
         except CategoryAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
     def post(self):
         try:
             args = self.check_args.get_category_args()

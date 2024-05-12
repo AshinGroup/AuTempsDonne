@@ -3,6 +3,8 @@ from service.ticket import TicketService
 from exception.ticket import *
 from exception.user import *
 from flask import jsonify
+from flask_jwt_extended import jwt_required
+from function.roles_required import roles_required
 
 class TicketCheckArgs:
 
@@ -29,7 +31,7 @@ class TicketController(Resource):
         self.check_args = TicketCheckArgs()
         self.ticket_service = TicketService()
 
-
+    @jwt_required()
     def get(self, ticket_id: int):
         try:
             ticket = self.ticket_service.select_one_by_id(ticket_id=ticket_id)
@@ -39,7 +41,7 @@ class TicketController(Resource):
         except TicketAccessDbException as e:
             abort(http_status_code=500, message=str(e))
  
-
+    @jwt_required()
     def put(self, ticket_id: int):
         try:
             args = self.check_args.get_ticket_args(method="put")
@@ -52,7 +54,7 @@ class TicketController(Resource):
         except TicketAccessDbException as e:
             abort(http_status_code=500, message=str(e))        
    
-
+    @jwt_required()
     def delete(self, ticket_id: int):
         try:
             self.ticket_service.delete(ticket_id=ticket_id)
@@ -69,7 +71,7 @@ class TicketListController(Resource):
         self.check_args = TicketCheckArgs()
         self.ticket_service = TicketService()
     
-
+    @jwt_required()
     def get(self):
         try:
             tickets = self.ticket_service.select_all()
@@ -80,7 +82,7 @@ class TicketListController(Resource):
         except TicketAccessDbException as e:
             abort(http_status_code=500, message=str(e))
         
-
+    @jwt_required()
     def post(self):
         try:
             args = self.check_args.get_ticket_args()
@@ -96,7 +98,7 @@ class TicketPageController(Resource):
     def __init__(self) -> None:
         self.ticket_service = TicketService()
     
-
+    @jwt_required()
     def get(self, page: int):
         try:
             tickets = self.ticket_service.select_per_page(page=page)
@@ -112,6 +114,7 @@ class TicketSearchController(Resource):
     def __init__(self) -> None:
         self.ticket_service = TicketService()
 
+    @jwt_required()
     def get(self, page: int, search: str):
         try:
             tickets = self.ticket_service.select_by_search(page=page, search=search)
@@ -121,11 +124,13 @@ class TicketSearchController(Resource):
                 return jsonify({'message': "No tickets found."})
         except TicketAccessDbException as e:
             abort(http_status_code=500, message=str(e))
+      
         
 class TicketUserController(Resource):
     def __init__(self) -> None:
         self.ticket_service = TicketService()
 
+    @jwt_required()
     def get(self, user_id: int):
         try:
             tickets = self.ticket_service.select_all_by_user_id(user_id=user_id)

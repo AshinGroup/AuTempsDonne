@@ -9,7 +9,7 @@ def roles_required(*roles):
             verify_jwt_in_request()
             claims = get_jwt()
             user_roles = claims['roles']
-            if not any(role in user_roles for role in roles):
+            if not any(role in user_roles for role in roles[0]):
                 abort(http_status_code=403, message="You do not have permission to access this resource.")
             return fn(*args, **kwargs)
         return wrapper
