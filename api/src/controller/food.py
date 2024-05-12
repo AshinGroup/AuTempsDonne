@@ -69,7 +69,6 @@ class FoodListController(Resource):
         self.check_args = FoodCheckArgs()
         self.food_service = FoodService()
     
-    @jwt_required()
     def get(self):
         try:
             foods = self.food_service.select_all()
