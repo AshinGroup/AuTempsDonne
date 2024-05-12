@@ -22,8 +22,12 @@ class EventService:
         events = self.event_repo.select_per_page(page=page)
         return events
 
-    def select_by_search(self, page: int, search: str) -> list[Event]:
-        events = self.event_repo.select_by_search(page=page, search=search)
+    def select_by_search(self,  search: str) -> list[Event]:
+        events = self.event_repo.select_by_search(search=search)
+        return events
+
+    def select_by_search_page(self, page: int, search: str) -> list[Event]:
+        events = self.event_repo.select_by_search_page(page=page, search=search)
         return events
 
 

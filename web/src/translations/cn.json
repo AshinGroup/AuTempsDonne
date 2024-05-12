@@ -282,12 +282,12 @@
   "addDemandModal.enterFoodName": "输入食物名称",
   "addDemandModal.addFood": "添加食物",
   "addCollectModal.addDemand": "添加需求",
-  
+
   "activities.title": "可用活动",
   "activityModal.title": "活动标题",
   "serviceModal.title": "服务标题",
   "courseModal.title": "课程标题",
-  
+
   "modal.type": "类型",
   "modal.dateTime": "日期和时间",
   "modal.location": "地点",
@@ -322,6 +322,23 @@
   "serviceModal.successfullyUnsubscribe": "您已成功取消订阅此服务！",
   "courseModal.successfullySubscribe": "您已成功订阅此课程！",
   "courseModal.successfullyUnsubscribe": "您已成功取消订阅此课程！",
-  "courses.title": "可用课程"
-  
+  "courses.title": "可用课程",
+
+  "cad.title": "收集和交付",
+  "cad.date": "日期",
+  "cad.location": "起始地点",
+  "cad.Delivery": "交付",
+  "cad.collect": "收集",
+  "planning.departLocation": "出发地点：",
+  "planning.Events": "事件",
+  "slotsTickets.MyTickets": "我的票",
+  "tickets.id": "ID",
+  "tickets.subject": "主题",
+  "tickets.inCharge": "负责人",
+  "tickets.status": "状态",
+  "tickets.notAssigned": "未分配",
+  "tickets.inProgress": "进行中",
+  "tickets.closed": "已关闭",
+  "tickets.new": "新的",
+  "tickets.contactAdmin": "如果48小时内没有回复，请联系管理员或负责人（开个玩笑，我们是开发人员，没有人会在这里）"
 }

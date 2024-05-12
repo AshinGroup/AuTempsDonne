@@ -283,7 +283,7 @@
   "addDemandModal.enterFoodName": "Enter Food Name",
   "addDemandModal.addFood": "Add a Food",
   "addCollectModal.addDemand": "Add a Demand",
-  
+
   "activities.title": "Activities available",
   "activityModal.title": "Title of the Activity",
   "serviceModal.title": "Title of the Service",
@@ -323,6 +323,23 @@
   "serviceModal.successfullyUnsubscribe": "You have successfully unsubscribed from this service!",
   "courseModal.successfullySubscribe": "You have successfully signed up for this course!",
   "courseModal.successfullyUnsubscribe": "You have successfully unsubscribed from this course!",
-  "courses.title": "Courses available"
-  
+  "courses.title": "Courses available",
+
+  "cad.title": "Collects and Deliveries",
+  "cad.date": "Date",
+  "cad.location": "Start Location",
+  "cad.Delivery": "Delivery",
+  "cad.collect": "Collect",
+  "planning.departLocation": "Depart Location :",
+  "planning.Events": "Events",
+  "slotsTickets.MyTickets": "MyTickets",
+  "tickets.id": "ID",
+  "tickets.subject": "Subject",
+  "tickets.inCharge": "Admin in Charge",
+  "tickets.status": "Status",
+  "tickets.notAssigned": "Not Assigned",
+  "tickets.inProgress": "inProgress",
+  "tickets.closed": "Closed",
+  "tickets.new": "New",
+  "tickets.contactAdmin": "Please contact an admin or the admin in charge if no response in 48 hours (just joking, we are dev, no one is here)"
 }

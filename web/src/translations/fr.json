@@ -282,12 +282,12 @@
   "addDemandModal.enterFoodName": "Entrer le nom de l'aliment",
   "addDemandModal.addFood": "Ajouter un aliment",
   "addCollectModal.addDemand": "Ajouter une demande",
-  
+
   "activities.title": "Activités disponibles",
   "activityModal.title": "Titre de l'Activité",
   "serviceModal.title": "Titre du Service",
   "courseModal.title": "Titre du Cours",
-  
+
   "modal.type": "Type",
   "modal.dateTime": "Date et Heure",
   "modal.location": "Lieu",
@@ -322,6 +322,23 @@
   "serviceModal.successfullyUnsubscribe": "Vous vous êtes désinscrit avec succès de ce service !",
   "courseModal.successfullySubscribe": "Vous vous êtes inscrit avec succès à ce cours !",
   "courseModal.successfullyUnsubscribe": "Vous vous êtes désinscrit avec succès de ce cours !",
-  "courses.title": "Cours disponibles"
-  
+  "courses.title": "Cours disponibles",
+
+  "cad.title": "Collectes et Livraisons",
+  "cad.date": "Date",
+  "cad.location": "lieu de départ",
+  "cad.Delivery": "Livraison",
+  "cad.collect": "collecte",
+  "planning.departLocation": "Lieu de départ :",
+  "planning.Events": "Événements",
+  "slotsTickets.MyTickets": "Mes Billets",
+  "tickets.id": "ID",
+  "tickets.subject": "Sujet",
+  "tickets.inCharge": "Administrateur en Charge",
+  "tickets.status": "Statut",
+  "tickets.notAssigned": "Non Assigné",
+  "tickets.inProgress": "En cours",
+  "tickets.closed": "Fermé",
+  "tickets.new": "Nouveau",
+  "tickets.contactAdmin": "Veuillez contacter un administrateur ou l'administrateur en charge si aucune réponse en 48 heures (je plaisante, nous sommes des développeurs, personne n'est là)"
 }

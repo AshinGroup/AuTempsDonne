@@ -5,7 +5,7 @@ import handleFetch from "../handleFetch";
 import { format } from "date-fns";
 import { Modal } from "./modal";
 
-export default function ServicesModal({
+export default function CollectsAndDeliveriesModal({
   service,
   modalOpen,
   setModalOpen,
@@ -19,8 +19,8 @@ export default function ServicesModal({
   const env_path = process.env.REACT_APP_API_PATH;
 
   const titlePlaceholder = intl.formatMessage({
-    id: "serviceModal.title",
-    defaultMessage: "Title of the Service",
+    id: "collects.id",
+    defaultMessage: "ID",
   });
 
   const dateTimeFormat = intl.formatMessage({
@@ -44,12 +44,13 @@ export default function ServicesModal({
 
   // to subscribe
   const handleRegistry = async (eventId) => {
+    const url = service.storage ? "collect" : "delivery";
     try {
       if (isSubscribed) {
         handleUnsubscribe(eventId);
       } else {
         const response = await handleFetch(
-          `${env_path}/user/${userId}/event/${eventId}`,
+          `${env_path}/user/${userId}/${url}/${eventId}`,
           {
             method: "POST",
             headers: {
@@ -70,9 +71,10 @@ export default function ServicesModal({
 
   // to unsubscribe
   const handleUnsubscribe = async (eventId) => {
+    const url = service.storage ? "collect" : "delivery";
     try {
       const response = await handleFetch(
-        `${env_path}/user/${userId}/event/${eventId}`,
+        `${env_path}/user/${userId}/${url}/${eventId}`,
         {
           method: "DELETE",
         }
@@ -95,7 +97,11 @@ export default function ServicesModal({
 
     try {
       const data = await handleFetch(url);
-      return data.events;
+      if (service.storage) {
+        return data.collects;
+      } else {
+        return data.deliveries;
+      }
     } catch (error) {
       console.error("Error fetching user events:", error);
       return [];
@@ -137,12 +143,14 @@ export default function ServicesModal({
         </p>
         <div className="flex flex-col gap-4 w-96 mx-auto mt-4">
           <p className="font-bold text-gray-500">{titlePlaceholder}:</p>
-          <p className="text-gray-800">{service.name}</p>
+          <p className="text-gray-800">{service.id}</p>
 
           <p className="font-bold text-gray-500">
             <FormattedMessage id="modal.type" defaultMessage="Type" />:
           </p>
-          <p className="text-gray-800">{service.type.name}</p>
+          <p className="text-gray-800">
+            {service.storage ? "Collect" : "Delirery"}
+          </p>
 
           <p className="font-bold text-gray-500">
             <FormattedMessage
@@ -152,21 +160,24 @@ export default function ServicesModal({
             :
           </p>
           <p className="text-gray-800">
-            {format(new Date(service.datetime), dateTimeFormat)}
+            {service.storage
+              ? service.datetime
+              : format(new Date(service.datetime), dateTimeFormat)}
           </p>
 
           <p className="font-bold text-gray-500">{locationPlaceholder}:</p>
-          <p className="text-gray-800">{service.place}</p>
-
-          <p className="font-bold text-gray-500">
-            <FormattedMessage
-              id="modal.description"
-              defaultMessage="Description"
-            />
-            :
+          <p className="text-gray-800">
+            {service.storage ? (
+              <span>
+                {service.storage.warehouse.location.address}{" "}
+                {service.storage.warehouse.location.zip_code}
+              </span>
+            ) : (
+              <span>
+                {service.locations[0].address} {service.locations[0].zip_code}
+              </span>
+            )}
           </p>
-          <p className="text-gray-800">{service.description}</p>
-
           <button
             className="bg-AshinBlue text-white px-4 py-2 rounded hover:opacity-90 transition"
             onClick={() => handleRegistry(service.id)}
