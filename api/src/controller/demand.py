@@ -34,8 +34,7 @@ class DemandController(Resource):
         self.check_args = DemandCheckArgs()
         self.demand_service = DemandService()
 
-    @jwt_required()
-    @roles_required([1, 4])
+
     def get(self, demand_id: int):
         try:
             demand = self.demand_service.select_one_by_id(demand_id=demand_id)
