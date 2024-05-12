@@ -57,9 +57,7 @@ export default function ActivityModal({
           }
         );
 
-        setResponseMessage(
-          "You have successfully signed up for this activity!"
-        );
+        setResponseMessage(<FormattedMessage id="activityModal.successfullyRegistry" defaultMessage="You have successfully signed up for this activity!" />);
         setIsSubscribed(true);
       }
     } catch (error) {
@@ -80,9 +78,7 @@ export default function ActivityModal({
         }
       );
 
-      setResponseMessage(
-        "You have successfully unsubscribed from this activity!"
-      );
+      setResponseMessage(<FormattedMessage id="activityModal.successfullyUnsuscribe" defaultMessage="You have successfully unsubscribed from this activity!" />);
       setIsSubscribed(false);
     } catch (error) {
       console.error("An error occurred while unsubscribing:", error);

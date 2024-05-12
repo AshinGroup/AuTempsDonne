@@ -83,7 +83,7 @@ const Profile = () => {
           {/* Profile */}
           <section>
             {/* Profile Image and Name */}
-            <div className="flex items-center justify-center flex-col mt-5 pb-10 mx-32 border-b-4 border-AshinBlue">
+            <div className="flex items-center justify-center flex-col mt-5 pb-10 mx-32 border-b-4 border-AshinBlue  pb-40">
               <img
                 src={`https://ui-avatars.com/api/?name=${user.last_name}+${user.first_name}&background=40A1DD&color=FFFFFF&bold=true`}
                 className="w-40 rounded-full border-2 border-AshinBlue-light shadow-lg"
@@ -159,7 +159,7 @@ const Profile = () => {
                       ))}
                     </span>
                   ) : (
-                    <p>No roles found</p>
+                    <p><FormattedMessage id="profile.noRole" defaultMessage="No roles found" /></p>
                   )}
                 </li>
                 {user.shop && (
@@ -281,7 +281,7 @@ const Profile = () => {
                   {/* </li> */}
                 </ul>
               ) : (
-                <p>No events found</p>
+                <p><FormattedMessage id="profile.noEvent" defaultMessage="No events found" /></p>
               )}
             </div>
           </section>

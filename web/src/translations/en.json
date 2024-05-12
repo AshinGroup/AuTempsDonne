@@ -299,6 +299,30 @@
   "event.registryButton": "Registry",
 
   "planning.title": "See My Planning",
-  "planning.bubleTitle": "To see your planning, it's just here ..."
+  "planning.bubleTitle": "To see your planning, it's just here ...",
 
+  "sign.alreadyacc": "Already have an account ? ",
+  "support.needToBeLogged": "You have to be logged to submit a request.",
+  "profile.noEvent": "No events found",
+  "profile.noRole": "No roles found",
+  "event.capacitys": "Slots",
+  "shops.users": "Users",
+  "Event.type": "Type",
+  "addUserShopModal.selectUser": "Select an User :",
+  "addUserShopModal.submit": "Add a User to the Shop",
+  "showQR.downloadPDF": "Download PDF",
+  "showRM.Roadmap": "Roadmap",
+  "showRM.load": "Loading the iFrame ...",
+  "showQR.scheduledAt": "Scheduled to collect :",
+  "serviceses.title": "Services available",
+  "navbar.demandToCollect": "Demand to Collect",
+  "demands.additional": "Additional",
+  "activityModal.successfullyRegistry": "You have successfully signed up for this activity!",
+  "activityModal.successfullyUnsuscribe": "You have successfully unsubscribed from this activity!",
+  "serviceModal.successfullySubsribe": "You have successfully signed up for this service!",
+  "serviceModal.successfullyUnsubscribe": "You have successfully unsubscribed from this service!",
+  "courseModal.successfullySubscribe": "You have successfully signed up for this course!",
+  "courseModal.successfullyUnsubscribe": "You have successfully unsubscribed from this course!",
+  "courses.title": "Courses available"
+  
 }

@@ -68,18 +68,18 @@ const HomePage = () => {
 
       <div class="flex justify-center flex-col md:flex-row items-center mb-24">
         <div class="text-black text-center mt-24 mb-16 md:mr-72 md:mb-0">
-          <h1 class="text-3xl font-bold mb-4">Your Help is Essential ...</h1>
+          <h1 class="text-3xl font-bold mb-4"><FormattedMessage id="home.help" defaultMessage="Your Help is Essential ..." /></h1>
           <div class="w-64 h-0.5 bg-black mx-auto mb-8"></div>
           <a href="/donate">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Make a Donation</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"><FormattedMessage id="home.donate" defaultMessage="Make a Donation" /></button>
           </a>
         </div>
 
         <div class="text-center ml-0 md:ml-72">
-          <h2 class="text-3xl font-bold mb-8">Join us, we're counting on you!</h2>
+          <h2 class="text-3xl font-bold mb-8"><FormattedMessage id="home.joinUs" defaultMessage="Join us, we're counting on you!" /></h2>
           <Carousel />
           <Link to="/signup">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-8">Sign Up</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-8"><FormattedMessage id="home.signUp" defaultMessage="Sign Up" /></button>
           </Link>
         </div>
       </div>
